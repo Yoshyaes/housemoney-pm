@@ -8,6 +8,7 @@ const taskCreateInput = z.object({
   status: z.enum(['BACKLOG', 'TODO', 'IN_PROGRESS', 'IN_REVIEW', 'DONE', 'CANCELLED']).optional(),
   priority: z.enum(['URGENT', 'HIGH', 'MEDIUM', 'LOW', 'NONE']).optional(),
   projectId: z.string().optional(),
+  sectionId: z.string().optional(),
   assigneeId: z.string().optional(),
   parentId: z.string().optional(),
   dueDate: z.date().optional(),

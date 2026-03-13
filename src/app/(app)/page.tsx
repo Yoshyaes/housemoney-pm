@@ -70,6 +70,12 @@ export default function AppPage() {
     { enabled: !!workspaceId }
   );
 
+  // Get sections for active project (list view only)
+  const { data: sections = [], refetch: refetchSections } = trpc.sections.list.useQuery(
+    { projectId: activeProjectId || '' },
+    { enabled: !!activeProjectId && activeView === 'list' }
+  );
+
   // Get tasks (with filters applied)
   const { data: taskData, refetch: refetchTasks } = trpc.tasks.list.useQuery(
     {
@@ -137,6 +143,27 @@ export default function AppPage() {
     updateTask.mutate({ id: taskId, status: newStatus as 'BACKLOG' | 'TODO' | 'IN_PROGRESS' | 'IN_REVIEW' | 'DONE' | 'CANCELLED' });
   };
 
+  // Section mutations
+  const createSection = trpc.sections.create.useMutation({ onSuccess: () => refetchSections() });
+  const renameSection = trpc.sections.rename.useMutation({ onSuccess: () => refetchSections() });
+  const deleteSection = trpc.sections.delete.useMutation({
+    onSuccess: () => { refetchSections(); refetchTasks(); },
+  });
+  const moveTaskToSection = trpc.sections.moveTask.useMutation({ onSuccess: () => refetchTasks() });
+
+  // Quick task creation (for inline add within a section)
+  const createTask = trpc.tasks.create.useMutation({ onSuccess: () => refetchTasks() });
+  const handleQuickCreateTask = (title: string, sectionId: string | null) => {
+    if (!workspaceId) return;
+    createTask.mutate({
+      title,
+      workspaceId,
+      projectId: activeProjectId || undefined,
+      sectionId: sectionId || undefined,
+      status: 'TODO',
+    });
+  };
+
   const activeProject = projects.find((p) => p.id === activeProjectId);
   const projectName = activeProject?.name || workspace?.name || 'House Money';
 
@@ -174,7 +201,17 @@ export default function AppPage() {
             )}
 
             {activeView === 'list' && (
-              <ListView tasks={tasks} onTaskUpdate={handleTaskUpdate} />
+              <ListView
+                tasks={tasks}
+                onTaskUpdate={handleTaskUpdate}
+                projectId={activeProjectId}
+                sections={sections}
+                onSectionCreate={(name) => activeProjectId && createSection.mutate({ projectId: activeProjectId, name })}
+                onSectionRename={(id, name) => renameSection.mutate({ id, name })}
+                onSectionDelete={(id) => deleteSection.mutate({ id })}
+                onTaskMoveToSection={(taskId, sectionId) => moveTaskToSection.mutate({ taskId, sectionId })}
+                onQuickCreateTask={handleQuickCreateTask}
+              />
             )}
 
             {activeView === 'timeline' && (

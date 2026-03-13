@@ -9,6 +9,7 @@ import { workspaceRouter } from './workspace';
 import { searchRouter } from './search';
 import { aiRouter } from './ai';
 import { analyticsRouter } from './analytics';
+import { sectionsRouter } from './sections';
 
 export const appRouter = router({
   tasks: tasksRouter,
@@ -21,6 +22,7 @@ export const appRouter = router({
   search: searchRouter,
   ai: aiRouter,
   analytics: analyticsRouter,
+  sections: sectionsRouter,
 });
 
 export type AppRouter = typeof appRouter;
