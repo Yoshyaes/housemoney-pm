@@ -19,7 +19,7 @@ export function DocEditorPanel({ workspaceId, projects }: DocEditorPanelProps) {
 
   if (!activeDocId) {
     return (
-      <div className="flex flex-1 flex-col items-center justify-center text-center px-8">
+      <div className="flex h-full w-full flex-col items-center justify-center text-center px-8">
         <div className="flex h-14 w-14 items-center justify-center rounded-full bg-zinc-100 dark:bg-zinc-800 mb-4">
           <BookOpen className="h-7 w-7 text-zinc-400" />
         </div>

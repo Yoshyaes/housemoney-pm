@@ -82,6 +82,7 @@ model User {
   collaboratingTasks TaskCollaborator[]
   uploadedAttachments TaskAttachment[]
   comments           Comment[]
+  docComments        DocumentComment[]  @relation("DocCommentAuthor")
   activities         Activity[]
   notifications      Notification[]   @relation("recipient")
   actedNotifications Notification[]   @relation("actor")
@@ -344,11 +345,26 @@ model Document {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
 
-  workspace    Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  author       User      @relation("DocumentAuthor", fields: [authorId], references: [id])
-  lastEditedBy User?     @relation("DocumentLastEditor", fields: [lastEditedById], references: [id], onDelete: SetNull)
-  project      Project?  @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  workspace    Workspace         @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  author       User              @relation("DocumentAuthor", fields: [authorId], references: [id])
+  lastEditedBy User?             @relation("DocumentLastEditor", fields: [lastEditedById], references: [id], onDelete: SetNull)
+  project      Project?          @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  docComments  DocumentComment[]
 
   @@index([workspaceId])
   @@index([workspaceId, docType])
+}
+
+model DocumentComment {
+  id         String   @id @default(cuid())
+  documentId String
+  authorId   String
+  body       String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  document Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  author   User     @relation("DocCommentAuthor", fields: [authorId], references: [id])
+
+  @@index([documentId])
 }

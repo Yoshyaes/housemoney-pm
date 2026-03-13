@@ -111,7 +111,7 @@ export default function DocsPage() {
           )}
 
           {/* Editor or AI panel */}
-          <div className="flex flex-1 overflow-hidden relative">
+          <div className="min-w-0 flex-1 overflow-hidden">
             <DocEditorPanel workspaceId={workspaceId} projects={editorProjects} />
           </div>
         </div>

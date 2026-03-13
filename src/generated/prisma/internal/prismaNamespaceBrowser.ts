@@ -67,7 +67,8 @@ export const ModelName = {
   View: 'View',
   Notification: 'Notification',
   GitHubPR: 'GitHubPR',
-  Document: 'Document'
+  Document: 'Document',
+  DocumentComment: 'DocumentComment'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -318,6 +319,18 @@ export const DocumentScalarFieldEnum = {
 } as const
 
 export type DocumentScalarFieldEnum = (typeof DocumentScalarFieldEnum)[keyof typeof DocumentScalarFieldEnum]
+
+
+export const DocumentCommentScalarFieldEnum = {
+  id: 'id',
+  documentId: 'documentId',
+  authorId: 'authorId',
+  body: 'body',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DocumentCommentScalarFieldEnum = (typeof DocumentCommentScalarFieldEnum)[keyof typeof DocumentCommentScalarFieldEnum]
 
 
 export const SortOrder = {

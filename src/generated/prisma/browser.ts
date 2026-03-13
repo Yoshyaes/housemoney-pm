@@ -102,3 +102,8 @@ export type GitHubPR = Prisma.GitHubPRModel
  * 
  */
 export type Document = Prisma.DocumentModel
+/**
+ * Model DocumentComment
+ * 
+ */
+export type DocumentComment = Prisma.DocumentCommentModel

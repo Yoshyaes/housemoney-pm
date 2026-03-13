@@ -11,6 +11,7 @@ import { aiRouter } from './ai';
 import { analyticsRouter } from './analytics';
 import { sectionsRouter } from './sections';
 import { documentsRouter } from './documents';
+import { docCommentsRouter } from './doc-comments';
 
 export const appRouter = router({
   tasks: tasksRouter,
@@ -25,6 +26,7 @@ export const appRouter = router({
   analytics: analyticsRouter,
   sections: sectionsRouter,
   documents: documentsRouter,
+  docComments: docCommentsRouter,
 });
 
 export type AppRouter = typeof appRouter;

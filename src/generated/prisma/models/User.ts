@@ -196,6 +196,7 @@ export type UserWhereInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorListRelationFilter
   uploadedAttachments?: Prisma.TaskAttachmentListRelationFilter
   comments?: Prisma.CommentListRelationFilter
+  docComments?: Prisma.DocumentCommentListRelationFilter
   activities?: Prisma.ActivityListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
   actedNotifications?: Prisma.NotificationListRelationFilter
@@ -218,6 +219,7 @@ export type UserOrderByWithRelationInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorOrderByRelationAggregateInput
   uploadedAttachments?: Prisma.TaskAttachmentOrderByRelationAggregateInput
   comments?: Prisma.CommentOrderByRelationAggregateInput
+  docComments?: Prisma.DocumentCommentOrderByRelationAggregateInput
   activities?: Prisma.ActivityOrderByRelationAggregateInput
   notifications?: Prisma.NotificationOrderByRelationAggregateInput
   actedNotifications?: Prisma.NotificationOrderByRelationAggregateInput
@@ -243,6 +245,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   collaboratingTasks?: Prisma.TaskCollaboratorListRelationFilter
   uploadedAttachments?: Prisma.TaskAttachmentListRelationFilter
   comments?: Prisma.CommentListRelationFilter
+  docComments?: Prisma.DocumentCommentListRelationFilter
   activities?: Prisma.ActivityListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
   actedNotifications?: Prisma.NotificationListRelationFilter
@@ -289,6 +292,7 @@ export type UserCreateInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorCreateNestedManyWithoutUserInput
   uploadedAttachments?: Prisma.TaskAttachmentCreateNestedManyWithoutUploadedByInput
   comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentCreateNestedManyWithoutAuthorInput
   activities?: Prisma.ActivityCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   actedNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
@@ -311,6 +315,7 @@ export type UserUncheckedCreateInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUncheckedCreateNestedManyWithoutUserInput
   uploadedAttachments?: Prisma.TaskAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentUncheckedCreateNestedManyWithoutAuthorInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   actedNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
@@ -333,6 +338,7 @@ export type UserUpdateInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUpdateManyWithoutUserNestedInput
   uploadedAttachments?: Prisma.TaskAttachmentUpdateManyWithoutUploadedByNestedInput
   comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUpdateManyWithoutAuthorNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   actedNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
@@ -355,6 +361,7 @@ export type UserUncheckedUpdateInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUncheckedUpdateManyWithoutUserNestedInput
   uploadedAttachments?: Prisma.TaskAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUncheckedUpdateManyWithoutAuthorNestedInput
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   actedNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
@@ -628,6 +635,20 @@ export type UserUpdateOneWithoutLastEditedDocsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutLastEditedDocsInput, Prisma.UserUpdateWithoutLastEditedDocsInput>, Prisma.UserUncheckedUpdateWithoutLastEditedDocsInput>
 }
 
+export type UserCreateNestedOneWithoutDocCommentsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDocCommentsInput, Prisma.UserUncheckedCreateWithoutDocCommentsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDocCommentsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutDocCommentsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDocCommentsInput, Prisma.UserUncheckedCreateWithoutDocCommentsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDocCommentsInput
+  upsert?: Prisma.UserUpsertWithoutDocCommentsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDocCommentsInput, Prisma.UserUpdateWithoutDocCommentsInput>, Prisma.UserUncheckedUpdateWithoutDocCommentsInput>
+}
+
 export type UserCreateWithoutMembershipsInput = {
   id: string
   email: string
@@ -640,6 +661,7 @@ export type UserCreateWithoutMembershipsInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorCreateNestedManyWithoutUserInput
   uploadedAttachments?: Prisma.TaskAttachmentCreateNestedManyWithoutUploadedByInput
   comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentCreateNestedManyWithoutAuthorInput
   activities?: Prisma.ActivityCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   actedNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
@@ -661,6 +683,7 @@ export type UserUncheckedCreateWithoutMembershipsInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUncheckedCreateNestedManyWithoutUserInput
   uploadedAttachments?: Prisma.TaskAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentUncheckedCreateNestedManyWithoutAuthorInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   actedNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
@@ -698,6 +721,7 @@ export type UserUpdateWithoutMembershipsInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUpdateManyWithoutUserNestedInput
   uploadedAttachments?: Prisma.TaskAttachmentUpdateManyWithoutUploadedByNestedInput
   comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUpdateManyWithoutAuthorNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   actedNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
@@ -719,6 +743,7 @@ export type UserUncheckedUpdateWithoutMembershipsInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUncheckedUpdateManyWithoutUserNestedInput
   uploadedAttachments?: Prisma.TaskAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUncheckedUpdateManyWithoutAuthorNestedInput
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   actedNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
@@ -741,6 +766,7 @@ export type UserCreateWithoutCreatedProjectsInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorCreateNestedManyWithoutUserInput
   uploadedAttachments?: Prisma.TaskAttachmentCreateNestedManyWithoutUploadedByInput
   comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentCreateNestedManyWithoutAuthorInput
   activities?: Prisma.ActivityCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   actedNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
@@ -762,6 +788,7 @@ export type UserUncheckedCreateWithoutCreatedProjectsInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUncheckedCreateNestedManyWithoutUserInput
   uploadedAttachments?: Prisma.TaskAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentUncheckedCreateNestedManyWithoutAuthorInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   actedNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
@@ -799,6 +826,7 @@ export type UserUpdateWithoutCreatedProjectsInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUpdateManyWithoutUserNestedInput
   uploadedAttachments?: Prisma.TaskAttachmentUpdateManyWithoutUploadedByNestedInput
   comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUpdateManyWithoutAuthorNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   actedNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
@@ -820,6 +848,7 @@ export type UserUncheckedUpdateWithoutCreatedProjectsInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUncheckedUpdateManyWithoutUserNestedInput
   uploadedAttachments?: Prisma.TaskAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUncheckedUpdateManyWithoutAuthorNestedInput
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   actedNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
@@ -840,6 +869,7 @@ export type UserCreateWithoutAssignedTasksInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorCreateNestedManyWithoutUserInput
   uploadedAttachments?: Prisma.TaskAttachmentCreateNestedManyWithoutUploadedByInput
   comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentCreateNestedManyWithoutAuthorInput
   activities?: Prisma.ActivityCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   actedNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
@@ -861,6 +891,7 @@ export type UserUncheckedCreateWithoutAssignedTasksInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUncheckedCreateNestedManyWithoutUserInput
   uploadedAttachments?: Prisma.TaskAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentUncheckedCreateNestedManyWithoutAuthorInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   actedNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
@@ -887,6 +918,7 @@ export type UserCreateWithoutCreatedTasksInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorCreateNestedManyWithoutUserInput
   uploadedAttachments?: Prisma.TaskAttachmentCreateNestedManyWithoutUploadedByInput
   comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentCreateNestedManyWithoutAuthorInput
   activities?: Prisma.ActivityCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   actedNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
@@ -908,6 +940,7 @@ export type UserUncheckedCreateWithoutCreatedTasksInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUncheckedCreateNestedManyWithoutUserInput
   uploadedAttachments?: Prisma.TaskAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentUncheckedCreateNestedManyWithoutAuthorInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   actedNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
@@ -945,6 +978,7 @@ export type UserUpdateWithoutAssignedTasksInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUpdateManyWithoutUserNestedInput
   uploadedAttachments?: Prisma.TaskAttachmentUpdateManyWithoutUploadedByNestedInput
   comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUpdateManyWithoutAuthorNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   actedNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
@@ -966,6 +1000,7 @@ export type UserUncheckedUpdateWithoutAssignedTasksInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUncheckedUpdateManyWithoutUserNestedInput
   uploadedAttachments?: Prisma.TaskAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUncheckedUpdateManyWithoutAuthorNestedInput
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   actedNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
@@ -998,6 +1033,7 @@ export type UserUpdateWithoutCreatedTasksInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUpdateManyWithoutUserNestedInput
   uploadedAttachments?: Prisma.TaskAttachmentUpdateManyWithoutUploadedByNestedInput
   comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUpdateManyWithoutAuthorNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   actedNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
@@ -1019,6 +1055,7 @@ export type UserUncheckedUpdateWithoutCreatedTasksInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUncheckedUpdateManyWithoutUserNestedInput
   uploadedAttachments?: Prisma.TaskAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUncheckedUpdateManyWithoutAuthorNestedInput
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   actedNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
@@ -1040,6 +1077,7 @@ export type UserCreateWithoutUploadedAttachmentsInput = {
   createdTasks?: Prisma.TaskCreateNestedManyWithoutCreatedByInput
   collaboratingTasks?: Prisma.TaskCollaboratorCreateNestedManyWithoutUserInput
   comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentCreateNestedManyWithoutAuthorInput
   activities?: Prisma.ActivityCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   actedNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
@@ -1061,6 +1099,7 @@ export type UserUncheckedCreateWithoutUploadedAttachmentsInput = {
   createdTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutCreatedByInput
   collaboratingTasks?: Prisma.TaskCollaboratorUncheckedCreateNestedManyWithoutUserInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentUncheckedCreateNestedManyWithoutAuthorInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   actedNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
@@ -1098,6 +1137,7 @@ export type UserUpdateWithoutUploadedAttachmentsInput = {
   createdTasks?: Prisma.TaskUpdateManyWithoutCreatedByNestedInput
   collaboratingTasks?: Prisma.TaskCollaboratorUpdateManyWithoutUserNestedInput
   comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUpdateManyWithoutAuthorNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   actedNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
@@ -1119,6 +1159,7 @@ export type UserUncheckedUpdateWithoutUploadedAttachmentsInput = {
   createdTasks?: Prisma.TaskUncheckedUpdateManyWithoutCreatedByNestedInput
   collaboratingTasks?: Prisma.TaskCollaboratorUncheckedUpdateManyWithoutUserNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUncheckedUpdateManyWithoutAuthorNestedInput
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   actedNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
@@ -1140,6 +1181,7 @@ export type UserCreateWithoutCollaboratingTasksInput = {
   createdTasks?: Prisma.TaskCreateNestedManyWithoutCreatedByInput
   uploadedAttachments?: Prisma.TaskAttachmentCreateNestedManyWithoutUploadedByInput
   comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentCreateNestedManyWithoutAuthorInput
   activities?: Prisma.ActivityCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   actedNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
@@ -1161,6 +1203,7 @@ export type UserUncheckedCreateWithoutCollaboratingTasksInput = {
   createdTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutCreatedByInput
   uploadedAttachments?: Prisma.TaskAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentUncheckedCreateNestedManyWithoutAuthorInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   actedNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
@@ -1198,6 +1241,7 @@ export type UserUpdateWithoutCollaboratingTasksInput = {
   createdTasks?: Prisma.TaskUpdateManyWithoutCreatedByNestedInput
   uploadedAttachments?: Prisma.TaskAttachmentUpdateManyWithoutUploadedByNestedInput
   comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUpdateManyWithoutAuthorNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   actedNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
@@ -1219,6 +1263,7 @@ export type UserUncheckedUpdateWithoutCollaboratingTasksInput = {
   createdTasks?: Prisma.TaskUncheckedUpdateManyWithoutCreatedByNestedInput
   uploadedAttachments?: Prisma.TaskAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUncheckedUpdateManyWithoutAuthorNestedInput
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   actedNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
@@ -1240,6 +1285,7 @@ export type UserCreateWithoutCommentsInput = {
   createdTasks?: Prisma.TaskCreateNestedManyWithoutCreatedByInput
   collaboratingTasks?: Prisma.TaskCollaboratorCreateNestedManyWithoutUserInput
   uploadedAttachments?: Prisma.TaskAttachmentCreateNestedManyWithoutUploadedByInput
+  docComments?: Prisma.DocumentCommentCreateNestedManyWithoutAuthorInput
   activities?: Prisma.ActivityCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   actedNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
@@ -1261,6 +1307,7 @@ export type UserUncheckedCreateWithoutCommentsInput = {
   createdTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutCreatedByInput
   collaboratingTasks?: Prisma.TaskCollaboratorUncheckedCreateNestedManyWithoutUserInput
   uploadedAttachments?: Prisma.TaskAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
+  docComments?: Prisma.DocumentCommentUncheckedCreateNestedManyWithoutAuthorInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   actedNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
@@ -1298,6 +1345,7 @@ export type UserUpdateWithoutCommentsInput = {
   createdTasks?: Prisma.TaskUpdateManyWithoutCreatedByNestedInput
   collaboratingTasks?: Prisma.TaskCollaboratorUpdateManyWithoutUserNestedInput
   uploadedAttachments?: Prisma.TaskAttachmentUpdateManyWithoutUploadedByNestedInput
+  docComments?: Prisma.DocumentCommentUpdateManyWithoutAuthorNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   actedNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
@@ -1319,6 +1367,7 @@ export type UserUncheckedUpdateWithoutCommentsInput = {
   createdTasks?: Prisma.TaskUncheckedUpdateManyWithoutCreatedByNestedInput
   collaboratingTasks?: Prisma.TaskCollaboratorUncheckedUpdateManyWithoutUserNestedInput
   uploadedAttachments?: Prisma.TaskAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
+  docComments?: Prisma.DocumentCommentUncheckedUpdateManyWithoutAuthorNestedInput
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   actedNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
@@ -1341,6 +1390,7 @@ export type UserCreateWithoutActivitiesInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorCreateNestedManyWithoutUserInput
   uploadedAttachments?: Prisma.TaskAttachmentCreateNestedManyWithoutUploadedByInput
   comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentCreateNestedManyWithoutAuthorInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   actedNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
   views?: Prisma.ViewCreateNestedManyWithoutOwnerInput
@@ -1362,6 +1412,7 @@ export type UserUncheckedCreateWithoutActivitiesInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUncheckedCreateNestedManyWithoutUserInput
   uploadedAttachments?: Prisma.TaskAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentUncheckedCreateNestedManyWithoutAuthorInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   actedNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
   views?: Prisma.ViewUncheckedCreateNestedManyWithoutOwnerInput
@@ -1399,6 +1450,7 @@ export type UserUpdateWithoutActivitiesInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUpdateManyWithoutUserNestedInput
   uploadedAttachments?: Prisma.TaskAttachmentUpdateManyWithoutUploadedByNestedInput
   comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUpdateManyWithoutAuthorNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   actedNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
   views?: Prisma.ViewUpdateManyWithoutOwnerNestedInput
@@ -1420,6 +1472,7 @@ export type UserUncheckedUpdateWithoutActivitiesInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUncheckedUpdateManyWithoutUserNestedInput
   uploadedAttachments?: Prisma.TaskAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUncheckedUpdateManyWithoutAuthorNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   actedNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
   views?: Prisma.ViewUncheckedUpdateManyWithoutOwnerNestedInput
@@ -1441,6 +1494,7 @@ export type UserCreateWithoutViewsInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorCreateNestedManyWithoutUserInput
   uploadedAttachments?: Prisma.TaskAttachmentCreateNestedManyWithoutUploadedByInput
   comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentCreateNestedManyWithoutAuthorInput
   activities?: Prisma.ActivityCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   actedNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
@@ -1462,6 +1516,7 @@ export type UserUncheckedCreateWithoutViewsInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUncheckedCreateNestedManyWithoutUserInput
   uploadedAttachments?: Prisma.TaskAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentUncheckedCreateNestedManyWithoutAuthorInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   actedNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
@@ -1499,6 +1554,7 @@ export type UserUpdateWithoutViewsInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUpdateManyWithoutUserNestedInput
   uploadedAttachments?: Prisma.TaskAttachmentUpdateManyWithoutUploadedByNestedInput
   comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUpdateManyWithoutAuthorNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   actedNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
@@ -1520,6 +1576,7 @@ export type UserUncheckedUpdateWithoutViewsInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUncheckedUpdateManyWithoutUserNestedInput
   uploadedAttachments?: Prisma.TaskAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUncheckedUpdateManyWithoutAuthorNestedInput
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   actedNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
@@ -1541,6 +1598,7 @@ export type UserCreateWithoutNotificationsInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorCreateNestedManyWithoutUserInput
   uploadedAttachments?: Prisma.TaskAttachmentCreateNestedManyWithoutUploadedByInput
   comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentCreateNestedManyWithoutAuthorInput
   activities?: Prisma.ActivityCreateNestedManyWithoutUserInput
   actedNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
   views?: Prisma.ViewCreateNestedManyWithoutOwnerInput
@@ -1562,6 +1620,7 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUncheckedCreateNestedManyWithoutUserInput
   uploadedAttachments?: Prisma.TaskAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentUncheckedCreateNestedManyWithoutAuthorInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutUserInput
   actedNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
   views?: Prisma.ViewUncheckedCreateNestedManyWithoutOwnerInput
@@ -1588,6 +1647,7 @@ export type UserCreateWithoutActedNotificationsInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorCreateNestedManyWithoutUserInput
   uploadedAttachments?: Prisma.TaskAttachmentCreateNestedManyWithoutUploadedByInput
   comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentCreateNestedManyWithoutAuthorInput
   activities?: Prisma.ActivityCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   views?: Prisma.ViewCreateNestedManyWithoutOwnerInput
@@ -1609,6 +1669,7 @@ export type UserUncheckedCreateWithoutActedNotificationsInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUncheckedCreateNestedManyWithoutUserInput
   uploadedAttachments?: Prisma.TaskAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentUncheckedCreateNestedManyWithoutAuthorInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   views?: Prisma.ViewUncheckedCreateNestedManyWithoutOwnerInput
@@ -1646,6 +1707,7 @@ export type UserUpdateWithoutNotificationsInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUpdateManyWithoutUserNestedInput
   uploadedAttachments?: Prisma.TaskAttachmentUpdateManyWithoutUploadedByNestedInput
   comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUpdateManyWithoutAuthorNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutUserNestedInput
   actedNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
   views?: Prisma.ViewUpdateManyWithoutOwnerNestedInput
@@ -1667,6 +1729,7 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUncheckedUpdateManyWithoutUserNestedInput
   uploadedAttachments?: Prisma.TaskAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUncheckedUpdateManyWithoutAuthorNestedInput
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
   actedNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
   views?: Prisma.ViewUncheckedUpdateManyWithoutOwnerNestedInput
@@ -1699,6 +1762,7 @@ export type UserUpdateWithoutActedNotificationsInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUpdateManyWithoutUserNestedInput
   uploadedAttachments?: Prisma.TaskAttachmentUpdateManyWithoutUploadedByNestedInput
   comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUpdateManyWithoutAuthorNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   views?: Prisma.ViewUpdateManyWithoutOwnerNestedInput
@@ -1720,6 +1784,7 @@ export type UserUncheckedUpdateWithoutActedNotificationsInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUncheckedUpdateManyWithoutUserNestedInput
   uploadedAttachments?: Prisma.TaskAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUncheckedUpdateManyWithoutAuthorNestedInput
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   views?: Prisma.ViewUncheckedUpdateManyWithoutOwnerNestedInput
@@ -1741,6 +1806,7 @@ export type UserCreateWithoutDocumentsInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorCreateNestedManyWithoutUserInput
   uploadedAttachments?: Prisma.TaskAttachmentCreateNestedManyWithoutUploadedByInput
   comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentCreateNestedManyWithoutAuthorInput
   activities?: Prisma.ActivityCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   actedNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
@@ -1762,6 +1828,7 @@ export type UserUncheckedCreateWithoutDocumentsInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUncheckedCreateNestedManyWithoutUserInput
   uploadedAttachments?: Prisma.TaskAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentUncheckedCreateNestedManyWithoutAuthorInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   actedNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
@@ -1788,6 +1855,7 @@ export type UserCreateWithoutLastEditedDocsInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorCreateNestedManyWithoutUserInput
   uploadedAttachments?: Prisma.TaskAttachmentCreateNestedManyWithoutUploadedByInput
   comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentCreateNestedManyWithoutAuthorInput
   activities?: Prisma.ActivityCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
   actedNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
@@ -1809,6 +1877,7 @@ export type UserUncheckedCreateWithoutLastEditedDocsInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUncheckedCreateNestedManyWithoutUserInput
   uploadedAttachments?: Prisma.TaskAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentUncheckedCreateNestedManyWithoutAuthorInput
   activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutUserInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
   actedNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
@@ -1846,6 +1915,7 @@ export type UserUpdateWithoutDocumentsInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUpdateManyWithoutUserNestedInput
   uploadedAttachments?: Prisma.TaskAttachmentUpdateManyWithoutUploadedByNestedInput
   comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUpdateManyWithoutAuthorNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   actedNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
@@ -1867,6 +1937,7 @@ export type UserUncheckedUpdateWithoutDocumentsInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUncheckedUpdateManyWithoutUserNestedInput
   uploadedAttachments?: Prisma.TaskAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUncheckedUpdateManyWithoutAuthorNestedInput
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   actedNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
@@ -1899,6 +1970,7 @@ export type UserUpdateWithoutLastEditedDocsInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUpdateManyWithoutUserNestedInput
   uploadedAttachments?: Prisma.TaskAttachmentUpdateManyWithoutUploadedByNestedInput
   comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUpdateManyWithoutAuthorNestedInput
   activities?: Prisma.ActivityUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
   actedNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
@@ -1920,11 +1992,116 @@ export type UserUncheckedUpdateWithoutLastEditedDocsInput = {
   collaboratingTasks?: Prisma.TaskCollaboratorUncheckedUpdateManyWithoutUserNestedInput
   uploadedAttachments?: Prisma.TaskAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUncheckedUpdateManyWithoutAuthorNestedInput
   activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
   actedNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
   views?: Prisma.ViewUncheckedUpdateManyWithoutOwnerNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutAuthorNestedInput
+  createdProjects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserCreateWithoutDocCommentsInput = {
+  id: string
+  email: string
+  name: string
+  avatarUrl?: string | null
+  avatarColor?: string
+  createdAt?: Date | string
+  memberships?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
+  createdTasks?: Prisma.TaskCreateNestedManyWithoutCreatedByInput
+  collaboratingTasks?: Prisma.TaskCollaboratorCreateNestedManyWithoutUserInput
+  uploadedAttachments?: Prisma.TaskAttachmentCreateNestedManyWithoutUploadedByInput
+  comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  activities?: Prisma.ActivityCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
+  views?: Prisma.ViewCreateNestedManyWithoutOwnerInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutAuthorInput
+  lastEditedDocs?: Prisma.DocumentCreateNestedManyWithoutLastEditedByInput
+  createdProjects?: Prisma.ProjectCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutDocCommentsInput = {
+  id: string
+  email: string
+  name: string
+  avatarUrl?: string | null
+  avatarColor?: string
+  createdAt?: Date | string
+  memberships?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
+  createdTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutCreatedByInput
+  collaboratingTasks?: Prisma.TaskCollaboratorUncheckedCreateNestedManyWithoutUserInput
+  uploadedAttachments?: Prisma.TaskAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
+  views?: Prisma.ViewUncheckedCreateNestedManyWithoutOwnerInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAuthorInput
+  lastEditedDocs?: Prisma.DocumentUncheckedCreateNestedManyWithoutLastEditedByInput
+  createdProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutDocCommentsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutDocCommentsInput, Prisma.UserUncheckedCreateWithoutDocCommentsInput>
+}
+
+export type UserUpsertWithoutDocCommentsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutDocCommentsInput, Prisma.UserUncheckedUpdateWithoutDocCommentsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDocCommentsInput, Prisma.UserUncheckedCreateWithoutDocCommentsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutDocCommentsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutDocCommentsInput, Prisma.UserUncheckedUpdateWithoutDocCommentsInput>
+}
+
+export type UserUpdateWithoutDocCommentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
+  createdTasks?: Prisma.TaskUpdateManyWithoutCreatedByNestedInput
+  collaboratingTasks?: Prisma.TaskCollaboratorUpdateManyWithoutUserNestedInput
+  uploadedAttachments?: Prisma.TaskAttachmentUpdateManyWithoutUploadedByNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  activities?: Prisma.ActivityUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
+  views?: Prisma.ViewUpdateManyWithoutOwnerNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutAuthorNestedInput
+  lastEditedDocs?: Prisma.DocumentUpdateManyWithoutLastEditedByNestedInput
+  createdProjects?: Prisma.ProjectUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutDocCommentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  createdTasks?: Prisma.TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+  collaboratingTasks?: Prisma.TaskCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+  uploadedAttachments?: Prisma.TaskAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
+  views?: Prisma.ViewUncheckedUpdateManyWithoutOwnerNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutAuthorNestedInput
+  lastEditedDocs?: Prisma.DocumentUncheckedUpdateManyWithoutLastEditedByNestedInput
   createdProjects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
@@ -1940,6 +2117,7 @@ export type UserCountOutputType = {
   collaboratingTasks: number
   uploadedAttachments: number
   comments: number
+  docComments: number
   activities: number
   notifications: number
   actedNotifications: number
@@ -1956,6 +2134,7 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   collaboratingTasks?: boolean | UserCountOutputTypeCountCollaboratingTasksArgs
   uploadedAttachments?: boolean | UserCountOutputTypeCountUploadedAttachmentsArgs
   comments?: boolean | UserCountOutputTypeCountCommentsArgs
+  docComments?: boolean | UserCountOutputTypeCountDocCommentsArgs
   activities?: boolean | UserCountOutputTypeCountActivitiesArgs
   notifications?: boolean | UserCountOutputTypeCountNotificationsArgs
   actedNotifications?: boolean | UserCountOutputTypeCountActedNotificationsArgs
@@ -2015,6 +2194,13 @@ export type UserCountOutputTypeCountUploadedAttachmentsArgs<ExtArgs extends runt
  */
 export type UserCountOutputTypeCountCommentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.CommentWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountDocCommentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DocumentCommentWhereInput
 }
 
 /**
@@ -2080,6 +2266,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   collaboratingTasks?: boolean | Prisma.User$collaboratingTasksArgs<ExtArgs>
   uploadedAttachments?: boolean | Prisma.User$uploadedAttachmentsArgs<ExtArgs>
   comments?: boolean | Prisma.User$commentsArgs<ExtArgs>
+  docComments?: boolean | Prisma.User$docCommentsArgs<ExtArgs>
   activities?: boolean | Prisma.User$activitiesArgs<ExtArgs>
   notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
   actedNotifications?: boolean | Prisma.User$actedNotificationsArgs<ExtArgs>
@@ -2125,6 +2312,7 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   collaboratingTasks?: boolean | Prisma.User$collaboratingTasksArgs<ExtArgs>
   uploadedAttachments?: boolean | Prisma.User$uploadedAttachmentsArgs<ExtArgs>
   comments?: boolean | Prisma.User$commentsArgs<ExtArgs>
+  docComments?: boolean | Prisma.User$docCommentsArgs<ExtArgs>
   activities?: boolean | Prisma.User$activitiesArgs<ExtArgs>
   notifications?: boolean | Prisma.User$notificationsArgs<ExtArgs>
   actedNotifications?: boolean | Prisma.User$actedNotificationsArgs<ExtArgs>
@@ -2146,6 +2334,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     collaboratingTasks: Prisma.$TaskCollaboratorPayload<ExtArgs>[]
     uploadedAttachments: Prisma.$TaskAttachmentPayload<ExtArgs>[]
     comments: Prisma.$CommentPayload<ExtArgs>[]
+    docComments: Prisma.$DocumentCommentPayload<ExtArgs>[]
     activities: Prisma.$ActivityPayload<ExtArgs>[]
     notifications: Prisma.$NotificationPayload<ExtArgs>[]
     actedNotifications: Prisma.$NotificationPayload<ExtArgs>[]
@@ -2561,6 +2750,7 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   collaboratingTasks<T extends Prisma.User$collaboratingTasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$collaboratingTasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskCollaboratorPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   uploadedAttachments<T extends Prisma.User$uploadedAttachmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$uploadedAttachmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskAttachmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   comments<T extends Prisma.User$commentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$CommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  docComments<T extends Prisma.User$docCommentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$docCommentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   activities<T extends Prisma.User$activitiesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$activitiesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ActivityPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   notifications<T extends Prisma.User$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   actedNotifications<T extends Prisma.User$actedNotificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$actedNotificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -3137,6 +3327,30 @@ export type User$commentsArgs<ExtArgs extends runtime.Types.Extensions.InternalA
   take?: number
   skip?: number
   distinct?: Prisma.CommentScalarFieldEnum | Prisma.CommentScalarFieldEnum[]
+}
+
+/**
+ * User.docComments
+ */
+export type User$docCommentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DocumentComment
+   */
+  select?: Prisma.DocumentCommentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DocumentComment
+   */
+  omit?: Prisma.DocumentCommentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DocumentCommentInclude<ExtArgs> | null
+  where?: Prisma.DocumentCommentWhereInput
+  orderBy?: Prisma.DocumentCommentOrderByWithRelationInput | Prisma.DocumentCommentOrderByWithRelationInput[]
+  cursor?: Prisma.DocumentCommentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DocumentCommentScalarFieldEnum | Prisma.DocumentCommentScalarFieldEnum[]
 }
 
 /**

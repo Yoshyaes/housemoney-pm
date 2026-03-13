@@ -12,7 +12,9 @@ import { DocTypeBadge } from './doc-type-badge';
 import { DocTagInput } from './doc-tag-input';
 import { DocType } from '@/generated/prisma/client';
 import { DOC_TYPE_CONFIG } from './doc-type-badge';
-import { Pin, PinOff, Trash2, ChevronDown, Check, Clock, User } from 'lucide-react';
+import { Pin, PinOff, Trash2, ChevronDown, Check, Clock, User, Send, MessageSquare } from 'lucide-react';
+import { Avatar } from '@/components/shared/avatar';
+import { formatDistanceToNow } from 'date-fns';
 
 interface DocEditorProps {
   docId: string;
@@ -28,6 +30,8 @@ export function DocEditor({ docId, workspaceId, projects, onDelete }: DocEditorP
   const saveTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const [typeMenuOpen, setTypeMenuOpen] = useState(false);
   const [projectMenuOpen, setProjectMenuOpen] = useState(false);
+  const [commentBody, setCommentBody] = useState('');
+  const commentInputRef = useRef<HTMLTextAreaElement>(null);
 
   const { data: doc, isLoading } = trpc.documents.get.useQuery({ id: docId });
 
@@ -43,6 +47,17 @@ export function DocEditor({ docId, workspaceId, projects, onDelete }: DocEditorP
       utils.documents.list.invalidate({ workspaceId });
       onDelete?.();
     },
+  });
+
+  const { data: comments = [] } = trpc.docComments.list.useQuery({ documentId: docId });
+  const addComment = trpc.docComments.create.useMutation({
+    onSuccess: () => {
+      utils.docComments.list.invalidate({ documentId: docId });
+      setCommentBody('');
+    },
+  });
+  const deleteComment = trpc.docComments.delete.useMutation({
+    onSuccess: () => utils.docComments.list.invalidate({ documentId: docId }),
   });
 
   const editor = useEditor({
@@ -103,7 +118,7 @@ export function DocEditor({ docId, workspaceId, projects, onDelete }: DocEditorP
   }
 
   return (
-    <div className="flex flex-1 flex-col overflow-hidden">
+    <div className="flex h-full w-full flex-col overflow-hidden">
       {/* Toolbar */}
       <div className="flex items-center gap-2 border-b border-zinc-200 dark:border-zinc-800 px-6 py-2">
         {/* Doc type selector */}
@@ -258,6 +273,81 @@ export function DocEditor({ docId, workspaceId, projects, onDelete }: DocEditorP
 
           {/* Tiptap content */}
           <EditorContent editor={editor} />
+
+          {/* Comments section */}
+          <div className="mt-10 border-t border-zinc-100 dark:border-zinc-800 pt-6">
+            <div className="mb-4 flex items-center gap-2 text-sm font-medium text-zinc-700 dark:text-zinc-300">
+              <MessageSquare className="h-4 w-4 text-zinc-400" />
+              Comments
+              {comments.length > 0 && (
+                <span className="rounded-full bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 text-[10px] text-zinc-500 dark:text-zinc-400">
+                  {comments.length}
+                </span>
+              )}
+            </div>
+
+            {/* Comment list */}
+            <div className="mb-6 space-y-4">
+              {comments.map((c) => (
+                <div key={c.id} className="group flex gap-3">
+                  <Avatar
+                    name={c.author.name}
+                    avatarUrl={c.author.avatarUrl}
+                    avatarColor={c.author.avatarColor ?? undefined}
+                    size="sm"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-xs font-medium text-zinc-800 dark:text-zinc-200">{c.author.name}</span>
+                      <span className="text-[10px] text-zinc-400 dark:text-zinc-500">
+                        {formatDistanceToNow(new Date(c.createdAt), { addSuffix: true })}
+                      </span>
+                      <button
+                        onClick={() => deleteComment.mutate({ id: c.id })}
+                        className="ml-auto hidden group-hover:block text-[10px] text-zinc-400 hover:text-red-500 dark:text-zinc-500 dark:hover:text-red-400"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                    <p className="mt-0.5 text-xs text-zinc-600 dark:text-zinc-300 whitespace-pre-wrap">{c.body}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* New comment input */}
+            <div className="flex gap-3">
+              <div className="flex-1 rounded-md border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 focus-within:ring-1 focus-within:ring-zinc-300 dark:focus-within:ring-zinc-600">
+                <textarea
+                  ref={commentInputRef}
+                  value={commentBody}
+                  onChange={(e) => setCommentBody(e.target.value)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+                      e.preventDefault();
+                      if (commentBody.trim()) addComment.mutate({ documentId: docId, body: commentBody.trim() });
+                    }
+                  }}
+                  placeholder="Add a comment… (Ctrl+Enter to submit)"
+                  rows={2}
+                  className="w-full resize-none bg-transparent px-3 py-2 text-xs text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 outline-none"
+                />
+                <div className="flex justify-end px-2 pb-2">
+                  <button
+                    onClick={() => {
+                      if (commentBody.trim()) addComment.mutate({ documentId: docId, body: commentBody.trim() });
+                    }}
+                    disabled={!commentBody.trim() || addComment.isPending}
+                    className="flex items-center gap-1.5 rounded px-2.5 py-1 text-[11px] font-medium text-white disabled:opacity-40"
+                    style={{ backgroundColor: '#BA7517' }}
+                  >
+                    <Send className="h-3 w-3" />
+                    Comment
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
