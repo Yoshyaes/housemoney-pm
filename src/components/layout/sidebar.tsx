@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { useUIStore } from '@/lib/stores/ui-store';
 import type { ActiveFilters, ActiveSort } from '@/lib/stores/ui-store';
@@ -21,6 +21,10 @@ import {
   BarChart2,
   BookOpen,
   Lock,
+  Globe,
+  MoreHorizontal,
+  Pencil,
+  Trash2,
 } from 'lucide-react';
 
 interface SavedView {
@@ -55,7 +59,28 @@ interface SidebarProps {
 export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProjectsChange }: SidebarProps) {
   const [addingProject, setAddingProject] = useState(false);
   const [newProjectName, setNewProjectName] = useState('');
+  const [projectMenu, setProjectMenu] = useState<string | null>(null);
+  const [renamingProject, setRenamingProject] = useState<{ id: string; name: string } | null>(null);
+  const projectMenuRef = useRef<HTMLDivElement>(null);
   const utils = trpc.useUtils();
+
+  const updateProject = trpc.projects.update.useMutation({
+    onSuccess: () => { utils.projects.list.invalidate({ workspaceId }); onProjectsChange(); },
+  });
+  const deleteProject = trpc.projects.delete.useMutation({
+    onSuccess: () => { utils.projects.list.invalidate({ workspaceId }); onProjectsChange(); },
+  });
+
+  // Close project menu on outside click
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (projectMenuRef.current && !projectMenuRef.current.contains(e.target as Node)) {
+        setProjectMenu(null);
+      }
+    };
+    if (projectMenu) document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [projectMenu]);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -130,7 +155,7 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
   };
 
   const sidebarContent = (
-    <aside className="flex h-full w-[212px] min-w-[212px] flex-col overflow-hidden border-r border-zinc-200/60 dark:border-zinc-800 bg-zinc-50/80 dark:bg-zinc-900/80">
+    <aside className="flex h-full w-[248px] min-w-[248px] flex-col overflow-hidden border-r border-zinc-200/60 dark:border-zinc-800 bg-zinc-50/80 dark:bg-zinc-900/80">
       {/* Logo */}
       <div className="flex items-center gap-2.5 border-b border-zinc-200/60 dark:border-zinc-800 px-3.5 py-3">
         <div
@@ -204,24 +229,92 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
           </button>
         </div>
         {projects.map((project) => (
-          <button
-            key={project.id}
-            onClick={() => handleProjectClick(project.id)}
-            className={`flex w-full items-center gap-2 rounded-md px-2 py-[5px] text-xs transition-colors ${
-              activeProjectId === project.id
-                ? 'bg-white dark:bg-zinc-800 font-medium text-zinc-900 dark:text-zinc-100'
-                : 'text-zinc-500 dark:text-zinc-400 hover:bg-white dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100'
-            }`}
-          >
-            <span
-              className="h-[7px] w-[7px] flex-shrink-0 rounded-full"
-              style={{ backgroundColor: project.color }}
-            />
-            <span className="flex-1 truncate">{project.name}</span>
-            {project.isPrivate && (
-              <Lock className="h-2.5 w-2.5 flex-shrink-0 text-zinc-400 dark:text-zinc-500" />
+          <div key={project.id} className="group relative">
+            {renamingProject?.id === project.id ? (
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (renamingProject.name.trim()) {
+                    updateProject.mutate({ id: project.id, name: renamingProject.name.trim() });
+                  }
+                  setRenamingProject(null);
+                }}
+                className="flex items-center gap-1 px-2 py-0.5"
+              >
+                <input
+                  autoFocus
+                  value={renamingProject.name}
+                  onChange={(e) => setRenamingProject({ ...renamingProject, name: e.target.value })}
+                  onKeyDown={(e) => e.key === 'Escape' && setRenamingProject(null)}
+                  onBlur={() => { if (renamingProject.name.trim()) updateProject.mutate({ id: project.id, name: renamingProject.name.trim() }); setRenamingProject(null); }}
+                  className="flex-1 rounded border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-1.5 py-0.5 text-xs text-zinc-900 dark:text-zinc-100 outline-none"
+                />
+              </form>
+            ) : (
+              <button
+                onClick={() => handleProjectClick(project.id)}
+                className={`flex w-full items-center gap-2 rounded-md px-2 py-[5px] text-xs transition-colors ${
+                  activeProjectId === project.id
+                    ? 'bg-white dark:bg-zinc-800 font-medium text-zinc-900 dark:text-zinc-100'
+                    : 'text-zinc-500 dark:text-zinc-400 hover:bg-white dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100'
+                }`}
+              >
+                <span
+                  className="h-[7px] w-[7px] flex-shrink-0 rounded-full"
+                  style={{ backgroundColor: project.color }}
+                />
+                <span className="flex-1 truncate text-left">{project.name}</span>
+                {project.isPrivate && (
+                  <Lock className="h-2.5 w-2.5 flex-shrink-0 text-zinc-400 dark:text-zinc-500 group-hover:hidden" />
+                )}
+                <button
+                  onClick={(e) => { e.stopPropagation(); setProjectMenu(projectMenu === project.id ? null : project.id); }}
+                  className="hidden group-hover:flex h-4 w-4 flex-shrink-0 items-center justify-center rounded text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:text-zinc-600 dark:hover:text-zinc-300"
+                >
+                  <MoreHorizontal className="h-3 w-3" />
+                </button>
+              </button>
             )}
-          </button>
+
+            {/* Project context menu */}
+            {projectMenu === project.id && (
+              <div
+                ref={projectMenuRef}
+                className="absolute left-full top-0 z-50 ml-1 w-44 rounded-md border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 shadow-lg py-1 text-xs"
+              >
+                <button
+                  onClick={() => { setRenamingProject({ id: project.id, name: project.name }); setProjectMenu(null); }}
+                  className="flex w-full items-center gap-2 px-3 py-1.5 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800"
+                >
+                  <Pencil className="h-3 w-3 text-zinc-400" />
+                  Rename
+                </button>
+                <button
+                  onClick={() => { updateProject.mutate({ id: project.id, isPrivate: !project.isPrivate }); setProjectMenu(null); }}
+                  className="flex w-full items-center gap-2 px-3 py-1.5 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800"
+                >
+                  {project.isPrivate
+                    ? <Globe className="h-3 w-3 text-zinc-400" />
+                    : <Lock className="h-3 w-3 text-zinc-400" />
+                  }
+                  {project.isPrivate ? 'Make public' : 'Make private'}
+                </button>
+                <div className="my-1 border-t border-zinc-100 dark:border-zinc-800" />
+                <button
+                  onClick={() => {
+                    if (confirm(`Delete "${project.name}"? All tasks will be deleted.`)) {
+                      deleteProject.mutate({ id: project.id });
+                    }
+                    setProjectMenu(null);
+                  }}
+                  className="flex w-full items-center gap-2 px-3 py-1.5 text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/20"
+                >
+                  <Trash2 className="h-3 w-3" />
+                  Delete project
+                </button>
+              </div>
+            )}
+          </div>
         ))}
         {addingProject && (
           <form
