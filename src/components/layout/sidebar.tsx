@@ -152,10 +152,11 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
   const handleProjectClick = (projectId: string) => {
     setActiveProjectId(projectId === activeProjectId ? null : projectId);
     setMobileSidebarOpen(false);
+    if (pathname !== '/') router.push('/');
   };
 
   const sidebarContent = (
-    <aside className="flex h-full w-[248px] min-w-[248px] flex-col overflow-hidden border-r border-zinc-200/60 dark:border-zinc-800 bg-zinc-50/80 dark:bg-zinc-900/80">
+    <aside className="flex h-full w-[248px] min-w-[248px] flex-col border-r border-zinc-200/60 dark:border-zinc-800 bg-zinc-50/80 dark:bg-zinc-900/80">
       {/* Logo */}
       <div className="flex items-center gap-2.5 border-b border-zinc-200/60 dark:border-zinc-800 px-3.5 py-3">
         <div
@@ -280,7 +281,7 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
             {projectMenu === project.id && (
               <div
                 ref={projectMenuRef}
-                className="absolute left-full top-0 z-50 ml-1 w-44 rounded-md border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 shadow-lg py-1 text-xs"
+                className="absolute left-1 top-full z-50 mt-0.5 w-44 rounded-md border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 shadow-lg py-1 text-xs"
               >
                 <button
                   onClick={() => { setRenamingProject({ id: project.id, name: project.name }); setProjectMenu(null); }}
