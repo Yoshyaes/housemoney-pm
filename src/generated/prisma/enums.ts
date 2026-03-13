@@ -75,3 +75,16 @@ export const PRStatus = {
 } as const
 
 export type PRStatus = (typeof PRStatus)[keyof typeof PRStatus]
+
+
+export const DocType = {
+  GENERAL: 'GENERAL',
+  MEETING_NOTES: 'MEETING_NOTES',
+  PLANNING: 'PLANNING',
+  RETROSPECTIVE: 'RETROSPECTIVE',
+  DECISION_LOG: 'DECISION_LOG',
+  EXPERIMENT: 'EXPERIMENT',
+  RUNBOOK: 'RUNBOOK'
+} as const
+
+export type DocType = (typeof DocType)[keyof typeof DocType]

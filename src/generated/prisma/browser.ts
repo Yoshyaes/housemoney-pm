@@ -97,3 +97,8 @@ export type Notification = Prisma.NotificationModel
  * 
  */
 export type GitHubPR = Prisma.GitHubPRModel
+/**
+ * Model Document
+ * 
+ */
+export type Document = Prisma.DocumentModel

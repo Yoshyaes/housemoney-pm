@@ -56,6 +56,16 @@ enum PRStatus {
   CLOSED
 }
 
+enum DocType {
+  GENERAL
+  MEETING_NOTES
+  PLANNING
+  RETROSPECTIVE
+  DECISION_LOG
+  EXPERIMENT
+  RUNBOOK
+}
+
 // ─── Models ──────────────────────────────────────────────
 
 model User {
@@ -76,6 +86,7 @@ model User {
   notifications      Notification[]   @relation("recipient")
   actedNotifications Notification[]   @relation("actor")
   views              View[]
+  documents          Document[]       @relation("DocumentAuthor")
 }
 
 model Workspace {
@@ -85,11 +96,12 @@ model Workspace {
   taskCounter Int      @default(0)
   createdAt   DateTime @default(now())
 
-  projects Project[]
-  labels   Label[]
-  members  WorkspaceMember[]
-  views    View[]
-  tasks    Task[]
+  projects  Project[]
+  labels    Label[]
+  members   WorkspaceMember[]
+  views     View[]
+  tasks     Task[]
+  documents Document[]
 }
 
 model WorkspaceMember {
@@ -117,6 +129,7 @@ model Project {
 
   tasks     Task[]
   sections  Section[]
+  documents Document[]
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 }
 
@@ -310,4 +323,25 @@ model GitHubPR {
   task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
 
   @@index([taskId])
+}
+
+model Document {
+  id          String   @id @default(cuid())
+  workspaceId String
+  authorId    String
+  title       String
+  content     String   @default("") // Markdown string
+  docType     DocType  @default(GENERAL)
+  tags        String[] // PostgreSQL text array
+  projectId   String?  // Optional link to a project
+  pinned      Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  author    User      @relation("DocumentAuthor", fields: [authorId], references: [id])
+  project   Project?  @relation(fields: [projectId], references: [id], onDelete: SetNull)
+
+  @@index([workspaceId])
+  @@index([workspaceId, docType])
 }

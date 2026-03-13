@@ -19,6 +19,7 @@ import {
   X,
   Plus,
   BarChart2,
+  BookOpen,
 } from 'lucide-react';
 
 interface SavedView {
@@ -86,6 +87,7 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
     { id: 'timeline' as const, label: 'Timeline', icon: GanttChart },
     { id: 'inbox' as const, label: 'Inbox', icon: Inbox, badge: unreadCount },
     { id: 'analytics' as const, label: 'Analytics', icon: BarChart2 },
+    { id: 'docs' as const, label: 'Docs', icon: BookOpen },
   ];
 
   const handleNavClick = (id: string) => {
@@ -98,6 +100,8 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
       if (pathname !== '/') router.push('/');
     } else if (id === 'analytics') {
       router.push('/analytics');
+    } else if (id === 'docs') {
+      router.push('/docs');
     }
     setMobileSidebarOpen(false);
   };
@@ -153,11 +157,13 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
           const isActive =
             item.id === 'analytics'
               ? pathname === '/analytics'
-              : item.id === 'inbox'
-                ? inboxOpen && pathname !== '/analytics'
-                : item.id === 'board' || item.id === 'list' || item.id === 'timeline'
-                  ? activeView === item.id && !inboxOpen && pathname !== '/analytics'
-                  : false;
+              : item.id === 'docs'
+                ? pathname.startsWith('/docs')
+                : item.id === 'inbox'
+                  ? inboxOpen && pathname !== '/analytics' && !pathname.startsWith('/docs')
+                  : item.id === 'board' || item.id === 'list' || item.id === 'timeline'
+                    ? activeView === item.id && !inboxOpen && pathname !== '/analytics' && !pathname.startsWith('/docs')
+                    : false;
           const Icon = item.icon;
 
           return (

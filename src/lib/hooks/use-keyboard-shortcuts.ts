@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import { useRouter } from 'next/navigation';
 import { useUIStore } from '@/lib/stores/ui-store';
 import type { QuickActionType } from '@/lib/stores/ui-store';
 
@@ -9,6 +10,7 @@ interface MinimalTask {
 }
 
 export function useKeyboardShortcuts(tasks: MinimalTask[] = []) {
+  const router = useRouter();
   const {
     setCommandPaletteOpen,
     setCreateModalOpen,
@@ -66,7 +68,7 @@ export function useKeyboardShortcuts(tasks: MinimalTask[] = []) {
       // Don't capture when a quick action popover is open
       if (quickActionPopover) return;
 
-      // Two-key combos (G+B, G+L, G+I)
+      // Two-key combos (G+B, G+L, G+I, G+D)
       if (prefixRef.current === 'g') {
         prefixRef.current = null;
         if (timeoutRef.current) clearTimeout(timeoutRef.current);
@@ -83,6 +85,10 @@ export function useKeyboardShortcuts(tasks: MinimalTask[] = []) {
           case 'i':
             e.preventDefault();
             setInboxOpen(true);
+            return;
+          case 'd':
+            e.preventDefault();
+            router.push('/docs');
             return;
         }
       }
@@ -183,6 +189,7 @@ export function useKeyboardShortcuts(tasks: MinimalTask[] = []) {
     inlineEditingTaskId,
     selectedIndex,
     tasks,
+    router,
     setCommandPaletteOpen,
     setCreateModalOpen,
     setActiveView,

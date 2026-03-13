@@ -6,7 +6,8 @@ import { useUIStore } from '@/lib/stores/ui-store';
 import { trpc } from '@/lib/trpc';
 import { StatusDot } from '@/components/shared/status-badge';
 import { highlightMatch } from '@/lib/utils/highlight';
-import { LayoutGrid, List, Inbox, Plus, Search, ArrowRight, MessageSquare, FolderOpen, Loader2, Sparkles } from 'lucide-react';
+import { LayoutGrid, List, Inbox, Plus, Search, ArrowRight, MessageSquare, FolderOpen, Loader2, Sparkles, BookOpen, FileText } from 'lucide-react';
+import { useRouter } from 'next/navigation';
 import { AITaskInput } from './ai-task-input';
 
 interface CommandPaletteProps {
@@ -26,6 +27,7 @@ export function CommandPalette({ workspaceId, projects, members, labels, onTaskC
     openTaskDetail,
     setActiveProjectId,
   } = useUIStore();
+  const router = useRouter();
 
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState('');
@@ -58,7 +60,8 @@ export function CommandPalette({ workspaceId, projects, members, labels, onTaskC
   const hasResults = searchResults && (
     searchResults.tasks.length > 0 ||
     searchResults.comments.length > 0 ||
-    searchResults.projects.length > 0
+    searchResults.projects.length > 0 ||
+    (searchResults.documents ?? []).length > 0
   );
 
   const isSearching = debouncedSearch.length >= 1;
@@ -153,6 +156,14 @@ export function CommandPalette({ workspaceId, projects, members, labels, onTaskC
                   Go to Inbox
                   <kbd className="ml-auto rounded border border-zinc-200 px-1.5 py-0.5 text-[10px] text-zinc-400 dark:border-zinc-700 dark:text-zinc-500">G I</kbd>
                 </Command.Item>
+                <Command.Item
+                  onSelect={() => { setCommandPaletteOpen(false); router.push('/docs'); }}
+                  className="flex cursor-pointer items-center gap-2 rounded-md px-3 py-2 text-xs text-zinc-700 data-[selected=true]:bg-zinc-100 dark:text-zinc-300 dark:data-[selected=true]:bg-zinc-800"
+                >
+                  <BookOpen className="h-3.5 w-3.5 text-zinc-400 dark:text-zinc-500" />
+                  Go to Docs
+                  <kbd className="ml-auto rounded border border-zinc-200 px-1.5 py-0.5 text-[10px] text-zinc-400 dark:border-zinc-700 dark:text-zinc-500">G D</kbd>
+                </Command.Item>
               </Command.Group>
             )}
 
@@ -199,6 +210,33 @@ export function CommandPalette({ workspaceId, projects, members, labels, onTaskC
                       {highlightMatch(project.name, debouncedSearch)}
                     </span>
                     <span className="text-[10px] text-zinc-400 dark:text-zinc-500">{project.status.toLowerCase()}</span>
+                  </Command.Item>
+                ))}
+              </Command.Group>
+            )}
+
+            {/* Document results */}
+            {isSearching && searchResults && (searchResults.documents ?? []).length > 0 && (
+              <Command.Group heading={<span className="px-2 text-[10px] font-medium uppercase tracking-wider text-zinc-400 dark:text-zinc-500">Docs</span>}>
+                {(searchResults.documents ?? []).map((doc) => (
+                  <Command.Item
+                    key={doc.id}
+                    value={`doc-${doc.id}`}
+                    onSelect={() => { setCommandPaletteOpen(false); router.push('/docs'); }}
+                    className="flex cursor-pointer items-start gap-2 rounded-md px-3 py-2 text-xs data-[selected=true]:bg-zinc-100 dark:data-[selected=true]:bg-zinc-800"
+                  >
+                    <FileText className="mt-0.5 h-3.5 w-3.5 flex-shrink-0 text-zinc-400 dark:text-zinc-500" />
+                    <div className="min-w-0 flex-1">
+                      <div className="truncate text-zinc-700 dark:text-zinc-300">
+                        {highlightMatch(doc.title, debouncedSearch)}
+                      </div>
+                      {doc.snippet && (
+                        <div className="mt-0.5 truncate text-[10px] text-zinc-400 dark:text-zinc-500">
+                          {doc.snippet}
+                        </div>
+                      )}
+                    </div>
+                    <ArrowRight className="mt-0.5 h-3 w-3 flex-shrink-0 text-zinc-300 dark:text-zinc-600" />
                   </Command.Item>
                 ))}
               </Command.Group>

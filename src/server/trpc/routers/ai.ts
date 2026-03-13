@@ -8,6 +8,7 @@ import {
   fuzzyMatchProject,
   fuzzyMatchLabels,
 } from '@/server/ai/parse-task';
+import { findRelevantChunks, queryKnowledgeWithClaude } from '@/server/ai/knowledge-query';
 
 export const aiRouter = router({
   parseTask: protectedProcedure
@@ -159,6 +160,51 @@ export const aiRouter = router({
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
           message: 'Could not generate suggestions.',
+        });
+      }
+    }),
+
+  queryKnowledge: protectedProcedure
+    .input(
+      z.object({
+        workspaceId: z.string(),
+        question: z.string().min(1).max(1000),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      if (!process.env.ANTHROPIC_API_KEY) {
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'AI features are not configured. Add ANTHROPIC_API_KEY to your environment.',
+        });
+      }
+
+      try {
+        const chunks = await findRelevantChunks(input.question, input.workspaceId, ctx.db);
+
+        if (chunks.length === 0) {
+          return {
+            answer: 'No relevant documents were found in the knowledge base for your question. Try adding some meeting notes, decision logs, or planning docs first.',
+            citations: [],
+            hasResults: false,
+          };
+        }
+
+        return await queryKnowledgeWithClaude(input.question, chunks);
+      } catch (error) {
+        if (error instanceof TRPCError) throw error;
+
+        const message = error instanceof Error ? error.message : 'Unknown error';
+        if (message.includes('rate_limit') || message.includes('429')) {
+          throw new TRPCError({
+            code: 'TOO_MANY_REQUESTS',
+            message: 'AI is temporarily unavailable. Please try again in a moment.',
+          });
+        }
+
+        throw new TRPCError({
+          code: 'INTERNAL_SERVER_ERROR',
+          message: 'Could not query the knowledge base.',
         });
       }
     }),

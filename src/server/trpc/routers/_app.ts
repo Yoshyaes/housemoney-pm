@@ -10,6 +10,7 @@ import { searchRouter } from './search';
 import { aiRouter } from './ai';
 import { analyticsRouter } from './analytics';
 import { sectionsRouter } from './sections';
+import { documentsRouter } from './documents';
 
 export const appRouter = router({
   tasks: tasksRouter,
@@ -23,6 +24,7 @@ export const appRouter = router({
   ai: aiRouter,
   analytics: analyticsRouter,
   sections: sectionsRouter,
+  documents: documentsRouter,
 });
 
 export type AppRouter = typeof appRouter;

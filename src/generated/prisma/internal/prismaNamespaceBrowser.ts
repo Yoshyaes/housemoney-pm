@@ -66,7 +66,8 @@ export const ModelName = {
   Activity: 'Activity',
   View: 'View',
   Notification: 'Notification',
-  GitHubPR: 'GitHubPR'
+  GitHubPR: 'GitHubPR',
+  Document: 'Document'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -297,6 +298,23 @@ export const GitHubPRScalarFieldEnum = {
 } as const
 
 export type GitHubPRScalarFieldEnum = (typeof GitHubPRScalarFieldEnum)[keyof typeof GitHubPRScalarFieldEnum]
+
+
+export const DocumentScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  authorId: 'authorId',
+  title: 'title',
+  content: 'content',
+  docType: 'docType',
+  tags: 'tags',
+  projectId: 'projectId',
+  pinned: 'pinned',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DocumentScalarFieldEnum = (typeof DocumentScalarFieldEnum)[keyof typeof DocumentScalarFieldEnum]
 
 
 export const SortOrder = {

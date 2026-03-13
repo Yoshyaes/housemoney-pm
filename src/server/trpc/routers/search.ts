@@ -16,13 +16,13 @@ export const searchRouter = router({
       const trimmed = query.trim();
 
       if (!trimmed) {
-        return { tasks: [], comments: [], projects: [] };
+        return { tasks: [], comments: [], projects: [], documents: [] };
       }
 
       // Use ILIKE for short queries (< 3 chars), trigram similarity for longer ones
       const useIlike = trimmed.length < 3;
 
-      const [tasks, comments, projects] = await Promise.all([
+      const [tasks, comments, projects, documents] = await Promise.all([
         // Search tasks
         useIlike
           ? ctx.db.$queryRaw<
@@ -168,8 +168,56 @@ export const searchRouter = router({
                 LIMIT ${limit}
               `
             ),
+
+        // Search documents
+        useIlike
+          ? ctx.db.$queryRaw<
+              Array<{
+                id: string;
+                title: string;
+                docType: string;
+                score: number;
+                snippet: string;
+              }>
+            >(
+              Prisma.sql`
+                SELECT d.id, d.title, d."docType", 1.0::float8 AS score,
+                       substring(d.content, 1, 150) AS snippet
+                FROM "Document" d
+                WHERE d."workspaceId" = ${workspaceId}
+                  AND (d.title ILIKE ${'%' + trimmed + '%'} OR d.content ILIKE ${'%' + trimmed + '%'})
+                ORDER BY d."updatedAt" DESC
+                LIMIT ${limit}
+              `
+            )
+          : ctx.db.$queryRaw<
+              Array<{
+                id: string;
+                title: string;
+                docType: string;
+                score: number;
+                snippet: string;
+              }>
+            >(
+              Prisma.sql`
+                SELECT d.id, d.title, d."docType",
+                       GREATEST(
+                         similarity(d.title, ${trimmed}),
+                         similarity(d.content, ${trimmed})
+                       )::float8 AS score,
+                       substring(d.content FROM
+                         GREATEST(1, position(lower(${trimmed}) in lower(d.content)) - 60)
+                         FOR 150
+                       ) AS snippet
+                FROM "Document" d
+                WHERE d."workspaceId" = ${workspaceId}
+                  AND (d.title % ${trimmed} OR d.content % ${trimmed})
+                ORDER BY score DESC
+                LIMIT ${limit}
+              `
+            ),
       ]);
 
-      return { tasks, comments, projects };
+      return { tasks, comments, projects, documents };
     }),
 });
