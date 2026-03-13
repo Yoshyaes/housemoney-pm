@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { router, protectedProcedure } from '@/server/trpc/trpc';
+import { router, protectedProcedure, requireWorkspaceMember } from '@/server/trpc/trpc';
 import { Prisma } from '@/generated/prisma/client';
 
 export const searchRouter = router({
@@ -13,6 +13,9 @@ export const searchRouter = router({
     )
     .query(async ({ ctx, input }) => {
       const { workspaceId, query, limit } = input;
+
+      await requireWorkspaceMember(ctx.db, workspaceId, ctx.userId);
+
       const trimmed = query.trim();
 
       if (!trimmed) {

@@ -1,10 +1,22 @@
 import { z } from 'zod';
-import { router, protectedProcedure } from '@/server/trpc/trpc';
+import { router, protectedProcedure, requireWorkspaceMember } from '@/server/trpc/trpc';
+import { TRPCError } from '@trpc/server';
 
 export const commentsRouter = router({
   list: protectedProcedure
     .input(z.object({ taskId: z.string() }))
     .query(async ({ ctx, input }) => {
+      const task = await ctx.db.task.findUnique({
+        where: { id: input.taskId },
+        select: { workspaceId: true },
+      });
+
+      if (!task) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Task not found' });
+      }
+
+      await requireWorkspaceMember(ctx.db, task.workspaceId, ctx.userId);
+
       return ctx.db.comment.findMany({
         where: { taskId: input.taskId },
         include: { author: true },
@@ -17,16 +29,23 @@ export const commentsRouter = router({
       z.object({
         taskId: z.string(),
         body: z.string().min(1),
-        attachments: z.any().optional(),
+        attachments: z.array(z.object({
+          name: z.string(),
+          url: z.string().url(),
+          size: z.number().optional(),
+          mimeType: z.string().optional(),
+        })).optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
       const task = await ctx.db.task.findUnique({
         where: { id: input.taskId },
-        select: { id: true, identifier: true, title: true, assigneeId: true, createdById: true },
+        select: { id: true, identifier: true, title: true, assigneeId: true, createdById: true, workspaceId: true },
       });
 
-      if (!task) throw new Error('Task not found');
+      if (!task) throw new TRPCError({ code: 'NOT_FOUND', message: 'Task not found' });
+
+      await requireWorkspaceMember(ctx.db, task.workspaceId, ctx.userId);
 
       const comment = await ctx.db.comment.create({
         data: {
@@ -116,10 +135,12 @@ export const commentsRouter = router({
     .mutation(async ({ ctx, input }) => {
       const comment = await ctx.db.comment.findUnique({
         where: { id: input.commentId },
-        select: { reactions: true },
+        select: { reactions: true, task: { select: { workspaceId: true } } },
       });
 
-      if (!comment) throw new Error('Comment not found');
+      if (!comment) throw new TRPCError({ code: 'NOT_FOUND', message: 'Comment not found' });
+
+      await requireWorkspaceMember(ctx.db, comment.task.workspaceId, ctx.userId);
 
       const reactions = (comment.reactions as Array<{ emoji: string; userIds: string[] }>) || [];
       const existing = reactions.find((r) => r.emoji === input.emoji);

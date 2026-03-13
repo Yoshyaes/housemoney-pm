@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { router, protectedProcedure } from '@/server/trpc/trpc';
+import { TRPCError } from '@trpc/server';
 
 export const notificationsRouter = router({
   list: protectedProcedure
@@ -76,6 +77,10 @@ export const notificationsRouter = router({
           data: { read: true },
         });
       } else if (input.id) {
+        const notification = await ctx.db.notification.findUnique({ where: { id: input.id } });
+        if (!notification || notification.userId !== ctx.userId) {
+          throw new TRPCError({ code: 'FORBIDDEN' });
+        }
         await ctx.db.notification.update({
           where: { id: input.id },
           data: { read: true },
@@ -92,6 +97,10 @@ export const notificationsRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      const notification = await ctx.db.notification.findUnique({ where: { id: input.id } });
+      if (!notification || notification.userId !== ctx.userId) {
+        throw new TRPCError({ code: 'FORBIDDEN' });
+      }
       return ctx.db.notification.update({
         where: { id: input.id },
         data: { snoozedUntil: input.until },
@@ -101,6 +110,10 @@ export const notificationsRouter = router({
   archive: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
+      const notification = await ctx.db.notification.findUnique({ where: { id: input.id } });
+      if (!notification || notification.userId !== ctx.userId) {
+        throw new TRPCError({ code: 'FORBIDDEN' });
+      }
       return ctx.db.notification.update({
         where: { id: input.id },
         data: { archivedAt: new Date() },

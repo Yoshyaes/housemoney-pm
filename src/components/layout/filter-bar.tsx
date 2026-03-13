@@ -71,13 +71,12 @@ export function FilterBar({ members = [], labels = [] }: FilterBarProps) {
     activeFilters.isBlocked ? 1 : 0,
   ].reduce((a, b) => a + b, 0);
 
-  const sortFields = [
-    { field: 'identifier', label: 'ID' },
+  const sortFields: Array<{ field: 'createdAt' | 'updatedAt' | 'dueDate' | 'priority' | 'title'; label: string }> = [
+    { field: 'createdAt', label: 'Created' },
+    { field: 'updatedAt', label: 'Updated' },
     { field: 'title', label: 'Title' },
-    { field: 'status', label: 'Status' },
     { field: 'priority', label: 'Priority' },
     { field: 'dueDate', label: 'Due date' },
-    { field: 'assignee', label: 'Assignee' },
   ];
 
   return (

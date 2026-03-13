@@ -6,6 +6,7 @@ import { trpc } from '@/lib/trpc';
 import { CitationCard } from './citation-card';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import rehypeSanitize from 'rehype-sanitize';
 
 interface KnowledgeAIPanelProps {
   workspaceId: string;
@@ -99,7 +100,7 @@ export function KnowledgeAIPanel({ workspaceId }: KnowledgeAIPanelProps) {
             {/* Answer */}
             <div className="space-y-3">
               <div className="prose prose-sm dark:prose-invert max-w-none text-zinc-700 dark:text-zinc-300">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeSanitize]}>
                   {entry.answer}
                 </ReactMarkdown>
               </div>

@@ -1,6 +1,7 @@
 import { z } from 'zod';
-import { router, protectedProcedure } from '@/server/trpc/trpc';
+import { router, protectedProcedure, requireWorkspaceMember } from '@/server/trpc/trpc';
 import { TRPCError } from '@trpc/server';
+import { rateLimit } from '@/lib/rate-limit';
 import {
   parseTaskFromNaturalLanguage,
   triageTask,
@@ -19,6 +20,12 @@ export const aiRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
+
+      if (!rateLimit(`ai:${ctx.userId}`, 20, 60_000)) {
+        throw new TRPCError({ code: 'TOO_MANY_REQUESTS', message: 'Too many AI requests. Try again shortly.' });
+      }
+
       if (!process.env.ANTHROPIC_API_KEY) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
@@ -111,6 +118,12 @@ export const aiRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
+
+      if (!rateLimit(`ai:${ctx.userId}`, 20, 60_000)) {
+        throw new TRPCError({ code: 'TOO_MANY_REQUESTS', message: 'Too many AI requests. Try again shortly.' });
+      }
+
       if (!process.env.ANTHROPIC_API_KEY) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',
@@ -172,6 +185,12 @@ export const aiRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
+
+      if (!rateLimit(`ai:${ctx.userId}`, 20, 60_000)) {
+        throw new TRPCError({ code: 'TOO_MANY_REQUESTS', message: 'Too many AI requests. Try again shortly.' });
+      }
+
       if (!process.env.ANTHROPIC_API_KEY) {
         throw new TRPCError({
           code: 'INTERNAL_SERVER_ERROR',

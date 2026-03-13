@@ -97,3 +97,29 @@ export const protectedProcedure = t.procedure.use(async ({ ctx, next }) => {
     },
   });
 });
+
+export async function requireWorkspaceMember(
+  db: Context['db'],
+  workspaceId: string,
+  userId: string
+) {
+  const membership = await db.workspaceMember.findUnique({
+    where: { workspaceId_userId: { workspaceId, userId } },
+  });
+  if (!membership) {
+    throw new TRPCError({ code: 'FORBIDDEN', message: 'Not a member of this workspace' });
+  }
+  return membership;
+}
+
+export async function requireWorkspaceAdmin(
+  db: Context['db'],
+  workspaceId: string,
+  userId: string
+) {
+  const membership = await requireWorkspaceMember(db, workspaceId, userId);
+  if (membership.role !== 'ADMIN') {
+    throw new TRPCError({ code: 'FORBIDDEN', message: 'Only workspace admins can perform this action' });
+  }
+  return membership;
+}

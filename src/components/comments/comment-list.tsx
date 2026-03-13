@@ -1,5 +1,6 @@
 'use client';
 
+import DOMPurify from 'isomorphic-dompurify';
 import { Avatar } from '@/components/shared/avatar';
 import { formatRelativeTime } from '@/lib/utils';
 
@@ -30,8 +31,13 @@ export function CommentList({ comments, currentUserId, onReaction }: CommentList
   return (
     <div className="space-y-0">
       {comments.map((comment) => {
+        // Sanitize before any HTML manipulation to prevent XSS
+        const sanitized = DOMPurify.sanitize(comment.body, {
+          ALLOWED_TAGS: ['span', 'strong', 'em', 'code', 'br'],
+          ALLOWED_ATTR: ['class'],
+        });
         // Parse @mentions for display
-        const body = comment.body.replace(
+        const body = sanitized.replace(
           /@\[([^\]]+)\]\([^)]+\)/g,
           '<span class="font-medium text-amber-700">@$1</span>'
         );

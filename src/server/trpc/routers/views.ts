@@ -1,10 +1,12 @@
 import { z } from 'zod';
-import { router, protectedProcedure } from '@/server/trpc/trpc';
+import { router, protectedProcedure, requireWorkspaceMember, requireWorkspaceAdmin } from '@/server/trpc/trpc';
 
 export const viewsRouter = router({
   list: protectedProcedure
     .input(z.object({ workspaceId: z.string() }))
     .query(async ({ ctx, input }) => {
+      await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
+
       return ctx.db.view.findMany({
         where: {
           workspaceId: input.workspaceId,
@@ -28,6 +30,8 @@ export const viewsRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
+
       return ctx.db.view.create({
         data: {
           ...input,
@@ -51,6 +55,14 @@ export const viewsRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      const view = await ctx.db.view.findUniqueOrThrow({ where: { id: input.id } });
+
+      await requireWorkspaceMember(ctx.db, view.workspaceId, ctx.userId);
+
+      if (view.ownerId !== ctx.userId) {
+        await requireWorkspaceAdmin(ctx.db, view.workspaceId, ctx.userId);
+      }
+
       const { id, ...data } = input;
       return ctx.db.view.update({ where: { id }, data });
     }),
@@ -58,6 +70,14 @@ export const viewsRouter = router({
   delete: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
+      const view = await ctx.db.view.findUniqueOrThrow({ where: { id: input.id } });
+
+      await requireWorkspaceMember(ctx.db, view.workspaceId, ctx.userId);
+
+      if (view.ownerId !== ctx.userId) {
+        await requireWorkspaceAdmin(ctx.db, view.workspaceId, ctx.userId);
+      }
+
       return ctx.db.view.delete({ where: { id: input.id } });
     }),
 });

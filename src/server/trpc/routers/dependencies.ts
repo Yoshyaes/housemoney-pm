@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { router, protectedProcedure } from '@/server/trpc/trpc';
+import { router, protectedProcedure, requireWorkspaceMember } from '@/server/trpc/trpc';
 import { TRPCError } from '@trpc/server';
 
 export const dependenciesRouter = router({
@@ -14,6 +14,22 @@ export const dependenciesRouter = router({
       if (input.blockingTaskId === input.blockedTaskId) {
         throw new TRPCError({ code: 'BAD_REQUEST', message: 'A task cannot block itself' });
       }
+
+      // Verify both tasks exist and belong to the same workspace
+      const [blockingTask, blockedTask] = await Promise.all([
+        ctx.db.task.findUnique({ where: { id: input.blockingTaskId }, select: { workspaceId: true } }),
+        ctx.db.task.findUnique({ where: { id: input.blockedTaskId }, select: { workspaceId: true } }),
+      ]);
+
+      if (!blockingTask || !blockedTask) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'One or both tasks not found' });
+      }
+
+      if (blockingTask.workspaceId !== blockedTask.workspaceId) {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Tasks must be in the same workspace' });
+      }
+
+      await requireWorkspaceMember(ctx.db, blockingTask.workspaceId, ctx.userId);
 
       // Check for existing dependency
       const existing = await ctx.db.dependency.findUnique({
@@ -91,7 +107,7 @@ export const dependenciesRouter = router({
       const dependency = await ctx.db.dependency.findUnique({
         where: { id: input.id },
         include: {
-          blockingTask: { select: { id: true, identifier: true } },
+          blockingTask: { select: { id: true, identifier: true, workspaceId: true } },
           blockedTask: { select: { id: true, identifier: true } },
         },
       });
@@ -99,6 +115,8 @@ export const dependenciesRouter = router({
       if (!dependency) {
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Dependency not found' });
       }
+
+      await requireWorkspaceMember(ctx.db, dependency.blockingTask.workspaceId, ctx.userId);
 
       await ctx.db.dependency.delete({ where: { id: input.id } });
 

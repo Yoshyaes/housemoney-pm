@@ -17,7 +17,7 @@ export interface ActiveFilters {
 }
 
 export interface ActiveSort {
-  field: string;
+  field: 'createdAt' | 'updatedAt' | 'dueDate' | 'priority' | 'title';
   direction: 'asc' | 'desc';
 }
 

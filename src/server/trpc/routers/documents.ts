@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { router, protectedProcedure } from '@/server/trpc/trpc';
+import { router, protectedProcedure, requireWorkspaceMember } from '@/server/trpc/trpc';
 import { TRPCError } from '@trpc/server';
 import { Prisma, DocType } from '@/generated/prisma/client';
 
@@ -18,6 +18,8 @@ export const documentsRouter = router({
     )
     .query(async ({ ctx, input }) => {
       const { workspaceId, docType, projectId, tags, pinned, cursor, limit } = input;
+
+      await requireWorkspaceMember(ctx.db, workspaceId, ctx.userId);
 
       const where: Prisma.DocumentWhereInput = { workspaceId };
       if (docType) where.docType = docType;
@@ -73,6 +75,8 @@ export const documentsRouter = router({
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Document not found' });
       }
 
+      await requireWorkspaceMember(ctx.db, doc.workspaceId, ctx.userId);
+
       return doc;
     }),
 
@@ -89,6 +93,8 @@ export const documentsRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
+
       return ctx.db.document.create({
         data: {
           workspaceId: input.workspaceId,
@@ -168,6 +174,9 @@ export const documentsRouter = router({
     )
     .query(async ({ ctx, input }) => {
       const { workspaceId, query, limit } = input;
+
+      await requireWorkspaceMember(ctx.db, workspaceId, ctx.userId);
+
       const trimmed = query.trim();
 
       if (!trimmed) return [];
@@ -216,6 +225,8 @@ export const documentsRouter = router({
   listTags: protectedProcedure
     .input(z.object({ workspaceId: z.string() }))
     .query(async ({ ctx, input }) => {
+      await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
+
       const results = await ctx.db.$queryRaw<Array<{ tag: string; count: bigint }>>(
         Prisma.sql`
           SELECT unnest(tags) AS tag, COUNT(*)::bigint AS count

@@ -33,6 +33,13 @@ export async function POST(req: Request) {
   const { action, pull_request } = payload;
   const repo: string = payload.repository.full_name;
 
+  // Optional: restrict to allowlisted repos to prevent cross-repo task manipulation
+  const allowedRepos = process.env.GITHUB_ALLOWED_REPOS?.split(',').map((r) => r.trim()).filter(Boolean);
+  if (allowedRepos && allowedRepos.length > 0 && !allowedRepos.includes(repo)) {
+    console.warn(`[GitHub webhook] Rejected event from unlisted repo: ${repo}`);
+    return Response.json({ ok: true, skipped: true });
+  }
+
   // Extract task identifiers from PR title + body
   const text = `${pull_request.title} ${pull_request.body || ''}`;
   const matches = [...text.matchAll(/\bHM-(\d+)\b/gi)];

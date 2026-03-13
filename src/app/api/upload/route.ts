@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { createServerSupabaseClient } from '@/server/auth/supabase-server';
+import { rateLimit } from '@/lib/rate-limit';
 
 const BUCKET = 'task-attachments';
 
@@ -10,6 +11,11 @@ export async function POST(req: NextRequest) {
   const { data: { session } } = await supabaseAuth.auth.getSession();
   if (!session) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  // Rate limit: 10 uploads per minute per user
+  if (!rateLimit(`upload:${session.user.id}`, 10, 60_000)) {
+    return NextResponse.json({ error: 'Upload rate limit exceeded. Try again shortly.' }, { status: 429 });
   }
 
   // Use service role client for storage operations
@@ -29,6 +35,27 @@ export async function POST(req: NextRequest) {
   const file = formData.get('file') as File | null;
   if (!file) {
     return NextResponse.json({ error: 'No file provided' }, { status: 400 });
+  }
+
+  // Validate file type (whitelist)
+  const ALLOWED_MIME_TYPES = new Set([
+    'image/jpeg', 'image/png', 'image/gif', 'image/webp', 'image/svg+xml',
+    'application/pdf',
+    'text/plain', 'text/markdown', 'text/csv',
+    'application/json',
+    'application/zip',
+    'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  ]);
+
+  if (!file.type || !ALLOWED_MIME_TYPES.has(file.type)) {
+    return NextResponse.json({ error: 'File type not allowed' }, { status: 400 });
+  }
+
+  // Validate file size in application layer (20MB)
+  const MAX_SIZE = 20 * 1024 * 1024;
+  if (file.size > MAX_SIZE) {
+    return NextResponse.json({ error: 'File too large (max 20MB)' }, { status: 400 });
   }
 
   // Sanitize filename and create unique path

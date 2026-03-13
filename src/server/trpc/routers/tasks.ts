@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { router, protectedProcedure } from '@/server/trpc/trpc';
+import { router, protectedProcedure, requireWorkspaceMember } from '@/server/trpc/trpc';
 import { TRPCError } from '@trpc/server';
 
 const taskCreateInput = z.object({
@@ -36,7 +36,7 @@ const taskListInput = z.object({
   assigneeId: z.array(z.string()).optional(),
   labelId: z.array(z.string()).optional(),
   isBlocked: z.boolean().optional(),
-  sortField: z.string().optional(),
+  sortField: z.enum(['createdAt', 'updatedAt', 'dueDate', 'priority', 'title']).optional(),
   sortDirection: z.enum(['asc', 'desc']).optional(),
   cursor: z.string().optional(),
   limit: z.number().min(1).max(200).optional(),
@@ -68,6 +68,8 @@ export const tasksRouter = router({
     .input(taskCreateInput)
     .mutation(async ({ ctx, input }) => {
       const { labelIds, workspaceId, ...taskData } = input;
+
+      await requireWorkspaceMember(ctx.db, workspaceId, ctx.userId);
 
       // Atomic identifier generation
       const workspace = await ctx.db.workspace.update({
@@ -118,6 +120,8 @@ export const tasksRouter = router({
   list: protectedProcedure
     .input(taskListInput)
     .query(async ({ ctx, input }) => {
+      await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
+
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const where: any = {};
 
@@ -220,6 +224,8 @@ export const tasksRouter = router({
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Task not found' });
       }
 
+      await requireWorkspaceMember(ctx.db, task.workspaceId, ctx.userId);
+
       return task;
     }),
 
@@ -236,6 +242,8 @@ export const tasksRouter = router({
       if (!existing) {
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Task not found' });
       }
+
+      await requireWorkspaceMember(ctx.db, existing.workspaceId, ctx.userId);
 
       // Track changes for activity log
       const activities: { field: string; oldValue: string | null; newValue: string | null; action: string }[] = [];
@@ -324,6 +332,17 @@ export const tasksRouter = router({
   delete: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
+      const task = await ctx.db.task.findUnique({
+        where: { id: input.id },
+        select: { workspaceId: true },
+      });
+
+      if (!task) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Task not found' });
+      }
+
+      await requireWorkspaceMember(ctx.db, task.workspaceId, ctx.userId);
+
       return ctx.db.task.update({
         where: { id: input.id },
         data: { status: 'CANCELLED' },
@@ -333,6 +352,17 @@ export const tasksRouter = router({
   addCollaborator: protectedProcedure
     .input(z.object({ taskId: z.string(), userId: z.string() }))
     .mutation(async ({ ctx, input }) => {
+      const task = await ctx.db.task.findUnique({
+        where: { id: input.taskId },
+        select: { workspaceId: true },
+      });
+
+      if (!task) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Task not found' });
+      }
+
+      await requireWorkspaceMember(ctx.db, task.workspaceId, ctx.userId);
+
       return ctx.db.taskCollaborator.upsert({
         where: { taskId_userId: { taskId: input.taskId, userId: input.userId } },
         create: { taskId: input.taskId, userId: input.userId },
@@ -343,6 +373,17 @@ export const tasksRouter = router({
   removeCollaborator: protectedProcedure
     .input(z.object({ taskId: z.string(), userId: z.string() }))
     .mutation(async ({ ctx, input }) => {
+      const task = await ctx.db.task.findUnique({
+        where: { id: input.taskId },
+        select: { workspaceId: true },
+      });
+
+      if (!task) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Task not found' });
+      }
+
+      await requireWorkspaceMember(ctx.db, task.workspaceId, ctx.userId);
+
       return ctx.db.taskCollaborator.delete({
         where: { taskId_userId: { taskId: input.taskId, userId: input.userId } },
       });
@@ -357,6 +398,17 @@ export const tasksRouter = router({
       mimeType: z.string().optional(),
     }))
     .mutation(async ({ ctx, input }) => {
+      const task = await ctx.db.task.findUnique({
+        where: { id: input.taskId },
+        select: { workspaceId: true },
+      });
+
+      if (!task) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Task not found' });
+      }
+
+      await requireWorkspaceMember(ctx.db, task.workspaceId, ctx.userId);
+
       return ctx.db.taskAttachment.create({
         data: { ...input, uploadedById: ctx.userId },
         include: { uploadedBy: true },
@@ -366,6 +418,17 @@ export const tasksRouter = router({
   deleteAttachment: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
+      const attachment = await ctx.db.taskAttachment.findUnique({
+        where: { id: input.id },
+        include: { task: { select: { workspaceId: true } } },
+      });
+
+      if (!attachment) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Attachment not found' });
+      }
+
+      await requireWorkspaceMember(ctx.db, attachment.task.workspaceId, ctx.userId);
+
       return ctx.db.taskAttachment.delete({ where: { id: input.id } });
     }),
 });

@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { router, protectedProcedure } from '@/server/trpc/trpc';
+import { router, protectedProcedure, requireWorkspaceMember, requireWorkspaceAdmin } from '@/server/trpc/trpc';
 import { TRPCError } from '@trpc/server';
 import { createClient } from '@supabase/supabase-js';
 
@@ -15,6 +15,8 @@ export const workspaceRouter = router({
   getMembers: protectedProcedure
     .input(z.object({ workspaceId: z.string() }))
     .query(async ({ ctx, input }) => {
+      await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
+
       const members = await ctx.db.workspaceMember.findMany({
         where: { workspaceId: input.workspaceId },
         include: { user: true },
@@ -29,6 +31,8 @@ export const workspaceRouter = router({
   inviteMember: protectedProcedure
     .input(z.object({ workspaceId: z.string(), email: z.string().email() }))
     .mutation(async ({ ctx, input }) => {
+      await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
+
       // Find user by email
       const user = await ctx.db.user.findUnique({ where: { email: input.email } });
       if (!user) {
@@ -53,7 +57,9 @@ export const workspaceRouter = router({
   removeMember: protectedProcedure
     .input(z.object({ workspaceId: z.string(), userId: z.string() }))
     .mutation(async ({ ctx, input }) => {
-      // Prevent removing yourself if you're the last admin
+      await requireWorkspaceAdmin(ctx.db, input.workspaceId, ctx.userId);
+
+      // Prevent removing the last admin
       const admins = await ctx.db.workspaceMember.count({
         where: { workspaceId: input.workspaceId, role: 'ADMIN' },
       });
@@ -71,6 +77,8 @@ export const workspaceRouter = router({
   updateMemberRole: protectedProcedure
     .input(z.object({ workspaceId: z.string(), userId: z.string(), role: z.enum(['ADMIN', 'MEMBER']) }))
     .mutation(async ({ ctx, input }) => {
+      await requireWorkspaceAdmin(ctx.db, input.workspaceId, ctx.userId);
+
       return ctx.db.workspaceMember.update({
         where: { workspaceId_userId: { workspaceId: input.workspaceId, userId: input.userId } },
         data: { role: input.role },
@@ -80,6 +88,8 @@ export const workspaceRouter = router({
   getLabels: protectedProcedure
     .input(z.object({ workspaceId: z.string() }))
     .query(async ({ ctx, input }) => {
+      await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
+
       return ctx.db.label.findMany({
         where: { workspaceId: input.workspaceId },
         orderBy: { name: 'asc' },
@@ -94,6 +104,8 @@ export const workspaceRouter = router({
       bgColor: z.string(),
     }))
     .mutation(async ({ ctx, input }) => {
+      await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
+
       return ctx.db.label.create({ data: input });
     }),
 
@@ -105,6 +117,9 @@ export const workspaceRouter = router({
       bgColor: z.string().optional(),
     }))
     .mutation(async ({ ctx, input }) => {
+      const label = await ctx.db.label.findUniqueOrThrow({ where: { id: input.id } });
+      await requireWorkspaceMember(ctx.db, label.workspaceId, ctx.userId);
+
       const { id, ...data } = input;
       return ctx.db.label.update({ where: { id }, data });
     }),
@@ -112,6 +127,9 @@ export const workspaceRouter = router({
   deleteLabel: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
+      const label = await ctx.db.label.findUniqueOrThrow({ where: { id: input.id } });
+      await requireWorkspaceAdmin(ctx.db, label.workspaceId, ctx.userId);
+
       return ctx.db.label.delete({ where: { id: input.id } });
     }),
 
@@ -122,6 +140,9 @@ export const workspaceRouter = router({
       avatarColor: z.string().optional(),
     }))
     .mutation(async ({ ctx, input }) => {
+      if (input.userId !== ctx.userId) {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'You can only update your own profile.' });
+      }
       const { userId, ...data } = input;
       return ctx.db.user.update({ where: { id: userId }, data });
     }),
