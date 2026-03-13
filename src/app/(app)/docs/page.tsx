@@ -91,7 +91,7 @@ export default function DocsPage() {
   }));
 
   return (
-    <div className="flex h-screen overflow-hidden bg-white dark:bg-zinc-950">
+    <>
       <Sidebar
         projects={sidebarProjects}
         savedViews={savedViews}
@@ -101,7 +101,7 @@ export default function DocsPage() {
         onProjectsChange={() => {}}
       />
 
-      <div className="flex flex-1 flex-col overflow-hidden">
+      <div className="flex flex-1 flex-col overflow-hidden bg-white dark:bg-zinc-950">
         <DocsTopbar workspaceId={workspaceId} />
 
         <div className="flex flex-1 overflow-hidden">
@@ -116,6 +116,6 @@ export default function DocsPage() {
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

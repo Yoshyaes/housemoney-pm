@@ -136,7 +136,7 @@ export default function AnalyticsPage() {
   }));
 
   return (
-    <div className="flex h-screen overflow-hidden bg-white dark:bg-zinc-950">
+    <>
       <Sidebar
         projects={sidebarProjects}
         savedViews={savedViews}
@@ -146,7 +146,7 @@ export default function AnalyticsPage() {
         onProjectsChange={() => {}}
       />
 
-      <div className="flex flex-1 flex-col overflow-hidden">
+      <div className="flex flex-1 flex-col overflow-hidden bg-white dark:bg-zinc-950">
         <AnalyticsTopbar
           dateRange={dateRange}
           onDateRangeChange={setDateRange}
@@ -183,6 +183,6 @@ export default function AnalyticsPage() {
           </div>
         </main>
       </div>
-    </div>
+    </>
   );
 }

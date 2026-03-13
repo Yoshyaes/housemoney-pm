@@ -100,7 +100,7 @@ export default function DocDetailPage({ params }: Props) {
   }));
 
   return (
-    <div className="flex h-screen overflow-hidden bg-white dark:bg-zinc-950">
+    <>
       <Sidebar
         projects={sidebarProjects}
         savedViews={savedViews}
@@ -110,7 +110,7 @@ export default function DocDetailPage({ params }: Props) {
         onProjectsChange={() => {}}
       />
 
-      <div className="flex flex-1 flex-col overflow-hidden">
+      <div className="flex flex-1 flex-col overflow-hidden bg-white dark:bg-zinc-950">
         <DocsTopbar workspaceId={workspaceId} />
 
         <div className="flex flex-1 overflow-hidden">
@@ -122,6 +122,6 @@ export default function DocDetailPage({ params }: Props) {
           />
         </div>
       </div>
-    </div>
+    </>
   );
 }
