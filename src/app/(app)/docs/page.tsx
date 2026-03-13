@@ -81,6 +81,7 @@ export default function DocsPage() {
     color: p.color,
     status: p.status,
     progress: (p as { progress?: number }).progress ?? 0,
+    isPrivate: p.isPrivate,
   }));
 
   const editorProjects = projects.map((p) => ({

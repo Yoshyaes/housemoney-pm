@@ -90,6 +90,7 @@ export default function DocDetailPage({ params }: Props) {
     color: p.color,
     status: p.status,
     progress: (p as { progress?: number }).progress ?? 0,
+    isPrivate: p.isPrivate,
   }));
 
   const editorProjects = projects.map((p) => ({

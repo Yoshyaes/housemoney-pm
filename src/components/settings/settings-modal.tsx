@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useUIStore } from '@/lib/stores/ui-store';
 import { trpc } from '@/lib/trpc';
-import { X, Plus, Trash2, Edit2, Check, AlertCircle, KeyRound, ChevronDown } from 'lucide-react';
+import { X, Plus, Trash2, Edit2, Check, AlertCircle, KeyRound, ChevronDown, Lock, Globe } from 'lucide-react';
 import { BRAND_AMBER } from '@/lib/constants';
 
 const PROJECT_COLORS = [
@@ -37,6 +37,7 @@ export function SettingsModal({ workspaceId }: SettingsModalProps) {
   );
   const [newProjectName, setNewProjectName] = useState('');
   const [newProjectColor, setNewProjectColor] = useState(PROJECT_COLORS[0]);
+  const [newProjectPrivate, setNewProjectPrivate] = useState(false);
   const [editingProject, setEditingProject] = useState<{ id: string; name: string } | null>(null);
   const [projectError, setProjectError] = useState('');
 
@@ -191,6 +192,21 @@ export function SettingsModal({ workspaceId }: SettingsModalProps) {
                       <span className="flex-1 text-xs text-zinc-800 dark:text-zinc-200">{project.name}</span>
                     )}
                     <span className="text-[10px] text-zinc-400">{project._count?.tasks ?? 0} tasks</span>
+                    {/* Visibility toggle */}
+                    <button
+                      onClick={() => updateProject.mutate({ id: project.id, isPrivate: !project.isPrivate })}
+                      title={project.isPrivate ? 'Private — click to make public' : 'Public — click to make private'}
+                      className={`rounded p-0.5 transition-colors ${
+                        project.isPrivate
+                          ? 'text-amber-500 hover:text-zinc-400'
+                          : 'text-zinc-300 dark:text-zinc-600 hover:text-amber-500'
+                      }`}
+                    >
+                      {project.isPrivate
+                        ? <Lock className="h-3.5 w-3.5" />
+                        : <Globe className="h-3.5 w-3.5" />
+                      }
+                    </button>
                     {editingProject?.id === project.id ? (
                       <button
                         onClick={() => updateProject.mutate({ id: project.id, name: editingProject.name })}
@@ -245,6 +261,19 @@ export function SettingsModal({ workspaceId }: SettingsModalProps) {
                     />
                   ))}
                 </div>
+                {/* Privacy toggle for new project */}
+                <button
+                  type="button"
+                  onClick={() => setNewProjectPrivate(!newProjectPrivate)}
+                  className={`flex items-center gap-2 rounded-md border px-2.5 py-1.5 text-xs transition-colors ${
+                    newProjectPrivate
+                      ? 'border-amber-300 bg-amber-50 text-amber-700 dark:border-amber-700 dark:bg-amber-900/20 dark:text-amber-400'
+                      : 'border-zinc-200 dark:border-zinc-700 text-zinc-500 dark:text-zinc-400 hover:border-zinc-300'
+                  }`}
+                >
+                  {newProjectPrivate ? <Lock className="h-3 w-3" /> : <Globe className="h-3 w-3" />}
+                  {newProjectPrivate ? 'Private (only admins & you)' : 'Public (all members)'}
+                </button>
                 {projectError && (
                   <p className="flex items-center gap-1 text-[10px] text-red-500">
                     <AlertCircle className="h-3 w-3" /> {projectError}
@@ -253,7 +282,7 @@ export function SettingsModal({ workspaceId }: SettingsModalProps) {
                 <button
                   onClick={() => {
                     if (newProjectName.trim()) {
-                      createProject.mutate({ workspaceId, name: newProjectName.trim(), color: newProjectColor });
+                      createProject.mutate({ workspaceId, name: newProjectName.trim(), color: newProjectColor, isPrivate: newProjectPrivate });
                     }
                   }}
                   disabled={!newProjectName.trim() || createProject.isPending}

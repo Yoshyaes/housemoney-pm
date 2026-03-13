@@ -128,6 +128,8 @@ export const ProjectScalarFieldEnum = {
   status: 'status',
   color: 'color',
   targetDate: 'targetDate',
+  isPrivate: 'isPrivate',
+  createdById: 'createdById',
   createdAt: 'createdAt'
 } as const
 

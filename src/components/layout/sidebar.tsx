@@ -20,6 +20,7 @@ import {
   Plus,
   BarChart2,
   BookOpen,
+  Lock,
 } from 'lucide-react';
 
 interface SavedView {
@@ -38,6 +39,7 @@ interface SidebarProps {
     color: string;
     status: string;
     progress: number;
+    isPrivate?: boolean;
   }>;
   savedViews: SavedView[];
   currentUser: {
@@ -215,7 +217,10 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
               className="h-[7px] w-[7px] flex-shrink-0 rounded-full"
               style={{ backgroundColor: project.color }}
             />
-            {project.name}
+            <span className="flex-1 truncate">{project.name}</span>
+            {project.isPrivate && (
+              <Lock className="h-2.5 w-2.5 flex-shrink-0 text-zinc-400 dark:text-zinc-500" />
+            )}
           </button>
         ))}
         {addingProject && (

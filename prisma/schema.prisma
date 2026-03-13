@@ -87,6 +87,7 @@ model User {
   actedNotifications Notification[]   @relation("actor")
   views              View[]
   documents          Document[]       @relation("DocumentAuthor")
+  createdProjects    Project[]        @relation("ProjectCreator")
 }
 
 model Workspace {
@@ -125,12 +126,15 @@ model Project {
   status      ProjectStatus @default(ACTIVE)
   color       String        @default("#1D9E75") // Hex color for project dot
   targetDate  DateTime?
+  isPrivate   Boolean       @default(false)
+  createdById String?
   createdAt   DateTime      @default(now())
 
   tasks     Task[]
   sections  Section[]
   documents Document[]
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  createdBy User?     @relation("ProjectCreator", fields: [createdById], references: [id], onDelete: SetNull)
 }
 
 model Section {
