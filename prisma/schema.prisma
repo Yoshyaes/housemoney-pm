@@ -1,0 +1,299 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Enums ───────────────────────────────────────────────
+
+enum TaskStatus {
+  BACKLOG
+  TODO
+  IN_PROGRESS
+  IN_REVIEW
+  DONE
+  CANCELLED
+}
+
+enum Priority {
+  URGENT
+  HIGH
+  MEDIUM
+  LOW
+  NONE
+}
+
+enum ProjectStatus {
+  ACTIVE
+  PAUSED
+  COMPLETED
+}
+
+enum Role {
+  ADMIN
+  MEMBER
+}
+
+enum ViewScope {
+  PERSONAL
+  WORKSPACE
+}
+
+enum NotificationType {
+  ASSIGNED
+  MENTIONED
+  COMMENT
+  STATUS_CHANGE
+  DEPENDENCY_RESOLVED
+}
+
+enum PRStatus {
+  OPEN
+  MERGED
+  CLOSED
+}
+
+// ─── Models ──────────────────────────────────────────────
+
+model User {
+  id          String   @id // Matches Supabase auth.users.id
+  email       String   @unique
+  name        String
+  avatarUrl   String?
+  avatarColor String   @default("#BA7517") // Hex color for initials avatar
+  createdAt   DateTime @default(now())
+
+  memberships        WorkspaceMember[]
+  assignedTasks      Task[]           @relation("assignee")
+  createdTasks       Task[]           @relation("creator")
+  collaboratingTasks TaskCollaborator[]
+  uploadedAttachments TaskAttachment[]
+  comments           Comment[]
+  activities         Activity[]
+  notifications      Notification[]   @relation("recipient")
+  actedNotifications Notification[]   @relation("actor")
+  views              View[]
+}
+
+model Workspace {
+  id          String   @id @default(cuid())
+  name        String
+  slug        String   @unique
+  taskCounter Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  projects Project[]
+  labels   Label[]
+  members  WorkspaceMember[]
+  views    View[]
+  tasks    Task[]
+}
+
+model WorkspaceMember {
+  id          String   @id @default(cuid())
+  workspaceId String
+  userId      String
+  role        Role     @default(MEMBER)
+  createdAt   DateTime @default(now())
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([workspaceId, userId])
+}
+
+model Project {
+  id          String        @id @default(cuid())
+  workspaceId String
+  name        String
+  description String?
+  status      ProjectStatus @default(ACTIVE)
+  color       String        @default("#1D9E75") // Hex color for project dot
+  targetDate  DateTime?
+  createdAt   DateTime      @default(now())
+
+  tasks     Task[]
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+}
+
+model Task {
+  id          String     @id @default(cuid())
+  identifier  String     @unique // e.g. "HM-42"
+  title       String
+  description String?    // Markdown
+  status      TaskStatus @default(BACKLOG)
+  priority    Priority   @default(NONE)
+  workspaceId String
+  projectId   String?
+  assigneeId  String?
+  parentId    String?
+  dueDate     DateTime?
+  createdById String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  workspace     Workspace    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  project       Project?     @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  assignee      User?        @relation("assignee", fields: [assigneeId], references: [id], onDelete: SetNull)
+  createdBy     User         @relation("creator", fields: [createdById], references: [id])
+  parent        Task?        @relation("subtasks", fields: [parentId], references: [id], onDelete: SetNull)
+  subtasks      Task[]       @relation("subtasks")
+  labels        TaskLabel[]
+  collaborators TaskCollaborator[]
+  attachments   TaskAttachment[]
+  comments      Comment[]
+  activities    Activity[]
+  blocking      Dependency[] @relation("blocking")
+  blockedBy     Dependency[] @relation("blockedBy")
+  notifications Notification[]
+  githubPRs     GitHubPR[]
+}
+
+model TaskAttachment {
+  id           String   @id @default(cuid())
+  taskId       String
+  name         String
+  url          String
+  size         Int?
+  mimeType     String?
+  uploadedById String
+  createdAt    DateTime @default(now())
+
+  task       Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  uploadedBy User @relation(fields: [uploadedById], references: [id])
+}
+
+model TaskCollaborator {
+  taskId    String
+  userId    String
+  createdAt DateTime @default(now())
+
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([taskId, userId])
+}
+
+model Dependency {
+  id             String   @id @default(cuid())
+  blockingTaskId String
+  blockedTaskId  String
+  createdAt      DateTime @default(now())
+
+  blockingTask Task @relation("blocking", fields: [blockingTaskId], references: [id], onDelete: Cascade)
+  blockedTask  Task @relation("blockedBy", fields: [blockedTaskId], references: [id], onDelete: Cascade)
+
+  @@unique([blockingTaskId, blockedTaskId])
+}
+
+model Comment {
+  id          String   @id @default(cuid())
+  taskId      String
+  authorId    String
+  body        String   // Markdown
+  attachments Json?    // [{ name, url, size, mimeType }]
+  reactions   Json?    // [{ emoji, userIds[] }]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  task          Task           @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  author        User           @relation(fields: [authorId], references: [id])
+  notifications Notification[]
+}
+
+model Label {
+  id          String   @id @default(cuid())
+  workspaceId String
+  name        String
+  color       String   // hex text color
+  bgColor     String   // rgba background color
+  createdAt   DateTime @default(now())
+
+  workspace Workspace  @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  tasks     TaskLabel[]
+
+  @@unique([workspaceId, name])
+}
+
+model TaskLabel {
+  taskId  String
+  labelId String
+
+  task  Task  @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  label Label @relation(fields: [labelId], references: [id], onDelete: Cascade)
+
+  @@id([taskId, labelId])
+}
+
+model Activity {
+  id        String   @id @default(cuid())
+  taskId    String
+  userId    String
+  action    String   // "created", "status_changed", "assigned", "priority_changed", etc.
+  field     String?
+  oldValue  String?
+  newValue  String?
+  createdAt DateTime @default(now())
+
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id])
+}
+
+model View {
+  id          String    @id @default(cuid())
+  workspaceId String
+  ownerId     String
+  name        String
+  scope       ViewScope @default(PERSONAL)
+  filters     Json      // [{ field, operator, value }]
+  sort        Json      // [{ field, direction }]
+  groupBy     String?
+  swimlaneBy  String?
+  displayType String    // "board" | "list" | "timeline"
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  owner     User      @relation(fields: [ownerId], references: [id])
+}
+
+model Notification {
+  id           String           @id @default(cuid())
+  userId       String
+  type         NotificationType
+  taskId       String?
+  commentId    String?
+  actorId      String
+  message      String
+  read         Boolean          @default(false)
+  snoozedUntil DateTime?
+  archivedAt   DateTime?
+  createdAt    DateTime         @default(now())
+
+  user    User     @relation("recipient", fields: [userId], references: [id], onDelete: Cascade)
+  actor   User     @relation("actor", fields: [actorId], references: [id])
+  task    Task?    @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  comment Comment? @relation(fields: [commentId], references: [id], onDelete: SetNull)
+}
+
+model GitHubPR {
+  id           String   @id @default(cuid())
+  taskId       String
+  githubId     Int      @unique // GitHub's globally unique PR id
+  number       Int              // PR number within the repo
+  repo         String           // "owner/repo"
+  title        String
+  url          String           // HTML URL to the PR
+  status       PRStatus @default(OPEN)
+  authorLogin  String           // GitHub username
+  authorAvatar String?          // GitHub avatar URL
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  task Task @relation(fields: [taskId], references: [id], onDelete: Cascade)
+
+  @@index([taskId])
+}

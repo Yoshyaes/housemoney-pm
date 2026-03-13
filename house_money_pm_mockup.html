@@ -1,0 +1,492 @@
+
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+.pm{display:flex;height:600px;overflow:hidden;border:0.5px solid var(--color-border-secondary);border-radius:var(--border-radius-lg);font-family:var(--font-sans);font-size:13px;background:var(--color-background-primary)}
+.sidebar{width:212px;min-width:212px;background:var(--color-background-secondary);border-right:0.5px solid var(--color-border-tertiary);display:flex;flex-direction:column;overflow:hidden;flex-shrink:0}
+.sb-logo{padding:12px 14px;display:flex;align-items:center;gap:9px;border-bottom:0.5px solid var(--color-border-tertiary)}
+.logomark{width:26px;height:26px;border-radius:7px;background:#BA7517;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:500;color:#fff;flex-shrink:0;letter-spacing:-.3px}
+.sb-scroll{flex:1;overflow-y:auto;padding:8px}
+.sb-sec-label{font-size:10px;color:var(--color-text-tertiary);padding:10px 8px 4px;letter-spacing:.06em;text-transform:uppercase}
+.ni{display:flex;align-items:center;gap:8px;padding:5px 8px;border-radius:6px;cursor:pointer;color:var(--color-text-secondary);font-size:12px;user-select:none}
+.ni:hover{background:var(--color-background-primary);color:var(--color-text-primary)}
+.ni.active{background:var(--color-background-primary);color:var(--color-text-primary);font-weight:500}
+.ni-icon{width:14px;height:14px;flex-shrink:0}
+.ni-badge{margin-left:auto;min-width:17px;height:17px;border-radius:9px;padding:0 4px;font-size:10px;background:var(--color-border-tertiary);color:var(--color-text-tertiary);display:flex;align-items:center;justify-content:center}
+.pdot{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.sb-bottom{padding:10px 14px;border-top:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;gap:8px;font-size:12px;color:var(--color-text-secondary)}
+.av{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:500;flex-shrink:0}
+.main{flex:1;display:flex;flex-direction:column;min-width:0;overflow:hidden}
+.topbar{padding:10px 16px;border-bottom:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;gap:10px;flex-shrink:0}
+.page-title{font-weight:500;font-size:14px;color:var(--color-text-primary)}
+.vtabs{display:flex;gap:1px;background:var(--color-background-secondary);border-radius:6px;padding:2px}
+.vt{padding:4px 11px;border-radius:5px;font-size:12px;cursor:pointer;color:var(--color-text-secondary);user-select:none}
+.vt.active{background:var(--color-background-primary);color:var(--color-text-primary);font-weight:500}
+.btn-new{margin-left:auto;padding:5px 12px;border-radius:var(--border-radius-md);border:0.5px solid #BA7517;background:transparent;color:#BA7517;font-size:12px;font-weight:500;cursor:pointer;font-family:var(--font-sans)}
+.btn-new:hover{background:#BA7517;color:#fff}
+.fbar{padding:7px 16px;border-bottom:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;gap:6px;flex-shrink:0;flex-wrap:wrap}
+.fbar-label{font-size:11px;color:var(--color-text-tertiary)}
+.chip{display:flex;align-items:center;gap:3px;padding:3px 9px;border-radius:20px;border:0.5px solid var(--color-border-secondary);font-size:11px;color:var(--color-text-secondary);cursor:pointer;user-select:none}
+.chip:hover{border-color:var(--color-border-primary);color:var(--color-text-primary)}
+.chip.active{background:rgba(186,117,23,.1);color:#BA7517;border-color:rgba(186,117,23,.35)}
+.fbar-right{margin-left:auto;display:flex;gap:6px}
+.board-wrap{flex:1;overflow:auto;min-height:0}
+.board{min-width:820px}
+.col-heads{display:grid;grid-template-columns:140px repeat(5,1fr);position:sticky;top:0;z-index:10;background:var(--color-background-primary);border-bottom:0.5px solid var(--color-border-tertiary)}
+.ch-space{padding:9px 12px}
+.ch{padding:9px 10px;border-left:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;gap:5px;font-size:11px;font-weight:500;color:var(--color-text-secondary)}
+.ch-cnt{font-size:10px;background:var(--color-background-secondary);padding:1px 5px;border-radius:8px;margin-left:auto;color:var(--color-text-tertiary)}
+.swim{display:grid;grid-template-columns:140px repeat(5,1fr);border-bottom:0.5px solid var(--color-border-tertiary)}
+.swim-lbl{padding:10px;display:flex;align-items:flex-start;gap:7px;border-right:0.5px solid var(--color-border-tertiary);cursor:pointer}
+.swim-info{min-width:0}
+.swim-name{font-size:11px;font-weight:500;color:var(--color-text-primary)}
+.swim-role{font-size:10px;color:var(--color-text-tertiary);margin-top:1px}
+.swim-cell{padding:7px;border-left:0.5px solid var(--color-border-tertiary);display:flex;flex-direction:column;gap:5px;min-height:100px}
+.tc{background:var(--color-background-primary);border:0.5px solid var(--color-border-tertiary);border-radius:6px;padding:7px 9px;cursor:pointer;border-left-width:2.5px;transition:border-color .12s}
+.tc:hover{border-color:var(--color-border-primary);border-left-color:inherit}
+.tc.sel{border-color:var(--color-border-primary);border-left-color:inherit;box-shadow:none}
+.tc-id{font-size:9px;color:var(--color-text-tertiary);margin-bottom:2px}
+.tc-title{font-size:11px;color:var(--color-text-primary);line-height:1.4;margin-bottom:5px}
+.tc-meta{display:flex;align-items:center;gap:3px;flex-wrap:wrap}
+.lp{font-size:9px;padding:1px 5px;border-radius:8px}
+.dep-b{font-size:9px;padding:1px 5px;border-radius:8px;background:rgba(226,75,74,.12);color:#A32D2D;display:flex;align-items:center;gap:2px}
+.av-sm{width:16px;height:16px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:500;margin-left:auto;flex-shrink:0}
+.add-t{display:flex;align-items:center;gap:4px;padding:3px 5px;color:var(--color-text-tertiary);font-size:11px;cursor:pointer;border-radius:5px;width:fit-content}
+.add-t:hover{color:var(--color-text-secondary);background:var(--color-background-secondary)}
+.list-view{flex:1;overflow:auto}
+.lh{display:grid;grid-template-columns:24px 1fr 100px 90px 80px 100px;gap:0;padding:7px 16px;border-bottom:0.5px solid var(--color-border-tertiary);font-size:10px;color:var(--color-text-tertiary);font-weight:500;position:sticky;top:0;background:var(--color-background-primary)}
+.lr{display:grid;grid-template-columns:24px 1fr 100px 90px 80px 100px;gap:0;padding:7px 16px;border-bottom:0.5px solid var(--color-border-tertiary);align-items:center;font-size:12px;cursor:pointer}
+.lr:hover{background:var(--color-background-secondary)}
+.sp{font-size:10px;padding:2px 7px;border-radius:9px}
+.pdot-s{width:7px;height:7px;border-radius:50%;flex-shrink:0}
+.dp{width:360px;min-width:360px;border-left:0.5px solid var(--color-border-tertiary);display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;background:var(--color-background-primary)}
+.dp-head{padding:11px 14px;border-bottom:0.5px solid var(--color-border-tertiary);display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.dp-id{font-size:10px;color:var(--color-text-tertiary)}
+.dp-close{cursor:pointer;color:var(--color-text-tertiary);font-size:18px;line-height:1;padding:2px 4px;border-radius:4px}
+.dp-close:hover{background:var(--color-background-secondary);color:var(--color-text-primary)}
+.dp-body{flex:1;overflow-y:auto;padding:14px}
+.dp-title{font-size:15px;font-weight:500;color:var(--color-text-primary);margin-bottom:14px;line-height:1.4}
+.dp-grid{display:grid;grid-template-columns:80px 1fr;gap:7px 10px;margin-bottom:16px}
+.dp-lbl{font-size:11px;color:var(--color-text-tertiary);line-height:2;align-self:center}
+.dp-val{font-size:12px;color:var(--color-text-primary);display:flex;align-items:center;gap:5px}
+.dp-sec{font-size:11px;font-weight:500;color:var(--color-text-secondary);margin-bottom:8px;margin-top:4px}
+.dp-desc{font-size:12px;color:var(--color-text-secondary);line-height:1.6;margin-bottom:16px;padding:8px;background:var(--color-background-secondary);border-radius:5px}
+.dep-item{display:flex;align-items:center;gap:7px;padding:6px 8px;border:0.5px solid var(--color-border-tertiary);border-radius:6px;margin-bottom:5px;font-size:11px}
+.cm-list{margin-top:8px}
+.cm{padding:8px 0;border-bottom:0.5px solid var(--color-border-tertiary)}
+.cm-top{display:flex;align-items:center;gap:6px;margin-bottom:3px}
+.cm-author{font-size:11px;font-weight:500;color:var(--color-text-primary)}
+.cm-time{font-size:10px;color:var(--color-text-tertiary)}
+.cm-body{font-size:12px;color:var(--color-text-secondary);line-height:1.5}
+.dp-footer{padding:10px 14px;border-top:0.5px solid var(--color-border-tertiary);flex-shrink:0}
+.cm-input{width:100%;border:0.5px solid var(--color-border-secondary);border-radius:6px;padding:7px 10px;font-size:12px;background:var(--color-background-primary);color:var(--color-text-primary);font-family:var(--font-sans);resize:none;outline:none}
+.cm-input:focus{border-color:var(--color-border-primary)}
+</style>
+
+<div class="pm" id="pm">
+
+<aside class="sidebar">
+  <div class="sb-logo">
+    <div class="logomark">HM</div>
+    <span style="font-weight:500;font-size:14px;color:var(--color-text-primary)">House Money</span>
+  </div>
+  <div class="sb-scroll">
+    <div class="sb-sec-label">Workspace</div>
+    <div class="ni active" onclick="switchView('board',this)">
+      <svg class="ni-icon" viewBox="0 0 14 14" fill="none"><rect x="1" y="1" width="5" height="12" rx="1" fill="currentColor" opacity=".5"/><rect x="8" y="1" width="5" height="7" rx="1" fill="currentColor"/><rect x="8" y="10" width="5" height="3" rx="1" fill="currentColor" opacity=".5"/></svg>
+      Board
+    </div>
+    <div class="ni" onclick="switchView('list',this)">
+      <svg class="ni-icon" viewBox="0 0 14 14" fill="none"><rect x="1" y="2" width="12" height="1.5" rx=".75" fill="currentColor"/><rect x="1" y="6" width="12" height="1.5" rx=".75" fill="currentColor"/><rect x="1" y="10" width="8" height="1.5" rx=".75" fill="currentColor"/></svg>
+      List
+    </div>
+    <div class="ni">
+      <svg class="ni-icon" viewBox="0 0 14 14" fill="none"><rect x="1" y="3" width="12" height="1.5" rx=".75" fill="currentColor" opacity=".4"/><rect x="1" y="6.5" width="8" height="1.5" rx=".75" fill="currentColor"/><rect x="1" y="10" width="10" height="1.5" rx=".75" fill="currentColor" opacity=".4"/></svg>
+      Timeline
+    </div>
+    <div class="ni">
+      <svg class="ni-icon" viewBox="0 0 14 14" fill="none"><path d="M7 1.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM7 4v3.5l2 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg>
+      Inbox
+      <span class="ni-badge" style="background:rgba(226,75,74,.12);color:#A32D2D">3</span>
+    </div>
+    <div class="sb-sec-label">Projects</div>
+    <div class="ni active">
+      <span class="pdot" style="background:#1D9E75"></span>
+      DocuForge API
+    </div>
+    <div class="ni">
+      <span class="pdot" style="background:#BA7517"></span>
+      Property Pilot
+    </div>
+    <div class="ni">
+      <span class="pdot" style="background:#7F77DD"></span>
+      HM App
+    </div>
+    <div class="sb-sec-label">Saved views</div>
+    <div class="ni">
+      <svg class="ni-icon" viewBox="0 0 14 14" fill="none"><circle cx="7" cy="7" r="5.5" stroke="currentColor" stroke-width="1.2"/><path d="M4.5 7h5M7 4.5v5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      Blocked tasks
+    </div>
+    <div class="ni">
+      <svg class="ni-icon" viewBox="0 0 14 14" fill="none"><rect x="1" y="2" width="12" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M1 5h12" stroke="currentColor" stroke-width="1.2"/></svg>
+      This sprint
+    </div>
+    <div class="ni">
+      <svg class="ni-icon" viewBox="0 0 14 14" fill="none"><circle cx="5" cy="5" r="3.5" stroke="currentColor" stroke-width="1.2" fill="none"/><path d="M7.5 7.5L12 12" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+      Sarah's work
+    </div>
+  </div>
+  <div class="sb-bottom">
+    <div class="av" style="background:rgba(186,117,23,.15);color:#BA7517">FT</div>
+    <span>Fred T.</span>
+    <span style="margin-left:auto;color:var(--color-text-tertiary);font-size:16px;cursor:pointer">&#9881;</span>
+  </div>
+</aside>
+
+<div class="main">
+  <div class="topbar">
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="color:var(--color-text-tertiary)"><rect x="1" y="2" width="12" height="10" rx="1.5" stroke="currentColor" stroke-width="1.2" fill="none"/></svg>
+    <span class="page-title">DocuForge API</span>
+    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="color:var(--color-text-tertiary)"><path d="M4 5l2 2 2-2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg>
+    <div class="vtabs" id="vtabs">
+      <div class="vt active" onclick="switchView('board',null)">Board</div>
+      <div class="vt" onclick="switchView('list',null)">List</div>
+      <div class="vt">Timeline</div>
+    </div>
+    <button class="btn-new" onclick="openNew()">+ New task</button>
+  </div>
+  <div class="fbar">
+    <span class="fbar-label">Swimlane</span>
+    <div class="chip active">Assignee</div>
+    <div class="chip">Priority</div>
+    <div class="chip">Label</div>
+    <div class="fbar-right">
+      <div class="chip">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 3h8M2.5 5.5h5M4 8h2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        Filter
+      </div>
+      <div class="chip">
+        <svg width="10" height="10" viewBox="0 0 10 10" fill="none"><path d="M1 2l4 4 4-4" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" fill="none"/></svg>
+        Sort
+      </div>
+    </div>
+  </div>
+
+  <div id="view-board" class="board-wrap">
+    <div class="board">
+      <div class="col-heads">
+        <div class="ch-space"></div>
+        <div class="ch"><span style="width:7px;height:7px;border-radius:50%;background:#888780;flex-shrink:0;display:inline-block"></span>Backlog<span class="ch-cnt">4</span></div>
+        <div class="ch"><span style="width:7px;height:7px;border-radius:50%;background:#378ADD;flex-shrink:0;display:inline-block"></span>Todo<span class="ch-cnt">5</span></div>
+        <div class="ch"><span style="width:7px;height:7px;border-radius:50%;background:#EF9F27;flex-shrink:0;display:inline-block"></span>In progress<span class="ch-cnt">5</span></div>
+        <div class="ch"><span style="width:7px;height:7px;border-radius:50%;background:#7F77DD;flex-shrink:0;display:inline-block"></span>In review<span class="ch-cnt">3</span></div>
+        <div class="ch"><span style="width:7px;height:7px;border-radius:50%;background:#639922;flex-shrink:0;display:inline-block"></span>Done<span class="ch-cnt">6</span></div>
+      </div>
+
+      <div class="swim">
+        <div class="swim-lbl">
+          <div class="av" style="background:rgba(186,117,23,.15);color:#BA7517;width:24px;height:24px;font-size:9px">FT</div>
+          <div class="swim-info"><div class="swim-name">Fred</div><div class="swim-role">PM</div></div>
+        </div>
+        <div class="swim-cell">
+          <div class="tc" style="border-left-color:#EF9F27" onclick="openTask('HM-08','PDF export config','Add user-configurable margins, headers, and footers to the PDF export config endpoint. Referenced in the tenant portal sprint.','In Progress','High','Fred','Jun 18','Feature')">
+            <div class="tc-id">HM-08</div>
+            <div class="tc-title">PDF export config</div>
+            <div class="tc-meta"><span class="lp" style="background:rgba(53,138,221,.12);color:#185FA5">Feature</span><div class="av-sm" style="background:rgba(186,117,23,.15);color:#BA7517">FT</div></div>
+          </div>
+          <div class="add-t">+ Add task</div>
+        </div>
+        <div class="swim-cell">
+          <div class="tc" style="border-left-color:#EF9F27" onclick="openTask('HM-12','Webhook retry logic','Implement exponential backoff for failed webhook deliveries with configurable max retries. Required before beta launch.','Todo','High','Fred','Jun 20','Infra')">
+            <div class="tc-id">HM-12</div>
+            <div class="tc-title">Webhook retry logic</div>
+            <div class="tc-meta"><span class="lp" style="background:rgba(29,158,117,.12);color:#0F6E56">Infra</span><div class="av-sm" style="background:rgba(186,117,23,.15);color:#BA7517">FT</div></div>
+          </div>
+          <div class="add-t">+ Add task</div>
+        </div>
+        <div class="swim-cell">
+          <div class="tc" style="border-left-color:#E24B4A" onclick="openTask('HM-18','Stripe Connect integration','Full Stripe Connect flow: create connected accounts, handle webhooks for payment events, payout scheduling. P0 for monetization.','In Progress','Urgent','Fred','Jun 15','Feature')">
+            <div class="tc-id">HM-18</div>
+            <div class="tc-title">Stripe Connect integration</div>
+            <div class="tc-meta"><span class="lp" style="background:rgba(53,138,221,.12);color:#185FA5">Feature</span><div class="av-sm" style="background:rgba(186,117,23,.15);color:#BA7517">FT</div></div>
+          </div>
+          <div class="add-t">+ Add task</div>
+        </div>
+        <div class="swim-cell"><div class="add-t">+ Add task</div></div>
+        <div class="swim-cell">
+          <div class="tc" style="border-left-color:transparent;opacity:.7">
+            <div class="tc-id">HM-04</div>
+            <div class="tc-title">API rate limit docs</div>
+            <div class="tc-meta"><span class="lp" style="background:rgba(127,119,221,.12);color:#534AB7">Docs</span><div class="av-sm" style="background:rgba(186,117,23,.15);color:#BA7517">FT</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="swim">
+        <div class="swim-lbl">
+          <div class="av" style="background:rgba(53,138,221,.15);color:#185FA5;width:24px;height:24px;font-size:9px">SE</div>
+          <div class="swim-info"><div class="swim-name">Sarah</div><div class="swim-role">Eng</div></div>
+        </div>
+        <div class="swim-cell">
+          <div class="tc" style="border-left-color:#888780">
+            <div class="tc-id">HM-21</div>
+            <div class="tc-title">Rate limit dashboard</div>
+            <div class="tc-meta"><span class="lp" style="background:rgba(53,138,221,.12);color:#185FA5">Feature</span><div class="av-sm" style="background:rgba(53,138,221,.15);color:#185FA5">SE</div></div>
+          </div>
+          <div class="add-t">+ Add task</div>
+        </div>
+        <div class="swim-cell">
+          <div class="tc" style="border-left-color:#EF9F27" onclick="openTask('HM-24','PDF merge endpoint','POST /v1/pdfs/merge — accepts array of document IDs and merge config. Blocked on auth middleware completion.','Todo','High','Sarah','Jun 19','Feature')">
+            <div class="tc-id">HM-24</div>
+            <div class="tc-title">PDF merge endpoint</div>
+            <div class="tc-meta"><span class="lp" style="background:rgba(53,138,221,.12);color:#185FA5">Feature</span><span class="dep-b">&#9679; blocked</span><div class="av-sm" style="background:rgba(53,138,221,.15);color:#185FA5">SE</div></div>
+          </div>
+          <div class="add-t">+ Add task</div>
+        </div>
+        <div class="swim-cell">
+          <div class="tc" style="border-left-color:#378ADD" onclick="openTask('HM-27','Auth token refresh','Sliding session refresh logic — re-auth on token expiry without logging user out. Covers edge cases for long-running PDF jobs.','In Progress','Medium','Sarah','Jun 17','Infra')">
+            <div class="tc-id">HM-27</div>
+            <div class="tc-title">Auth token refresh</div>
+            <div class="tc-meta"><span class="lp" style="background:rgba(29,158,117,.12);color:#0F6E56">Infra</span><div class="av-sm" style="background:rgba(53,138,221,.15);color:#185FA5">SE</div></div>
+          </div>
+          <div class="add-t">+ Add task</div>
+        </div>
+        <div class="swim-cell"><div class="add-t">+ Add task</div></div>
+        <div class="swim-cell">
+          <div class="tc" style="border-left-color:transparent;opacity:.7">
+            <div class="tc-id">HM-11</div>
+            <div class="tc-title">Base template system</div>
+            <div class="tc-meta"><span class="lp" style="background:rgba(29,158,117,.12);color:#0F6E56">Infra</span><div class="av-sm" style="background:rgba(53,138,221,.15);color:#185FA5">SE</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="swim">
+        <div class="swim-lbl">
+          <div class="av" style="background:rgba(29,158,117,.15);color:#0F6E56;width:24px;height:24px;font-size:9px">MK</div>
+          <div class="swim-info"><div class="swim-name">Marcus</div><div class="swim-role">Eng</div></div>
+        </div>
+        <div class="swim-cell"><div class="add-t">+ Add task</div></div>
+        <div class="swim-cell"><div class="add-t">+ Add task</div></div>
+        <div class="swim-cell">
+          <div class="tc" style="border-left-color:#EF9F27" onclick="openTask('HM-29','CI/CD pipeline','GitHub Actions: lint + typecheck + Prisma migrate on PR, auto-deploy to Vercel on merge to main. Staging env on preview URLs.','In Progress','High','Marcus','Jun 14','Infra')">
+            <div class="tc-id">HM-29</div>
+            <div class="tc-title">CI/CD pipeline</div>
+            <div class="tc-meta"><span class="lp" style="background:rgba(29,158,117,.12);color:#0F6E56">Infra</span><div class="av-sm" style="background:rgba(29,158,117,.15);color:#0F6E56">MK</div></div>
+          </div>
+          <div class="tc" style="border-left-color:#378ADD">
+            <div class="tc-id">HM-35</div>
+            <div class="tc-title">Tenant portal API</div>
+            <div class="tc-meta"><span class="lp" style="background:rgba(53,138,221,.12);color:#185FA5">Feature</span><div class="av-sm" style="background:rgba(29,158,117,.15);color:#0F6E56">MK</div></div>
+          </div>
+        </div>
+        <div class="swim-cell">
+          <div class="tc" style="border-left-color:#EF9F27" onclick="openTask('HM-15','API auth middleware','JWT verification middleware with workspace-scoped RLS enforcement. Blocks HM-24 (PDF merge endpoint).','In Review','High','Marcus','Jun 13','Infra')">
+            <div class="tc-id">HM-15</div>
+            <div class="tc-title">API auth middleware</div>
+            <div class="tc-meta"><span class="lp" style="background:rgba(29,158,117,.12);color:#0F6E56">Infra</span><div class="av-sm" style="background:rgba(29,158,117,.15);color:#0F6E56">MK</div></div>
+          </div>
+        </div>
+        <div class="swim-cell">
+          <div class="tc" style="border-left-color:transparent;opacity:.7">
+            <div class="tc-id">HM-07</div>
+            <div class="tc-title">DB schema v1</div>
+            <div class="tc-meta"><span class="lp" style="background:rgba(29,158,117,.12);color:#0F6E56">Infra</span><div class="av-sm" style="background:rgba(29,158,117,.15);color:#0F6E56">MK</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="swim">
+        <div class="swim-lbl">
+          <div class="av" style="background:rgba(212,83,126,.12);color:#99355A;width:24px;height:24px;font-size:9px">PL</div>
+          <div class="swim-info"><div class="swim-name">Priya</div><div class="swim-role">Design</div></div>
+        </div>
+        <div class="swim-cell"><div class="add-t">+ Add task</div></div>
+        <div class="swim-cell">
+          <div class="tc" style="border-left-color:#378ADD" onclick="openTask('HM-33','Mobile nav redesign','Redesign bottom navigation for the HM App. Must support 5 primary tabs with clear active states. Figma file linked.','Todo','Medium','Priya','Jun 22','Design')">
+            <div class="tc-id">HM-33</div>
+            <div class="tc-title">Mobile nav redesign</div>
+            <div class="tc-meta"><span class="lp" style="background:rgba(212,83,126,.12);color:#99355A">Design</span><div class="av-sm" style="background:rgba(212,83,126,.12);color:#99355A">PL</div></div>
+          </div>
+          <div class="add-t">+ Add task</div>
+        </div>
+        <div class="swim-cell"><div class="add-t">+ Add task</div></div>
+        <div class="swim-cell">
+          <div class="tc" style="border-left-color:#EF9F27" onclick="openTask('HM-31','Component library setup','shadcn/ui base + House Money design tokens (colors, spacing, type). Covers all P0 components for DocuForge dashboard.','In Review','High','Priya','Jun 13','Design')">
+            <div class="tc-id">HM-31</div>
+            <div class="tc-title">Component library setup</div>
+            <div class="tc-meta"><span class="lp" style="background:rgba(212,83,126,.12);color:#99355A">Design</span><div class="av-sm" style="background:rgba(212,83,126,.12);color:#99355A">PL</div></div>
+          </div>
+        </div>
+        <div class="swim-cell">
+          <div class="tc" style="border-left-color:transparent;opacity:.7">
+            <div class="tc-id">HM-06</div>
+            <div class="tc-title">Brand system v1</div>
+            <div class="tc-meta"><span class="lp" style="background:rgba(212,83,126,.12);color:#99355A">Design</span><div class="av-sm" style="background:rgba(212,83,126,.12);color:#99355A">PL</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="view-list" class="list-view" style="display:none">
+    <div class="lh"><div></div><div>Task</div><div>Status</div><div>Assignee</div><div>Priority</div><div>Due date</div></div>
+    <div class="lr" onclick="openTask('HM-18','Stripe Connect integration','Full Stripe Connect flow: create connected accounts, handle webhooks for payment events, payout scheduling. P0 for monetization.','In Progress','Urgent','Fred','Jun 15','Feature')">
+      <div class="pdot-s" style="background:#E24B4A"></div>
+      <div><span style="font-size:10px;color:var(--color-text-tertiary);margin-right:6px">HM-18</span>Stripe Connect integration</div>
+      <div><span class="sp" style="background:rgba(239,159,39,.12);color:#854F0B">In progress</span></div>
+      <div style="display:flex;align-items:center;gap:5px"><div class="av-sm" style="background:rgba(186,117,23,.15);color:#BA7517;width:18px;height:18px;font-size:8px">FT</div>Fred</div>
+      <div style="color:#E24B4A;font-size:11px">Urgent</div>
+      <div style="color:var(--color-text-tertiary);font-size:11px">Jun 15</div>
+    </div>
+    <div class="lr" onclick="openTask('HM-15','API auth middleware','JWT verification middleware with workspace-scoped RLS enforcement. Blocks HM-24 (PDF merge endpoint).','In Review','High','Marcus','Jun 13','Infra')">
+      <div class="pdot-s" style="background:#EF9F27"></div>
+      <div><span style="font-size:10px;color:var(--color-text-tertiary);margin-right:6px">HM-15</span>API auth middleware</div>
+      <div><span class="sp" style="background:rgba(127,119,221,.12);color:#3C3489">In review</span></div>
+      <div style="display:flex;align-items:center;gap:5px"><div class="av-sm" style="background:rgba(29,158,117,.15);color:#0F6E56;width:18px;height:18px;font-size:8px">MK</div>Marcus</div>
+      <div style="color:#EF9F27;font-size:11px">High</div>
+      <div style="color:var(--color-text-tertiary);font-size:11px">Jun 13</div>
+    </div>
+    <div class="lr" onclick="openTask('HM-31','Component library setup','shadcn/ui base + House Money design tokens (colors, spacing, type). Covers all P0 components for DocuForge dashboard.','In Review','High','Priya','Jun 13','Design')">
+      <div class="pdot-s" style="background:#EF9F27"></div>
+      <div><span style="font-size:10px;color:var(--color-text-tertiary);margin-right:6px">HM-31</span>Component library setup</div>
+      <div><span class="sp" style="background:rgba(127,119,221,.12);color:#3C3489">In review</span></div>
+      <div style="display:flex;align-items:center;gap:5px"><div class="av-sm" style="background:rgba(212,83,126,.12);color:#99355A;width:18px;height:18px;font-size:8px">PL</div>Priya</div>
+      <div style="color:#EF9F27;font-size:11px">High</div>
+      <div style="color:var(--color-text-tertiary);font-size:11px">Jun 13</div>
+    </div>
+    <div class="lr" onclick="openTask('HM-27','Auth token refresh','Sliding session refresh logic — re-auth on token expiry without logging user out. Covers edge cases for long-running PDF jobs.','In Progress','Medium','Sarah','Jun 17','Infra')">
+      <div class="pdot-s" style="background:#378ADD"></div>
+      <div><span style="font-size:10px;color:var(--color-text-tertiary);margin-right:6px">HM-27</span>Auth token refresh</div>
+      <div><span class="sp" style="background:rgba(239,159,39,.12);color:#854F0B">In progress</span></div>
+      <div style="display:flex;align-items:center;gap:5px"><div class="av-sm" style="background:rgba(53,138,221,.15);color:#185FA5;width:18px;height:18px;font-size:8px">SE</div>Sarah</div>
+      <div style="color:#378ADD;font-size:11px">Medium</div>
+      <div style="color:var(--color-text-tertiary);font-size:11px">Jun 17</div>
+    </div>
+    <div class="lr" onclick="openTask('HM-24','PDF merge endpoint','POST /v1/pdfs/merge — accepts array of document IDs and merge config. Blocked on auth middleware completion.','Todo','High','Sarah','Jun 19','Feature')">
+      <div class="pdot-s" style="background:#EF9F27"></div>
+      <div><span style="font-size:10px;color:var(--color-text-tertiary);margin-right:6px">HM-24</span>PDF merge endpoint <span class="dep-b" style="display:inline-flex;margin-left:4px">blocked</span></div>
+      <div><span class="sp" style="background:rgba(55,138,221,.12);color:#185FA5">Todo</span></div>
+      <div style="display:flex;align-items:center;gap:5px"><div class="av-sm" style="background:rgba(53,138,221,.15);color:#185FA5;width:18px;height:18px;font-size:8px">SE</div>Sarah</div>
+      <div style="color:#EF9F27;font-size:11px">High</div>
+      <div style="color:var(--color-text-tertiary);font-size:11px">Jun 19</div>
+    </div>
+    <div class="lr" onclick="openTask('HM-29','CI/CD pipeline','GitHub Actions: lint + typecheck + Prisma migrate on PR, auto-deploy to Vercel on merge to main. Staging env on preview URLs.','In Progress','High','Marcus','Jun 14','Infra')">
+      <div class="pdot-s" style="background:#EF9F27"></div>
+      <div><span style="font-size:10px;color:var(--color-text-tertiary);margin-right:6px">HM-29</span>CI/CD pipeline</div>
+      <div><span class="sp" style="background:rgba(239,159,39,.12);color:#854F0B">In progress</span></div>
+      <div style="display:flex;align-items:center;gap:5px"><div class="av-sm" style="background:rgba(29,158,117,.15);color:#0F6E56;width:18px;height:18px;font-size:8px">MK</div>Marcus</div>
+      <div style="color:#EF9F27;font-size:11px">High</div>
+      <div style="color:var(--color-text-tertiary);font-size:11px">Jun 14</div>
+    </div>
+    <div class="lr" onclick="openTask('HM-33','Mobile nav redesign','Redesign bottom navigation for the HM App. Must support 5 primary tabs with clear active states. Figma file linked.','Todo','Medium','Priya','Jun 22','Design')">
+      <div class="pdot-s" style="background:#378ADD"></div>
+      <div><span style="font-size:10px;color:var(--color-text-tertiary);margin-right:6px">HM-33</span>Mobile nav redesign</div>
+      <div><span class="sp" style="background:rgba(55,138,221,.12);color:#185FA5">Todo</span></div>
+      <div style="display:flex;align-items:center;gap:5px"><div class="av-sm" style="background:rgba(212,83,126,.12);color:#99355A;width:18px;height:18px;font-size:8px">PL</div>Priya</div>
+      <div style="color:#378ADD;font-size:11px">Medium</div>
+      <div style="color:var(--color-text-tertiary);font-size:11px">Jun 22</div>
+    </div>
+    <div class="lr" onclick="openTask('HM-12','Webhook retry logic','Implement exponential backoff for failed webhook deliveries with configurable max retries. Required before beta launch.','Todo','High','Fred','Jun 20','Infra')">
+      <div class="pdot-s" style="background:#EF9F27"></div>
+      <div><span style="font-size:10px;color:var(--color-text-tertiary);margin-right:6px">HM-12</span>Webhook retry logic</div>
+      <div><span class="sp" style="background:rgba(55,138,221,.12);color:#185FA5">Todo</span></div>
+      <div style="display:flex;align-items:center;gap:5px"><div class="av-sm" style="background:rgba(186,117,23,.15);color:#BA7517;width:18px;height:18px;font-size:8px">FT</div>Fred</div>
+      <div style="color:#EF9F27;font-size:11px">High</div>
+      <div style="color:var(--color-text-tertiary);font-size:11px">Jun 20</div>
+    </div>
+  </div>
+</div>
+
+<div id="detail-panel" class="dp" style="display:none">
+  <div class="dp-head">
+    <div id="dp-id" class="dp-id">HM-18</div>
+    <div class="dp-close" onclick="closePanel()">&#x2715;</div>
+  </div>
+  <div class="dp-body">
+    <div id="dp-title" class="dp-title">Stripe Connect integration</div>
+    <div class="dp-grid">
+      <div class="dp-lbl">Status</div>
+      <div class="dp-val"><span id="dp-status" class="sp" style="background:rgba(239,159,39,.12);color:#854F0B">In progress</span></div>
+      <div class="dp-lbl">Priority</div>
+      <div class="dp-val"><span id="dp-priority" style="color:#E24B4A;font-size:12px">&#9650; Urgent</span></div>
+      <div class="dp-lbl">Assignee</div>
+      <div class="dp-val"><div class="av-sm" style="background:rgba(186,117,23,.15);color:#BA7517;width:20px;height:20px;font-size:9px" id="dp-av">FT</div><span id="dp-assignee">Fred</span></div>
+      <div class="dp-lbl">Due date</div>
+      <div class="dp-val" id="dp-due">Jun 15, 2025</div>
+      <div class="dp-lbl">Label</div>
+      <div class="dp-val"><span id="dp-label" class="lp" style="background:rgba(53,138,221,.12);color:#185FA5;font-size:11px">Feature</span></div>
+    </div>
+    <div class="dp-sec">Description</div>
+    <div class="dp-desc" id="dp-desc">Full Stripe Connect flow: create connected accounts, handle webhooks for payment events, payout scheduling. P0 for monetization.</div>
+    <div id="dp-dep-sec" style="display:none;margin-bottom:16px">
+      <div class="dp-sec">Dependencies</div>
+      <div class="dep-item">
+        <span style="font-size:9px;padding:1px 5px;border-radius:7px;background:rgba(226,75,74,.12);color:#A32D2D">blocks</span>
+        <span style="font-size:11px;color:var(--color-text-tertiary)">HM-24</span>
+        <span style="font-size:11px;color:var(--color-text-primary)">PDF merge endpoint</span>
+      </div>
+    </div>
+    <div class="dp-sec">Comments</div>
+    <div class="cm-list" id="dp-comments">
+      <div class="cm">
+        <div class="cm-top"><div class="av-sm" style="background:rgba(29,158,117,.15);color:#0F6E56;width:18px;height:18px;font-size:8px">MK</div><span class="cm-author">Marcus</span><span class="cm-time" style="margin-left:4px">2h ago</span></div>
+        <div class="cm-body">Middleware is in review — once that merges, we can unblock HM-24. Should be clear EOD.</div>
+      </div>
+      <div class="cm">
+        <div class="cm-top"><div class="av-sm" style="background:rgba(186,117,23,.15);color:#BA7517;width:18px;height:18px;font-size:8px">FT</div><span class="cm-author">Fred</span><span class="cm-time" style="margin-left:4px">1d ago</span></div>
+        <div class="cm-body">Stripe sandbox keys are in Vercel env. Test with the staging webhook endpoint.</div>
+      </div>
+    </div>
+  </div>
+  <div class="dp-footer">
+    <textarea class="cm-input" rows="2" placeholder="Add a comment... (@ to mention)"></textarea>
+  </div>
+</div>
+</div>
+
+<script>
+var taskData={};
+function switchView(v,el){
+  document.getElementById('view-board').style.display=v==='board'?'':'none';
+  document.getElementById('view-list').style.display=v==='list'?'':'none';
+  var tabs=document.querySelectorAll('.vt');
+  tabs.forEach(function(t,i){t.classList.remove('active');if((v==='board'&&i===0)||(v==='list'&&i===1))t.classList.add('active');});
+  var nis=document.querySelectorAll('.ni');
+  nis.forEach(function(n){if((v==='board'&&n.textContent.trim()==='Board')||(v==='list'&&n.textContent.trim()==='List'))n.classList.add('active');else if(n.textContent.trim()==='Board'||n.textContent.trim()==='List')n.classList.remove('active');});
+}
+function openTask(id,title,desc,status,priority,assignee,due,label){
+  document.getElementById('dp-id').textContent=id;
+  document.getElementById('dp-title').textContent=title;
+  document.getElementById('dp-desc').textContent=desc;
+  var sc=document.getElementById('dp-status');
+  var statusColors={
+    'In Progress':'background:rgba(239,159,39,.12);color:#854F0B',
+    'In Review':'background:rgba(127,119,221,.12);color:#3C3489',
+    'Todo':'background:rgba(55,138,221,.12);color:#185FA5',
+    'Backlog':'background:rgba(136,135,128,.12);color:#444441',
+    'Done':'background:rgba(99,153,34,.12);color:#27500A'
+  };
+  sc.setAttribute('style',(statusColors[status]||statusColors['Todo'])+';font-size:11px;padding:2px 7px;border-radius:9px');
+  sc.textContent=status;
+  var pc=document.getElementById('dp-priority');
+  var pcolors={'Urgent':'#E24B4A','High':'#EF9F27','Medium':'#378ADD','Low':'#888780'};
+  pc.style.color=pcolors[priority]||'#888780';
+  pc.textContent=priority;
+  var avEl=document.getElementById('dp-av');
+  var assigneeInit={'Fred':'FT','Sarah':'SE','Marcus':'MK','Priya':'PL','Jordan':'JO'};
+  var avColors={'Fred':'background:rgba(186,117,23,.15);color:#BA7517','Sarah':'background:rgba(53,138,221,.15);color:#185FA5','Marcus':'background:rgba(29,158,117,.15);color:#0F6E56','Priya':'background:rgba(212,83,126,.12);color:#99355A'};
+  avEl.textContent=assigneeInit[assignee]||assignee.substring(0,2).toUpperCase();
+  avEl.setAttribute('style',(avColors[assignee]||'background:var(--color-background-secondary)')+';width:20px;height:20px;font-size:9px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:500');
+  document.getElementById('dp-assignee').textContent=assignee;
+  document.getElementById('dp-due').textContent=due+', 2025';
+  var lc=document.getElementById('dp-label');
+  var lblColors={'Feature':'background:rgba(53,138,221,.12);color:#185FA5','Infra':'background:rgba(29,158,117,.12);color:#0F6E56','Design':'background:rgba(212,83,126,.12);color:#99355A','Docs':'background:rgba(127,119,221,.12);color:#534AB7'};
+  lc.setAttribute('style',(lblColors[label]||lblColors['Feature'])+';font-size:11px;padding:1px 5px;border-radius:8px');
+  lc.textContent=label;
+  var ds=document.getElementById('dp-dep-sec');
+  ds.style.display=(id==='HM-15'||id==='HM-27')?'block':'none';
+  document.getElementById('detail-panel').style.display='flex';
+}
+function closePanel(){document.getElementById('detail-panel').style.display='none';}
+function openNew(){document.getElementById('detail-panel').style.display='none';}
+</script>
