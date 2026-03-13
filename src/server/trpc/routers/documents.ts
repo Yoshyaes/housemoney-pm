@@ -64,6 +64,7 @@ export const documentsRouter = router({
         where: { id: input.id },
         include: {
           author: { select: { id: true, name: true, avatarUrl: true, avatarColor: true } },
+          lastEditedBy: { select: { id: true, name: true, avatarUrl: true, avatarColor: true } },
           project: { select: { id: true, name: true, color: true } },
         },
       });
@@ -132,9 +133,10 @@ export const documentsRouter = router({
       const { id, ...data } = input;
       return ctx.db.document.update({
         where: { id },
-        data,
+        data: { ...data, lastEditedById: ctx.userId },
         include: {
           author: { select: { id: true, name: true, avatarUrl: true, avatarColor: true } },
+          lastEditedBy: { select: { id: true, name: true, avatarUrl: true, avatarColor: true } },
           project: { select: { id: true, name: true, color: true } },
         },
       });

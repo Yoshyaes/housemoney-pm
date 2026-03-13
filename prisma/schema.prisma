@@ -87,6 +87,7 @@ model User {
   actedNotifications Notification[]   @relation("actor")
   views              View[]
   documents          Document[]       @relation("DocumentAuthor")
+  lastEditedDocs     Document[]       @relation("DocumentLastEditor")
   createdProjects    Project[]        @relation("ProjectCreator")
 }
 
@@ -330,21 +331,23 @@ model GitHubPR {
 }
 
 model Document {
-  id          String   @id @default(cuid())
-  workspaceId String
-  authorId    String
-  title       String
-  content     String   @default("") // Markdown string
-  docType     DocType  @default(GENERAL)
-  tags        String[] // PostgreSQL text array
-  projectId   String?  // Optional link to a project
-  pinned      Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  id              String   @id @default(cuid())
+  workspaceId     String
+  authorId        String
+  lastEditedById  String?
+  title           String
+  content         String   @default("") // Markdown string
+  docType         DocType  @default(GENERAL)
+  tags            String[] // PostgreSQL text array
+  projectId       String?  // Optional link to a project
+  pinned          Boolean  @default(false)
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
 
-  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
-  author    User      @relation("DocumentAuthor", fields: [authorId], references: [id])
-  project   Project?  @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  workspace    Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  author       User      @relation("DocumentAuthor", fields: [authorId], references: [id])
+  lastEditedBy User?     @relation("DocumentLastEditor", fields: [lastEditedById], references: [id], onDelete: SetNull)
+  project      Project?  @relation(fields: [projectId], references: [id], onDelete: SetNull)
 
   @@index([workspaceId])
   @@index([workspaceId, docType])

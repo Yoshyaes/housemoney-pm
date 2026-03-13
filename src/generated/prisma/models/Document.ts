@@ -28,6 +28,7 @@ export type DocumentMinAggregateOutputType = {
   id: string | null
   workspaceId: string | null
   authorId: string | null
+  lastEditedById: string | null
   title: string | null
   content: string | null
   docType: $Enums.DocType | null
@@ -41,6 +42,7 @@ export type DocumentMaxAggregateOutputType = {
   id: string | null
   workspaceId: string | null
   authorId: string | null
+  lastEditedById: string | null
   title: string | null
   content: string | null
   docType: $Enums.DocType | null
@@ -54,6 +56,7 @@ export type DocumentCountAggregateOutputType = {
   id: number
   workspaceId: number
   authorId: number
+  lastEditedById: number
   title: number
   content: number
   docType: number
@@ -70,6 +73,7 @@ export type DocumentMinAggregateInputType = {
   id?: true
   workspaceId?: true
   authorId?: true
+  lastEditedById?: true
   title?: true
   content?: true
   docType?: true
@@ -83,6 +87,7 @@ export type DocumentMaxAggregateInputType = {
   id?: true
   workspaceId?: true
   authorId?: true
+  lastEditedById?: true
   title?: true
   content?: true
   docType?: true
@@ -96,6 +101,7 @@ export type DocumentCountAggregateInputType = {
   id?: true
   workspaceId?: true
   authorId?: true
+  lastEditedById?: true
   title?: true
   content?: true
   docType?: true
@@ -183,6 +189,7 @@ export type DocumentGroupByOutputType = {
   id: string
   workspaceId: string
   authorId: string
+  lastEditedById: string | null
   title: string
   content: string
   docType: $Enums.DocType
@@ -218,6 +225,7 @@ export type DocumentWhereInput = {
   id?: Prisma.StringFilter<"Document"> | string
   workspaceId?: Prisma.StringFilter<"Document"> | string
   authorId?: Prisma.StringFilter<"Document"> | string
+  lastEditedById?: Prisma.StringNullableFilter<"Document"> | string | null
   title?: Prisma.StringFilter<"Document"> | string
   content?: Prisma.StringFilter<"Document"> | string
   docType?: Prisma.EnumDocTypeFilter<"Document"> | $Enums.DocType
@@ -228,6 +236,7 @@ export type DocumentWhereInput = {
   updatedAt?: Prisma.DateTimeFilter<"Document"> | Date | string
   workspace?: Prisma.XOR<Prisma.WorkspaceScalarRelationFilter, Prisma.WorkspaceWhereInput>
   author?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  lastEditedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   project?: Prisma.XOR<Prisma.ProjectNullableScalarRelationFilter, Prisma.ProjectWhereInput> | null
 }
 
@@ -235,6 +244,7 @@ export type DocumentOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   workspaceId?: Prisma.SortOrder
   authorId?: Prisma.SortOrder
+  lastEditedById?: Prisma.SortOrderInput | Prisma.SortOrder
   title?: Prisma.SortOrder
   content?: Prisma.SortOrder
   docType?: Prisma.SortOrder
@@ -245,6 +255,7 @@ export type DocumentOrderByWithRelationInput = {
   updatedAt?: Prisma.SortOrder
   workspace?: Prisma.WorkspaceOrderByWithRelationInput
   author?: Prisma.UserOrderByWithRelationInput
+  lastEditedBy?: Prisma.UserOrderByWithRelationInput
   project?: Prisma.ProjectOrderByWithRelationInput
 }
 
@@ -255,6 +266,7 @@ export type DocumentWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.DocumentWhereInput | Prisma.DocumentWhereInput[]
   workspaceId?: Prisma.StringFilter<"Document"> | string
   authorId?: Prisma.StringFilter<"Document"> | string
+  lastEditedById?: Prisma.StringNullableFilter<"Document"> | string | null
   title?: Prisma.StringFilter<"Document"> | string
   content?: Prisma.StringFilter<"Document"> | string
   docType?: Prisma.EnumDocTypeFilter<"Document"> | $Enums.DocType
@@ -265,6 +277,7 @@ export type DocumentWhereUniqueInput = Prisma.AtLeast<{
   updatedAt?: Prisma.DateTimeFilter<"Document"> | Date | string
   workspace?: Prisma.XOR<Prisma.WorkspaceScalarRelationFilter, Prisma.WorkspaceWhereInput>
   author?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
+  lastEditedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   project?: Prisma.XOR<Prisma.ProjectNullableScalarRelationFilter, Prisma.ProjectWhereInput> | null
 }, "id">
 
@@ -272,6 +285,7 @@ export type DocumentOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   workspaceId?: Prisma.SortOrder
   authorId?: Prisma.SortOrder
+  lastEditedById?: Prisma.SortOrderInput | Prisma.SortOrder
   title?: Prisma.SortOrder
   content?: Prisma.SortOrder
   docType?: Prisma.SortOrder
@@ -292,6 +306,7 @@ export type DocumentScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Document"> | string
   workspaceId?: Prisma.StringWithAggregatesFilter<"Document"> | string
   authorId?: Prisma.StringWithAggregatesFilter<"Document"> | string
+  lastEditedById?: Prisma.StringNullableWithAggregatesFilter<"Document"> | string | null
   title?: Prisma.StringWithAggregatesFilter<"Document"> | string
   content?: Prisma.StringWithAggregatesFilter<"Document"> | string
   docType?: Prisma.EnumDocTypeWithAggregatesFilter<"Document"> | $Enums.DocType
@@ -313,6 +328,7 @@ export type DocumentCreateInput = {
   updatedAt?: Date | string
   workspace: Prisma.WorkspaceCreateNestedOneWithoutDocumentsInput
   author: Prisma.UserCreateNestedOneWithoutDocumentsInput
+  lastEditedBy?: Prisma.UserCreateNestedOneWithoutLastEditedDocsInput
   project?: Prisma.ProjectCreateNestedOneWithoutDocumentsInput
 }
 
@@ -320,6 +336,7 @@ export type DocumentUncheckedCreateInput = {
   id?: string
   workspaceId: string
   authorId: string
+  lastEditedById?: string | null
   title: string
   content?: string
   docType?: $Enums.DocType
@@ -341,6 +358,7 @@ export type DocumentUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   workspace?: Prisma.WorkspaceUpdateOneRequiredWithoutDocumentsNestedInput
   author?: Prisma.UserUpdateOneRequiredWithoutDocumentsNestedInput
+  lastEditedBy?: Prisma.UserUpdateOneWithoutLastEditedDocsNestedInput
   project?: Prisma.ProjectUpdateOneWithoutDocumentsNestedInput
 }
 
@@ -348,6 +366,7 @@ export type DocumentUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   workspaceId?: Prisma.StringFieldUpdateOperationsInput | string
   authorId?: Prisma.StringFieldUpdateOperationsInput | string
+  lastEditedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
@@ -362,6 +381,7 @@ export type DocumentCreateManyInput = {
   id?: string
   workspaceId: string
   authorId: string
+  lastEditedById?: string | null
   title: string
   content?: string
   docType?: $Enums.DocType
@@ -387,6 +407,7 @@ export type DocumentUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   workspaceId?: Prisma.StringFieldUpdateOperationsInput | string
   authorId?: Prisma.StringFieldUpdateOperationsInput | string
+  lastEditedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
@@ -419,6 +440,7 @@ export type DocumentCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   workspaceId?: Prisma.SortOrder
   authorId?: Prisma.SortOrder
+  lastEditedById?: Prisma.SortOrder
   title?: Prisma.SortOrder
   content?: Prisma.SortOrder
   docType?: Prisma.SortOrder
@@ -433,6 +455,7 @@ export type DocumentMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   workspaceId?: Prisma.SortOrder
   authorId?: Prisma.SortOrder
+  lastEditedById?: Prisma.SortOrder
   title?: Prisma.SortOrder
   content?: Prisma.SortOrder
   docType?: Prisma.SortOrder
@@ -446,6 +469,7 @@ export type DocumentMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   workspaceId?: Prisma.SortOrder
   authorId?: Prisma.SortOrder
+  lastEditedById?: Prisma.SortOrder
   title?: Prisma.SortOrder
   content?: Prisma.SortOrder
   docType?: Prisma.SortOrder
@@ -462,10 +486,24 @@ export type DocumentCreateNestedManyWithoutAuthorInput = {
   connect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
 }
 
+export type DocumentCreateNestedManyWithoutLastEditedByInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutLastEditedByInput, Prisma.DocumentUncheckedCreateWithoutLastEditedByInput> | Prisma.DocumentCreateWithoutLastEditedByInput[] | Prisma.DocumentUncheckedCreateWithoutLastEditedByInput[]
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutLastEditedByInput | Prisma.DocumentCreateOrConnectWithoutLastEditedByInput[]
+  createMany?: Prisma.DocumentCreateManyLastEditedByInputEnvelope
+  connect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+}
+
 export type DocumentUncheckedCreateNestedManyWithoutAuthorInput = {
   create?: Prisma.XOR<Prisma.DocumentCreateWithoutAuthorInput, Prisma.DocumentUncheckedCreateWithoutAuthorInput> | Prisma.DocumentCreateWithoutAuthorInput[] | Prisma.DocumentUncheckedCreateWithoutAuthorInput[]
   connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutAuthorInput | Prisma.DocumentCreateOrConnectWithoutAuthorInput[]
   createMany?: Prisma.DocumentCreateManyAuthorInputEnvelope
+  connect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+}
+
+export type DocumentUncheckedCreateNestedManyWithoutLastEditedByInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutLastEditedByInput, Prisma.DocumentUncheckedCreateWithoutLastEditedByInput> | Prisma.DocumentCreateWithoutLastEditedByInput[] | Prisma.DocumentUncheckedCreateWithoutLastEditedByInput[]
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutLastEditedByInput | Prisma.DocumentCreateOrConnectWithoutLastEditedByInput[]
+  createMany?: Prisma.DocumentCreateManyLastEditedByInputEnvelope
   connect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
 }
 
@@ -483,6 +521,20 @@ export type DocumentUpdateManyWithoutAuthorNestedInput = {
   deleteMany?: Prisma.DocumentScalarWhereInput | Prisma.DocumentScalarWhereInput[]
 }
 
+export type DocumentUpdateManyWithoutLastEditedByNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutLastEditedByInput, Prisma.DocumentUncheckedCreateWithoutLastEditedByInput> | Prisma.DocumentCreateWithoutLastEditedByInput[] | Prisma.DocumentUncheckedCreateWithoutLastEditedByInput[]
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutLastEditedByInput | Prisma.DocumentCreateOrConnectWithoutLastEditedByInput[]
+  upsert?: Prisma.DocumentUpsertWithWhereUniqueWithoutLastEditedByInput | Prisma.DocumentUpsertWithWhereUniqueWithoutLastEditedByInput[]
+  createMany?: Prisma.DocumentCreateManyLastEditedByInputEnvelope
+  set?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+  disconnect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+  delete?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+  connect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+  update?: Prisma.DocumentUpdateWithWhereUniqueWithoutLastEditedByInput | Prisma.DocumentUpdateWithWhereUniqueWithoutLastEditedByInput[]
+  updateMany?: Prisma.DocumentUpdateManyWithWhereWithoutLastEditedByInput | Prisma.DocumentUpdateManyWithWhereWithoutLastEditedByInput[]
+  deleteMany?: Prisma.DocumentScalarWhereInput | Prisma.DocumentScalarWhereInput[]
+}
+
 export type DocumentUncheckedUpdateManyWithoutAuthorNestedInput = {
   create?: Prisma.XOR<Prisma.DocumentCreateWithoutAuthorInput, Prisma.DocumentUncheckedCreateWithoutAuthorInput> | Prisma.DocumentCreateWithoutAuthorInput[] | Prisma.DocumentUncheckedCreateWithoutAuthorInput[]
   connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutAuthorInput | Prisma.DocumentCreateOrConnectWithoutAuthorInput[]
@@ -494,6 +546,20 @@ export type DocumentUncheckedUpdateManyWithoutAuthorNestedInput = {
   connect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
   update?: Prisma.DocumentUpdateWithWhereUniqueWithoutAuthorInput | Prisma.DocumentUpdateWithWhereUniqueWithoutAuthorInput[]
   updateMany?: Prisma.DocumentUpdateManyWithWhereWithoutAuthorInput | Prisma.DocumentUpdateManyWithWhereWithoutAuthorInput[]
+  deleteMany?: Prisma.DocumentScalarWhereInput | Prisma.DocumentScalarWhereInput[]
+}
+
+export type DocumentUncheckedUpdateManyWithoutLastEditedByNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutLastEditedByInput, Prisma.DocumentUncheckedCreateWithoutLastEditedByInput> | Prisma.DocumentCreateWithoutLastEditedByInput[] | Prisma.DocumentUncheckedCreateWithoutLastEditedByInput[]
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutLastEditedByInput | Prisma.DocumentCreateOrConnectWithoutLastEditedByInput[]
+  upsert?: Prisma.DocumentUpsertWithWhereUniqueWithoutLastEditedByInput | Prisma.DocumentUpsertWithWhereUniqueWithoutLastEditedByInput[]
+  createMany?: Prisma.DocumentCreateManyLastEditedByInputEnvelope
+  set?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+  disconnect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+  delete?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+  connect?: Prisma.DocumentWhereUniqueInput | Prisma.DocumentWhereUniqueInput[]
+  update?: Prisma.DocumentUpdateWithWhereUniqueWithoutLastEditedByInput | Prisma.DocumentUpdateWithWhereUniqueWithoutLastEditedByInput[]
+  updateMany?: Prisma.DocumentUpdateManyWithWhereWithoutLastEditedByInput | Prisma.DocumentUpdateManyWithWhereWithoutLastEditedByInput[]
   deleteMany?: Prisma.DocumentScalarWhereInput | Prisma.DocumentScalarWhereInput[]
 }
 
@@ -604,12 +670,14 @@ export type DocumentCreateWithoutAuthorInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   workspace: Prisma.WorkspaceCreateNestedOneWithoutDocumentsInput
+  lastEditedBy?: Prisma.UserCreateNestedOneWithoutLastEditedDocsInput
   project?: Prisma.ProjectCreateNestedOneWithoutDocumentsInput
 }
 
 export type DocumentUncheckedCreateWithoutAuthorInput = {
   id?: string
   workspaceId: string
+  lastEditedById?: string | null
   title: string
   content?: string
   docType?: $Enums.DocType
@@ -627,6 +695,44 @@ export type DocumentCreateOrConnectWithoutAuthorInput = {
 
 export type DocumentCreateManyAuthorInputEnvelope = {
   data: Prisma.DocumentCreateManyAuthorInput | Prisma.DocumentCreateManyAuthorInput[]
+  skipDuplicates?: boolean
+}
+
+export type DocumentCreateWithoutLastEditedByInput = {
+  id?: string
+  title: string
+  content?: string
+  docType?: $Enums.DocType
+  tags?: Prisma.DocumentCreatetagsInput | string[]
+  pinned?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  workspace: Prisma.WorkspaceCreateNestedOneWithoutDocumentsInput
+  author: Prisma.UserCreateNestedOneWithoutDocumentsInput
+  project?: Prisma.ProjectCreateNestedOneWithoutDocumentsInput
+}
+
+export type DocumentUncheckedCreateWithoutLastEditedByInput = {
+  id?: string
+  workspaceId: string
+  authorId: string
+  title: string
+  content?: string
+  docType?: $Enums.DocType
+  tags?: Prisma.DocumentCreatetagsInput | string[]
+  projectId?: string | null
+  pinned?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type DocumentCreateOrConnectWithoutLastEditedByInput = {
+  where: Prisma.DocumentWhereUniqueInput
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutLastEditedByInput, Prisma.DocumentUncheckedCreateWithoutLastEditedByInput>
+}
+
+export type DocumentCreateManyLastEditedByInputEnvelope = {
+  data: Prisma.DocumentCreateManyLastEditedByInput | Prisma.DocumentCreateManyLastEditedByInput[]
   skipDuplicates?: boolean
 }
 
@@ -653,6 +759,7 @@ export type DocumentScalarWhereInput = {
   id?: Prisma.StringFilter<"Document"> | string
   workspaceId?: Prisma.StringFilter<"Document"> | string
   authorId?: Prisma.StringFilter<"Document"> | string
+  lastEditedById?: Prisma.StringNullableFilter<"Document"> | string | null
   title?: Prisma.StringFilter<"Document"> | string
   content?: Prisma.StringFilter<"Document"> | string
   docType?: Prisma.EnumDocTypeFilter<"Document"> | $Enums.DocType
@@ -661,6 +768,22 @@ export type DocumentScalarWhereInput = {
   pinned?: Prisma.BoolFilter<"Document"> | boolean
   createdAt?: Prisma.DateTimeFilter<"Document"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Document"> | Date | string
+}
+
+export type DocumentUpsertWithWhereUniqueWithoutLastEditedByInput = {
+  where: Prisma.DocumentWhereUniqueInput
+  update: Prisma.XOR<Prisma.DocumentUpdateWithoutLastEditedByInput, Prisma.DocumentUncheckedUpdateWithoutLastEditedByInput>
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutLastEditedByInput, Prisma.DocumentUncheckedCreateWithoutLastEditedByInput>
+}
+
+export type DocumentUpdateWithWhereUniqueWithoutLastEditedByInput = {
+  where: Prisma.DocumentWhereUniqueInput
+  data: Prisma.XOR<Prisma.DocumentUpdateWithoutLastEditedByInput, Prisma.DocumentUncheckedUpdateWithoutLastEditedByInput>
+}
+
+export type DocumentUpdateManyWithWhereWithoutLastEditedByInput = {
+  where: Prisma.DocumentScalarWhereInput
+  data: Prisma.XOR<Prisma.DocumentUpdateManyMutationInput, Prisma.DocumentUncheckedUpdateManyWithoutLastEditedByInput>
 }
 
 export type DocumentCreateWithoutWorkspaceInput = {
@@ -673,12 +796,14 @@ export type DocumentCreateWithoutWorkspaceInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   author: Prisma.UserCreateNestedOneWithoutDocumentsInput
+  lastEditedBy?: Prisma.UserCreateNestedOneWithoutLastEditedDocsInput
   project?: Prisma.ProjectCreateNestedOneWithoutDocumentsInput
 }
 
 export type DocumentUncheckedCreateWithoutWorkspaceInput = {
   id?: string
   authorId: string
+  lastEditedById?: string | null
   title: string
   content?: string
   docType?: $Enums.DocType
@@ -726,12 +851,14 @@ export type DocumentCreateWithoutProjectInput = {
   updatedAt?: Date | string
   workspace: Prisma.WorkspaceCreateNestedOneWithoutDocumentsInput
   author: Prisma.UserCreateNestedOneWithoutDocumentsInput
+  lastEditedBy?: Prisma.UserCreateNestedOneWithoutLastEditedDocsInput
 }
 
 export type DocumentUncheckedCreateWithoutProjectInput = {
   id?: string
   workspaceId: string
   authorId: string
+  lastEditedById?: string | null
   title: string
   content?: string
   docType?: $Enums.DocType
@@ -770,6 +897,21 @@ export type DocumentUpdateManyWithWhereWithoutProjectInput = {
 export type DocumentCreateManyAuthorInput = {
   id?: string
   workspaceId: string
+  lastEditedById?: string | null
+  title: string
+  content?: string
+  docType?: $Enums.DocType
+  tags?: Prisma.DocumentCreatetagsInput | string[]
+  projectId?: string | null
+  pinned?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type DocumentCreateManyLastEditedByInput = {
+  id?: string
+  workspaceId: string
+  authorId: string
   title: string
   content?: string
   docType?: $Enums.DocType
@@ -790,12 +932,14 @@ export type DocumentUpdateWithoutAuthorInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   workspace?: Prisma.WorkspaceUpdateOneRequiredWithoutDocumentsNestedInput
+  lastEditedBy?: Prisma.UserUpdateOneWithoutLastEditedDocsNestedInput
   project?: Prisma.ProjectUpdateOneWithoutDocumentsNestedInput
 }
 
 export type DocumentUncheckedUpdateWithoutAuthorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   workspaceId?: Prisma.StringFieldUpdateOperationsInput | string
+  lastEditedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
@@ -809,6 +953,49 @@ export type DocumentUncheckedUpdateWithoutAuthorInput = {
 export type DocumentUncheckedUpdateManyWithoutAuthorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   workspaceId?: Prisma.StringFieldUpdateOperationsInput | string
+  lastEditedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
+  tags?: Prisma.DocumentUpdatetagsInput | string[]
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type DocumentUpdateWithoutLastEditedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
+  tags?: Prisma.DocumentUpdatetagsInput | string[]
+  pinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  workspace?: Prisma.WorkspaceUpdateOneRequiredWithoutDocumentsNestedInput
+  author?: Prisma.UserUpdateOneRequiredWithoutDocumentsNestedInput
+  project?: Prisma.ProjectUpdateOneWithoutDocumentsNestedInput
+}
+
+export type DocumentUncheckedUpdateWithoutLastEditedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  workspaceId?: Prisma.StringFieldUpdateOperationsInput | string
+  authorId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
+  tags?: Prisma.DocumentUpdatetagsInput | string[]
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type DocumentUncheckedUpdateManyWithoutLastEditedByInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  workspaceId?: Prisma.StringFieldUpdateOperationsInput | string
+  authorId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
@@ -822,6 +1009,7 @@ export type DocumentUncheckedUpdateManyWithoutAuthorInput = {
 export type DocumentCreateManyWorkspaceInput = {
   id?: string
   authorId: string
+  lastEditedById?: string | null
   title: string
   content?: string
   docType?: $Enums.DocType
@@ -842,12 +1030,14 @@ export type DocumentUpdateWithoutWorkspaceInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   author?: Prisma.UserUpdateOneRequiredWithoutDocumentsNestedInput
+  lastEditedBy?: Prisma.UserUpdateOneWithoutLastEditedDocsNestedInput
   project?: Prisma.ProjectUpdateOneWithoutDocumentsNestedInput
 }
 
 export type DocumentUncheckedUpdateWithoutWorkspaceInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   authorId?: Prisma.StringFieldUpdateOperationsInput | string
+  lastEditedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
@@ -861,6 +1051,7 @@ export type DocumentUncheckedUpdateWithoutWorkspaceInput = {
 export type DocumentUncheckedUpdateManyWithoutWorkspaceInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   authorId?: Prisma.StringFieldUpdateOperationsInput | string
+  lastEditedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
@@ -875,6 +1066,7 @@ export type DocumentCreateManyProjectInput = {
   id?: string
   workspaceId: string
   authorId: string
+  lastEditedById?: string | null
   title: string
   content?: string
   docType?: $Enums.DocType
@@ -895,12 +1087,14 @@ export type DocumentUpdateWithoutProjectInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   workspace?: Prisma.WorkspaceUpdateOneRequiredWithoutDocumentsNestedInput
   author?: Prisma.UserUpdateOneRequiredWithoutDocumentsNestedInput
+  lastEditedBy?: Prisma.UserUpdateOneWithoutLastEditedDocsNestedInput
 }
 
 export type DocumentUncheckedUpdateWithoutProjectInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   workspaceId?: Prisma.StringFieldUpdateOperationsInput | string
   authorId?: Prisma.StringFieldUpdateOperationsInput | string
+  lastEditedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
@@ -914,6 +1108,7 @@ export type DocumentUncheckedUpdateManyWithoutProjectInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   workspaceId?: Prisma.StringFieldUpdateOperationsInput | string
   authorId?: Prisma.StringFieldUpdateOperationsInput | string
+  lastEditedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
@@ -929,6 +1124,7 @@ export type DocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   id?: boolean
   workspaceId?: boolean
   authorId?: boolean
+  lastEditedById?: boolean
   title?: boolean
   content?: boolean
   docType?: boolean
@@ -939,6 +1135,7 @@ export type DocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   updatedAt?: boolean
   workspace?: boolean | Prisma.WorkspaceDefaultArgs<ExtArgs>
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  lastEditedBy?: boolean | Prisma.Document$lastEditedByArgs<ExtArgs>
   project?: boolean | Prisma.Document$projectArgs<ExtArgs>
 }, ExtArgs["result"]["document"]>
 
@@ -946,6 +1143,7 @@ export type DocumentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   id?: boolean
   workspaceId?: boolean
   authorId?: boolean
+  lastEditedById?: boolean
   title?: boolean
   content?: boolean
   docType?: boolean
@@ -956,6 +1154,7 @@ export type DocumentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   updatedAt?: boolean
   workspace?: boolean | Prisma.WorkspaceDefaultArgs<ExtArgs>
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  lastEditedBy?: boolean | Prisma.Document$lastEditedByArgs<ExtArgs>
   project?: boolean | Prisma.Document$projectArgs<ExtArgs>
 }, ExtArgs["result"]["document"]>
 
@@ -963,6 +1162,7 @@ export type DocumentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   id?: boolean
   workspaceId?: boolean
   authorId?: boolean
+  lastEditedById?: boolean
   title?: boolean
   content?: boolean
   docType?: boolean
@@ -973,6 +1173,7 @@ export type DocumentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   updatedAt?: boolean
   workspace?: boolean | Prisma.WorkspaceDefaultArgs<ExtArgs>
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  lastEditedBy?: boolean | Prisma.Document$lastEditedByArgs<ExtArgs>
   project?: boolean | Prisma.Document$projectArgs<ExtArgs>
 }, ExtArgs["result"]["document"]>
 
@@ -980,6 +1181,7 @@ export type DocumentSelectScalar = {
   id?: boolean
   workspaceId?: boolean
   authorId?: boolean
+  lastEditedById?: boolean
   title?: boolean
   content?: boolean
   docType?: boolean
@@ -990,20 +1192,23 @@ export type DocumentSelectScalar = {
   updatedAt?: boolean
 }
 
-export type DocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "workspaceId" | "authorId" | "title" | "content" | "docType" | "tags" | "projectId" | "pinned" | "createdAt" | "updatedAt", ExtArgs["result"]["document"]>
+export type DocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "workspaceId" | "authorId" | "lastEditedById" | "title" | "content" | "docType" | "tags" | "projectId" | "pinned" | "createdAt" | "updatedAt", ExtArgs["result"]["document"]>
 export type DocumentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   workspace?: boolean | Prisma.WorkspaceDefaultArgs<ExtArgs>
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  lastEditedBy?: boolean | Prisma.Document$lastEditedByArgs<ExtArgs>
   project?: boolean | Prisma.Document$projectArgs<ExtArgs>
 }
 export type DocumentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   workspace?: boolean | Prisma.WorkspaceDefaultArgs<ExtArgs>
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  lastEditedBy?: boolean | Prisma.Document$lastEditedByArgs<ExtArgs>
   project?: boolean | Prisma.Document$projectArgs<ExtArgs>
 }
 export type DocumentIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   workspace?: boolean | Prisma.WorkspaceDefaultArgs<ExtArgs>
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
+  lastEditedBy?: boolean | Prisma.Document$lastEditedByArgs<ExtArgs>
   project?: boolean | Prisma.Document$projectArgs<ExtArgs>
 }
 
@@ -1012,12 +1217,14 @@ export type $DocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
   objects: {
     workspace: Prisma.$WorkspacePayload<ExtArgs>
     author: Prisma.$UserPayload<ExtArgs>
+    lastEditedBy: Prisma.$UserPayload<ExtArgs> | null
     project: Prisma.$ProjectPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     workspaceId: string
     authorId: string
+    lastEditedById: string | null
     title: string
     content: string
     docType: $Enums.DocType
@@ -1422,6 +1629,7 @@ export interface Prisma__DocumentClient<T, Null = never, ExtArgs extends runtime
   readonly [Symbol.toStringTag]: "PrismaPromise"
   workspace<T extends Prisma.WorkspaceDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkspaceDefaultArgs<ExtArgs>>): Prisma.Prisma__WorkspaceClient<runtime.Types.Result.GetResult<Prisma.$WorkspacePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   author<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  lastEditedBy<T extends Prisma.Document$lastEditedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$lastEditedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   project<T extends Prisma.Document$projectArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$projectArgs<ExtArgs>>): Prisma.Prisma__ProjectClient<runtime.Types.Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1455,6 +1663,7 @@ export interface DocumentFieldRefs {
   readonly id: Prisma.FieldRef<"Document", 'String'>
   readonly workspaceId: Prisma.FieldRef<"Document", 'String'>
   readonly authorId: Prisma.FieldRef<"Document", 'String'>
+  readonly lastEditedById: Prisma.FieldRef<"Document", 'String'>
   readonly title: Prisma.FieldRef<"Document", 'String'>
   readonly content: Prisma.FieldRef<"Document", 'String'>
   readonly docType: Prisma.FieldRef<"Document", 'DocType'>
@@ -1861,6 +2070,25 @@ export type DocumentDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Inte
    * Limit how many Documents to delete.
    */
   limit?: number
+}
+
+/**
+ * Document.lastEditedBy
+ */
+export type Document$lastEditedByArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the User
+   */
+  select?: Prisma.UserSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the User
+   */
+  omit?: Prisma.UserOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.UserInclude<ExtArgs> | null
+  where?: Prisma.UserWhereInput
 }
 
 /**

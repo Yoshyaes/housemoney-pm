@@ -12,7 +12,7 @@ import { DocTypeBadge } from './doc-type-badge';
 import { DocTagInput } from './doc-tag-input';
 import { DocType } from '@/generated/prisma/client';
 import { DOC_TYPE_CONFIG } from './doc-type-badge';
-import { Pin, PinOff, Trash2, ChevronDown, Check } from 'lucide-react';
+import { Pin, PinOff, Trash2, ChevronDown, Check, Clock, User } from 'lucide-react';
 
 interface DocEditorProps {
   docId: string;
@@ -210,28 +210,55 @@ export function DocEditor({ docId, workspaceId, projects, onDelete }: DocEditorP
         </div>
       </div>
 
-      {/* Editor area */}
-      <div className="flex-1 overflow-y-auto px-8 py-6">
-        {/* Title */}
-        <input
-          key={doc.id}
-          defaultValue={doc.title}
-          onChange={(e) => handleTitleChange(e.target.value)}
-          placeholder="Untitled"
-          className="mb-2 w-full bg-transparent text-2xl font-bold text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-300 dark:placeholder:text-zinc-700 outline-none"
-        />
-
-        {/* Tags */}
-        <div className="mb-4">
-          <DocTagInput
-            tags={doc.tags}
-            onChange={(tags) => updateDoc.mutate({ id: docId, tags })}
-            placeholder="Add tags (press Enter)..."
+      {/* Editor area — centered, readable width */}
+      <div className="flex-1 overflow-y-auto">
+        <div className="mx-auto w-full max-w-[780px] px-8 py-8">
+          {/* Title */}
+          <input
+            key={doc.id}
+            defaultValue={doc.title}
+            onChange={(e) => handleTitleChange(e.target.value)}
+            placeholder="Untitled"
+            className="mb-3 w-full bg-transparent text-3xl font-bold text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-300 dark:placeholder:text-zinc-700 outline-none leading-tight"
           />
-        </div>
 
-        {/* Tiptap content */}
-        <EditorContent editor={editor} />
+          {/* Metadata */}
+          <div className="mb-4 flex flex-wrap items-center gap-x-4 gap-y-1 text-[11px] text-zinc-400 dark:text-zinc-500 border-b border-zinc-100 dark:border-zinc-800 pb-4">
+            <span className="flex items-center gap-1">
+              <User className="h-3 w-3" />
+              Created by <span className="text-zinc-600 dark:text-zinc-300 font-medium ml-0.5">{doc.author.name}</span>
+            </span>
+            <span className="flex items-center gap-1">
+              <Clock className="h-3 w-3" />
+              {new Date(doc.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+            </span>
+            {doc.updatedAt > doc.createdAt && (
+              <span className="flex items-center gap-1">
+                Last edited
+                {doc.lastEditedBy && doc.lastEditedBy.id !== doc.author.id && (
+                  <> by <span className="text-zinc-600 dark:text-zinc-300 font-medium ml-0.5">{doc.lastEditedBy.name}</span></>
+                )}
+                <span className="ml-0.5">
+                  {new Date(doc.updatedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                  {' '}at{' '}
+                  {new Date(doc.updatedAt).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}
+                </span>
+              </span>
+            )}
+          </div>
+
+          {/* Tags */}
+          <div className="mb-5">
+            <DocTagInput
+              tags={doc.tags}
+              onChange={(tags) => updateDoc.mutate({ id: docId, tags })}
+              placeholder="Add tags (press Enter)..."
+            />
+          </div>
+
+          {/* Tiptap content */}
+          <EditorContent editor={editor} />
+        </div>
       </div>
 
       {/* Saving indicator */}

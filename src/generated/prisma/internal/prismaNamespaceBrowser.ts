@@ -306,6 +306,7 @@ export const DocumentScalarFieldEnum = {
   id: 'id',
   workspaceId: 'workspaceId',
   authorId: 'authorId',
+  lastEditedById: 'lastEditedById',
   title: 'title',
   content: 'content',
   docType: 'docType',
