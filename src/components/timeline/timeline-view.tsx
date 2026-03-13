@@ -144,7 +144,7 @@ export function TimelineView({ tasks, onTaskUpdate }: TimelineViewProps) {
           className="flex-shrink-0 overflow-y-auto border-r border-zinc-200/60 bg-white dark:border-zinc-800 dark:bg-zinc-950"
           style={{ width: LEFT_PANEL_WIDTH }}
         >
-          {sortedTasks.map((task, i) => (
+          {sortedTasks.map((task) => (
             <div
               key={task.id}
               className="group flex cursor-pointer items-center gap-2 border-b border-zinc-100 px-3 hover:bg-zinc-50 dark:border-zinc-800/50 dark:hover:bg-zinc-900/50"

@@ -5,7 +5,7 @@ import { useUIStore } from '@/lib/stores/ui-store';
 import { PriorityIndicator } from './priority-indicator';
 import { Avatar } from './avatar';
 import { LabelChip } from './label-chip';
-import { PRIORITY_ORDER, PRIORITY_LABELS } from '@/lib/constants';
+import { PRIORITY_ORDER } from '@/lib/constants';
 
 interface Member {
   id: string;
