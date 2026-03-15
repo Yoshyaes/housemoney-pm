@@ -8,6 +8,7 @@ import { useNotificationStore } from '@/lib/stores/notification-store';
 import { BRAND_AMBER } from '@/lib/constants';
 import { Avatar } from '@/components/shared/avatar';
 import { ThemeToggle } from '@/components/shared/theme-toggle';
+import { GuestBadge } from '@/components/shared/guest-badge';
 import { ProjectMembers } from '@/components/project/project-members';
 import { trpc } from '@/lib/trpc';
 import {
@@ -391,11 +392,7 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
               size="md"
             />
             <span>{currentUser.name}</span>
-            {isGuest && (
-              <span className="rounded-full px-1.5 py-0.5 text-[9px] font-medium uppercase tracking-wider" style={{ backgroundColor: 'rgba(186,117,23,0.12)', color: '#BA7517' }}>
-                Guest
-              </span>
-            )}
+            {isGuest && <GuestBadge />}
           </>
         )}
         <div className="ml-auto flex items-center gap-1.5">

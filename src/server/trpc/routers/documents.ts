@@ -159,11 +159,15 @@ export const documentsRouter = router({
     .mutation(async ({ ctx, input }) => {
       const doc = await ctx.db.document.findUniqueOrThrow({ where: { id: input.id } });
 
-      const membership = await ctx.db.workspaceMember.findUnique({
-        where: { workspaceId_userId: { workspaceId: doc.workspaceId, userId: ctx.userId } },
-      });
+      const membership = await requireWorkspaceMember(ctx.db, doc.workspaceId, ctx.userId);
 
-      if (doc.authorId !== ctx.userId && membership?.role !== 'ADMIN') {
+      // Guests can only edit docs in their projects
+      if (membership.role === 'GUEST') {
+        if (!doc.projectId) throw new TRPCError({ code: 'FORBIDDEN', message: 'No access to this document' });
+        await requireProjectAccess(ctx.db, doc.projectId, ctx.userId);
+      }
+
+      if (doc.authorId !== ctx.userId && membership.role !== 'ADMIN') {
         throw new TRPCError({ code: 'FORBIDDEN', message: 'Only the author or an admin can edit this document.' });
       }
 
@@ -184,11 +188,15 @@ export const documentsRouter = router({
     .mutation(async ({ ctx, input }) => {
       const doc = await ctx.db.document.findUniqueOrThrow({ where: { id: input.id } });
 
-      const membership = await ctx.db.workspaceMember.findUnique({
-        where: { workspaceId_userId: { workspaceId: doc.workspaceId, userId: ctx.userId } },
-      });
+      const membership = await requireWorkspaceMember(ctx.db, doc.workspaceId, ctx.userId);
 
-      if (doc.authorId !== ctx.userId && membership?.role !== 'ADMIN') {
+      // Guests can only delete docs in their projects
+      if (membership.role === 'GUEST') {
+        if (!doc.projectId) throw new TRPCError({ code: 'FORBIDDEN', message: 'No access to this document' });
+        await requireProjectAccess(ctx.db, doc.projectId, ctx.userId);
+      }
+
+      if (doc.authorId !== ctx.userId && membership.role !== 'ADMIN') {
         throw new TRPCError({ code: 'FORBIDDEN', message: 'Only the author or an admin can delete this document.' });
       }
 
@@ -212,6 +220,12 @@ export const documentsRouter = router({
 
       if (!trimmed) return [];
 
+      // Guest project scoping for document search
+      const accessibleDocIds = await getAccessibleProjectIds(ctx.db, workspaceId, ctx.userId);
+      const guestDocFilter = accessibleDocIds !== null
+        ? Prisma.sql`AND d."projectId" IN (${Prisma.join(accessibleDocIds.length > 0 ? accessibleDocIds : ['__none__'])})`
+        : Prisma.empty;
+
       const useIlike = trimmed.length < 3;
 
       const results = useIlike
@@ -225,6 +239,7 @@ export const documentsRouter = router({
               FROM "Document" d
               WHERE d."workspaceId" = ${workspaceId}
                 AND (d.title ILIKE ${'%' + trimmed + '%'} OR d.content ILIKE ${'%' + trimmed + '%'})
+                ${guestDocFilter}
               ORDER BY d."updatedAt" DESC
               LIMIT ${limit}
             `
@@ -245,6 +260,7 @@ export const documentsRouter = router({
               FROM "Document" d
               WHERE d."workspaceId" = ${workspaceId}
                 AND (d.title % ${trimmed} OR d.content % ${trimmed})
+                ${guestDocFilter}
               ORDER BY score DESC
               LIMIT ${limit}
             `
@@ -258,11 +274,17 @@ export const documentsRouter = router({
     .query(async ({ ctx, input }) => {
       await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
 
+      const tagAccessibleIds = await getAccessibleProjectIds(ctx.db, input.workspaceId, ctx.userId);
+      const tagGuestFilter = tagAccessibleIds !== null
+        ? Prisma.sql`AND "projectId" IN (${Prisma.join(tagAccessibleIds.length > 0 ? tagAccessibleIds : ['__none__'])})`
+        : Prisma.empty;
+
       const results = await ctx.db.$queryRaw<Array<{ tag: string; count: bigint }>>(
         Prisma.sql`
           SELECT unnest(tags) AS tag, COUNT(*)::bigint AS count
           FROM "Document"
           WHERE "workspaceId" = ${input.workspaceId}
+            ${tagGuestFilter}
           GROUP BY tag
           ORDER BY count DESC, tag ASC
         `

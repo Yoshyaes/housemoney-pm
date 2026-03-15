@@ -63,7 +63,12 @@ export const viewsRouter = router({
     .mutation(async ({ ctx, input }) => {
       const view = await ctx.db.view.findUniqueOrThrow({ where: { id: input.id } });
 
-      await requireWorkspaceMember(ctx.db, view.workspaceId, ctx.userId);
+      const membership = await requireWorkspaceMember(ctx.db, view.workspaceId, ctx.userId);
+
+      // Guests cannot escalate to workspace scope
+      if (membership.role === 'GUEST' && input.scope === 'WORKSPACE') {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'Guests cannot create workspace-scoped views.' });
+      }
 
       if (view.ownerId !== ctx.userId) {
         await requireWorkspaceAdmin(ctx.db, view.workspaceId, ctx.userId);

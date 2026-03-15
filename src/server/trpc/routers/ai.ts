@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { router, protectedProcedure, requireWorkspaceMember } from '@/server/trpc/trpc';
+import { router, protectedProcedure, requireWorkspaceMember, getAccessibleProjectIds } from '@/server/trpc/trpc';
 import { TRPCError } from '@trpc/server';
 import { rateLimit } from '@/lib/rate-limit';
 import {
@@ -33,14 +33,19 @@ export const aiRouter = router({
         });
       }
 
-      // Fetch workspace context in parallel
+      // Fetch workspace context in parallel, scoped for guests
+      const accessibleIds = await getAccessibleProjectIds(ctx.db, input.workspaceId, ctx.userId);
+      const projectFilter = accessibleIds !== null
+        ? { workspaceId: input.workspaceId, id: { in: accessibleIds } }
+        : { workspaceId: input.workspaceId };
+
       const [memberships, projects, labels] = await Promise.all([
         ctx.db.workspaceMember.findMany({
           where: { workspaceId: input.workspaceId },
           include: { user: { select: { id: true, name: true } } },
         }),
         ctx.db.project.findMany({
-          where: { workspaceId: input.workspaceId },
+          where: projectFilter,
           select: { id: true, name: true },
         }),
         ctx.db.label.findMany({

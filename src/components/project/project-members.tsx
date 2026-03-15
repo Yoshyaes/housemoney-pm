@@ -24,7 +24,7 @@ export function ProjectMembers({ projectId, workspaceId, onClose }: ProjectMembe
 
   const { data: workspaceMembers = [] } = trpc.workspace.getMembers.useQuery(
     { workspaceId },
-    { enabled: !!workspaceId && addingMember }
+    { enabled: !!workspaceId }
   );
 
   const addMember = trpc.projects.addMember.useMutation({

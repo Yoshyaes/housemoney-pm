@@ -402,14 +402,19 @@ export const tasksRouter = router({
     .mutation(async ({ ctx, input }) => {
       const task = await ctx.db.task.findUnique({
         where: { id: input.taskId },
-        select: { workspaceId: true },
+        select: { workspaceId: true, projectId: true },
       });
 
       if (!task) {
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Task not found' });
       }
 
-      await requireWorkspaceMember(ctx.db, task.workspaceId, ctx.userId);
+      const membership = await requireWorkspaceMember(ctx.db, task.workspaceId, ctx.userId);
+
+      if (membership.role === 'GUEST') {
+        if (!task.projectId) throw new TRPCError({ code: 'FORBIDDEN', message: 'No access to this task' });
+        await requireProjectAccess(ctx.db, task.projectId, ctx.userId);
+      }
 
       return ctx.db.taskCollaborator.upsert({
         where: { taskId_userId: { taskId: input.taskId, userId: input.userId } },
@@ -423,14 +428,19 @@ export const tasksRouter = router({
     .mutation(async ({ ctx, input }) => {
       const task = await ctx.db.task.findUnique({
         where: { id: input.taskId },
-        select: { workspaceId: true },
+        select: { workspaceId: true, projectId: true },
       });
 
       if (!task) {
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Task not found' });
       }
 
-      await requireWorkspaceMember(ctx.db, task.workspaceId, ctx.userId);
+      const membership = await requireWorkspaceMember(ctx.db, task.workspaceId, ctx.userId);
+
+      if (membership.role === 'GUEST') {
+        if (!task.projectId) throw new TRPCError({ code: 'FORBIDDEN', message: 'No access to this task' });
+        await requireProjectAccess(ctx.db, task.projectId, ctx.userId);
+      }
 
       return ctx.db.taskCollaborator.delete({
         where: { taskId_userId: { taskId: input.taskId, userId: input.userId } },
@@ -448,14 +458,19 @@ export const tasksRouter = router({
     .mutation(async ({ ctx, input }) => {
       const task = await ctx.db.task.findUnique({
         where: { id: input.taskId },
-        select: { workspaceId: true },
+        select: { workspaceId: true, projectId: true },
       });
 
       if (!task) {
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Task not found' });
       }
 
-      await requireWorkspaceMember(ctx.db, task.workspaceId, ctx.userId);
+      const membership = await requireWorkspaceMember(ctx.db, task.workspaceId, ctx.userId);
+
+      if (membership.role === 'GUEST') {
+        if (!task.projectId) throw new TRPCError({ code: 'FORBIDDEN', message: 'No access to this task' });
+        await requireProjectAccess(ctx.db, task.projectId, ctx.userId);
+      }
 
       return ctx.db.taskAttachment.create({
         data: { ...input, uploadedById: ctx.userId },
@@ -468,14 +483,19 @@ export const tasksRouter = router({
     .mutation(async ({ ctx, input }) => {
       const attachment = await ctx.db.taskAttachment.findUnique({
         where: { id: input.id },
-        include: { task: { select: { workspaceId: true } } },
+        include: { task: { select: { workspaceId: true, projectId: true } } },
       });
 
       if (!attachment) {
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Attachment not found' });
       }
 
-      await requireWorkspaceMember(ctx.db, attachment.task.workspaceId, ctx.userId);
+      const membership = await requireWorkspaceMember(ctx.db, attachment.task.workspaceId, ctx.userId);
+
+      if (membership.role === 'GUEST') {
+        if (!attachment.task.projectId) throw new TRPCError({ code: 'FORBIDDEN', message: 'No access to this task' });
+        await requireProjectAccess(ctx.db, attachment.task.projectId, ctx.userId);
+      }
 
       return ctx.db.taskAttachment.delete({ where: { id: input.id } });
     }),

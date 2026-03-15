@@ -87,18 +87,11 @@ export const projectsRouter = router({
       const { id, ...data } = input;
       const project = await ctx.db.project.findUniqueOrThrow({ where: { id } });
 
-      const membership = await ctx.db.workspaceMember.findUnique({
-        where: { workspaceId_userId: { workspaceId: project.workspaceId, userId: ctx.userId } },
-      });
-
-      // Guests cannot update project settings
-      if (membership?.role === 'GUEST') {
-        throw new TRPCError({ code: 'FORBIDDEN', message: 'Guests cannot modify project settings.' });
-      }
+      const membership = await requireNonGuest(ctx.db, project.workspaceId, ctx.userId);
 
       // Only admins or the creator can toggle privacy
       if (data.isPrivate !== undefined) {
-        if (membership?.role !== 'ADMIN' && project.createdById !== ctx.userId) {
+        if (membership.role !== 'ADMIN' && project.createdById !== ctx.userId) {
           throw new TRPCError({ code: 'FORBIDDEN', message: 'Only admins or the project creator can change visibility.' });
         }
       }

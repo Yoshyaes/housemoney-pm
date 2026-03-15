@@ -5,6 +5,7 @@ import { useUIStore } from '@/lib/stores/ui-store';
 import { trpc } from '@/lib/trpc';
 import { X, Plus, Trash2, Edit2, Check, AlertCircle, KeyRound, ChevronDown, Lock, Globe } from 'lucide-react';
 import { BRAND_AMBER } from '@/lib/constants';
+import { GuestBadge } from '@/components/shared/guest-badge';
 
 const PROJECT_COLORS = [
   '#1D9E75', '#3B82F6', '#8B5CF6', '#EF4444', '#F59E0B',
@@ -438,11 +439,7 @@ export function SettingsModal({ workspaceId: workspaceIdProp }: SettingsModalPro
                     ) : (
                       <div className="flex items-center gap-1.5">
                         <p className="text-xs font-medium text-zinc-800 dark:text-zinc-200 truncate">{member.name}</p>
-                        {member.role === 'GUEST' && (
-                          <span className="rounded-full px-1.5 py-0.5 text-[8px] font-medium uppercase tracking-wider" style={{ backgroundColor: 'rgba(186,117,23,0.12)', color: '#BA7517' }}>
-                            Guest
-                          </span>
-                        )}
+                        {member.role === 'GUEST' && <GuestBadge />}
                       </div>
                     )}
                     <p className="text-[10px] text-zinc-400 truncate">{member.email}</p>

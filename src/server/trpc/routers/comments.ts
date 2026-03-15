@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { router, protectedProcedure, requireWorkspaceMember } from '@/server/trpc/trpc';
+import { router, protectedProcedure, requireWorkspaceMember, requireProjectAccess } from '@/server/trpc/trpc';
 import { TRPCError } from '@trpc/server';
 
 export const commentsRouter = router({
@@ -8,14 +8,19 @@ export const commentsRouter = router({
     .query(async ({ ctx, input }) => {
       const task = await ctx.db.task.findUnique({
         where: { id: input.taskId },
-        select: { workspaceId: true },
+        select: { workspaceId: true, projectId: true },
       });
 
       if (!task) {
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Task not found' });
       }
 
-      await requireWorkspaceMember(ctx.db, task.workspaceId, ctx.userId);
+      const membership = await requireWorkspaceMember(ctx.db, task.workspaceId, ctx.userId);
+
+      if (membership.role === 'GUEST') {
+        if (!task.projectId) throw new TRPCError({ code: 'FORBIDDEN', message: 'No access to this task' });
+        await requireProjectAccess(ctx.db, task.projectId, ctx.userId);
+      }
 
       return ctx.db.comment.findMany({
         where: { taskId: input.taskId },
@@ -40,12 +45,17 @@ export const commentsRouter = router({
     .mutation(async ({ ctx, input }) => {
       const task = await ctx.db.task.findUnique({
         where: { id: input.taskId },
-        select: { id: true, identifier: true, title: true, assigneeId: true, createdById: true, workspaceId: true },
+        select: { id: true, identifier: true, title: true, assigneeId: true, createdById: true, workspaceId: true, projectId: true },
       });
 
       if (!task) throw new TRPCError({ code: 'NOT_FOUND', message: 'Task not found' });
 
-      await requireWorkspaceMember(ctx.db, task.workspaceId, ctx.userId);
+      const membership = await requireWorkspaceMember(ctx.db, task.workspaceId, ctx.userId);
+
+      if (membership.role === 'GUEST') {
+        if (!task.projectId) throw new TRPCError({ code: 'FORBIDDEN', message: 'No access to this task' });
+        await requireProjectAccess(ctx.db, task.projectId, ctx.userId);
+      }
 
       const comment = await ctx.db.comment.create({
         data: {
@@ -135,12 +145,17 @@ export const commentsRouter = router({
     .mutation(async ({ ctx, input }) => {
       const comment = await ctx.db.comment.findUnique({
         where: { id: input.commentId },
-        select: { reactions: true, task: { select: { workspaceId: true } } },
+        select: { reactions: true, task: { select: { workspaceId: true, projectId: true } } },
       });
 
       if (!comment) throw new TRPCError({ code: 'NOT_FOUND', message: 'Comment not found' });
 
-      await requireWorkspaceMember(ctx.db, comment.task.workspaceId, ctx.userId);
+      const membership = await requireWorkspaceMember(ctx.db, comment.task.workspaceId, ctx.userId);
+
+      if (membership.role === 'GUEST') {
+        if (!comment.task.projectId) throw new TRPCError({ code: 'FORBIDDEN', message: 'No access to this task' });
+        await requireProjectAccess(ctx.db, comment.task.projectId, ctx.userId);
+      }
 
       const reactions = (comment.reactions as Array<{ emoji: string; userIds: string[] }>) || [];
       const existing = reactions.find((r) => r.emoji === input.emoji);

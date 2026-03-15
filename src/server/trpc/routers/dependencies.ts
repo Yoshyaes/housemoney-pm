@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { router, protectedProcedure, requireWorkspaceMember } from '@/server/trpc/trpc';
+import { router, protectedProcedure, requireWorkspaceMember, requireProjectAccess } from '@/server/trpc/trpc';
 import { TRPCError } from '@trpc/server';
 
 export const dependenciesRouter = router({
@@ -17,8 +17,8 @@ export const dependenciesRouter = router({
 
       // Verify both tasks exist and belong to the same workspace
       const [blockingTask, blockedTask] = await Promise.all([
-        ctx.db.task.findUnique({ where: { id: input.blockingTaskId }, select: { workspaceId: true } }),
-        ctx.db.task.findUnique({ where: { id: input.blockedTaskId }, select: { workspaceId: true } }),
+        ctx.db.task.findUnique({ where: { id: input.blockingTaskId }, select: { workspaceId: true, projectId: true } }),
+        ctx.db.task.findUnique({ where: { id: input.blockedTaskId }, select: { workspaceId: true, projectId: true } }),
       ]);
 
       if (!blockingTask || !blockedTask) {
@@ -29,7 +29,16 @@ export const dependenciesRouter = router({
         throw new TRPCError({ code: 'BAD_REQUEST', message: 'Tasks must be in the same workspace' });
       }
 
-      await requireWorkspaceMember(ctx.db, blockingTask.workspaceId, ctx.userId);
+      const membership = await requireWorkspaceMember(ctx.db, blockingTask.workspaceId, ctx.userId);
+
+      // Guests must have access to both tasks' projects
+      if (membership.role === 'GUEST') {
+        if (!blockingTask.projectId || !blockedTask.projectId) {
+          throw new TRPCError({ code: 'FORBIDDEN', message: 'No access to one or both tasks' });
+        }
+        await requireProjectAccess(ctx.db, blockingTask.projectId, ctx.userId);
+        await requireProjectAccess(ctx.db, blockedTask.projectId, ctx.userId);
+      }
 
       // Check for existing dependency
       const existing = await ctx.db.dependency.findUnique({
@@ -116,7 +125,17 @@ export const dependenciesRouter = router({
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Dependency not found' });
       }
 
-      await requireWorkspaceMember(ctx.db, dependency.blockingTask.workspaceId, ctx.userId);
+      const membership = await requireWorkspaceMember(ctx.db, dependency.blockingTask.workspaceId, ctx.userId);
+
+      if (membership.role === 'GUEST') {
+        const fullBlocking = await ctx.db.task.findUnique({ where: { id: dependency.blockingTaskId }, select: { projectId: true } });
+        const fullBlocked = await ctx.db.task.findUnique({ where: { id: dependency.blockedTaskId }, select: { projectId: true } });
+        if (!fullBlocking?.projectId || !fullBlocked?.projectId) {
+          throw new TRPCError({ code: 'FORBIDDEN', message: 'No access to one or both tasks' });
+        }
+        await requireProjectAccess(ctx.db, fullBlocking.projectId, ctx.userId);
+        await requireProjectAccess(ctx.db, fullBlocked.projectId, ctx.userId);
+      }
 
       await ctx.db.dependency.delete({ where: { id: input.id } });
 

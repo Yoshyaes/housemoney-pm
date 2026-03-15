@@ -203,7 +203,7 @@ export const workspaceRouter = router({
     }))
     .mutation(async ({ ctx, input }) => {
       const label = await ctx.db.label.findUniqueOrThrow({ where: { id: input.id } });
-      await requireWorkspaceMember(ctx.db, label.workspaceId, ctx.userId);
+      await requireNonGuest(ctx.db, label.workspaceId, ctx.userId);
 
       const { id, ...data } = input;
       return ctx.db.label.update({ where: { id }, data });

@@ -79,14 +79,30 @@ export const sectionsRouter = router({
     .mutation(async ({ ctx, input }) => {
       const task = await ctx.db.task.findUnique({
         where: { id: input.taskId },
-        select: { workspaceId: true },
+        select: { workspaceId: true, projectId: true },
       });
 
       if (!task) {
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Task not found' });
       }
 
-      await requireWorkspaceMember(ctx.db, task.workspaceId, ctx.userId);
+      const membership = await requireWorkspaceMember(ctx.db, task.workspaceId, ctx.userId);
+
+      if (membership.role === 'GUEST') {
+        if (!task.projectId) throw new TRPCError({ code: 'FORBIDDEN', message: 'No access to this task' });
+        await requireProjectAccess(ctx.db, task.projectId, ctx.userId);
+      }
+
+      // If moving to a section, verify project access for that section too
+      if (input.sectionId) {
+        const section = await ctx.db.section.findUnique({
+          where: { id: input.sectionId },
+          select: { projectId: true },
+        });
+        if (section) {
+          await requireProjectAccess(ctx.db, section.projectId, ctx.userId);
+        }
+      }
 
       return ctx.db.task.update({
         where: { id: input.taskId },

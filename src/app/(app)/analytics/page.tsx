@@ -98,6 +98,9 @@ export default function AnalyticsPage() {
     if (isGuest) router.push('/');
   }, [isGuest, router]);
 
+  // Block render for guests
+  if (isGuest) return null;
+
   // Analytics queries — all share the same input, 5-minute stale time
   const commonInput = {
     workspaceId,
@@ -151,6 +154,7 @@ export default function AnalyticsPage() {
         workspaceSlug="house-money"
         workspaceId={workspaceId}
         onProjectsChange={() => {}}
+        isGuest={isGuest}
       />
 
       <div className="flex flex-1 flex-col overflow-hidden bg-white dark:bg-zinc-950">
