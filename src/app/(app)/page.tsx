@@ -16,9 +16,9 @@ import { TaskCreateModal } from '@/components/task/task-create-modal';
 import { CommandPalette } from '@/components/command-palette/command-palette';
 import { NotificationInbox } from '@/components/notifications/notification-inbox';
 import { QuickActionPopover } from '@/components/shared/quick-action-popover';
-import { SettingsModal } from '@/components/settings/settings-modal';
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser';
 import { useRouter } from 'next/navigation';
+import { useCurrentMembership } from '@/lib/hooks/use-current-membership';
 
 export default function AppPage() {
   const router = useRouter();
@@ -130,6 +130,9 @@ export default function AppPage() {
     if (members.length > 0) fetchUser();
   }, [members, supabase]);
 
+  // Current user's role
+  const { isGuest } = useCurrentMembership(members, currentUser?.id);
+
   // Task update handler
   const updateTask = trpc.tasks.update.useMutation({
     onSuccess: () => refetchTasks(),
@@ -184,6 +187,7 @@ export default function AppPage() {
         workspaceSlug={workspace?.slug || 'house-money'}
         workspaceId={workspaceId}
         onProjectsChange={() => utils.projects.list.invalidate({ workspaceId })}
+        isGuest={isGuest}
       />
 
       <div className="flex flex-1 flex-col overflow-hidden">
@@ -252,7 +256,6 @@ export default function AppPage() {
         onTaskCreated={() => refetchTasks()}
       />
       <QuickActionPopover members={members} labels={labels} onUpdate={handleTaskUpdate} />
-      <SettingsModal workspaceId={workspaceId} />
     </>
   );
 }

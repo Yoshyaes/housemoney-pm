@@ -204,6 +204,8 @@ export type UserWhereInput = {
   documents?: Prisma.DocumentListRelationFilter
   lastEditedDocs?: Prisma.DocumentListRelationFilter
   createdProjects?: Prisma.ProjectListRelationFilter
+  projectMemberships?: Prisma.ProjectMemberListRelationFilter
+  sentInvitations?: Prisma.InvitationListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -227,6 +229,8 @@ export type UserOrderByWithRelationInput = {
   documents?: Prisma.DocumentOrderByRelationAggregateInput
   lastEditedDocs?: Prisma.DocumentOrderByRelationAggregateInput
   createdProjects?: Prisma.ProjectOrderByRelationAggregateInput
+  projectMemberships?: Prisma.ProjectMemberOrderByRelationAggregateInput
+  sentInvitations?: Prisma.InvitationOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -253,6 +257,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   documents?: Prisma.DocumentListRelationFilter
   lastEditedDocs?: Prisma.DocumentListRelationFilter
   createdProjects?: Prisma.ProjectListRelationFilter
+  projectMemberships?: Prisma.ProjectMemberListRelationFilter
+  sentInvitations?: Prisma.InvitationListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -300,6 +306,8 @@ export type UserCreateInput = {
   documents?: Prisma.DocumentCreateNestedManyWithoutAuthorInput
   lastEditedDocs?: Prisma.DocumentCreateNestedManyWithoutLastEditedByInput
   createdProjects?: Prisma.ProjectCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -323,6 +331,8 @@ export type UserUncheckedCreateInput = {
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAuthorInput
   lastEditedDocs?: Prisma.DocumentUncheckedCreateNestedManyWithoutLastEditedByInput
   createdProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUpdateInput = {
@@ -346,6 +356,8 @@ export type UserUpdateInput = {
   documents?: Prisma.DocumentUpdateManyWithoutAuthorNestedInput
   lastEditedDocs?: Prisma.DocumentUpdateManyWithoutLastEditedByNestedInput
   createdProjects?: Prisma.ProjectUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -369,6 +381,8 @@ export type UserUncheckedUpdateInput = {
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutAuthorNestedInput
   lastEditedDocs?: Prisma.DocumentUncheckedUpdateManyWithoutLastEditedByNestedInput
   createdProjects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -649,6 +663,34 @@ export type UserUpdateOneRequiredWithoutDocCommentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDocCommentsInput, Prisma.UserUpdateWithoutDocCommentsInput>, Prisma.UserUncheckedUpdateWithoutDocCommentsInput>
 }
 
+export type UserCreateNestedOneWithoutProjectMembershipsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutProjectMembershipsInput, Prisma.UserUncheckedCreateWithoutProjectMembershipsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutProjectMembershipsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutProjectMembershipsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutProjectMembershipsInput, Prisma.UserUncheckedCreateWithoutProjectMembershipsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutProjectMembershipsInput
+  upsert?: Prisma.UserUpsertWithoutProjectMembershipsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutProjectMembershipsInput, Prisma.UserUpdateWithoutProjectMembershipsInput>, Prisma.UserUncheckedUpdateWithoutProjectMembershipsInput>
+}
+
+export type UserCreateNestedOneWithoutSentInvitationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSentInvitationsInput, Prisma.UserUncheckedCreateWithoutSentInvitationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSentInvitationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutSentInvitationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutSentInvitationsInput, Prisma.UserUncheckedCreateWithoutSentInvitationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutSentInvitationsInput
+  upsert?: Prisma.UserUpsertWithoutSentInvitationsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutSentInvitationsInput, Prisma.UserUpdateWithoutSentInvitationsInput>, Prisma.UserUncheckedUpdateWithoutSentInvitationsInput>
+}
+
 export type UserCreateWithoutMembershipsInput = {
   id: string
   email: string
@@ -669,6 +711,8 @@ export type UserCreateWithoutMembershipsInput = {
   documents?: Prisma.DocumentCreateNestedManyWithoutAuthorInput
   lastEditedDocs?: Prisma.DocumentCreateNestedManyWithoutLastEditedByInput
   createdProjects?: Prisma.ProjectCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutMembershipsInput = {
@@ -691,6 +735,8 @@ export type UserUncheckedCreateWithoutMembershipsInput = {
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAuthorInput
   lastEditedDocs?: Prisma.DocumentUncheckedCreateNestedManyWithoutLastEditedByInput
   createdProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutMembershipsInput = {
@@ -729,6 +775,8 @@ export type UserUpdateWithoutMembershipsInput = {
   documents?: Prisma.DocumentUpdateManyWithoutAuthorNestedInput
   lastEditedDocs?: Prisma.DocumentUpdateManyWithoutLastEditedByNestedInput
   createdProjects?: Prisma.ProjectUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMembershipsInput = {
@@ -751,6 +799,8 @@ export type UserUncheckedUpdateWithoutMembershipsInput = {
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutAuthorNestedInput
   lastEditedDocs?: Prisma.DocumentUncheckedUpdateManyWithoutLastEditedByNestedInput
   createdProjects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserCreateWithoutCreatedProjectsInput = {
@@ -773,6 +823,8 @@ export type UserCreateWithoutCreatedProjectsInput = {
   views?: Prisma.ViewCreateNestedManyWithoutOwnerInput
   documents?: Prisma.DocumentCreateNestedManyWithoutAuthorInput
   lastEditedDocs?: Prisma.DocumentCreateNestedManyWithoutLastEditedByInput
+  projectMemberships?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutCreatedProjectsInput = {
@@ -795,6 +847,8 @@ export type UserUncheckedCreateWithoutCreatedProjectsInput = {
   views?: Prisma.ViewUncheckedCreateNestedManyWithoutOwnerInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAuthorInput
   lastEditedDocs?: Prisma.DocumentUncheckedCreateNestedManyWithoutLastEditedByInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutCreatedProjectsInput = {
@@ -833,6 +887,8 @@ export type UserUpdateWithoutCreatedProjectsInput = {
   views?: Prisma.ViewUpdateManyWithoutOwnerNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutAuthorNestedInput
   lastEditedDocs?: Prisma.DocumentUpdateManyWithoutLastEditedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedProjectsInput = {
@@ -855,6 +911,8 @@ export type UserUncheckedUpdateWithoutCreatedProjectsInput = {
   views?: Prisma.ViewUncheckedUpdateManyWithoutOwnerNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutAuthorNestedInput
   lastEditedDocs?: Prisma.DocumentUncheckedUpdateManyWithoutLastEditedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserCreateWithoutAssignedTasksInput = {
@@ -877,6 +935,8 @@ export type UserCreateWithoutAssignedTasksInput = {
   documents?: Prisma.DocumentCreateNestedManyWithoutAuthorInput
   lastEditedDocs?: Prisma.DocumentCreateNestedManyWithoutLastEditedByInput
   createdProjects?: Prisma.ProjectCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutAssignedTasksInput = {
@@ -899,6 +959,8 @@ export type UserUncheckedCreateWithoutAssignedTasksInput = {
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAuthorInput
   lastEditedDocs?: Prisma.DocumentUncheckedCreateNestedManyWithoutLastEditedByInput
   createdProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutAssignedTasksInput = {
@@ -926,6 +988,8 @@ export type UserCreateWithoutCreatedTasksInput = {
   documents?: Prisma.DocumentCreateNestedManyWithoutAuthorInput
   lastEditedDocs?: Prisma.DocumentCreateNestedManyWithoutLastEditedByInput
   createdProjects?: Prisma.ProjectCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutCreatedTasksInput = {
@@ -948,6 +1012,8 @@ export type UserUncheckedCreateWithoutCreatedTasksInput = {
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAuthorInput
   lastEditedDocs?: Prisma.DocumentUncheckedCreateNestedManyWithoutLastEditedByInput
   createdProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutCreatedTasksInput = {
@@ -986,6 +1052,8 @@ export type UserUpdateWithoutAssignedTasksInput = {
   documents?: Prisma.DocumentUpdateManyWithoutAuthorNestedInput
   lastEditedDocs?: Prisma.DocumentUpdateManyWithoutLastEditedByNestedInput
   createdProjects?: Prisma.ProjectUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignedTasksInput = {
@@ -1008,6 +1076,8 @@ export type UserUncheckedUpdateWithoutAssignedTasksInput = {
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutAuthorNestedInput
   lastEditedDocs?: Prisma.DocumentUncheckedUpdateManyWithoutLastEditedByNestedInput
   createdProjects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUpsertWithoutCreatedTasksInput = {
@@ -1041,6 +1111,8 @@ export type UserUpdateWithoutCreatedTasksInput = {
   documents?: Prisma.DocumentUpdateManyWithoutAuthorNestedInput
   lastEditedDocs?: Prisma.DocumentUpdateManyWithoutLastEditedByNestedInput
   createdProjects?: Prisma.ProjectUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedTasksInput = {
@@ -1063,6 +1135,8 @@ export type UserUncheckedUpdateWithoutCreatedTasksInput = {
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutAuthorNestedInput
   lastEditedDocs?: Prisma.DocumentUncheckedUpdateManyWithoutLastEditedByNestedInput
   createdProjects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserCreateWithoutUploadedAttachmentsInput = {
@@ -1085,6 +1159,8 @@ export type UserCreateWithoutUploadedAttachmentsInput = {
   documents?: Prisma.DocumentCreateNestedManyWithoutAuthorInput
   lastEditedDocs?: Prisma.DocumentCreateNestedManyWithoutLastEditedByInput
   createdProjects?: Prisma.ProjectCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutUploadedAttachmentsInput = {
@@ -1107,6 +1183,8 @@ export type UserUncheckedCreateWithoutUploadedAttachmentsInput = {
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAuthorInput
   lastEditedDocs?: Prisma.DocumentUncheckedCreateNestedManyWithoutLastEditedByInput
   createdProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutUploadedAttachmentsInput = {
@@ -1145,6 +1223,8 @@ export type UserUpdateWithoutUploadedAttachmentsInput = {
   documents?: Prisma.DocumentUpdateManyWithoutAuthorNestedInput
   lastEditedDocs?: Prisma.DocumentUpdateManyWithoutLastEditedByNestedInput
   createdProjects?: Prisma.ProjectUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUploadedAttachmentsInput = {
@@ -1167,6 +1247,8 @@ export type UserUncheckedUpdateWithoutUploadedAttachmentsInput = {
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutAuthorNestedInput
   lastEditedDocs?: Prisma.DocumentUncheckedUpdateManyWithoutLastEditedByNestedInput
   createdProjects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserCreateWithoutCollaboratingTasksInput = {
@@ -1189,6 +1271,8 @@ export type UserCreateWithoutCollaboratingTasksInput = {
   documents?: Prisma.DocumentCreateNestedManyWithoutAuthorInput
   lastEditedDocs?: Prisma.DocumentCreateNestedManyWithoutLastEditedByInput
   createdProjects?: Prisma.ProjectCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutCollaboratingTasksInput = {
@@ -1211,6 +1295,8 @@ export type UserUncheckedCreateWithoutCollaboratingTasksInput = {
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAuthorInput
   lastEditedDocs?: Prisma.DocumentUncheckedCreateNestedManyWithoutLastEditedByInput
   createdProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutCollaboratingTasksInput = {
@@ -1249,6 +1335,8 @@ export type UserUpdateWithoutCollaboratingTasksInput = {
   documents?: Prisma.DocumentUpdateManyWithoutAuthorNestedInput
   lastEditedDocs?: Prisma.DocumentUpdateManyWithoutLastEditedByNestedInput
   createdProjects?: Prisma.ProjectUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCollaboratingTasksInput = {
@@ -1271,6 +1359,8 @@ export type UserUncheckedUpdateWithoutCollaboratingTasksInput = {
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutAuthorNestedInput
   lastEditedDocs?: Prisma.DocumentUncheckedUpdateManyWithoutLastEditedByNestedInput
   createdProjects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserCreateWithoutCommentsInput = {
@@ -1293,6 +1383,8 @@ export type UserCreateWithoutCommentsInput = {
   documents?: Prisma.DocumentCreateNestedManyWithoutAuthorInput
   lastEditedDocs?: Prisma.DocumentCreateNestedManyWithoutLastEditedByInput
   createdProjects?: Prisma.ProjectCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutCommentsInput = {
@@ -1315,6 +1407,8 @@ export type UserUncheckedCreateWithoutCommentsInput = {
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAuthorInput
   lastEditedDocs?: Prisma.DocumentUncheckedCreateNestedManyWithoutLastEditedByInput
   createdProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutCommentsInput = {
@@ -1353,6 +1447,8 @@ export type UserUpdateWithoutCommentsInput = {
   documents?: Prisma.DocumentUpdateManyWithoutAuthorNestedInput
   lastEditedDocs?: Prisma.DocumentUpdateManyWithoutLastEditedByNestedInput
   createdProjects?: Prisma.ProjectUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCommentsInput = {
@@ -1375,6 +1471,8 @@ export type UserUncheckedUpdateWithoutCommentsInput = {
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutAuthorNestedInput
   lastEditedDocs?: Prisma.DocumentUncheckedUpdateManyWithoutLastEditedByNestedInput
   createdProjects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserCreateWithoutActivitiesInput = {
@@ -1397,6 +1495,8 @@ export type UserCreateWithoutActivitiesInput = {
   documents?: Prisma.DocumentCreateNestedManyWithoutAuthorInput
   lastEditedDocs?: Prisma.DocumentCreateNestedManyWithoutLastEditedByInput
   createdProjects?: Prisma.ProjectCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutActivitiesInput = {
@@ -1419,6 +1519,8 @@ export type UserUncheckedCreateWithoutActivitiesInput = {
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAuthorInput
   lastEditedDocs?: Prisma.DocumentUncheckedCreateNestedManyWithoutLastEditedByInput
   createdProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutActivitiesInput = {
@@ -1457,6 +1559,8 @@ export type UserUpdateWithoutActivitiesInput = {
   documents?: Prisma.DocumentUpdateManyWithoutAuthorNestedInput
   lastEditedDocs?: Prisma.DocumentUpdateManyWithoutLastEditedByNestedInput
   createdProjects?: Prisma.ProjectUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutActivitiesInput = {
@@ -1479,6 +1583,8 @@ export type UserUncheckedUpdateWithoutActivitiesInput = {
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutAuthorNestedInput
   lastEditedDocs?: Prisma.DocumentUncheckedUpdateManyWithoutLastEditedByNestedInput
   createdProjects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserCreateWithoutViewsInput = {
@@ -1501,6 +1607,8 @@ export type UserCreateWithoutViewsInput = {
   documents?: Prisma.DocumentCreateNestedManyWithoutAuthorInput
   lastEditedDocs?: Prisma.DocumentCreateNestedManyWithoutLastEditedByInput
   createdProjects?: Prisma.ProjectCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutViewsInput = {
@@ -1523,6 +1631,8 @@ export type UserUncheckedCreateWithoutViewsInput = {
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAuthorInput
   lastEditedDocs?: Prisma.DocumentUncheckedCreateNestedManyWithoutLastEditedByInput
   createdProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutViewsInput = {
@@ -1561,6 +1671,8 @@ export type UserUpdateWithoutViewsInput = {
   documents?: Prisma.DocumentUpdateManyWithoutAuthorNestedInput
   lastEditedDocs?: Prisma.DocumentUpdateManyWithoutLastEditedByNestedInput
   createdProjects?: Prisma.ProjectUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutViewsInput = {
@@ -1583,6 +1695,8 @@ export type UserUncheckedUpdateWithoutViewsInput = {
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutAuthorNestedInput
   lastEditedDocs?: Prisma.DocumentUncheckedUpdateManyWithoutLastEditedByNestedInput
   createdProjects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserCreateWithoutNotificationsInput = {
@@ -1605,6 +1719,8 @@ export type UserCreateWithoutNotificationsInput = {
   documents?: Prisma.DocumentCreateNestedManyWithoutAuthorInput
   lastEditedDocs?: Prisma.DocumentCreateNestedManyWithoutLastEditedByInput
   createdProjects?: Prisma.ProjectCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -1627,6 +1743,8 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAuthorInput
   lastEditedDocs?: Prisma.DocumentUncheckedCreateNestedManyWithoutLastEditedByInput
   createdProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -1654,6 +1772,8 @@ export type UserCreateWithoutActedNotificationsInput = {
   documents?: Prisma.DocumentCreateNestedManyWithoutAuthorInput
   lastEditedDocs?: Prisma.DocumentCreateNestedManyWithoutLastEditedByInput
   createdProjects?: Prisma.ProjectCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutActedNotificationsInput = {
@@ -1676,6 +1796,8 @@ export type UserUncheckedCreateWithoutActedNotificationsInput = {
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAuthorInput
   lastEditedDocs?: Prisma.DocumentUncheckedCreateNestedManyWithoutLastEditedByInput
   createdProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutActedNotificationsInput = {
@@ -1714,6 +1836,8 @@ export type UserUpdateWithoutNotificationsInput = {
   documents?: Prisma.DocumentUpdateManyWithoutAuthorNestedInput
   lastEditedDocs?: Prisma.DocumentUpdateManyWithoutLastEditedByNestedInput
   createdProjects?: Prisma.ProjectUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -1736,6 +1860,8 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutAuthorNestedInput
   lastEditedDocs?: Prisma.DocumentUncheckedUpdateManyWithoutLastEditedByNestedInput
   createdProjects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUpsertWithoutActedNotificationsInput = {
@@ -1769,6 +1895,8 @@ export type UserUpdateWithoutActedNotificationsInput = {
   documents?: Prisma.DocumentUpdateManyWithoutAuthorNestedInput
   lastEditedDocs?: Prisma.DocumentUpdateManyWithoutLastEditedByNestedInput
   createdProjects?: Prisma.ProjectUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutActedNotificationsInput = {
@@ -1791,6 +1919,8 @@ export type UserUncheckedUpdateWithoutActedNotificationsInput = {
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutAuthorNestedInput
   lastEditedDocs?: Prisma.DocumentUncheckedUpdateManyWithoutLastEditedByNestedInput
   createdProjects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserCreateWithoutDocumentsInput = {
@@ -1813,6 +1943,8 @@ export type UserCreateWithoutDocumentsInput = {
   views?: Prisma.ViewCreateNestedManyWithoutOwnerInput
   lastEditedDocs?: Prisma.DocumentCreateNestedManyWithoutLastEditedByInput
   createdProjects?: Prisma.ProjectCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutDocumentsInput = {
@@ -1835,6 +1967,8 @@ export type UserUncheckedCreateWithoutDocumentsInput = {
   views?: Prisma.ViewUncheckedCreateNestedManyWithoutOwnerInput
   lastEditedDocs?: Prisma.DocumentUncheckedCreateNestedManyWithoutLastEditedByInput
   createdProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutDocumentsInput = {
@@ -1862,6 +1996,8 @@ export type UserCreateWithoutLastEditedDocsInput = {
   views?: Prisma.ViewCreateNestedManyWithoutOwnerInput
   documents?: Prisma.DocumentCreateNestedManyWithoutAuthorInput
   createdProjects?: Prisma.ProjectCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutLastEditedDocsInput = {
@@ -1884,6 +2020,8 @@ export type UserUncheckedCreateWithoutLastEditedDocsInput = {
   views?: Prisma.ViewUncheckedCreateNestedManyWithoutOwnerInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAuthorInput
   createdProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutLastEditedDocsInput = {
@@ -1922,6 +2060,8 @@ export type UserUpdateWithoutDocumentsInput = {
   views?: Prisma.ViewUpdateManyWithoutOwnerNestedInput
   lastEditedDocs?: Prisma.DocumentUpdateManyWithoutLastEditedByNestedInput
   createdProjects?: Prisma.ProjectUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDocumentsInput = {
@@ -1944,6 +2084,8 @@ export type UserUncheckedUpdateWithoutDocumentsInput = {
   views?: Prisma.ViewUncheckedUpdateManyWithoutOwnerNestedInput
   lastEditedDocs?: Prisma.DocumentUncheckedUpdateManyWithoutLastEditedByNestedInput
   createdProjects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUpsertWithoutLastEditedDocsInput = {
@@ -1977,6 +2119,8 @@ export type UserUpdateWithoutLastEditedDocsInput = {
   views?: Prisma.ViewUpdateManyWithoutOwnerNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutAuthorNestedInput
   createdProjects?: Prisma.ProjectUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLastEditedDocsInput = {
@@ -1999,6 +2143,8 @@ export type UserUncheckedUpdateWithoutLastEditedDocsInput = {
   views?: Prisma.ViewUncheckedUpdateManyWithoutOwnerNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutAuthorNestedInput
   createdProjects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserCreateWithoutDocCommentsInput = {
@@ -2021,6 +2167,8 @@ export type UserCreateWithoutDocCommentsInput = {
   documents?: Prisma.DocumentCreateNestedManyWithoutAuthorInput
   lastEditedDocs?: Prisma.DocumentCreateNestedManyWithoutLastEditedByInput
   createdProjects?: Prisma.ProjectCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserUncheckedCreateWithoutDocCommentsInput = {
@@ -2043,6 +2191,8 @@ export type UserUncheckedCreateWithoutDocCommentsInput = {
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAuthorInput
   lastEditedDocs?: Prisma.DocumentUncheckedCreateNestedManyWithoutLastEditedByInput
   createdProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
 }
 
 export type UserCreateOrConnectWithoutDocCommentsInput = {
@@ -2081,6 +2231,8 @@ export type UserUpdateWithoutDocCommentsInput = {
   documents?: Prisma.DocumentUpdateManyWithoutAuthorNestedInput
   lastEditedDocs?: Prisma.DocumentUpdateManyWithoutLastEditedByNestedInput
   createdProjects?: Prisma.ProjectUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDocCommentsInput = {
@@ -2103,6 +2255,232 @@ export type UserUncheckedUpdateWithoutDocCommentsInput = {
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutAuthorNestedInput
   lastEditedDocs?: Prisma.DocumentUncheckedUpdateManyWithoutLastEditedByNestedInput
   createdProjects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserCreateWithoutProjectMembershipsInput = {
+  id: string
+  email: string
+  name: string
+  avatarUrl?: string | null
+  avatarColor?: string
+  createdAt?: Date | string
+  memberships?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
+  createdTasks?: Prisma.TaskCreateNestedManyWithoutCreatedByInput
+  collaboratingTasks?: Prisma.TaskCollaboratorCreateNestedManyWithoutUserInput
+  uploadedAttachments?: Prisma.TaskAttachmentCreateNestedManyWithoutUploadedByInput
+  comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentCreateNestedManyWithoutAuthorInput
+  activities?: Prisma.ActivityCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
+  views?: Prisma.ViewCreateNestedManyWithoutOwnerInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutAuthorInput
+  lastEditedDocs?: Prisma.DocumentCreateNestedManyWithoutLastEditedByInput
+  createdProjects?: Prisma.ProjectCreateNestedManyWithoutCreatedByInput
+  sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
+}
+
+export type UserUncheckedCreateWithoutProjectMembershipsInput = {
+  id: string
+  email: string
+  name: string
+  avatarUrl?: string | null
+  avatarColor?: string
+  createdAt?: Date | string
+  memberships?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
+  createdTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutCreatedByInput
+  collaboratingTasks?: Prisma.TaskCollaboratorUncheckedCreateNestedManyWithoutUserInput
+  uploadedAttachments?: Prisma.TaskAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
+  views?: Prisma.ViewUncheckedCreateNestedManyWithoutOwnerInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAuthorInput
+  lastEditedDocs?: Prisma.DocumentUncheckedCreateNestedManyWithoutLastEditedByInput
+  createdProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatedByInput
+  sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
+}
+
+export type UserCreateOrConnectWithoutProjectMembershipsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutProjectMembershipsInput, Prisma.UserUncheckedCreateWithoutProjectMembershipsInput>
+}
+
+export type UserUpsertWithoutProjectMembershipsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutProjectMembershipsInput, Prisma.UserUncheckedUpdateWithoutProjectMembershipsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutProjectMembershipsInput, Prisma.UserUncheckedCreateWithoutProjectMembershipsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutProjectMembershipsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutProjectMembershipsInput, Prisma.UserUncheckedUpdateWithoutProjectMembershipsInput>
+}
+
+export type UserUpdateWithoutProjectMembershipsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
+  createdTasks?: Prisma.TaskUpdateManyWithoutCreatedByNestedInput
+  collaboratingTasks?: Prisma.TaskCollaboratorUpdateManyWithoutUserNestedInput
+  uploadedAttachments?: Prisma.TaskAttachmentUpdateManyWithoutUploadedByNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUpdateManyWithoutAuthorNestedInput
+  activities?: Prisma.ActivityUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
+  views?: Prisma.ViewUpdateManyWithoutOwnerNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutAuthorNestedInput
+  lastEditedDocs?: Prisma.DocumentUpdateManyWithoutLastEditedByNestedInput
+  createdProjects?: Prisma.ProjectUpdateManyWithoutCreatedByNestedInput
+  sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutProjectMembershipsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  createdTasks?: Prisma.TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+  collaboratingTasks?: Prisma.TaskCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+  uploadedAttachments?: Prisma.TaskAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
+  views?: Prisma.ViewUncheckedUpdateManyWithoutOwnerNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutAuthorNestedInput
+  lastEditedDocs?: Prisma.DocumentUncheckedUpdateManyWithoutLastEditedByNestedInput
+  createdProjects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+}
+
+export type UserCreateWithoutSentInvitationsInput = {
+  id: string
+  email: string
+  name: string
+  avatarUrl?: string | null
+  avatarColor?: string
+  createdAt?: Date | string
+  memberships?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
+  createdTasks?: Prisma.TaskCreateNestedManyWithoutCreatedByInput
+  collaboratingTasks?: Prisma.TaskCollaboratorCreateNestedManyWithoutUserInput
+  uploadedAttachments?: Prisma.TaskAttachmentCreateNestedManyWithoutUploadedByInput
+  comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentCreateNestedManyWithoutAuthorInput
+  activities?: Prisma.ActivityCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
+  views?: Prisma.ViewCreateNestedManyWithoutOwnerInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutAuthorInput
+  lastEditedDocs?: Prisma.DocumentCreateNestedManyWithoutLastEditedByInput
+  createdProjects?: Prisma.ProjectCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutSentInvitationsInput = {
+  id: string
+  email: string
+  name: string
+  avatarUrl?: string | null
+  avatarColor?: string
+  createdAt?: Date | string
+  memberships?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
+  createdTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutCreatedByInput
+  collaboratingTasks?: Prisma.TaskCollaboratorUncheckedCreateNestedManyWithoutUserInput
+  uploadedAttachments?: Prisma.TaskAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
+  views?: Prisma.ViewUncheckedCreateNestedManyWithoutOwnerInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAuthorInput
+  lastEditedDocs?: Prisma.DocumentUncheckedCreateNestedManyWithoutLastEditedByInput
+  createdProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutSentInvitationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutSentInvitationsInput, Prisma.UserUncheckedCreateWithoutSentInvitationsInput>
+}
+
+export type UserUpsertWithoutSentInvitationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutSentInvitationsInput, Prisma.UserUncheckedUpdateWithoutSentInvitationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutSentInvitationsInput, Prisma.UserUncheckedCreateWithoutSentInvitationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutSentInvitationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutSentInvitationsInput, Prisma.UserUncheckedUpdateWithoutSentInvitationsInput>
+}
+
+export type UserUpdateWithoutSentInvitationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
+  createdTasks?: Prisma.TaskUpdateManyWithoutCreatedByNestedInput
+  collaboratingTasks?: Prisma.TaskCollaboratorUpdateManyWithoutUserNestedInput
+  uploadedAttachments?: Prisma.TaskAttachmentUpdateManyWithoutUploadedByNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUpdateManyWithoutAuthorNestedInput
+  activities?: Prisma.ActivityUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
+  views?: Prisma.ViewUpdateManyWithoutOwnerNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutAuthorNestedInput
+  lastEditedDocs?: Prisma.DocumentUpdateManyWithoutLastEditedByNestedInput
+  createdProjects?: Prisma.ProjectUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutSentInvitationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  createdTasks?: Prisma.TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+  collaboratingTasks?: Prisma.TaskCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+  uploadedAttachments?: Prisma.TaskAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
+  views?: Prisma.ViewUncheckedUpdateManyWithoutOwnerNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutAuthorNestedInput
+  lastEditedDocs?: Prisma.DocumentUncheckedUpdateManyWithoutLastEditedByNestedInput
+  createdProjects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
 }
 
 
@@ -2125,6 +2503,8 @@ export type UserCountOutputType = {
   documents: number
   lastEditedDocs: number
   createdProjects: number
+  projectMemberships: number
+  sentInvitations: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2142,6 +2522,8 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   documents?: boolean | UserCountOutputTypeCountDocumentsArgs
   lastEditedDocs?: boolean | UserCountOutputTypeCountLastEditedDocsArgs
   createdProjects?: boolean | UserCountOutputTypeCountCreatedProjectsArgs
+  projectMemberships?: boolean | UserCountOutputTypeCountProjectMembershipsArgs
+  sentInvitations?: boolean | UserCountOutputTypeCountSentInvitationsArgs
 }
 
 /**
@@ -2252,6 +2634,20 @@ export type UserCountOutputTypeCountCreatedProjectsArgs<ExtArgs extends runtime.
   where?: Prisma.ProjectWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountProjectMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ProjectMemberWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountSentInvitationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.InvitationWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2274,6 +2670,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   documents?: boolean | Prisma.User$documentsArgs<ExtArgs>
   lastEditedDocs?: boolean | Prisma.User$lastEditedDocsArgs<ExtArgs>
   createdProjects?: boolean | Prisma.User$createdProjectsArgs<ExtArgs>
+  projectMemberships?: boolean | Prisma.User$projectMembershipsArgs<ExtArgs>
+  sentInvitations?: boolean | Prisma.User$sentInvitationsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -2320,6 +2718,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   documents?: boolean | Prisma.User$documentsArgs<ExtArgs>
   lastEditedDocs?: boolean | Prisma.User$lastEditedDocsArgs<ExtArgs>
   createdProjects?: boolean | Prisma.User$createdProjectsArgs<ExtArgs>
+  projectMemberships?: boolean | Prisma.User$projectMembershipsArgs<ExtArgs>
+  sentInvitations?: boolean | Prisma.User$sentInvitationsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -2342,6 +2742,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     documents: Prisma.$DocumentPayload<ExtArgs>[]
     lastEditedDocs: Prisma.$DocumentPayload<ExtArgs>[]
     createdProjects: Prisma.$ProjectPayload<ExtArgs>[]
+    projectMemberships: Prisma.$ProjectMemberPayload<ExtArgs>[]
+    sentInvitations: Prisma.$InvitationPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2758,6 +3160,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   documents<T extends Prisma.User$documentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   lastEditedDocs<T extends Prisma.User$lastEditedDocsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$lastEditedDocsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   createdProjects<T extends Prisma.User$createdProjectsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdProjectsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  projectMemberships<T extends Prisma.User$projectMembershipsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$projectMembershipsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  sentInvitations<T extends Prisma.User$sentInvitationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sentInvitationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3519,6 +3923,54 @@ export type User$createdProjectsArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.ProjectScalarFieldEnum | Prisma.ProjectScalarFieldEnum[]
+}
+
+/**
+ * User.projectMemberships
+ */
+export type User$projectMembershipsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProjectMember
+   */
+  select?: Prisma.ProjectMemberSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ProjectMember
+   */
+  omit?: Prisma.ProjectMemberOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProjectMemberInclude<ExtArgs> | null
+  where?: Prisma.ProjectMemberWhereInput
+  orderBy?: Prisma.ProjectMemberOrderByWithRelationInput | Prisma.ProjectMemberOrderByWithRelationInput[]
+  cursor?: Prisma.ProjectMemberWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ProjectMemberScalarFieldEnum | Prisma.ProjectMemberScalarFieldEnum[]
+}
+
+/**
+ * User.sentInvitations
+ */
+export type User$sentInvitationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Invitation
+   */
+  select?: Prisma.InvitationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Invitation
+   */
+  omit?: Prisma.InvitationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.InvitationInclude<ExtArgs> | null
+  where?: Prisma.InvitationWhereInput
+  orderBy?: Prisma.InvitationOrderByWithRelationInput | Prisma.InvitationOrderByWithRelationInput[]
+  cursor?: Prisma.InvitationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.InvitationScalarFieldEnum | Prisma.InvitationScalarFieldEnum[]
 }
 
 /**

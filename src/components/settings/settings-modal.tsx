@@ -22,11 +22,15 @@ const LABEL_PRESETS = [
 type Tab = 'projects' | 'labels' | 'members';
 
 interface SettingsModalProps {
-  workspaceId: string;
+  workspaceId?: string;
 }
 
-export function SettingsModal({ workspaceId }: SettingsModalProps) {
+export function SettingsModal({ workspaceId: workspaceIdProp }: SettingsModalProps) {
   const { settingsOpen, setSettingsOpen } = useUIStore();
+  const { data: workspace } = trpc.workspace.getCurrent.useQuery(undefined, {
+    enabled: settingsOpen && !workspaceIdProp,
+  });
+  const workspaceId = workspaceIdProp || workspace?.id || '';
   const [tab, setTab] = useState<Tab>('projects');
   const utils = trpc.useUtils();
 
@@ -87,6 +91,8 @@ export function SettingsModal({ workspaceId }: SettingsModalProps) {
     { enabled: settingsOpen && !!workspaceId }
   );
   const [inviteEmail, setInviteEmail] = useState('');
+  const [inviteRole, setInviteRole] = useState<'MEMBER' | 'GUEST'>('MEMBER');
+  const [inviteProjectIds, setInviteProjectIds] = useState<string[]>([]);
   const [inviteError, setInviteError] = useState('');
   const [inviteSuccess, setInviteSuccess] = useState('');
   const [editingMember, setEditingMember] = useState<{ id: string; name: string } | null>(null);
@@ -96,6 +102,8 @@ export function SettingsModal({ workspaceId }: SettingsModalProps) {
     onSuccess: (data) => {
       utils.workspace.getMembers.invalidate({ workspaceId });
       setInviteEmail('');
+      setInviteRole('MEMBER');
+      setInviteProjectIds([]);
       setInviteError('');
       setInviteSuccess(`${data.user.name} added to workspace.`);
       setTimeout(() => setInviteSuccess(''), 3000);
@@ -399,137 +407,203 @@ export function SettingsModal({ workspaceId }: SettingsModalProps) {
           )}
 
           {/* ── Members tab ── */}
-          {tab === 'members' && (
-            <div className="space-y-4">
-              {resetSuccess && (
-                <p className="flex items-center gap-1 rounded bg-green-50 dark:bg-green-900/20 px-3 py-2 text-[10px] text-green-600 dark:text-green-400">
-                  <Check className="h-3 w-3" /> {resetSuccess}
-                </p>
-              )}
+          {tab === 'members' && (() => {
+            const teamMembers = members.filter((m) => m.role === 'ADMIN' || m.role === 'MEMBER');
+            const guestMembers = members.filter((m) => m.role === 'GUEST');
 
-              <div className="space-y-2">
-                {members.map((member) => (
+            const renderMemberRow = (member: typeof members[0]) => (
+              <div
+                key={member.id}
+                className="rounded-md border border-zinc-100 dark:border-zinc-800 px-3 py-2.5 space-y-2"
+              >
+                <div className="flex items-center gap-3">
                   <div
-                    key={member.id}
-                    className="rounded-md border border-zinc-100 dark:border-zinc-800 px-3 py-2.5 space-y-2"
+                    className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-[10px] font-medium text-white"
+                    style={{ backgroundColor: member.avatarColor || BRAND_AMBER }}
                   >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full text-[10px] font-medium text-white"
-                        style={{ backgroundColor: member.avatarColor || BRAND_AMBER }}
+                    {member.name.slice(0, 2).toUpperCase()}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    {editingMember?.id === member.id ? (
+                      <input
+                        autoFocus
+                        value={editingMember.name}
+                        onChange={(e) => setEditingMember({ ...editingMember, name: e.target.value })}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') updateUser.mutate({ userId: member.id, name: editingMember.name });
+                          if (e.key === 'Escape') setEditingMember(null);
+                        }}
+                        className="w-full text-xs bg-transparent border-b border-zinc-300 dark:border-zinc-600 outline-none text-zinc-900 dark:text-zinc-100"
+                      />
+                    ) : (
+                      <div className="flex items-center gap-1.5">
+                        <p className="text-xs font-medium text-zinc-800 dark:text-zinc-200 truncate">{member.name}</p>
+                        {member.role === 'GUEST' && (
+                          <span className="rounded-full px-1.5 py-0.5 text-[8px] font-medium uppercase tracking-wider" style={{ backgroundColor: 'rgba(186,117,23,0.12)', color: '#BA7517' }}>
+                            Guest
+                          </span>
+                        )}
+                      </div>
+                    )}
+                    <p className="text-[10px] text-zinc-400 truncate">{member.email}</p>
+                  </div>
+
+                  {/* Role selector */}
+                  <div className="relative">
+                    <select
+                      value={member.role}
+                      onChange={(e) => updateMemberRole.mutate({ workspaceId, userId: member.id, role: e.target.value as 'ADMIN' | 'MEMBER' | 'GUEST' })}
+                      className="appearance-none rounded border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 pl-2 pr-5 py-0.5 text-[10px] text-zinc-600 dark:text-zinc-400 outline-none cursor-pointer"
+                    >
+                      <option value="ADMIN">Admin</option>
+                      <option value="MEMBER">Member</option>
+                      <option value="GUEST">Guest</option>
+                    </select>
+                    <ChevronDown className="pointer-events-none absolute right-1 top-1/2 -translate-y-1/2 h-2.5 w-2.5 text-zinc-400" />
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex items-center gap-1">
+                    {editingMember?.id === member.id ? (
+                      <button onClick={() => updateUser.mutate({ userId: member.id, name: editingMember.name })} className="text-zinc-400 hover:text-green-500">
+                        <Check className="h-3.5 w-3.5" />
+                      </button>
+                    ) : (
+                      <button onClick={() => setEditingMember({ id: member.id, name: member.name })} className="text-zinc-300 hover:text-zinc-500 dark:text-zinc-600 dark:hover:text-zinc-300" title="Edit name">
+                        <Edit2 className="h-3.5 w-3.5" />
+                      </button>
+                    )}
+                    <button
+                      onClick={() => sendPasswordReset.mutate({ email: member.email })}
+                      className="text-zinc-300 hover:text-blue-500 dark:text-zinc-600 dark:hover:text-blue-400"
+                      title="Send password reset"
+                    >
+                      <KeyRound className="h-3.5 w-3.5" />
+                    </button>
+                    <button
+                      onClick={() => {
+                        if (confirm(`Remove ${member.name} from workspace?`)) {
+                          removeMember.mutate({ workspaceId, userId: member.id });
+                        }
+                      }}
+                      className="text-zinc-300 hover:text-red-500 dark:text-zinc-600 dark:hover:text-red-400"
+                      title="Remove member"
+                    >
+                      <Trash2 className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
+                </div>
+              </div>
+            );
+
+            return (
+              <div className="space-y-4">
+                {resetSuccess && (
+                  <p className="flex items-center gap-1 rounded bg-green-50 dark:bg-green-900/20 px-3 py-2 text-[10px] text-green-600 dark:text-green-400">
+                    <Check className="h-3 w-3" /> {resetSuccess}
+                  </p>
+                )}
+
+                {/* Team members */}
+                <div className="space-y-2">
+                  <p className="text-[10px] font-medium uppercase tracking-wider text-zinc-400">Team</p>
+                  {teamMembers.map(renderMemberRow)}
+                </div>
+
+                {/* Guest members */}
+                {guestMembers.length > 0 && (
+                  <div className="space-y-2">
+                    <p className="text-[10px] font-medium uppercase tracking-wider text-zinc-400">Guests</p>
+                    {guestMembers.map(renderMemberRow)}
+                  </div>
+                )}
+
+                {/* Invite */}
+                <div className="rounded-md border border-dashed border-zinc-200 dark:border-zinc-700 p-3 space-y-2">
+                  <p className="text-[10px] font-medium uppercase tracking-wider text-zinc-400">Invite</p>
+                  <div className="flex gap-2">
+                    <input
+                      type="email"
+                      value={inviteEmail}
+                      onChange={(e) => { setInviteEmail(e.target.value); setInviteError(''); }}
+                      placeholder="email@example.com"
+                      className="flex-1 rounded border border-zinc-200 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 px-2 py-1.5 text-xs outline-none"
+                    />
+                    <div className="relative">
+                      <select
+                        value={inviteRole}
+                        onChange={(e) => { setInviteRole(e.target.value as 'MEMBER' | 'GUEST'); if (e.target.value === 'MEMBER') setInviteProjectIds([]); }}
+                        className="appearance-none rounded border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 pl-2 pr-5 py-1.5 text-[10px] text-zinc-600 dark:text-zinc-400 outline-none cursor-pointer"
                       >
-                        {member.name.slice(0, 2).toUpperCase()}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        {editingMember?.id === member.id ? (
-                          <input
-                            autoFocus
-                            value={editingMember.name}
-                            onChange={(e) => setEditingMember({ ...editingMember, name: e.target.value })}
-                            onKeyDown={(e) => {
-                              if (e.key === 'Enter') updateUser.mutate({ userId: member.id, name: editingMember.name });
-                              if (e.key === 'Escape') setEditingMember(null);
-                            }}
-                            className="w-full text-xs bg-transparent border-b border-zinc-300 dark:border-zinc-600 outline-none text-zinc-900 dark:text-zinc-100"
-                          />
-                        ) : (
-                          <p className="text-xs font-medium text-zinc-800 dark:text-zinc-200 truncate">{member.name}</p>
-                        )}
-                        <p className="text-[10px] text-zinc-400 truncate">{member.email}</p>
-                      </div>
-
-                      {/* Role selector */}
-                      <div className="relative">
-                        <select
-                          value={member.role}
-                          onChange={(e) => updateMemberRole.mutate({ workspaceId, userId: member.id, role: e.target.value as 'ADMIN' | 'MEMBER' })}
-                          className="appearance-none rounded border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 pl-2 pr-5 py-0.5 text-[10px] text-zinc-600 dark:text-zinc-400 outline-none cursor-pointer"
-                        >
-                          <option value="MEMBER">Member</option>
-                          <option value="ADMIN">Admin</option>
-                        </select>
-                        <ChevronDown className="pointer-events-none absolute right-1 top-1/2 -translate-y-1/2 h-2.5 w-2.5 text-zinc-400" />
-                      </div>
-
-                      {/* Actions */}
-                      <div className="flex items-center gap-1">
-                        {editingMember?.id === member.id ? (
-                          <button onClick={() => updateUser.mutate({ userId: member.id, name: editingMember.name })} className="text-zinc-400 hover:text-green-500">
-                            <Check className="h-3.5 w-3.5" />
-                          </button>
-                        ) : (
-                          <button onClick={() => setEditingMember({ id: member.id, name: member.name })} className="text-zinc-300 hover:text-zinc-500 dark:text-zinc-600 dark:hover:text-zinc-300" title="Edit name">
-                            <Edit2 className="h-3.5 w-3.5" />
-                          </button>
-                        )}
-                        <button
-                          onClick={() => sendPasswordReset.mutate({ email: member.email })}
-                          className="text-zinc-300 hover:text-blue-500 dark:text-zinc-600 dark:hover:text-blue-400"
-                          title="Send password reset"
-                        >
-                          <KeyRound className="h-3.5 w-3.5" />
-                        </button>
-                        <button
-                          onClick={() => {
-                            if (confirm(`Remove ${member.name} from workspace?`)) {
-                              removeMember.mutate({ workspaceId, userId: member.id });
-                            }
-                          }}
-                          className="text-zinc-300 hover:text-red-500 dark:text-zinc-600 dark:hover:text-red-400"
-                          title="Remove member"
-                        >
-                          <Trash2 className="h-3.5 w-3.5" />
-                        </button>
-                      </div>
+                        <option value="MEMBER">Member</option>
+                        <option value="GUEST">Guest</option>
+                      </select>
+                      <ChevronDown className="pointer-events-none absolute right-1 top-1/2 -translate-y-1/2 h-2.5 w-2.5 text-zinc-400" />
                     </div>
                   </div>
-                ))}
-              </div>
 
-              {/* Invite */}
-              <div className="rounded-md border border-dashed border-zinc-200 dark:border-zinc-700 p-3 space-y-2">
-                <p className="text-[10px] font-medium uppercase tracking-wider text-zinc-400">Invite member</p>
-                <p className="text-[10px] text-zinc-400">They must already have an account. Enter their email address.</p>
-                <div className="flex gap-2">
-                  <input
-                    type="email"
-                    value={inviteEmail}
-                    onChange={(e) => { setInviteEmail(e.target.value); setInviteError(''); }}
-                    placeholder="teammate@example.com"
-                    className="flex-1 rounded border border-zinc-200 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 px-2 py-1.5 text-xs outline-none"
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' && inviteEmail.trim()) {
-                        inviteMember.mutate({ workspaceId, email: inviteEmail.trim() });
-                      }
-                    }}
-                  />
+                  {/* Project selector for guest invites */}
+                  {inviteRole === 'GUEST' && (
+                    <div className="space-y-1">
+                      <p className="text-[10px] text-zinc-400">Select projects for the guest:</p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {projects.map((project) => (
+                          <button
+                            key={project.id}
+                            type="button"
+                            onClick={() => {
+                              setInviteProjectIds((prev) =>
+                                prev.includes(project.id)
+                                  ? prev.filter((id) => id !== project.id)
+                                  : [...prev, project.id]
+                              );
+                            }}
+                            className={`flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-medium transition-colors ${
+                              inviteProjectIds.includes(project.id)
+                                ? 'bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border border-amber-300 dark:border-amber-700'
+                                : 'bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 border border-zinc-200 dark:border-zinc-700 hover:border-zinc-300'
+                            }`}
+                          >
+                            <span className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: project.color }} />
+                            {project.name}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
                   <button
                     onClick={() => {
                       if (inviteEmail.trim()) {
-                        inviteMember.mutate({ workspaceId, email: inviteEmail.trim() });
+                        inviteMember.mutate({
+                          workspaceId,
+                          email: inviteEmail.trim(),
+                          role: inviteRole,
+                          projectIds: inviteRole === 'GUEST' ? inviteProjectIds : undefined,
+                        });
                       }
                     }}
-                    disabled={!inviteEmail.trim() || inviteMember.isPending}
+                    disabled={!inviteEmail.trim() || inviteMember.isPending || (inviteRole === 'GUEST' && inviteProjectIds.length === 0)}
                     className="flex items-center gap-1.5 rounded px-3 py-1.5 text-xs font-medium text-white disabled:opacity-40"
                     style={{ backgroundColor: BRAND_AMBER }}
                   >
                     <Plus className="h-3.5 w-3.5" />
-                    Add
+                    {inviteRole === 'GUEST' ? 'Invite guest' : 'Add member'}
                   </button>
+                  {inviteError && (
+                    <p className="flex items-center gap-1 text-[10px] text-red-500">
+                      <AlertCircle className="h-3 w-3" /> {inviteError}
+                    </p>
+                  )}
+                  {inviteSuccess && (
+                    <p className="flex items-center gap-1 text-[10px] text-green-500">
+                      <Check className="h-3 w-3" /> {inviteSuccess}
+                    </p>
+                  )}
                 </div>
-                {inviteError && (
-                  <p className="flex items-center gap-1 text-[10px] text-red-500">
-                    <AlertCircle className="h-3 w-3" /> {inviteError}
-                  </p>
-                )}
-                {inviteSuccess && (
-                  <p className="flex items-center gap-1 text-[10px] text-green-500">
-                    <Check className="h-3 w-3" /> {inviteSuccess}
-                  </p>
-                )}
               </div>
-            </div>
-          )}
+            );
+          })()}
         </div>
       </div>
     </div>

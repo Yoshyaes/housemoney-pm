@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { router, protectedProcedure, requireWorkspaceMember } from '@/server/trpc/trpc';
+import { router, protectedProcedure, requireWorkspaceMember, getAccessibleProjectIds, requireProjectAccess } from '@/server/trpc/trpc';
 import { TRPCError } from '@trpc/server';
 import { Prisma, DocType } from '@/generated/prisma/client';
 
@@ -22,8 +22,23 @@ export const documentsRouter = router({
       await requireWorkspaceMember(ctx.db, workspaceId, ctx.userId);
 
       const where: Prisma.DocumentWhereInput = { workspaceId };
+
+      // Scope guests to documents in their accessible projects
+      const accessibleIds = await getAccessibleProjectIds(ctx.db, workspaceId, ctx.userId);
+      if (accessibleIds !== null) {
+        if (projectId) {
+          if (!accessibleIds.includes(projectId)) {
+            throw new TRPCError({ code: 'FORBIDDEN', message: 'No access to this project' });
+          }
+          where.projectId = projectId;
+        } else {
+          where.projectId = { in: accessibleIds };
+        }
+      } else if (projectId) {
+        where.projectId = projectId;
+      }
+
       if (docType) where.docType = docType;
-      if (projectId) where.projectId = projectId;
       if (pinned !== undefined) where.pinned = pinned;
       if (tags && tags.length > 0) {
         // All specified tags must be present
@@ -75,7 +90,15 @@ export const documentsRouter = router({
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Document not found' });
       }
 
-      await requireWorkspaceMember(ctx.db, doc.workspaceId, ctx.userId);
+      const membership = await requireWorkspaceMember(ctx.db, doc.workspaceId, ctx.userId);
+
+      // Guests can only see documents linked to their projects
+      if (membership.role === 'GUEST') {
+        if (!doc.projectId) {
+          throw new TRPCError({ code: 'FORBIDDEN', message: 'No access to this document' });
+        }
+        await requireProjectAccess(ctx.db, doc.projectId, ctx.userId);
+      }
 
       return doc;
     }),
@@ -93,7 +116,15 @@ export const documentsRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
+      const membership = await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
+
+      // Guests must link documents to a project they have access to
+      if (membership.role === 'GUEST') {
+        if (!input.projectId) {
+          throw new TRPCError({ code: 'FORBIDDEN', message: 'Guests must link documents to a project.' });
+        }
+        await requireProjectAccess(ctx.db, input.projectId, ctx.userId);
+      }
 
       return ctx.db.document.create({
         data: {

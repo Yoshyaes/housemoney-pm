@@ -43,7 +43,8 @@ export type ProjectStatus = (typeof ProjectStatus)[keyof typeof ProjectStatus]
 
 export const Role = {
   ADMIN: 'ADMIN',
-  MEMBER: 'MEMBER'
+  MEMBER: 'MEMBER',
+  GUEST: 'GUEST'
 } as const
 
 export type Role = (typeof Role)[keyof typeof Role]

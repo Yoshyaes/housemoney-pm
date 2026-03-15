@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { router, protectedProcedure, requireWorkspaceMember, requireWorkspaceAdmin } from '@/server/trpc/trpc';
+import { TRPCError } from '@trpc/server';
 
 export const viewsRouter = router({
   list: protectedProcedure
@@ -30,7 +31,12 @@ export const viewsRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
+      const membership = await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
+
+      // Guests can only create personal views
+      if (membership.role === 'GUEST' && input.scope === 'WORKSPACE') {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'Guests cannot create workspace-scoped views.' });
+      }
 
       return ctx.db.view.create({
         data: {

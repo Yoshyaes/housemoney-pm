@@ -1,4 +1,3 @@
-[dotenv@17.3.1] injecting env (5) from .env.local -- tip: ⚙️  load multiple .env files with { path: ['.env.local', '.env'] }
 -- CreateSchema
 CREATE SCHEMA IF NOT EXISTS "public";
 

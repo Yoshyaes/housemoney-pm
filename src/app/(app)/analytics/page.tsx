@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { trpc } from '@/lib/trpc';
 import { useNotificationStore } from '@/lib/stores/notification-store';
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser';
+import { useCurrentMembership } from '@/lib/hooks/use-current-membership';
 import { Sidebar } from '@/components/layout/sidebar';
 import { AnalyticsTopbar } from '@/components/analytics/analytics-topbar';
 import { SummaryCards } from '@/components/analytics/summary-cards';
@@ -90,6 +91,12 @@ export default function AnalyticsPage() {
     };
     if (members.length > 0) fetchUser();
   }, [members, supabase]);
+
+  // Redirect guests away from analytics
+  const { isGuest } = useCurrentMembership(members, currentUser?.id);
+  useEffect(() => {
+    if (isGuest) router.push('/');
+  }, [isGuest, router]);
 
   // Analytics queries — all share the same input, 5-minute stale time
   const commonInput = {

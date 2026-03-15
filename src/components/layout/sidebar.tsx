@@ -8,6 +8,7 @@ import { useNotificationStore } from '@/lib/stores/notification-store';
 import { BRAND_AMBER } from '@/lib/constants';
 import { Avatar } from '@/components/shared/avatar';
 import { ThemeToggle } from '@/components/shared/theme-toggle';
+import { ProjectMembers } from '@/components/project/project-members';
 import { trpc } from '@/lib/trpc';
 import {
   LayoutGrid,
@@ -25,6 +26,7 @@ import {
   MoreHorizontal,
   Pencil,
   Trash2,
+  Users,
 } from 'lucide-react';
 
 interface SavedView {
@@ -54,13 +56,15 @@ interface SidebarProps {
   workspaceSlug: string;
   workspaceId: string;
   onProjectsChange: () => void;
+  isGuest?: boolean;
 }
 
-export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProjectsChange }: SidebarProps) {
+export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProjectsChange, isGuest = false }: SidebarProps) {
   const [addingProject, setAddingProject] = useState(false);
   const [newProjectName, setNewProjectName] = useState('');
   const [projectMenu, setProjectMenu] = useState<string | null>(null);
   const [renamingProject, setRenamingProject] = useState<{ id: string; name: string } | null>(null);
+  const [managingMembersProjectId, setManagingMembersProjectId] = useState<string | null>(null);
   const projectMenuRef = useRef<HTMLDivElement>(null);
   const utils = trpc.useUtils();
 
@@ -108,14 +112,15 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
   } = useUIStore();
   const { unreadCount } = useNotificationStore();
 
-  const navItems = [
+  const allNavItems = [
     { id: 'board' as const, label: 'Board', icon: LayoutGrid },
     { id: 'list' as const, label: 'List', icon: List },
     { id: 'timeline' as const, label: 'Timeline', icon: GanttChart },
     { id: 'inbox' as const, label: 'Inbox', icon: Inbox, badge: unreadCount },
-    { id: 'analytics' as const, label: 'Analytics', icon: BarChart2 },
+    { id: 'analytics' as const, label: 'Analytics', icon: BarChart2, guestHidden: true },
     { id: 'docs' as const, label: 'Docs', icon: BookOpen },
   ];
+  const navItems = isGuest ? allNavItems.filter((item) => !item.guestHidden) : allNavItems;
 
   const handleNavClick = (id: string) => {
     if (id === 'board' || id === 'list' || id === 'timeline') {
@@ -221,13 +226,15 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
         {/* Projects */}
         <div className="mb-1 mt-3 flex items-center px-2 pt-2">
           <span className="flex-1 text-[10px] uppercase tracking-wider text-zinc-400 dark:text-zinc-500">Projects</span>
-          <button
-            onClick={() => { setAddingProject(true); setNewProjectName(''); }}
-            className="rounded p-0.5 text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300"
-            title="New project"
-          >
-            <Plus className="h-3 w-3" />
-          </button>
+          {!isGuest && (
+            <button
+              onClick={() => { setAddingProject(true); setNewProjectName(''); }}
+              className="rounded p-0.5 text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300"
+              title="New project"
+            >
+              <Plus className="h-3 w-3" />
+            </button>
+          )}
         </div>
         {projects.map((project) => (
           <div key={project.id} className="group relative">
@@ -268,12 +275,14 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
                 {project.isPrivate && (
                   <Lock className="h-2.5 w-2.5 flex-shrink-0 text-zinc-400 dark:text-zinc-500 group-hover:hidden" />
                 )}
-                <button
-                  onClick={(e) => { e.stopPropagation(); setProjectMenu(projectMenu === project.id ? null : project.id); }}
-                  className="hidden group-hover:flex h-4 w-4 flex-shrink-0 items-center justify-center rounded text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:text-zinc-600 dark:hover:text-zinc-300"
-                >
-                  <MoreHorizontal className="h-3 w-3" />
-                </button>
+                {!isGuest && (
+                  <button
+                    onClick={(e) => { e.stopPropagation(); setProjectMenu(projectMenu === project.id ? null : project.id); }}
+                    className="hidden group-hover:flex h-4 w-4 flex-shrink-0 items-center justify-center rounded text-zinc-400 hover:bg-zinc-200 dark:hover:bg-zinc-700 hover:text-zinc-600 dark:hover:text-zinc-300"
+                  >
+                    <MoreHorizontal className="h-3 w-3" />
+                  </button>
+                )}
               </button>
             )}
 
@@ -289,6 +298,13 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
                 >
                   <Pencil className="h-3 w-3 text-zinc-400" />
                   Rename
+                </button>
+                <button
+                  onClick={() => { setManagingMembersProjectId(project.id); setProjectMenu(null); }}
+                  className="flex w-full items-center gap-2 px-3 py-1.5 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800"
+                >
+                  <Users className="h-3 w-3 text-zinc-400" />
+                  Manage members
                 </button>
                 <button
                   onClick={() => { updateProject.mutate({ id: project.id, isPrivate: !project.isPrivate }); setProjectMenu(null); }}
@@ -375,13 +391,20 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
               size="md"
             />
             <span>{currentUser.name}</span>
+            {isGuest && (
+              <span className="rounded-full px-1.5 py-0.5 text-[9px] font-medium uppercase tracking-wider" style={{ backgroundColor: 'rgba(186,117,23,0.12)', color: '#BA7517' }}>
+                Guest
+              </span>
+            )}
           </>
         )}
         <div className="ml-auto flex items-center gap-1.5">
           <ThemeToggle />
-          <button onClick={() => setSettingsOpen(true)} className="rounded p-0.5 text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300">
-            <Settings className="h-4 w-4" />
-          </button>
+          {!isGuest && (
+            <button onClick={() => setSettingsOpen(true)} className="rounded p-0.5 text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300">
+              <Settings className="h-4 w-4" />
+            </button>
+          )}
         </div>
       </div>
     </aside>
@@ -403,6 +426,15 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
             {sidebarContent}
           </div>
         </div>
+      )}
+
+      {/* Project members modal */}
+      {managingMembersProjectId && (
+        <ProjectMembers
+          projectId={managingMembersProjectId}
+          workspaceId={workspaceId}
+          onClose={() => setManagingMembersProjectId(null)}
+        />
       )}
     </>
   );

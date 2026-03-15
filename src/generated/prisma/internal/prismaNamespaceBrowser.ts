@@ -68,7 +68,9 @@ export const ModelName = {
   Notification: 'Notification',
   GitHubPR: 'GitHubPR',
   Document: 'Document',
-  DocumentComment: 'DocumentComment'
+  DocumentComment: 'DocumentComment',
+  ProjectMember: 'ProjectMember',
+  Invitation: 'Invitation'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -331,6 +333,32 @@ export const DocumentCommentScalarFieldEnum = {
 } as const
 
 export type DocumentCommentScalarFieldEnum = (typeof DocumentCommentScalarFieldEnum)[keyof typeof DocumentCommentScalarFieldEnum]
+
+
+export const ProjectMemberScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  userId: 'userId',
+  createdAt: 'createdAt'
+} as const
+
+export type ProjectMemberScalarFieldEnum = (typeof ProjectMemberScalarFieldEnum)[keyof typeof ProjectMemberScalarFieldEnum]
+
+
+export const InvitationScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  email: 'email',
+  role: 'role',
+  projectIds: 'projectIds',
+  invitedById: 'invitedById',
+  token: 'token',
+  expiresAt: 'expiresAt',
+  acceptedAt: 'acceptedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type InvitationScalarFieldEnum = (typeof InvitationScalarFieldEnum)[keyof typeof InvitationScalarFieldEnum]
 
 
 export const SortOrder = {

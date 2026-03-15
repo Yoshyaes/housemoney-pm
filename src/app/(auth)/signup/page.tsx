@@ -2,8 +2,9 @@
 
 import { useState } from 'react';
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { BRAND_AMBER } from '@/lib/constants';
+import { trpc } from '@/lib/trpc';
 
 export default function SignupPage() {
   const [name, setName] = useState('');
@@ -12,12 +13,18 @@ export default function SignupPage() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const invitationToken = searchParams.get('invitation');
   const supabase = createBrowserSupabaseClient();
+  const acceptInvitation = trpc.invitations.accept.useMutation();
 
   const handleGoogleSignup = async () => {
+    const redirectTo = invitationToken
+      ? `${window.location.origin}/api/auth/callback?invitation=${invitationToken}`
+      : `${window.location.origin}/api/auth/callback`;
     await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: `${window.location.origin}/api/auth/callback` },
+      options: { redirectTo },
     });
   };
 
@@ -36,6 +43,14 @@ export default function SignupPage() {
       setError(error.message);
       setLoading(false);
     } else {
+      // If there's an invitation token, accept it after signup
+      if (invitationToken) {
+        try {
+          await acceptInvitation.mutateAsync({ token: invitationToken });
+        } catch {
+          // Invitation acceptance will also happen via auto-accept in createContext
+        }
+      }
       router.push('/');
       router.refresh();
     }
@@ -50,8 +65,14 @@ export default function SignupPage() {
         >
           HM
         </div>
-        <h1 className="text-lg font-semibold text-zinc-900">Create your account</h1>
-        <p className="mt-1 text-sm text-zinc-500">Get started with House Money PM</p>
+        <h1 className="text-lg font-semibold text-zinc-900">
+          {invitationToken ? 'Join your team' : 'Create your account'}
+        </h1>
+        <p className="mt-1 text-sm text-zinc-500">
+          {invitationToken
+            ? "You've been invited to collaborate on House Money PM"
+            : 'Get started with House Money PM'}
+        </p>
       </div>
 
       <form onSubmit={handleSignup} className="space-y-4">

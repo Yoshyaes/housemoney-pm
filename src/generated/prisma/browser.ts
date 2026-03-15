@@ -107,3 +107,13 @@ export type Document = Prisma.DocumentModel
  * 
  */
 export type DocumentComment = Prisma.DocumentCommentModel
+/**
+ * Model ProjectMember
+ * 
+ */
+export type ProjectMember = Prisma.ProjectMemberModel
+/**
+ * Model Invitation
+ * 
+ */
+export type Invitation = Prisma.InvitationModel

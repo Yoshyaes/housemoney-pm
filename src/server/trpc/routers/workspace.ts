@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { router, protectedProcedure, requireWorkspaceMember, requireWorkspaceAdmin } from '@/server/trpc/trpc';
+import { router, protectedProcedure, requireWorkspaceMember, requireWorkspaceAdmin, requireNonGuest } from '@/server/trpc/trpc';
 import { TRPCError } from '@trpc/server';
 import { createClient } from '@supabase/supabase-js';
 
@@ -15,7 +15,36 @@ export const workspaceRouter = router({
   getMembers: protectedProcedure
     .input(z.object({ workspaceId: z.string() }))
     .query(async ({ ctx, input }) => {
-      await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
+      const membership = await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
+
+      if (membership.role === 'GUEST') {
+        // Guests only see members who share at least one project with them
+        const myProjectIds = await ctx.db.projectMember.findMany({
+          where: { userId: ctx.userId, project: { workspaceId: input.workspaceId } },
+          select: { projectId: true },
+        });
+        const projectIds = myProjectIds.map((pm) => pm.projectId);
+
+        // Find users who are members of those projects or are assigned tasks in those projects
+        const sharedProjectMembers = await ctx.db.projectMember.findMany({
+          where: { projectId: { in: projectIds } },
+          select: { userId: true },
+        });
+        const sharedUserIds = [...new Set([
+          ctx.userId,
+          ...sharedProjectMembers.map((pm) => pm.userId),
+        ])];
+
+        const members = await ctx.db.workspaceMember.findMany({
+          where: { workspaceId: input.workspaceId, userId: { in: sharedUserIds } },
+          include: { user: true },
+        });
+        return members.map((m) => ({
+          ...m.user,
+          role: m.role,
+          membershipId: m.id,
+        }));
+      }
 
       const members = await ctx.db.workspaceMember.findMany({
         where: { workspaceId: input.workspaceId },
@@ -29,9 +58,19 @@ export const workspaceRouter = router({
     }),
 
   inviteMember: protectedProcedure
-    .input(z.object({ workspaceId: z.string(), email: z.string().email() }))
+    .input(z.object({
+      workspaceId: z.string(),
+      email: z.string().email(),
+      role: z.enum(['MEMBER', 'GUEST']).default('MEMBER'),
+      projectIds: z.array(z.string()).optional(),
+    }))
     .mutation(async ({ ctx, input }) => {
-      await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
+      await requireNonGuest(ctx.db, input.workspaceId, ctx.userId);
+
+      // Guests must be assigned to at least one project
+      if (input.role === 'GUEST' && (!input.projectIds || input.projectIds.length === 0)) {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Guests must be assigned to at least one project.' });
+      }
 
       // Find user by email
       const user = await ctx.db.user.findUnique({ where: { email: input.email } });
@@ -48,10 +87,24 @@ export const workspaceRouter = router({
       if (existing) {
         throw new TRPCError({ code: 'CONFLICT', message: 'User is already a member.' });
       }
-      return ctx.db.workspaceMember.create({
-        data: { workspaceId: input.workspaceId, userId: user.id, role: 'MEMBER' },
+
+      const member = await ctx.db.workspaceMember.create({
+        data: { workspaceId: input.workspaceId, userId: user.id, role: input.role },
         include: { user: true },
       });
+
+      // Add guest to specified projects
+      if (input.projectIds && input.projectIds.length > 0) {
+        await ctx.db.projectMember.createMany({
+          data: input.projectIds.map((projectId) => ({
+            projectId,
+            userId: user.id,
+          })),
+          skipDuplicates: true,
+        });
+      }
+
+      return member;
     }),
 
   removeMember: protectedProcedure
@@ -75,14 +128,46 @@ export const workspaceRouter = router({
     }),
 
   updateMemberRole: protectedProcedure
-    .input(z.object({ workspaceId: z.string(), userId: z.string(), role: z.enum(['ADMIN', 'MEMBER']) }))
+    .input(z.object({
+      workspaceId: z.string(),
+      userId: z.string(),
+      role: z.enum(['ADMIN', 'MEMBER', 'GUEST']),
+      projectIds: z.array(z.string()).optional(),
+    }))
     .mutation(async ({ ctx, input }) => {
       await requireWorkspaceAdmin(ctx.db, input.workspaceId, ctx.userId);
 
-      return ctx.db.workspaceMember.update({
+      // Downgrading to GUEST requires at least one project
+      if (input.role === 'GUEST' && (!input.projectIds || input.projectIds.length === 0)) {
+        // Check if user already has project memberships
+        const existingProjects = await ctx.db.projectMember.count({
+          where: { userId: input.userId, project: { workspaceId: input.workspaceId } },
+        });
+        if (existingProjects === 0) {
+          throw new TRPCError({
+            code: 'BAD_REQUEST',
+            message: 'When downgrading to guest, the user must be assigned to at least one project.',
+          });
+        }
+      }
+
+      const updated = await ctx.db.workspaceMember.update({
         where: { workspaceId_userId: { workspaceId: input.workspaceId, userId: input.userId } },
         data: { role: input.role },
       });
+
+      // If setting to GUEST with specific projects, create project memberships
+      if (input.role === 'GUEST' && input.projectIds && input.projectIds.length > 0) {
+        await ctx.db.projectMember.createMany({
+          data: input.projectIds.map((projectId) => ({
+            projectId,
+            userId: input.userId,
+          })),
+          skipDuplicates: true,
+        });
+      }
+
+      return updated;
     }),
 
   getLabels: protectedProcedure
@@ -104,7 +189,7 @@ export const workspaceRouter = router({
       bgColor: z.string(),
     }))
     .mutation(async ({ ctx, input }) => {
-      await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
+      await requireNonGuest(ctx.db, input.workspaceId, ctx.userId);
 
       return ctx.db.label.create({ data: input });
     }),

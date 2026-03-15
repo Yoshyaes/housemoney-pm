@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { router, protectedProcedure, requireWorkspaceMember } from '@/server/trpc/trpc';
+import { router, protectedProcedure, requireWorkspaceMember, getAccessibleProjectIds, requireProjectAccess } from '@/server/trpc/trpc';
 import { TRPCError } from '@trpc/server';
 
 const taskCreateInput = z.object({
@@ -69,7 +69,15 @@ export const tasksRouter = router({
     .mutation(async ({ ctx, input }) => {
       const { labelIds, workspaceId, ...taskData } = input;
 
-      await requireWorkspaceMember(ctx.db, workspaceId, ctx.userId);
+      const membership = await requireWorkspaceMember(ctx.db, workspaceId, ctx.userId);
+
+      // Guests must specify a project and have access to it
+      if (membership.role === 'GUEST') {
+        if (!input.projectId) {
+          throw new TRPCError({ code: 'FORBIDDEN', message: 'Guests must assign tasks to a project.' });
+        }
+        await requireProjectAccess(ctx.db, input.projectId, ctx.userId);
+      }
 
       // Atomic identifier generation
       const workspace = await ctx.db.workspace.update({
@@ -126,7 +134,20 @@ export const tasksRouter = router({
       const where: any = {};
 
       where.workspaceId = input.workspaceId;
-      if (input.projectId) {
+
+      // Scope guests to their accessible projects
+      const accessibleIds = await getAccessibleProjectIds(ctx.db, input.workspaceId, ctx.userId);
+      if (accessibleIds !== null) {
+        // Guest: constrain to accessible projects (and validate if specific project requested)
+        if (input.projectId) {
+          if (!accessibleIds.includes(input.projectId)) {
+            throw new TRPCError({ code: 'FORBIDDEN', message: 'No access to this project' });
+          }
+          where.projectId = input.projectId;
+        } else {
+          where.projectId = { in: accessibleIds };
+        }
+      } else if (input.projectId) {
         where.projectId = input.projectId;
       }
 
@@ -224,7 +245,15 @@ export const tasksRouter = router({
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Task not found' });
       }
 
-      await requireWorkspaceMember(ctx.db, task.workspaceId, ctx.userId);
+      const membership = await requireWorkspaceMember(ctx.db, task.workspaceId, ctx.userId);
+
+      // Guests can only see tasks in their accessible projects
+      if (membership.role === 'GUEST') {
+        if (!task.projectId) {
+          throw new TRPCError({ code: 'FORBIDDEN', message: 'No access to this task' });
+        }
+        await requireProjectAccess(ctx.db, task.projectId, ctx.userId);
+      }
 
       return task;
     }),
@@ -243,7 +272,19 @@ export const tasksRouter = router({
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Task not found' });
       }
 
-      await requireWorkspaceMember(ctx.db, existing.workspaceId, ctx.userId);
+      const membership = await requireWorkspaceMember(ctx.db, existing.workspaceId, ctx.userId);
+
+      // Guests: verify access to current project and target project (if moving)
+      if (membership.role === 'GUEST') {
+        if (existing.projectId) {
+          await requireProjectAccess(ctx.db, existing.projectId, ctx.userId);
+        } else {
+          throw new TRPCError({ code: 'FORBIDDEN', message: 'No access to this task' });
+        }
+        if (data.projectId && data.projectId !== existing.projectId) {
+          await requireProjectAccess(ctx.db, data.projectId, ctx.userId);
+        }
+      }
 
       // Track changes for activity log
       const activities: { field: string; oldValue: string | null; newValue: string | null; action: string }[] = [];
@@ -334,14 +375,21 @@ export const tasksRouter = router({
     .mutation(async ({ ctx, input }) => {
       const task = await ctx.db.task.findUnique({
         where: { id: input.id },
-        select: { workspaceId: true },
+        select: { workspaceId: true, projectId: true },
       });
 
       if (!task) {
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Task not found' });
       }
 
-      await requireWorkspaceMember(ctx.db, task.workspaceId, ctx.userId);
+      const membership = await requireWorkspaceMember(ctx.db, task.workspaceId, ctx.userId);
+
+      if (membership.role === 'GUEST') {
+        if (!task.projectId) {
+          throw new TRPCError({ code: 'FORBIDDEN', message: 'No access to this task' });
+        }
+        await requireProjectAccess(ctx.db, task.projectId, ctx.userId);
+      }
 
       return ctx.db.task.update({
         where: { id: input.id },

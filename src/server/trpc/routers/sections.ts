@@ -1,21 +1,12 @@
 import { z } from 'zod';
-import { router, protectedProcedure, requireWorkspaceMember } from '@/server/trpc/trpc';
+import { router, protectedProcedure, requireProjectAccess, requireWorkspaceMember } from '@/server/trpc/trpc';
 import { TRPCError } from '@trpc/server';
 
 export const sectionsRouter = router({
   list: protectedProcedure
     .input(z.object({ projectId: z.string() }))
     .query(async ({ ctx, input }) => {
-      const project = await ctx.db.project.findUnique({
-        where: { id: input.projectId },
-        select: { workspaceId: true },
-      });
-
-      if (!project) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Project not found' });
-      }
-
-      await requireWorkspaceMember(ctx.db, project.workspaceId, ctx.userId);
+      await requireProjectAccess(ctx.db, input.projectId, ctx.userId);
 
       return ctx.db.section.findMany({
         where: { projectId: input.projectId },
@@ -26,16 +17,7 @@ export const sectionsRouter = router({
   create: protectedProcedure
     .input(z.object({ projectId: z.string(), name: z.string().min(1) }))
     .mutation(async ({ ctx, input }) => {
-      const project = await ctx.db.project.findUnique({
-        where: { id: input.projectId },
-        select: { workspaceId: true },
-      });
-
-      if (!project) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Project not found' });
-      }
-
-      await requireWorkspaceMember(ctx.db, project.workspaceId, ctx.userId);
+      await requireProjectAccess(ctx.db, input.projectId, ctx.userId);
 
       const last = await ctx.db.section.findFirst({
         where: { projectId: input.projectId },
@@ -55,14 +37,14 @@ export const sectionsRouter = router({
     .mutation(async ({ ctx, input }) => {
       const section = await ctx.db.section.findUnique({
         where: { id: input.id },
-        include: { project: { select: { workspaceId: true } } },
+        include: { project: { select: { id: true } } },
       });
 
       if (!section) {
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Section not found' });
       }
 
-      await requireWorkspaceMember(ctx.db, section.project.workspaceId, ctx.userId);
+      await requireProjectAccess(ctx.db, section.project.id, ctx.userId);
 
       return ctx.db.section.update({
         where: { id: input.id },
@@ -75,14 +57,14 @@ export const sectionsRouter = router({
     .mutation(async ({ ctx, input }) => {
       const section = await ctx.db.section.findUnique({
         where: { id: input.id },
-        include: { project: { select: { workspaceId: true } } },
+        include: { project: { select: { id: true } } },
       });
 
       if (!section) {
         throw new TRPCError({ code: 'NOT_FOUND', message: 'Section not found' });
       }
 
-      await requireWorkspaceMember(ctx.db, section.project.workspaceId, ctx.userId);
+      await requireProjectAccess(ctx.db, section.project.id, ctx.userId);
 
       // Detach tasks from section before deleting
       await ctx.db.task.updateMany({

@@ -401,7 +401,9 @@ export const ModelName = {
   Notification: 'Notification',
   GitHubPR: 'GitHubPR',
   Document: 'Document',
-  DocumentComment: 'DocumentComment'
+  DocumentComment: 'DocumentComment',
+  ProjectMember: 'ProjectMember',
+  Invitation: 'Invitation'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -417,7 +419,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "workspace" | "workspaceMember" | "project" | "section" | "task" | "taskAttachment" | "taskCollaborator" | "dependency" | "comment" | "label" | "taskLabel" | "activity" | "view" | "notification" | "gitHubPR" | "document" | "documentComment"
+    modelProps: "user" | "workspace" | "workspaceMember" | "project" | "section" | "task" | "taskAttachment" | "taskCollaborator" | "dependency" | "comment" | "label" | "taskLabel" | "activity" | "view" | "notification" | "gitHubPR" | "document" | "documentComment" | "projectMember" | "invitation"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1753,6 +1755,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ProjectMember: {
+      payload: Prisma.$ProjectMemberPayload<ExtArgs>
+      fields: Prisma.ProjectMemberFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProjectMemberFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectMemberPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProjectMemberFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectMemberPayload>
+        }
+        findFirst: {
+          args: Prisma.ProjectMemberFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectMemberPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProjectMemberFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectMemberPayload>
+        }
+        findMany: {
+          args: Prisma.ProjectMemberFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectMemberPayload>[]
+        }
+        create: {
+          args: Prisma.ProjectMemberCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectMemberPayload>
+        }
+        createMany: {
+          args: Prisma.ProjectMemberCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProjectMemberCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectMemberPayload>[]
+        }
+        delete: {
+          args: Prisma.ProjectMemberDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectMemberPayload>
+        }
+        update: {
+          args: Prisma.ProjectMemberUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectMemberPayload>
+        }
+        deleteMany: {
+          args: Prisma.ProjectMemberDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProjectMemberUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProjectMemberUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectMemberPayload>[]
+        }
+        upsert: {
+          args: Prisma.ProjectMemberUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectMemberPayload>
+        }
+        aggregate: {
+          args: Prisma.ProjectMemberAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProjectMember>
+        }
+        groupBy: {
+          args: Prisma.ProjectMemberGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProjectMemberGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProjectMemberCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProjectMemberCountAggregateOutputType> | number
+        }
+      }
+    }
+    Invitation: {
+      payload: Prisma.$InvitationPayload<ExtArgs>
+      fields: Prisma.InvitationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.InvitationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvitationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.InvitationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvitationPayload>
+        }
+        findFirst: {
+          args: Prisma.InvitationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvitationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.InvitationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvitationPayload>
+        }
+        findMany: {
+          args: Prisma.InvitationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvitationPayload>[]
+        }
+        create: {
+          args: Prisma.InvitationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvitationPayload>
+        }
+        createMany: {
+          args: Prisma.InvitationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.InvitationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvitationPayload>[]
+        }
+        delete: {
+          args: Prisma.InvitationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvitationPayload>
+        }
+        update: {
+          args: Prisma.InvitationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvitationPayload>
+        }
+        deleteMany: {
+          args: Prisma.InvitationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.InvitationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.InvitationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvitationPayload>[]
+        }
+        upsert: {
+          args: Prisma.InvitationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$InvitationPayload>
+        }
+        aggregate: {
+          args: Prisma.InvitationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateInvitation>
+        }
+        groupBy: {
+          args: Prisma.InvitationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InvitationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.InvitationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.InvitationCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2036,6 +2186,32 @@ export const DocumentCommentScalarFieldEnum = {
 } as const
 
 export type DocumentCommentScalarFieldEnum = (typeof DocumentCommentScalarFieldEnum)[keyof typeof DocumentCommentScalarFieldEnum]
+
+
+export const ProjectMemberScalarFieldEnum = {
+  id: 'id',
+  projectId: 'projectId',
+  userId: 'userId',
+  createdAt: 'createdAt'
+} as const
+
+export type ProjectMemberScalarFieldEnum = (typeof ProjectMemberScalarFieldEnum)[keyof typeof ProjectMemberScalarFieldEnum]
+
+
+export const InvitationScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  email: 'email',
+  role: 'role',
+  projectIds: 'projectIds',
+  invitedById: 'invitedById',
+  token: 'token',
+  expiresAt: 'expiresAt',
+  acceptedAt: 'acceptedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type InvitationScalarFieldEnum = (typeof InvitationScalarFieldEnum)[keyof typeof InvitationScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2393,6 +2569,8 @@ export type GlobalOmitConfig = {
   gitHubPR?: Prisma.GitHubPROmit
   document?: Prisma.DocumentOmit
   documentComment?: Prisma.DocumentCommentOmit
+  projectMember?: Prisma.ProjectMemberOmit
+  invitation?: Prisma.InvitationOmit
 }
 
 /* Types for Logging */

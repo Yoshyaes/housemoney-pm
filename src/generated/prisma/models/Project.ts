@@ -225,6 +225,7 @@ export type ProjectWhereInput = {
   tasks?: Prisma.TaskListRelationFilter
   sections?: Prisma.SectionListRelationFilter
   documents?: Prisma.DocumentListRelationFilter
+  members?: Prisma.ProjectMemberListRelationFilter
   workspace?: Prisma.XOR<Prisma.WorkspaceScalarRelationFilter, Prisma.WorkspaceWhereInput>
   createdBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }
@@ -243,6 +244,7 @@ export type ProjectOrderByWithRelationInput = {
   tasks?: Prisma.TaskOrderByRelationAggregateInput
   sections?: Prisma.SectionOrderByRelationAggregateInput
   documents?: Prisma.DocumentOrderByRelationAggregateInput
+  members?: Prisma.ProjectMemberOrderByRelationAggregateInput
   workspace?: Prisma.WorkspaceOrderByWithRelationInput
   createdBy?: Prisma.UserOrderByWithRelationInput
 }
@@ -264,6 +266,7 @@ export type ProjectWhereUniqueInput = Prisma.AtLeast<{
   tasks?: Prisma.TaskListRelationFilter
   sections?: Prisma.SectionListRelationFilter
   documents?: Prisma.DocumentListRelationFilter
+  members?: Prisma.ProjectMemberListRelationFilter
   workspace?: Prisma.XOR<Prisma.WorkspaceScalarRelationFilter, Prisma.WorkspaceWhereInput>
   createdBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
 }, "id">
@@ -312,6 +315,7 @@ export type ProjectCreateInput = {
   tasks?: Prisma.TaskCreateNestedManyWithoutProjectInput
   sections?: Prisma.SectionCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentCreateNestedManyWithoutProjectInput
+  members?: Prisma.ProjectMemberCreateNestedManyWithoutProjectInput
   workspace: Prisma.WorkspaceCreateNestedOneWithoutProjectsInput
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedProjectsInput
 }
@@ -330,6 +334,7 @@ export type ProjectUncheckedCreateInput = {
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutProjectInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutProjectInput
+  members?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectUpdateInput = {
@@ -344,6 +349,7 @@ export type ProjectUpdateInput = {
   tasks?: Prisma.TaskUpdateManyWithoutProjectNestedInput
   sections?: Prisma.SectionUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutProjectNestedInput
+  members?: Prisma.ProjectMemberUpdateManyWithoutProjectNestedInput
   workspace?: Prisma.WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutCreatedProjectsNestedInput
 }
@@ -362,6 +368,7 @@ export type ProjectUncheckedUpdateInput = {
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutProjectNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutProjectNestedInput
+  members?: Prisma.ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectCreateManyInput = {
@@ -602,6 +609,20 @@ export type ProjectUpdateOneWithoutDocumentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutDocumentsInput, Prisma.ProjectUpdateWithoutDocumentsInput>, Prisma.ProjectUncheckedUpdateWithoutDocumentsInput>
 }
 
+export type ProjectCreateNestedOneWithoutMembersInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutMembersInput, Prisma.ProjectUncheckedCreateWithoutMembersInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutMembersInput
+  connect?: Prisma.ProjectWhereUniqueInput
+}
+
+export type ProjectUpdateOneRequiredWithoutMembersNestedInput = {
+  create?: Prisma.XOR<Prisma.ProjectCreateWithoutMembersInput, Prisma.ProjectUncheckedCreateWithoutMembersInput>
+  connectOrCreate?: Prisma.ProjectCreateOrConnectWithoutMembersInput
+  upsert?: Prisma.ProjectUpsertWithoutMembersInput
+  connect?: Prisma.ProjectWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectUpdateToOneWithWhereWithoutMembersInput, Prisma.ProjectUpdateWithoutMembersInput>, Prisma.ProjectUncheckedUpdateWithoutMembersInput>
+}
+
 export type ProjectCreateWithoutCreatedByInput = {
   id?: string
   name: string
@@ -614,6 +635,7 @@ export type ProjectCreateWithoutCreatedByInput = {
   tasks?: Prisma.TaskCreateNestedManyWithoutProjectInput
   sections?: Prisma.SectionCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentCreateNestedManyWithoutProjectInput
+  members?: Prisma.ProjectMemberCreateNestedManyWithoutProjectInput
   workspace: Prisma.WorkspaceCreateNestedOneWithoutProjectsInput
 }
 
@@ -630,6 +652,7 @@ export type ProjectUncheckedCreateWithoutCreatedByInput = {
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutProjectInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutProjectInput
+  members?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutCreatedByInput = {
@@ -686,6 +709,7 @@ export type ProjectCreateWithoutWorkspaceInput = {
   tasks?: Prisma.TaskCreateNestedManyWithoutProjectInput
   sections?: Prisma.SectionCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentCreateNestedManyWithoutProjectInput
+  members?: Prisma.ProjectMemberCreateNestedManyWithoutProjectInput
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedProjectsInput
 }
 
@@ -702,6 +726,7 @@ export type ProjectUncheckedCreateWithoutWorkspaceInput = {
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutProjectInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutProjectInput
+  members?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutWorkspaceInput = {
@@ -741,6 +766,7 @@ export type ProjectCreateWithoutSectionsInput = {
   createdAt?: Date | string
   tasks?: Prisma.TaskCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentCreateNestedManyWithoutProjectInput
+  members?: Prisma.ProjectMemberCreateNestedManyWithoutProjectInput
   workspace: Prisma.WorkspaceCreateNestedOneWithoutProjectsInput
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedProjectsInput
 }
@@ -758,6 +784,7 @@ export type ProjectUncheckedCreateWithoutSectionsInput = {
   createdAt?: Date | string
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutProjectInput
+  members?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutSectionsInput = {
@@ -787,6 +814,7 @@ export type ProjectUpdateWithoutSectionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tasks?: Prisma.TaskUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutProjectNestedInput
+  members?: Prisma.ProjectMemberUpdateManyWithoutProjectNestedInput
   workspace?: Prisma.WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutCreatedProjectsNestedInput
 }
@@ -804,6 +832,7 @@ export type ProjectUncheckedUpdateWithoutSectionsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutProjectNestedInput
+  members?: Prisma.ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectCreateWithoutTasksInput = {
@@ -817,6 +846,7 @@ export type ProjectCreateWithoutTasksInput = {
   createdAt?: Date | string
   sections?: Prisma.SectionCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentCreateNestedManyWithoutProjectInput
+  members?: Prisma.ProjectMemberCreateNestedManyWithoutProjectInput
   workspace: Prisma.WorkspaceCreateNestedOneWithoutProjectsInput
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedProjectsInput
 }
@@ -834,6 +864,7 @@ export type ProjectUncheckedCreateWithoutTasksInput = {
   createdAt?: Date | string
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutProjectInput
   documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutProjectInput
+  members?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutTasksInput = {
@@ -863,6 +894,7 @@ export type ProjectUpdateWithoutTasksInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sections?: Prisma.SectionUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutProjectNestedInput
+  members?: Prisma.ProjectMemberUpdateManyWithoutProjectNestedInput
   workspace?: Prisma.WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutCreatedProjectsNestedInput
 }
@@ -880,6 +912,7 @@ export type ProjectUncheckedUpdateWithoutTasksInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   sections?: Prisma.SectionUncheckedUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutProjectNestedInput
+  members?: Prisma.ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectCreateWithoutDocumentsInput = {
@@ -893,6 +926,7 @@ export type ProjectCreateWithoutDocumentsInput = {
   createdAt?: Date | string
   tasks?: Prisma.TaskCreateNestedManyWithoutProjectInput
   sections?: Prisma.SectionCreateNestedManyWithoutProjectInput
+  members?: Prisma.ProjectMemberCreateNestedManyWithoutProjectInput
   workspace: Prisma.WorkspaceCreateNestedOneWithoutProjectsInput
   createdBy?: Prisma.UserCreateNestedOneWithoutCreatedProjectsInput
 }
@@ -910,6 +944,7 @@ export type ProjectUncheckedCreateWithoutDocumentsInput = {
   createdAt?: Date | string
   tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutProjectInput
   sections?: Prisma.SectionUncheckedCreateNestedManyWithoutProjectInput
+  members?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutProjectInput
 }
 
 export type ProjectCreateOrConnectWithoutDocumentsInput = {
@@ -939,6 +974,7 @@ export type ProjectUpdateWithoutDocumentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tasks?: Prisma.TaskUpdateManyWithoutProjectNestedInput
   sections?: Prisma.SectionUpdateManyWithoutProjectNestedInput
+  members?: Prisma.ProjectMemberUpdateManyWithoutProjectNestedInput
   workspace?: Prisma.WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutCreatedProjectsNestedInput
 }
@@ -956,6 +992,87 @@ export type ProjectUncheckedUpdateWithoutDocumentsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutProjectNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutProjectNestedInput
+  members?: Prisma.ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
+}
+
+export type ProjectCreateWithoutMembersInput = {
+  id?: string
+  name: string
+  description?: string | null
+  status?: $Enums.ProjectStatus
+  color?: string
+  targetDate?: Date | string | null
+  isPrivate?: boolean
+  createdAt?: Date | string
+  tasks?: Prisma.TaskCreateNestedManyWithoutProjectInput
+  sections?: Prisma.SectionCreateNestedManyWithoutProjectInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutProjectInput
+  workspace: Prisma.WorkspaceCreateNestedOneWithoutProjectsInput
+  createdBy?: Prisma.UserCreateNestedOneWithoutCreatedProjectsInput
+}
+
+export type ProjectUncheckedCreateWithoutMembersInput = {
+  id?: string
+  workspaceId: string
+  name: string
+  description?: string | null
+  status?: $Enums.ProjectStatus
+  color?: string
+  targetDate?: Date | string | null
+  isPrivate?: boolean
+  createdById?: string | null
+  createdAt?: Date | string
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutProjectInput
+  sections?: Prisma.SectionUncheckedCreateNestedManyWithoutProjectInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutProjectInput
+}
+
+export type ProjectCreateOrConnectWithoutMembersInput = {
+  where: Prisma.ProjectWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutMembersInput, Prisma.ProjectUncheckedCreateWithoutMembersInput>
+}
+
+export type ProjectUpsertWithoutMembersInput = {
+  update: Prisma.XOR<Prisma.ProjectUpdateWithoutMembersInput, Prisma.ProjectUncheckedUpdateWithoutMembersInput>
+  create: Prisma.XOR<Prisma.ProjectCreateWithoutMembersInput, Prisma.ProjectUncheckedCreateWithoutMembersInput>
+  where?: Prisma.ProjectWhereInput
+}
+
+export type ProjectUpdateToOneWithWhereWithoutMembersInput = {
+  where?: Prisma.ProjectWhereInput
+  data: Prisma.XOR<Prisma.ProjectUpdateWithoutMembersInput, Prisma.ProjectUncheckedUpdateWithoutMembersInput>
+}
+
+export type ProjectUpdateWithoutMembersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  color?: Prisma.StringFieldUpdateOperationsInput | string
+  targetDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tasks?: Prisma.TaskUpdateManyWithoutProjectNestedInput
+  sections?: Prisma.SectionUpdateManyWithoutProjectNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutProjectNestedInput
+  workspace?: Prisma.WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
+  createdBy?: Prisma.UserUpdateOneWithoutCreatedProjectsNestedInput
+}
+
+export type ProjectUncheckedUpdateWithoutMembersInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  workspaceId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumProjectStatusFieldUpdateOperationsInput | $Enums.ProjectStatus
+  color?: Prisma.StringFieldUpdateOperationsInput | string
+  targetDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  isPrivate?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutProjectNestedInput
+  sections?: Prisma.SectionUncheckedUpdateManyWithoutProjectNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectCreateManyCreatedByInput = {
@@ -982,6 +1099,7 @@ export type ProjectUpdateWithoutCreatedByInput = {
   tasks?: Prisma.TaskUpdateManyWithoutProjectNestedInput
   sections?: Prisma.SectionUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutProjectNestedInput
+  members?: Prisma.ProjectMemberUpdateManyWithoutProjectNestedInput
   workspace?: Prisma.WorkspaceUpdateOneRequiredWithoutProjectsNestedInput
 }
 
@@ -998,6 +1116,7 @@ export type ProjectUncheckedUpdateWithoutCreatedByInput = {
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutProjectNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutProjectNestedInput
+  members?: Prisma.ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateManyWithoutCreatedByInput = {
@@ -1036,6 +1155,7 @@ export type ProjectUpdateWithoutWorkspaceInput = {
   tasks?: Prisma.TaskUpdateManyWithoutProjectNestedInput
   sections?: Prisma.SectionUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUpdateManyWithoutProjectNestedInput
+  members?: Prisma.ProjectMemberUpdateManyWithoutProjectNestedInput
   createdBy?: Prisma.UserUpdateOneWithoutCreatedProjectsNestedInput
 }
 
@@ -1052,6 +1172,7 @@ export type ProjectUncheckedUpdateWithoutWorkspaceInput = {
   tasks?: Prisma.TaskUncheckedUpdateManyWithoutProjectNestedInput
   sections?: Prisma.SectionUncheckedUpdateManyWithoutProjectNestedInput
   documents?: Prisma.DocumentUncheckedUpdateManyWithoutProjectNestedInput
+  members?: Prisma.ProjectMemberUncheckedUpdateManyWithoutProjectNestedInput
 }
 
 export type ProjectUncheckedUpdateManyWithoutWorkspaceInput = {
@@ -1075,12 +1196,14 @@ export type ProjectCountOutputType = {
   tasks: number
   sections: number
   documents: number
+  members: number
 }
 
 export type ProjectCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   tasks?: boolean | ProjectCountOutputTypeCountTasksArgs
   sections?: boolean | ProjectCountOutputTypeCountSectionsArgs
   documents?: boolean | ProjectCountOutputTypeCountDocumentsArgs
+  members?: boolean | ProjectCountOutputTypeCountMembersArgs
 }
 
 /**
@@ -1114,6 +1237,13 @@ export type ProjectCountOutputTypeCountDocumentsArgs<ExtArgs extends runtime.Typ
   where?: Prisma.DocumentWhereInput
 }
 
+/**
+ * ProjectCountOutputType without action
+ */
+export type ProjectCountOutputTypeCountMembersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ProjectMemberWhereInput
+}
+
 
 export type ProjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1129,6 +1259,7 @@ export type ProjectSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs 
   tasks?: boolean | Prisma.Project$tasksArgs<ExtArgs>
   sections?: boolean | Prisma.Project$sectionsArgs<ExtArgs>
   documents?: boolean | Prisma.Project$documentsArgs<ExtArgs>
+  members?: boolean | Prisma.Project$membersArgs<ExtArgs>
   workspace?: boolean | Prisma.WorkspaceDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.Project$createdByArgs<ExtArgs>
   _count?: boolean | Prisma.ProjectCountOutputTypeDefaultArgs<ExtArgs>
@@ -1182,6 +1313,7 @@ export type ProjectInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs
   tasks?: boolean | Prisma.Project$tasksArgs<ExtArgs>
   sections?: boolean | Prisma.Project$sectionsArgs<ExtArgs>
   documents?: boolean | Prisma.Project$documentsArgs<ExtArgs>
+  members?: boolean | Prisma.Project$membersArgs<ExtArgs>
   workspace?: boolean | Prisma.WorkspaceDefaultArgs<ExtArgs>
   createdBy?: boolean | Prisma.Project$createdByArgs<ExtArgs>
   _count?: boolean | Prisma.ProjectCountOutputTypeDefaultArgs<ExtArgs>
@@ -1201,6 +1333,7 @@ export type $ProjectPayload<ExtArgs extends runtime.Types.Extensions.InternalArg
     tasks: Prisma.$TaskPayload<ExtArgs>[]
     sections: Prisma.$SectionPayload<ExtArgs>[]
     documents: Prisma.$DocumentPayload<ExtArgs>[]
+    members: Prisma.$ProjectMemberPayload<ExtArgs>[]
     workspace: Prisma.$WorkspacePayload<ExtArgs>
     createdBy: Prisma.$UserPayload<ExtArgs> | null
   }
@@ -1612,6 +1745,7 @@ export interface Prisma__ProjectClient<T, Null = never, ExtArgs extends runtime.
   tasks<T extends Prisma.Project$tasksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$tasksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TaskPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   sections<T extends Prisma.Project$sectionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$sectionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$SectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   documents<T extends Prisma.Project$documentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$documentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  members<T extends Prisma.Project$membersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$membersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   workspace<T extends Prisma.WorkspaceDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.WorkspaceDefaultArgs<ExtArgs>>): Prisma.Prisma__WorkspaceClient<runtime.Types.Result.GetResult<Prisma.$WorkspacePayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   createdBy<T extends Prisma.Project$createdByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Project$createdByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
@@ -2123,6 +2257,30 @@ export type Project$documentsArgs<ExtArgs extends runtime.Types.Extensions.Inter
   take?: number
   skip?: number
   distinct?: Prisma.DocumentScalarFieldEnum | Prisma.DocumentScalarFieldEnum[]
+}
+
+/**
+ * Project.members
+ */
+export type Project$membersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProjectMember
+   */
+  select?: Prisma.ProjectMemberSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ProjectMember
+   */
+  omit?: Prisma.ProjectMemberOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProjectMemberInclude<ExtArgs> | null
+  where?: Prisma.ProjectMemberWhereInput
+  orderBy?: Prisma.ProjectMemberOrderByWithRelationInput | Prisma.ProjectMemberOrderByWithRelationInput[]
+  cursor?: Prisma.ProjectMemberWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ProjectMemberScalarFieldEnum | Prisma.ProjectMemberScalarFieldEnum[]
 }
 
 /**

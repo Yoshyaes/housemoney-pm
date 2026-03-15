@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { router, protectedProcedure, requireWorkspaceMember } from '@/server/trpc/trpc';
+import { router, protectedProcedure, requireWorkspaceMember, getAccessibleProjectIds } from '@/server/trpc/trpc';
 import { Prisma } from '@/generated/prisma/client';
 
 export const searchRouter = router({
@@ -21,6 +21,18 @@ export const searchRouter = router({
       if (!trimmed) {
         return { tasks: [], comments: [], projects: [], documents: [] };
       }
+
+      // Guest project scoping
+      const accessibleIds = await getAccessibleProjectIds(ctx.db, workspaceId, ctx.userId);
+      const guestProjectFilter = accessibleIds !== null
+        ? Prisma.sql`AND t."projectId" IN (${Prisma.join(accessibleIds.length > 0 ? accessibleIds : ['__none__'])})`
+        : Prisma.empty;
+      const guestProjectFilterDirect = accessibleIds !== null
+        ? Prisma.sql`AND id IN (${Prisma.join(accessibleIds.length > 0 ? accessibleIds : ['__none__'])})`
+        : Prisma.empty;
+      const guestDocProjectFilter = accessibleIds !== null
+        ? Prisma.sql`AND d."projectId" IN (${Prisma.join(accessibleIds.length > 0 ? accessibleIds : ['__none__'])})`
+        : Prisma.empty;
 
       // Use ILIKE for short queries (< 3 chars), trigram similarity for longer ones
       const useIlike = trimmed.length < 3;
@@ -44,6 +56,7 @@ export const searchRouter = router({
                 JOIN "Project" p ON p.id = t."projectId"
                 WHERE p."workspaceId" = ${workspaceId}
                   AND (t.title ILIKE ${'%' + trimmed + '%'} OR t.identifier ILIKE ${'%' + trimmed + '%'})
+                  ${guestProjectFilter}
                 ORDER BY t."updatedAt" DESC
                 LIMIT ${limit}
               `
@@ -73,6 +86,7 @@ export const searchRouter = router({
                     OR t.identifier % ${trimmed}
                     OR COALESCE(t.description, '') % ${trimmed}
                   )
+                  ${guestProjectFilter}
                 ORDER BY score DESC
                 LIMIT ${limit}
               `
@@ -98,6 +112,7 @@ export const searchRouter = router({
                 JOIN "Project" p ON p.id = t."projectId"
                 WHERE p."workspaceId" = ${workspaceId}
                   AND c.body ILIKE ${'%' + trimmed + '%'}
+                  ${guestProjectFilter}
                 ORDER BY c."createdAt" DESC
                 LIMIT ${limit}
               `
@@ -122,6 +137,7 @@ export const searchRouter = router({
                 JOIN "Project" p ON p.id = t."projectId"
                 WHERE p."workspaceId" = ${workspaceId}
                   AND c.body % ${trimmed}
+                  ${guestProjectFilter}
                 ORDER BY score DESC
                 LIMIT ${limit}
               `
@@ -144,6 +160,7 @@ export const searchRouter = router({
                 FROM "Project"
                 WHERE "workspaceId" = ${workspaceId}
                   AND (name ILIKE ${'%' + trimmed + '%'} OR COALESCE(description, '') ILIKE ${'%' + trimmed + '%'})
+                  ${guestProjectFilterDirect}
                 ORDER BY name
                 LIMIT ${limit}
               `
@@ -167,6 +184,7 @@ export const searchRouter = router({
                 FROM "Project"
                 WHERE "workspaceId" = ${workspaceId}
                   AND (name % ${trimmed} OR COALESCE(description, '') % ${trimmed})
+                  ${guestProjectFilterDirect}
                 ORDER BY score DESC
                 LIMIT ${limit}
               `
@@ -189,6 +207,7 @@ export const searchRouter = router({
                 FROM "Document" d
                 WHERE d."workspaceId" = ${workspaceId}
                   AND (d.title ILIKE ${'%' + trimmed + '%'} OR d.content ILIKE ${'%' + trimmed + '%'})
+                  ${guestDocProjectFilter}
                 ORDER BY d."updatedAt" DESC
                 LIMIT ${limit}
               `
@@ -215,6 +234,7 @@ export const searchRouter = router({
                 FROM "Document" d
                 WHERE d."workspaceId" = ${workspaceId}
                   AND (d.title % ${trimmed} OR d.content % ${trimmed})
+                  ${guestDocProjectFilter}
                 ORDER BY score DESC
                 LIMIT ${limit}
               `

@@ -47,7 +47,7 @@ export async function createContext(): Promise<Context> {
     // Auto-create Prisma User + workspace membership on first API call after signup
     if (!user) {
       const name = authUser.user_metadata?.name || authUser.email?.split('@')[0] || 'User';
-      user = await db.user.create({
+      const newUser = await db.user.create({
         data: {
           id: authUser.id,
           email: authUser.email!,
@@ -55,21 +55,61 @@ export async function createContext(): Promise<Context> {
           avatarUrl: authUser.user_metadata?.avatar_url || null,
         },
       });
+      user = newUser;
 
-      // Add to default workspace
-      const workspace = await db.workspace.upsert({
-        where: { slug: 'house-money' },
-        update: {},
-        create: { name: 'House Money', slug: 'house-money' },
-      });
-
-      await db.workspaceMember.create({
-        data: {
-          workspaceId: workspace.id,
-          userId: user.id,
-          role: 'ADMIN',
+      // Check for pending invitations for this email
+      const pendingInvitations = await db.invitation.findMany({
+        where: {
+          email: newUser.email,
+          acceptedAt: null,
+          expiresAt: { gt: new Date() },
         },
       });
+
+      if (pendingInvitations.length > 0) {
+        // Auto-accept all pending invitations
+        for (const invitation of pendingInvitations) {
+          await db.workspaceMember.upsert({
+            where: { workspaceId_userId: { workspaceId: invitation.workspaceId, userId: newUser.id } },
+            create: {
+              workspaceId: invitation.workspaceId,
+              userId: newUser.id,
+              role: invitation.role,
+            },
+            update: {},
+          });
+
+          if (invitation.projectIds.length > 0) {
+            await db.projectMember.createMany({
+              data: invitation.projectIds.map((projectId) => ({
+                projectId,
+                userId: newUser.id,
+              })),
+              skipDuplicates: true,
+            });
+          }
+
+          await db.invitation.update({
+            where: { id: invitation.id },
+            data: { acceptedAt: new Date() },
+          });
+        }
+      } else {
+        // No invitations — add to default workspace
+        const workspace = await db.workspace.upsert({
+          where: { slug: 'house-money' },
+          update: {},
+          create: { name: 'House Money', slug: 'house-money' },
+        });
+
+        await db.workspaceMember.create({
+          data: {
+            workspaceId: workspace.id,
+            userId: newUser.id,
+            role: 'ADMIN',
+          },
+        });
+      }
     }
 
     return { db, user, userId: authUser.id };
@@ -122,4 +162,72 @@ export async function requireWorkspaceAdmin(
     throw new TRPCError({ code: 'FORBIDDEN', message: 'Only workspace admins can perform this action' });
   }
   return membership;
+}
+
+export async function requireNonGuest(
+  db: Context['db'],
+  workspaceId: string,
+  userId: string
+) {
+  const membership = await requireWorkspaceMember(db, workspaceId, userId);
+  if (membership.role === 'GUEST') {
+    throw new TRPCError({ code: 'FORBIDDEN', message: 'Guests cannot perform this action' });
+  }
+  return membership;
+}
+
+export async function requireProjectAccess(
+  db: Context['db'],
+  projectId: string,
+  userId: string
+) {
+  const project = await db.project.findUnique({ where: { id: projectId } });
+  if (!project) {
+    throw new TRPCError({ code: 'NOT_FOUND', message: 'Project not found' });
+  }
+
+  const membership = await requireWorkspaceMember(db, project.workspaceId, userId);
+
+  // Admins always have access
+  if (membership.role === 'ADMIN') return { membership, project };
+
+  // Members have access to non-private projects, or projects they created
+  if (membership.role === 'MEMBER') {
+    if (!project.isPrivate || project.createdById === userId) {
+      return { membership, project };
+    }
+    // Members can also be explicitly added to private projects
+    const pm = await db.projectMember.findUnique({
+      where: { projectId_userId: { projectId, userId } },
+    });
+    if (pm) return { membership, project };
+    throw new TRPCError({ code: 'FORBIDDEN', message: 'No access to this project' });
+  }
+
+  // Guests must have explicit ProjectMember record
+  const pm = await db.projectMember.findUnique({
+    where: { projectId_userId: { projectId, userId } },
+  });
+  if (!pm) {
+    throw new TRPCError({ code: 'FORBIDDEN', message: 'No access to this project' });
+  }
+  return { membership, project };
+}
+
+export async function getAccessibleProjectIds(
+  db: Context['db'],
+  workspaceId: string,
+  userId: string
+): Promise<string[] | null> {
+  const membership = await requireWorkspaceMember(db, workspaceId, userId);
+
+  // Admins and members see all applicable projects (null means no restriction)
+  if (membership.role === 'ADMIN' || membership.role === 'MEMBER') return null;
+
+  // Guests only see projects they're explicitly added to
+  const projectMembers = await db.projectMember.findMany({
+    where: { userId, project: { workspaceId } },
+    select: { projectId: true },
+  });
+  return projectMembers.map((pm) => pm.projectId);
 }

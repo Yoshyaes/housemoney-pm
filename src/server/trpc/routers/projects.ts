@@ -1,22 +1,38 @@
 import { z } from 'zod';
-import { router, protectedProcedure } from '@/server/trpc/trpc';
+import { router, protectedProcedure, requireNonGuest, getAccessibleProjectIds, requireProjectAccess } from '@/server/trpc/trpc';
 import { TRPCError } from '@trpc/server';
 
 export const projectsRouter = router({
   list: protectedProcedure
     .input(z.object({ workspaceId: z.string() }))
     .query(async ({ ctx, input }) => {
-      // Admins see all projects; members only see public ones + projects they created
       const membership = await ctx.db.workspaceMember.findUnique({
         where: { workspaceId_userId: { workspaceId: input.workspaceId, userId: ctx.userId } },
       });
-      const isAdmin = membership?.role === 'ADMIN';
+      if (!membership) {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'Not a member of this workspace' });
+      }
 
-      const projects = await ctx.db.project.findMany({
-        where: {
+      const isAdmin = membership.role === 'ADMIN';
+      const isGuest = membership.role === 'GUEST';
+
+      let whereClause;
+      if (isGuest) {
+        // Guests only see projects they're explicitly added to
+        const accessibleIds = await getAccessibleProjectIds(ctx.db, input.workspaceId, ctx.userId);
+        whereClause = {
+          workspaceId: input.workspaceId,
+          id: { in: accessibleIds ?? [] },
+        };
+      } else {
+        whereClause = {
           workspaceId: input.workspaceId,
           ...(isAdmin ? {} : { OR: [{ isPrivate: false }, { createdById: ctx.userId }] }),
-        },
+        };
+      }
+
+      const projects = await ctx.db.project.findMany({
+        where: whereClause,
         orderBy: { createdAt: 'asc' },
         include: {
           _count: { select: { tasks: true } },
@@ -48,6 +64,8 @@ export const projectsRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
+      await requireNonGuest(ctx.db, input.workspaceId, ctx.userId);
+
       return ctx.db.project.create({
         data: { ...input, createdById: ctx.userId },
       });
@@ -67,13 +85,19 @@ export const projectsRouter = router({
     )
     .mutation(async ({ ctx, input }) => {
       const { id, ...data } = input;
+      const project = await ctx.db.project.findUniqueOrThrow({ where: { id } });
+
+      const membership = await ctx.db.workspaceMember.findUnique({
+        where: { workspaceId_userId: { workspaceId: project.workspaceId, userId: ctx.userId } },
+      });
+
+      // Guests cannot update project settings
+      if (membership?.role === 'GUEST') {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'Guests cannot modify project settings.' });
+      }
 
       // Only admins or the creator can toggle privacy
       if (data.isPrivate !== undefined) {
-        const project = await ctx.db.project.findUniqueOrThrow({ where: { id } });
-        const membership = await ctx.db.workspaceMember.findUnique({
-          where: { workspaceId_userId: { workspaceId: project.workspaceId, userId: ctx.userId } },
-        });
         if (membership?.role !== 'ADMIN' && project.createdById !== ctx.userId) {
           throw new TRPCError({ code: 'FORBIDDEN', message: 'Only admins or the project creator can change visibility.' });
         }
@@ -87,6 +111,60 @@ export const projectsRouter = router({
     .mutation(async ({ ctx, input }) => {
       const project = await ctx.db.project.findUnique({ where: { id: input.id } });
       if (!project) throw new TRPCError({ code: 'NOT_FOUND', message: 'Project not found' });
+
+      await requireNonGuest(ctx.db, project.workspaceId, ctx.userId);
+
       return ctx.db.project.delete({ where: { id: input.id } });
+    }),
+
+  // Project member management
+  getMembers: protectedProcedure
+    .input(z.object({ projectId: z.string() }))
+    .query(async ({ ctx, input }) => {
+      await requireProjectAccess(ctx.db, input.projectId, ctx.userId);
+
+      const projectMembers = await ctx.db.projectMember.findMany({
+        where: { projectId: input.projectId },
+        include: { user: true },
+      });
+
+      return projectMembers.map((pm) => ({
+        ...pm.user,
+        projectMembershipId: pm.id,
+      }));
+    }),
+
+  addMember: protectedProcedure
+    .input(z.object({ projectId: z.string(), userId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const { project } = await requireProjectAccess(ctx.db, input.projectId, ctx.userId);
+
+      // Only non-guests can add members to projects
+      await requireNonGuest(ctx.db, project.workspaceId, ctx.userId);
+
+      // Verify target user is a workspace member
+      await ctx.db.workspaceMember.findUniqueOrThrow({
+        where: { workspaceId_userId: { workspaceId: project.workspaceId, userId: input.userId } },
+      });
+
+      return ctx.db.projectMember.upsert({
+        where: { projectId_userId: { projectId: input.projectId, userId: input.userId } },
+        create: { projectId: input.projectId, userId: input.userId },
+        update: {},
+        include: { user: true },
+      });
+    }),
+
+  removeMember: protectedProcedure
+    .input(z.object({ projectId: z.string(), userId: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const { project } = await requireProjectAccess(ctx.db, input.projectId, ctx.userId);
+
+      // Only non-guests can remove members from projects
+      await requireNonGuest(ctx.db, project.workspaceId, ctx.userId);
+
+      return ctx.db.projectMember.delete({
+        where: { projectId_userId: { projectId: input.projectId, userId: input.userId } },
+      });
     }),
 });

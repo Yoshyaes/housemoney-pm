@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { router, protectedProcedure, requireWorkspaceMember } from '@/server/trpc/trpc';
+import { router, protectedProcedure, requireNonGuest } from '@/server/trpc/trpc';
 import { Prisma } from '@/generated/prisma/client';
 import { format } from 'date-fns';
 
@@ -21,7 +21,7 @@ export const analyticsRouter = router({
   summary: protectedProcedure
     .input(analyticsInput)
     .query(async ({ ctx, input }) => {
-      await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
+      await requireNonGuest(ctx.db, input.workspaceId, ctx.userId);
 
       const since = getSinceDate(input.dateRange);
       const projectFilter = input.projectId ? { projectId: input.projectId } : {};
@@ -70,7 +70,7 @@ export const analyticsRouter = router({
   throughput: protectedProcedure
     .input(analyticsInput)
     .query(async ({ ctx, input }) => {
-      await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
+      await requireNonGuest(ctx.db, input.workspaceId, ctx.userId);
 
       const since = getSinceDate(input.dateRange);
 
@@ -97,7 +97,7 @@ export const analyticsRouter = router({
   cycleTime: protectedProcedure
     .input(analyticsInput)
     .query(async ({ ctx, input }) => {
-      await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
+      await requireNonGuest(ctx.db, input.workspaceId, ctx.userId);
 
       const since = getSinceDate(input.dateRange);
 
@@ -183,7 +183,7 @@ export const analyticsRouter = router({
   statusDistribution: protectedProcedure
     .input(analyticsInput)
     .query(async ({ ctx, input }) => {
-      await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
+      await requireNonGuest(ctx.db, input.workspaceId, ctx.userId);
 
       const rows = await ctx.db.task.groupBy({
         by: ['status'],
@@ -200,7 +200,7 @@ export const analyticsRouter = router({
   priorityDistribution: protectedProcedure
     .input(analyticsInput)
     .query(async ({ ctx, input }) => {
-      await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
+      await requireNonGuest(ctx.db, input.workspaceId, ctx.userId);
 
       const rows = await ctx.db.task.groupBy({
         by: ['priority'],
@@ -218,7 +218,7 @@ export const analyticsRouter = router({
   workloadByAssignee: protectedProcedure
     .input(analyticsInput)
     .query(async ({ ctx, input }) => {
-      await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
+      await requireNonGuest(ctx.db, input.workspaceId, ctx.userId);
 
       const rows = await ctx.db.$queryRaw<Array<{
         userId: string;
@@ -280,7 +280,7 @@ export const analyticsRouter = router({
   cumulativeFlow: protectedProcedure
     .input(analyticsInput)
     .query(async ({ ctx, input }) => {
-      await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
+      await requireNonGuest(ctx.db, input.workspaceId, ctx.userId);
 
       const since = getSinceDate(input.dateRange) ?? new Date(Date.now() - 90 * 86400_000);
 
@@ -356,7 +356,7 @@ export const analyticsRouter = router({
   projectHealth: protectedProcedure
     .input(z.object({ workspaceId: z.string() }))
     .query(async ({ ctx, input }) => {
-      await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
+      await requireNonGuest(ctx.db, input.workspaceId, ctx.userId);
 
       const projects = await ctx.db.project.findMany({
         where: { workspaceId: input.workspaceId },
