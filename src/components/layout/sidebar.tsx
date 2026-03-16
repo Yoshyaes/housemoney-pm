@@ -12,6 +12,7 @@ import { ThemeToggle } from '@/components/shared/theme-toggle';
 import { GuestBadge } from '@/components/shared/guest-badge';
 import { ProjectMembers } from '@/components/project/project-members';
 import { trpc } from '@/lib/trpc';
+import { createBrowserSupabaseClient } from '@/lib/supabase-browser';
 import {
   LayoutGrid,
   List,
@@ -31,6 +32,7 @@ import {
   Users,
   Sparkles,
   Shield,
+  LogOut,
 } from 'lucide-react';
 
 interface SavedView {
@@ -416,10 +418,21 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
         <div className="ml-auto flex items-center gap-1.5">
           <ThemeToggle />
           {!isGuest && (
-            <button onClick={() => setSettingsOpen(true)} className="rounded p-0.5 text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300">
+            <button onClick={() => setSettingsOpen(true)} className="rounded p-0.5 text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300" title="Settings">
               <Settings className="h-4 w-4" />
             </button>
           )}
+          <button
+            onClick={async () => {
+              const supabase = createBrowserSupabaseClient();
+              await supabase.auth.signOut();
+              window.location.href = '/login';
+            }}
+            className="rounded p-0.5 text-zinc-400 hover:text-red-500 dark:text-zinc-500 dark:hover:text-red-400"
+            title="Sign out"
+          >
+            <LogOut className="h-4 w-4" />
+          </button>
         </div>
       </div>
     </aside>
