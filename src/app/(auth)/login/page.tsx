@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { BRAND_AMBER } from '@/lib/constants';
@@ -11,10 +11,28 @@ export default function LoginPage() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [hashError, setHashError] = useState<string | null>(null);
   const router = useRouter();
   const searchParams = useSearchParams();
   const supabase = createBrowserSupabaseClient();
   const logAuth = trpc.audit.logAuth.useMutation();
+
+  // Handle Supabase auth errors from URL hash (e.g. expired invite links)
+  useEffect(() => {
+    if (typeof window !== 'undefined' && window.location.hash) {
+      const hash = window.location.hash.substring(1);
+      const params = new URLSearchParams(hash);
+      const errorDesc = params.get('error_description');
+      const errorCode = params.get('error_code');
+      if (errorDesc) {
+        setHashError(errorDesc.replace(/\+/g, ' '));
+      } else if (errorCode) {
+        setHashError(`Authentication error: ${errorCode}`);
+      }
+      // Clean the hash from the URL
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+  }, []);
 
   const invitationError = searchParams.get('error');
   const invitationErrorMessages: Record<string, string> = {
@@ -60,9 +78,12 @@ export default function LoginPage() {
         <p className="mt-1 text-sm text-zinc-500">Project management for the team</p>
       </div>
 
-      {invitationError && invitationErrorMessages[invitationError] && (
+      {(hashError || (invitationError && invitationErrorMessages[invitationError])) && (
         <div className="rounded-md border border-red-200 bg-red-50 px-3 py-2 text-xs text-red-700">
-          {invitationErrorMessages[invitationError]}
+          {hashError || invitationErrorMessages[invitationError!]}
+          {hashError && (
+            <p className="mt-1 text-[10px] text-red-500">Please ask your admin to resend the invitation.</p>
+          )}
         </div>
       )}
 
