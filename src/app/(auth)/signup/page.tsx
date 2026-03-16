@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { BRAND_AMBER } from '@/lib/constants';
+import { trpc } from '@/lib/trpc';
 
 export default function SignupPage() {
   const [name, setName] = useState('');
@@ -15,6 +16,7 @@ export default function SignupPage() {
   const searchParams = useSearchParams();
   const invitationToken = searchParams.get('invitation');
   const supabase = createBrowserSupabaseClient();
+  const logAuth = trpc.audit.logAuth.useMutation();
 
   const handleGoogleSignup = async () => {
     const redirectTo = invitationToken
@@ -38,9 +40,11 @@ export default function SignupPage() {
     });
 
     if (error) {
+      logAuth.mutate({ action: 'SIGNUP_FAILED', email, metadata: { error: error.message } });
       setError(error.message);
       setLoading(false);
     } else {
+      logAuth.mutate({ action: 'SIGNUP', email, metadata: { name, hasInvitation: !!invitationToken } });
       // Invitation acceptance happens automatically via auto-accept in createContext
       router.push('/');
       router.refresh();

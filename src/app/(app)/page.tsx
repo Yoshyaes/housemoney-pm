@@ -144,7 +144,7 @@ export default function AppPage() {
   }, [members, supabase]);
 
   // Current user's role
-  const { isGuest } = useCurrentMembership(members, currentUser?.id);
+  const { isGuest, isAdmin } = useCurrentMembership(members, currentUser?.id);
 
   // Task update handler
   const updateTask = trpc.tasks.update.useMutation({
@@ -201,6 +201,7 @@ export default function AppPage() {
         workspaceId={workspaceId}
         onProjectsChange={() => utils.projects.list.invalidate({ workspaceId })}
         isGuest={isGuest}
+        isAdmin={isAdmin}
       />
 
       <div className="flex flex-1 flex-col overflow-hidden">

@@ -72,7 +72,8 @@ export const ModelName = {
   ProjectMember: 'ProjectMember',
   Invitation: 'Invitation',
   AgentInsight: 'AgentInsight',
-  AgentConfig: 'AgentConfig'
+  AgentConfig: 'AgentConfig',
+  AuditLog: 'AuditLog'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -403,6 +404,21 @@ export const AgentConfigScalarFieldEnum = {
 } as const
 
 export type AgentConfigScalarFieldEnum = (typeof AgentConfigScalarFieldEnum)[keyof typeof AgentConfigScalarFieldEnum]
+
+
+export const AuditLogScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  userId: 'userId',
+  email: 'email',
+  action: 'action',
+  metadata: 'metadata',
+  ipAddress: 'ipAddress',
+  userAgent: 'userAgent',
+  createdAt: 'createdAt'
+} as const
+
+export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
 
 
 export const SortOrder = {

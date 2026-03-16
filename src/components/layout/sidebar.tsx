@@ -30,6 +30,7 @@ import {
   Trash2,
   Users,
   Sparkles,
+  Shield,
 } from 'lucide-react';
 
 interface SavedView {
@@ -60,9 +61,10 @@ interface SidebarProps {
   workspaceId: string;
   onProjectsChange: () => void;
   isGuest?: boolean;
+  isAdmin?: boolean;
 }
 
-export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProjectsChange, isGuest = false }: SidebarProps) {
+export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProjectsChange, isGuest = false, isAdmin = false }: SidebarProps) {
   const [addingProject, setAddingProject] = useState(false);
   const [newProjectName, setNewProjectName] = useState('');
   const [projectMenu, setProjectMenu] = useState<string | null>(null);
@@ -124,8 +126,13 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
     { id: 'analytics' as const, label: 'Analytics', icon: BarChart2, guestHidden: true },
     { id: 'docs' as const, label: 'Docs', icon: BookOpen },
     { id: 'agent' as const, label: 'AI Insights', icon: Sparkles, badge: pendingInsightCount, guestHidden: true },
+    { id: 'audit-log' as const, label: 'Audit Log', icon: Shield, guestHidden: true, adminOnly: true },
   ];
-  const navItems = isGuest ? allNavItems.filter((item) => !item.guestHidden) : allNavItems;
+  const navItems = allNavItems.filter((item) => {
+    if (item.guestHidden && isGuest) return false;
+    if ('adminOnly' in item && item.adminOnly && !isAdmin) return false;
+    return true;
+  });
 
   const handleNavClick = (id: string) => {
     if (id === 'board' || id === 'list' || id === 'timeline') {
@@ -142,6 +149,8 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
     } else if (id === 'agent') {
       setInsightPanelOpen(!insightPanelOpen);
       if (pathname !== '/') router.push('/');
+    } else if (id === 'audit-log') {
+      router.push('/admin/logs');
     }
     setMobileSidebarOpen(false);
   };

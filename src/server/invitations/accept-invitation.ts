@@ -1,10 +1,12 @@
 import type { db as prismaDb } from '@/server/db';
+import { auditLog, AuditAction } from '@/server/audit/log';
 
 type DB = typeof prismaDb;
 
 interface InvitationData {
   id: string;
   workspaceId: string;
+  email?: string;
   role: string;
   projectIds: string[];
 }
@@ -37,6 +39,14 @@ export async function acceptInvitation(db: DB, invitation: InvitationData, userI
   await db.invitation.update({
     where: { id: invitation.id },
     data: { acceptedAt: new Date() },
+  });
+
+  await auditLog(db, {
+    action: AuditAction.INVITATION_ACCEPTED,
+    email: invitation.email,
+    userId,
+    workspaceId: invitation.workspaceId,
+    metadata: { role: invitation.role },
   });
 }
 

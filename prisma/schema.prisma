@@ -116,6 +116,7 @@ model User {
   projectMemberships ProjectMember[]
   sentInvitations    Invitation[]     @relation("InvitationSender")
   agentInsights      AgentInsight[]   @relation("InsightTarget")
+  auditLogs          AuditLog[]
 }
 
 model Workspace {
@@ -134,6 +135,7 @@ model Workspace {
   invitations   Invitation[]
   agentInsights AgentInsight[]
   agentConfig   AgentConfig?
+  auditLogs     AuditLog[]
 }
 
 model WorkspaceMember {
@@ -476,4 +478,23 @@ model AgentConfig {
   updatedAt          DateTime @updatedAt
 
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+}
+
+model AuditLog {
+  id          String    @id @default(cuid())
+  workspaceId String?
+  userId      String?
+  email       String?
+  action      String
+  metadata    Json?
+  ipAddress   String?
+  userAgent   String?
+  createdAt   DateTime  @default(now())
+
+  workspace   Workspace? @relation(fields: [workspaceId], references: [id], onDelete: SetNull)
+  user        User?      @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([workspaceId, createdAt])
+  @@index([email, createdAt])
+  @@index([action, createdAt])
 }

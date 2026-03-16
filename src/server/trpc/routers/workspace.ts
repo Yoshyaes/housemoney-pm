@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { router, protectedProcedure, requireWorkspaceMember, requireWorkspaceAdmin, requireNonGuest } from '@/server/trpc/trpc';
 import { TRPCError } from '@trpc/server';
 import { createSupabaseAdmin } from '@/server/auth/supabase-admin';
+import { auditLog, AuditAction } from '@/server/audit/log';
 
 export const workspaceRouter = router({
   getCurrent: protectedProcedure.query(async ({ ctx }) => {
@@ -72,9 +73,18 @@ export const workspaceRouter = router({
       if (memberToRemove?.role === 'ADMIN' && admins <= 1) {
         throw new TRPCError({ code: 'BAD_REQUEST', message: 'Cannot remove the last admin.' });
       }
-      return ctx.db.workspaceMember.delete({
+      const removedUser = await ctx.db.user.findUnique({ where: { id: input.userId }, select: { email: true } });
+      const result = await ctx.db.workspaceMember.delete({
         where: { workspaceId_userId: { workspaceId: input.workspaceId, userId: input.userId } },
       });
+      await auditLog(ctx.db, {
+        action: AuditAction.MEMBER_REMOVED,
+        email: removedUser?.email,
+        userId: input.userId,
+        workspaceId: input.workspaceId,
+        metadata: { removedBy: ctx.userId },
+      });
+      return result;
     }),
 
   updateMemberRole: protectedProcedure
@@ -184,12 +194,18 @@ export const workspaceRouter = router({
 
   sendPasswordReset: protectedProcedure
     .input(z.object({ email: z.string().email() }))
-    .mutation(async ({ input }) => {
+    .mutation(async ({ ctx, input }) => {
       const supabase = createSupabaseAdmin();
       const { error } = await supabase.auth.resetPasswordForEmail(input.email, {
         redirectTo: `${process.env.NEXT_PUBLIC_SUPABASE_URL?.replace('.supabase.co', '')}/auth/callback`,
       });
       if (error) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: error.message });
+      await auditLog(ctx.db, {
+        action: AuditAction.PASSWORD_RESET_REQUESTED,
+        email: input.email,
+        userId: ctx.userId,
+        metadata: { requestedBy: ctx.userId },
+      });
       return { success: true };
     }),
 });

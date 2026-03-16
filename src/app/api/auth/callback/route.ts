@@ -4,6 +4,7 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { db } from '@/server/db';
 import { acceptInvitation, acceptPendingInvitations } from '@/server/invitations/accept-invitation';
+import { auditLog, AuditAction } from '@/server/audit/log';
 
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
@@ -37,6 +38,7 @@ export async function GET(request: NextRequest) {
     if (session?.user) {
       const name = session.user.user_metadata?.name || session.user.email?.split('@')[0] || 'User';
 
+      const existingUser = await db.user.findUnique({ where: { id: session.user.id } });
       const user = await db.user.upsert({
         where: { id: session.user.id },
         update: { email: session.user.email! },
@@ -46,6 +48,15 @@ export async function GET(request: NextRequest) {
           name,
           avatarUrl: session.user.user_metadata?.avatar_url,
         },
+      });
+
+      await auditLog(db, {
+        action: existingUser ? AuditAction.OAUTH_LOGIN : AuditAction.ACCOUNT_CREATED,
+        email: user.email,
+        userId: user.id,
+        metadata: { provider: session.user.app_metadata?.provider || 'oauth' },
+        ipAddress: request.headers.get('x-forwarded-for') || undefined,
+        userAgent: request.headers.get('user-agent') || undefined,
       });
 
       // Check for invitation token from OAuth redirect

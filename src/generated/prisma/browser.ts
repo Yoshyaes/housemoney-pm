@@ -127,3 +127,8 @@ export type AgentInsight = Prisma.AgentInsightModel
  * 
  */
 export type AgentConfig = Prisma.AgentConfigModel
+/**
+ * Model AuditLog
+ * 
+ */
+export type AuditLog = Prisma.AuditLogModel

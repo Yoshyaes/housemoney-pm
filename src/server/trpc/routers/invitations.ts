@@ -3,6 +3,7 @@ import { router, protectedProcedure, requireNonGuest } from '@/server/trpc/trpc'
 import { TRPCError } from '@trpc/server';
 import { acceptInvitation } from '@/server/invitations/accept-invitation';
 import { sendInviteEmail } from '@/server/invitations/send-invite-email';
+import { auditLog, AuditAction } from '@/server/audit/log';
 
 export const invitationsRouter = router({
   create: protectedProcedure
@@ -57,6 +58,14 @@ export const invitationsRouter = router({
           workspace: { select: { name: true } },
           invitedBy: { select: { name: true, email: true } },
         },
+      });
+
+      await auditLog(ctx.db, {
+        action: AuditAction.INVITATION_SENT,
+        email: input.email,
+        userId: ctx.userId,
+        workspaceId: input.workspaceId,
+        metadata: { role: input.role, inviterEmail: invitation.invitedBy.email },
       });
 
       // If the user already has an account, auto-accept (no email needed)

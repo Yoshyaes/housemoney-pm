@@ -5,6 +5,7 @@ import { createServerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import type { User } from '@/generated/prisma/client';
 import { acceptPendingInvitations } from '@/server/invitations/accept-invitation';
+import { auditLog, AuditAction } from '@/server/audit/log';
 
 export type Context = {
   db: typeof db;
@@ -57,6 +58,12 @@ export async function createContext(): Promise<Context> {
         },
       });
       user = newUser;
+
+      await auditLog(db, {
+        action: AuditAction.ACCOUNT_CREATED,
+        email: newUser.email,
+        userId: newUser.id,
+      });
 
       // Check for pending invitations for this email
       const hadInvitations = await acceptPendingInvitations(db, newUser.email, newUser.id);

@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { BRAND_AMBER } from '@/lib/constants';
+import { trpc } from '@/lib/trpc';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -13,6 +14,7 @@ export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const supabase = createBrowserSupabaseClient();
+  const logAuth = trpc.audit.logAuth.useMutation();
 
   const invitationError = searchParams.get('error');
   const invitationErrorMessages: Record<string, string> = {
@@ -28,9 +30,11 @@ export default function LoginPage() {
 
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
+      logAuth.mutate({ action: 'LOGIN_FAILED', email, metadata: { error: error.message } });
       setError(error.message);
       setLoading(false);
     } else {
+      logAuth.mutate({ action: 'LOGIN_SUCCESS', email });
       router.push('/');
       router.refresh();
     }
