@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { BRAND_AMBER } from '@/lib/constants';
-import { trpc } from '@/lib/trpc';
 
 export default function SignupPage() {
   const [name, setName] = useState('');
@@ -16,7 +15,6 @@ export default function SignupPage() {
   const searchParams = useSearchParams();
   const invitationToken = searchParams.get('invitation');
   const supabase = createBrowserSupabaseClient();
-  const acceptInvitation = trpc.invitations.accept.useMutation();
 
   const handleGoogleSignup = async () => {
     const redirectTo = invitationToken
@@ -43,14 +41,7 @@ export default function SignupPage() {
       setError(error.message);
       setLoading(false);
     } else {
-      // If there's an invitation token, accept it after signup
-      if (invitationToken) {
-        try {
-          await acceptInvitation.mutateAsync({ token: invitationToken });
-        } catch {
-          // Invitation acceptance will also happen via auto-accept in createContext
-        }
-      }
+      // Invitation acceptance happens automatically via auto-accept in createContext
       router.push('/');
       router.refresh();
     }

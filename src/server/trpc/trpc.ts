@@ -4,6 +4,7 @@ import { db } from '@/server/db';
 import { createServerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import type { User } from '@/generated/prisma/client';
+import { acceptPendingInvitations } from '@/server/invitations/accept-invitation';
 
 export type Context = {
   db: typeof db;
@@ -58,43 +59,9 @@ export async function createContext(): Promise<Context> {
       user = newUser;
 
       // Check for pending invitations for this email
-      const pendingInvitations = await db.invitation.findMany({
-        where: {
-          email: newUser.email,
-          acceptedAt: null,
-          expiresAt: { gt: new Date() },
-        },
-      });
+      const hadInvitations = await acceptPendingInvitations(db, newUser.email, newUser.id);
 
-      if (pendingInvitations.length > 0) {
-        // Auto-accept all pending invitations
-        for (const invitation of pendingInvitations) {
-          await db.workspaceMember.upsert({
-            where: { workspaceId_userId: { workspaceId: invitation.workspaceId, userId: newUser.id } },
-            create: {
-              workspaceId: invitation.workspaceId,
-              userId: newUser.id,
-              role: invitation.role,
-            },
-            update: {},
-          });
-
-          if (invitation.projectIds.length > 0) {
-            await db.projectMember.createMany({
-              data: invitation.projectIds.map((projectId) => ({
-                projectId,
-                userId: newUser.id,
-              })),
-              skipDuplicates: true,
-            });
-          }
-
-          await db.invitation.update({
-            where: { id: invitation.id },
-            data: { acceptedAt: new Date() },
-          });
-        }
-      } else {
+      if (!hadInvitations) {
         // No invitations — add to default workspace
         const workspace = await db.workspace.upsert({
           where: { slug: 'house-money' },

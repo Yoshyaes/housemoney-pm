@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { router, protectedProcedure, requireNonGuest } from '@/server/trpc/trpc';
 import { TRPCError } from '@trpc/server';
+import { acceptInvitation } from '@/server/invitations/accept-invitation';
 
 export const invitationsRouter = router({
   create: protectedProcedure
@@ -59,28 +60,15 @@ export const invitationsRouter = router({
 
       // If the user already has an account, auto-accept
       if (existingUser) {
-        await ctx.db.workspaceMember.create({
-          data: {
-            workspaceId: input.workspaceId,
-            userId: existingUser.id,
-            role: input.role,
+        await acceptInvitation(ctx.db, invitation, existingUser.id);
+        const accepted = await ctx.db.invitation.findUniqueOrThrow({
+          where: { id: invitation.id },
+          include: {
+            workspace: { select: { name: true } },
+            invitedBy: { select: { name: true, email: true } },
           },
         });
-
-        if (input.projectIds.length > 0) {
-          await ctx.db.projectMember.createMany({
-            data: input.projectIds.map((projectId) => ({
-              projectId,
-              userId: existingUser.id,
-            })),
-            skipDuplicates: true,
-          });
-        }
-
-        await ctx.db.invitation.update({
-          where: { id: invitation.id },
-          data: { acceptedAt: new Date() },
-        });
+        return accepted;
       }
 
       return invitation;
@@ -108,33 +96,8 @@ export const invitationsRouter = router({
         throw new TRPCError({ code: 'FORBIDDEN', message: 'This invitation was sent to a different email address.' });
       }
 
-      // Create workspace membership
-      await ctx.db.workspaceMember.upsert({
-        where: { workspaceId_userId: { workspaceId: invitation.workspaceId, userId: ctx.userId } },
-        create: {
-          workspaceId: invitation.workspaceId,
-          userId: ctx.userId,
-          role: invitation.role,
-        },
-        update: {},
-      });
-
-      // Create project memberships
-      if (invitation.projectIds.length > 0) {
-        await ctx.db.projectMember.createMany({
-          data: invitation.projectIds.map((projectId) => ({
-            projectId,
-            userId: ctx.userId,
-          })),
-          skipDuplicates: true,
-        });
-      }
-
-      // Mark as accepted
-      await ctx.db.invitation.update({
-        where: { id: invitation.id },
-        data: { acceptedAt: new Date() },
-      });
+      // Accept the invitation
+      await acceptInvitation(ctx.db, invitation, ctx.userId);
 
       return { success: true, workspaceId: invitation.workspaceId };
     }),

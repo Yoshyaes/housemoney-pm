@@ -3,9 +3,10 @@
 import { useState } from 'react';
 import { useUIStore } from '@/lib/stores/ui-store';
 import { trpc } from '@/lib/trpc';
-import { X, Plus, Trash2, Edit2, Check, AlertCircle, KeyRound, ChevronDown, Lock, Globe } from 'lucide-react';
+import { X, Plus, Trash2, Edit2, Check, AlertCircle, KeyRound, ChevronDown, Lock, Globe, Copy, Clock, Link2 } from 'lucide-react';
 import { BRAND_AMBER } from '@/lib/constants';
 import { GuestBadge } from '@/components/shared/guest-badge';
+import { AgentConfigPanel } from '@/components/agent/agent-config-panel';
 
 const PROJECT_COLORS = [
   '#1D9E75', '#3B82F6', '#8B5CF6', '#EF4444', '#F59E0B',
@@ -20,7 +21,7 @@ const LABEL_PRESETS = [
   { name: 'Infra', color: '#f59e0b', bgColor: 'rgba(245,158,11,0.12)' },
 ];
 
-type Tab = 'projects' | 'labels' | 'members';
+type Tab = 'projects' | 'labels' | 'members' | 'ai-agent';
 
 interface SettingsModalProps {
   workspaceId?: string;
@@ -99,20 +100,41 @@ export function SettingsModal({ workspaceId: workspaceIdProp }: SettingsModalPro
   const [editingMember, setEditingMember] = useState<{ id: string; name: string } | null>(null);
   const [resetSuccess, setResetSuccess] = useState<string | null>(null);
 
-  const inviteMember = trpc.workspace.inviteMember.useMutation({
+  const [copiedToken, setCopiedToken] = useState<string | null>(null);
+  const [lastInviteLink, setLastInviteLink] = useState<string | null>(null);
+
+  const { data: pendingInvitations = [] } = trpc.invitations.list.useQuery(
+    { workspaceId },
+    { enabled: settingsOpen && !!workspaceId && tab === 'members' }
+  );
+
+  const createInvitation = trpc.invitations.create.useMutation({
     onSuccess: (data) => {
       utils.workspace.getMembers.invalidate({ workspaceId });
+      utils.invitations.list.invalidate({ workspaceId });
       setInviteEmail('');
       setInviteRole('MEMBER');
       setInviteProjectIds([]);
       setInviteError('');
-      setInviteSuccess(`${data.user.name} added to workspace.`);
-      setTimeout(() => setInviteSuccess(''), 3000);
+      if (data.acceptedAt) {
+        setInviteSuccess('Added to workspace.');
+        setLastInviteLink(null);
+        setTimeout(() => setInviteSuccess(''), 3000);
+      } else {
+        const link = `${window.location.origin}/api/invitations/accept?token=${data.token}`;
+        setLastInviteLink(link);
+        setInviteSuccess('Invitation created! Share the link below.');
+      }
     },
     onError: (e) => {
       setInviteError(e.message);
       setInviteSuccess('');
+      setLastInviteLink(null);
     },
+  });
+
+  const revokeInvitation = trpc.invitations.revoke.useMutation({
+    onSuccess: () => utils.invitations.list.invalidate({ workspaceId }),
   });
   const removeMember = trpc.workspace.removeMember.useMutation({
     onSuccess: () => utils.workspace.getMembers.invalidate({ workspaceId }),
@@ -158,17 +180,17 @@ export function SettingsModal({ workspaceId: workspaceIdProp }: SettingsModalPro
 
         {/* Tabs */}
         <div className="flex border-b border-zinc-100 dark:border-zinc-800 px-5">
-          {(['projects', 'labels', 'members'] as Tab[]).map((t) => (
+          {(['projects', 'labels', 'members', 'ai-agent'] as Tab[]).map((t) => (
             <button
               key={t}
               onClick={() => setTab(t)}
-              className={`mr-4 py-2.5 text-xs capitalize transition-colors border-b-2 ${
+              className={`mr-4 py-2.5 text-xs transition-colors border-b-2 ${
                 tab === t
                   ? 'border-amber-500 font-medium text-zinc-900 dark:text-zinc-100'
                   : 'border-transparent text-zinc-500 dark:text-zinc-400 hover:text-zinc-700 dark:hover:text-zinc-200'
               }`}
             >
-              {t}
+              {t === 'ai-agent' ? 'AI Agent' : t.charAt(0).toUpperCase() + t.slice(1)}
             </button>
           ))}
         </div>
@@ -515,6 +537,55 @@ export function SettingsModal({ workspaceId: workspaceIdProp }: SettingsModalPro
                   </div>
                 )}
 
+                {/* Pending Invitations */}
+                {pendingInvitations.length > 0 && (
+                  <div className="space-y-2">
+                    <p className="text-[10px] font-medium uppercase tracking-wider text-zinc-400">
+                      <Clock className="inline h-3 w-3 mr-1 -mt-0.5" />
+                      Pending Invitations
+                    </p>
+                    {pendingInvitations.map((inv) => (
+                      <div
+                        key={inv.id}
+                        className="flex items-center gap-3 rounded-md border border-dashed border-zinc-200 dark:border-zinc-700 px-3 py-2"
+                      >
+                        <div className="flex h-7 w-7 flex-shrink-0 items-center justify-center rounded-full bg-zinc-100 dark:bg-zinc-800 text-[10px] font-medium text-zinc-400">
+                          {inv.email.slice(0, 2).toUpperCase()}
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <p className="text-xs text-zinc-600 dark:text-zinc-300 truncate">{inv.email}</p>
+                          <p className="text-[10px] text-zinc-400">
+                            {inv.role === 'GUEST' ? 'Guest' : 'Member'} · Expires {new Date(inv.expiresAt).toLocaleDateString()}
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => {
+                            const link = `${window.location.origin}/api/invitations/accept?token=${inv.token}`;
+                            navigator.clipboard.writeText(link);
+                            setCopiedToken(inv.id);
+                            setTimeout(() => setCopiedToken(null), 2000);
+                          }}
+                          className="text-zinc-300 hover:text-amber-500 dark:text-zinc-600 dark:hover:text-amber-400"
+                          title="Copy invite link"
+                        >
+                          {copiedToken === inv.id ? <Check className="h-3.5 w-3.5 text-green-500" /> : <Copy className="h-3.5 w-3.5" />}
+                        </button>
+                        <button
+                          onClick={() => {
+                            if (confirm(`Revoke invitation for ${inv.email}?`)) {
+                              revokeInvitation.mutate({ id: inv.id });
+                            }
+                          }}
+                          className="text-zinc-300 hover:text-red-500 dark:text-zinc-600 dark:hover:text-red-400"
+                          title="Revoke invitation"
+                        >
+                          <Trash2 className="h-3.5 w-3.5" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
                 {/* Invite */}
                 <div className="rounded-md border border-dashed border-zinc-200 dark:border-zinc-700 p-3 space-y-2">
                   <p className="text-[10px] font-medium uppercase tracking-wider text-zinc-400">Invite</p>
@@ -572,20 +643,20 @@ export function SettingsModal({ workspaceId: workspaceIdProp }: SettingsModalPro
                   <button
                     onClick={() => {
                       if (inviteEmail.trim()) {
-                        inviteMember.mutate({
+                        createInvitation.mutate({
                           workspaceId,
                           email: inviteEmail.trim(),
                           role: inviteRole,
-                          projectIds: inviteRole === 'GUEST' ? inviteProjectIds : undefined,
+                          projectIds: inviteRole === 'GUEST' ? inviteProjectIds : [],
                         });
                       }
                     }}
-                    disabled={!inviteEmail.trim() || inviteMember.isPending || (inviteRole === 'GUEST' && inviteProjectIds.length === 0)}
+                    disabled={!inviteEmail.trim() || createInvitation.isPending || (inviteRole === 'GUEST' && inviteProjectIds.length === 0)}
                     className="flex items-center gap-1.5 rounded px-3 py-1.5 text-xs font-medium text-white disabled:opacity-40"
                     style={{ backgroundColor: BRAND_AMBER }}
                   >
                     <Plus className="h-3.5 w-3.5" />
-                    {inviteRole === 'GUEST' ? 'Invite guest' : 'Add member'}
+                    {inviteRole === 'GUEST' ? 'Invite guest' : 'Invite member'}
                   </button>
                   {inviteError && (
                     <p className="flex items-center gap-1 text-[10px] text-red-500">
@@ -593,14 +664,45 @@ export function SettingsModal({ workspaceId: workspaceIdProp }: SettingsModalPro
                     </p>
                   )}
                   {inviteSuccess && (
-                    <p className="flex items-center gap-1 text-[10px] text-green-500">
-                      <Check className="h-3 w-3" /> {inviteSuccess}
-                    </p>
+                    <div className="space-y-1.5">
+                      <p className="flex items-center gap-1 text-[10px] text-green-500">
+                        <Check className="h-3 w-3" /> {inviteSuccess}
+                      </p>
+                      {lastInviteLink && (
+                        <div className="flex items-center gap-1.5 rounded border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 px-2 py-1.5">
+                          <Link2 className="h-3 w-3 flex-shrink-0 text-zinc-400" />
+                          <span className="flex-1 text-[10px] text-zinc-500 dark:text-zinc-400 truncate font-mono">{lastInviteLink}</span>
+                          <button
+                            onClick={() => {
+                              navigator.clipboard.writeText(lastInviteLink);
+                              setCopiedToken('last');
+                              setTimeout(() => setCopiedToken(null), 2000);
+                            }}
+                            className="flex-shrink-0 text-zinc-400 hover:text-amber-500"
+                            title="Copy invite link"
+                          >
+                            {copiedToken === 'last' ? <Check className="h-3 w-3 text-green-500" /> : <Copy className="h-3 w-3" />}
+                          </button>
+                          <button
+                            onClick={() => { setLastInviteLink(null); setInviteSuccess(''); }}
+                            className="flex-shrink-0 text-zinc-400 hover:text-zinc-600 dark:hover:text-zinc-300"
+                            title="Dismiss"
+                          >
+                            <X className="h-3 w-3" />
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   )}
                 </div>
               </div>
             );
           })()}
+
+          {/* ── AI Agent tab ── */}
+          {tab === 'ai-agent' && workspaceId && (
+            <AgentConfigPanel workspaceId={workspaceId} />
+          )}
         </div>
       </div>
     </div>

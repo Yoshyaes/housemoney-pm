@@ -3,6 +3,7 @@ import { cookies } from 'next/headers';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { db } from '@/server/db';
+import { acceptInvitation, acceptPendingInvitations } from '@/server/invitations/accept-invitation';
 
 export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
@@ -54,72 +55,15 @@ export async function GET(request: NextRequest) {
         });
 
         if (invitation && !invitation.acceptedAt && invitation.expiresAt > new Date() && invitation.email === user.email) {
-          await db.workspaceMember.upsert({
-            where: { workspaceId_userId: { workspaceId: invitation.workspaceId, userId: user.id } },
-            create: {
-              workspaceId: invitation.workspaceId,
-              userId: user.id,
-              role: invitation.role,
-            },
-            update: {},
-          });
-
-          if (invitation.projectIds.length > 0) {
-            await db.projectMember.createMany({
-              data: invitation.projectIds.map((projectId) => ({
-                projectId,
-                userId: user.id,
-              })),
-              skipDuplicates: true,
-            });
-          }
-
-          await db.invitation.update({
-            where: { id: invitation.id },
-            data: { acceptedAt: new Date() },
-          });
-
+          await acceptInvitation(db, invitation, user.id);
           return NextResponse.redirect(requestUrl.origin);
         }
       }
 
       // Check for pending invitations by email (auto-accept)
-      const pendingInvitations = await db.invitation.findMany({
-        where: {
-          email: user.email,
-          acceptedAt: null,
-          expiresAt: { gt: new Date() },
-        },
-      });
+      const hadInvitations = await acceptPendingInvitations(db, user.email, user.id);
 
-      if (pendingInvitations.length > 0) {
-        for (const invitation of pendingInvitations) {
-          await db.workspaceMember.upsert({
-            where: { workspaceId_userId: { workspaceId: invitation.workspaceId, userId: user.id } },
-            create: {
-              workspaceId: invitation.workspaceId,
-              userId: user.id,
-              role: invitation.role,
-            },
-            update: {},
-          });
-
-          if (invitation.projectIds.length > 0) {
-            await db.projectMember.createMany({
-              data: invitation.projectIds.map((projectId) => ({
-                projectId,
-                userId: user.id,
-              })),
-              skipDuplicates: true,
-            });
-          }
-
-          await db.invitation.update({
-            where: { id: invitation.id },
-            data: { acceptedAt: new Date() },
-          });
-        }
-      } else {
+      if (!hadInvitations) {
         // No invitations — add to default workspace if not already a member
         const membership = await db.workspaceMember.findFirst({
           where: { userId: session.user.id },

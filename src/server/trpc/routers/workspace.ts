@@ -57,56 +57,6 @@ export const workspaceRouter = router({
       }));
     }),
 
-  inviteMember: protectedProcedure
-    .input(z.object({
-      workspaceId: z.string(),
-      email: z.string().email(),
-      role: z.enum(['MEMBER', 'GUEST']).default('MEMBER'),
-      projectIds: z.array(z.string()).optional(),
-    }))
-    .mutation(async ({ ctx, input }) => {
-      await requireNonGuest(ctx.db, input.workspaceId, ctx.userId);
-
-      // Guests must be assigned to at least one project
-      if (input.role === 'GUEST' && (!input.projectIds || input.projectIds.length === 0)) {
-        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Guests must be assigned to at least one project.' });
-      }
-
-      // Find user by email
-      const user = await ctx.db.user.findUnique({ where: { email: input.email } });
-      if (!user) {
-        throw new TRPCError({
-          code: 'NOT_FOUND',
-          message: 'No account found with that email. The user must sign up first.',
-        });
-      }
-      // Check not already a member
-      const existing = await ctx.db.workspaceMember.findUnique({
-        where: { workspaceId_userId: { workspaceId: input.workspaceId, userId: user.id } },
-      });
-      if (existing) {
-        throw new TRPCError({ code: 'CONFLICT', message: 'User is already a member.' });
-      }
-
-      const member = await ctx.db.workspaceMember.create({
-        data: { workspaceId: input.workspaceId, userId: user.id, role: input.role },
-        include: { user: true },
-      });
-
-      // Add guest to specified projects
-      if (input.projectIds && input.projectIds.length > 0) {
-        await ctx.db.projectMember.createMany({
-          data: input.projectIds.map((projectId) => ({
-            projectId,
-            userId: user.id,
-          })),
-          skipDuplicates: true,
-        });
-      }
-
-      return member;
-    }),
-
   removeMember: protectedProcedure
     .input(z.object({ workspaceId: z.string(), userId: z.string() }))
     .mutation(async ({ ctx, input }) => {

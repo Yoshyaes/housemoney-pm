@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createServerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
 import { db } from '@/server/db';
+import { acceptInvitation } from '@/server/invitations/accept-invitation';
 
 export async function GET(request: NextRequest) {
   const token = request.nextUrl.searchParams.get('token');
@@ -61,33 +62,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(new URL('/login?error=email_mismatch', request.url));
   }
 
-  // Create workspace membership
-  await db.workspaceMember.upsert({
-    where: { workspaceId_userId: { workspaceId: invitation.workspaceId, userId: user.id } },
-    create: {
-      workspaceId: invitation.workspaceId,
-      userId: user.id,
-      role: invitation.role,
-    },
-    update: {},
-  });
-
-  // Create project memberships
-  if (invitation.projectIds.length > 0) {
-    await db.projectMember.createMany({
-      data: invitation.projectIds.map((projectId) => ({
-        projectId,
-        userId: user.id,
-      })),
-      skipDuplicates: true,
-    });
-  }
-
-  // Mark invitation as accepted
-  await db.invitation.update({
-    where: { id: invitation.id },
-    data: { acceptedAt: new Date() },
-  });
+  // Accept the invitation (creates membership, project access, marks accepted)
+  await acceptInvitation(db, invitation, user.id);
 
   // Redirect to app
   return NextResponse.redirect(new URL('/', request.url));
