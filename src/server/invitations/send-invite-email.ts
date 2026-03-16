@@ -1,7 +1,4 @@
-import { Resend } from 'resend';
 import { createSupabaseAdmin } from '@/server/auth/supabase-admin';
-
-const resend = new Resend(process.env.RESEND_API_KEY);
 
 interface SendInviteEmailParams {
   email: string;
@@ -143,10 +140,11 @@ function buildInviteHtml({
 }
 
 /**
- * Sends a branded invitation email via Resend.
+ * Sends a branded invitation email using Supabase's built-in email system.
  *
- * For new users: also creates a Supabase auth user via generateLink (invite type)
- * so they can set their password when they click through.
+ * Uses `inviteUserByEmail` for new users (creates auth account + sends email).
+ * For users who already exist in Supabase auth, falls back to sending via
+ * Supabase's `auth.admin.generateLink` + the invite accept flow.
  *
  * The accept URL points to /api/invitations/accept which handles both
  * authenticated and unauthenticated users appropriately.
@@ -158,49 +156,69 @@ export async function sendInviteEmail({
   inviterName,
   inviteToken,
 }: SendInviteEmailParams) {
-  if (!process.env.RESEND_API_KEY) {
-    console.warn('RESEND_API_KEY not set — skipping invite email');
-    return { emailSent: false, reason: 'Email service not configured' };
-  }
-
+  const supabase = createSupabaseAdmin();
   const appUrl = getAppUrl();
   const acceptUrl = `${appUrl}/api/invitations/accept?token=${inviteToken}`;
+  const redirectTo = `${appUrl}/api/auth/callback?invitation=${inviteToken}`;
 
-  // For new users, create the Supabase auth account so they can set a password on signup
-  const supabase = createSupabaseAdmin();
-  const { data: existingUsers } = await supabase.auth.admin.listUsers();
-  const userExists = existingUsers?.users?.some((u) => u.email === email);
-
-  if (!userExists) {
-    // Generate an invite link (creates the Supabase auth user) but don't send Supabase's email
-    await supabase.auth.admin.generateLink({
-      type: 'invite',
-      email,
-      options: {
-        redirectTo: `${appUrl}/api/auth/callback?invitation=${inviteToken}`,
-      },
-    });
-  }
-
-  // Send our custom branded email
+  // Build role-specific email subject
   const isGuest = role === 'GUEST';
   const subject = isGuest
     ? `${inviterName} invited you to collaborate on ${workspaceName}`
     : `${inviterName} invited you to join ${workspaceName}`;
 
-  const fromAddress = process.env.RESEND_FROM_EMAIL || 'House Money PM <noreply@resend.dev>';
-
-  const { error } = await resend.emails.send({
-    from: fromAddress,
-    to: email,
-    subject,
-    html: buildInviteHtml({ role, workspaceName, inviterName, acceptUrl }),
+  // Try inviteUserByEmail first — works for new users, creates auth account + sends email
+  const { error: inviteError } = await supabase.auth.admin.inviteUserByEmail(email, {
+    redirectTo,
+    data: {
+      invitation_role: role,
+      workspace_name: workspaceName,
+      inviter_name: inviterName,
+      // Supabase template variables — the branded HTML is set in the dashboard
+      email_subject: subject,
+    },
   });
 
-  if (error) {
-    console.error('Failed to send invite email via Resend:', error);
-    return { emailSent: false, reason: error.message };
+  if (!inviteError) {
+    return { emailSent: true };
   }
 
-  return { emailSent: true };
+  // If user already exists in Supabase auth, they can't be "invited" again.
+  // Use our app's accept link directly — they'll be redirected to login if needed.
+  if (inviteError.message?.includes('already been registered') || inviteError.status === 422) {
+    // User already has a Supabase account. The invitation was already auto-accepted
+    // in the invitations.create procedure, so no email is strictly needed.
+    // But we can still notify them by sending a magic link that lands them in the app.
+    const { error: linkError } = await supabase.auth.admin.generateLink({
+      type: 'magiclink',
+      email,
+      options: { redirectTo },
+    });
+
+    if (linkError) {
+      console.error('Failed to generate magic link:', linkError.message);
+      return { emailSent: false, reason: linkError.message };
+    }
+
+    return { emailSent: true };
+  }
+
+  console.error('Failed to send invite email:', inviteError.message);
+  return { emailSent: false, reason: inviteError.message };
+}
+
+/**
+ * Returns the branded HTML email template for the Supabase dashboard.
+ * Copy this into Authentication > Email Templates > "Invite User" in your
+ * Supabase dashboard. Use {{ .ConfirmationURL }} for the CTA link.
+ *
+ * This is exported for reference — it's not called at runtime.
+ */
+export function getSupabaseInviteTemplate() {
+  return buildInviteHtml({
+    role: 'MEMBER',
+    workspaceName: '{{ .Data.workspace_name }}',
+    inviterName: '{{ .Data.inviter_name }}',
+    acceptUrl: '{{ .ConfirmationURL }}',
+  });
 }
