@@ -184,20 +184,19 @@ export async function sendInviteEmail({
   }
 
   // If user already exists in Supabase auth, they can't be "invited" again.
-  // Use our app's accept link directly — they'll be redirected to login if needed.
+  // Send a magic link email instead so they can sign in and access the workspace.
   if (inviteError.message?.includes('already been registered') || inviteError.status === 422) {
-    // User already has a Supabase account. The invitation was already auto-accepted
-    // in the invitations.create procedure, so no email is strictly needed.
-    // But we can still notify them by sending a magic link that lands them in the app.
-    const { error: linkError } = await supabase.auth.admin.generateLink({
-      type: 'magiclink',
+    const { error: otpError } = await supabase.auth.signInWithOtp({
       email,
-      options: { redirectTo },
+      options: {
+        emailRedirectTo: redirectTo,
+        shouldCreateUser: false,
+      },
     });
 
-    if (linkError) {
-      console.error('Failed to generate magic link:', linkError.message);
-      return { emailSent: false, reason: linkError.message };
+    if (otpError) {
+      console.error('Failed to send magic link email:', otpError.message);
+      return { emailSent: false, reason: otpError.message };
     }
 
     return { emailSent: true };

@@ -156,11 +156,15 @@ export const invitationsRouter = router({
       if (invitation.acceptedAt) {
         throw new TRPCError({ code: 'BAD_REQUEST', message: 'Invitation has already been accepted.' });
       }
-      if (invitation.expiresAt < new Date()) {
-        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Invitation has expired.' });
-      }
-
       await requireNonGuest(ctx.db, invitation.workspaceId, ctx.userId);
+
+      // Extend expiry on resend if it was expired or close to expiring
+      if (invitation.expiresAt < new Date(Date.now() + 24 * 60 * 60 * 1000)) {
+        await ctx.db.invitation.update({
+          where: { id: invitation.id },
+          data: { expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) },
+        });
+      }
 
       const result = await sendInviteEmail({
         email: invitation.email,
