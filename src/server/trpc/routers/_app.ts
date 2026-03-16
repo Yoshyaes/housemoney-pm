@@ -13,6 +13,7 @@ import { sectionsRouter } from './sections';
 import { documentsRouter } from './documents';
 import { docCommentsRouter } from './doc-comments';
 import { invitationsRouter } from './invitations';
+import { agentRouter } from './agent';
 
 export const appRouter = router({
   tasks: tasksRouter,
@@ -29,6 +30,7 @@ export const appRouter = router({
   documents: documentsRouter,
   docComments: docCommentsRouter,
   invitations: invitationsRouter,
+  agent: agentRouter,
 });
 
 export type AppRouter = typeof appRouter;

@@ -63,10 +63,38 @@ export const NotificationType = {
   MENTIONED: 'MENTIONED',
   COMMENT: 'COMMENT',
   STATUS_CHANGE: 'STATUS_CHANGE',
-  DEPENDENCY_RESOLVED: 'DEPENDENCY_RESOLVED'
+  DEPENDENCY_RESOLVED: 'DEPENDENCY_RESOLVED',
+  AI_INSIGHT: 'AI_INSIGHT'
 } as const
 
 export type NotificationType = (typeof NotificationType)[keyof typeof NotificationType]
+
+
+export const InsightType = {
+  STALE_TASK: 'STALE_TASK',
+  OVERDUE_ESCALATION: 'OVERDUE_ESCALATION',
+  DEPENDENCY_UNBLOCKED: 'DEPENDENCY_UNBLOCKED',
+  WORKLOAD_IMBALANCE: 'WORKLOAD_IMBALANCE',
+  PROJECT_HEALTH_ALERT: 'PROJECT_HEALTH_ALERT',
+  DUPLICATE_DETECTED: 'DUPLICATE_DETECTED',
+  DECOMPOSITION_SUGGESTED: 'DECOMPOSITION_SUGGESTED',
+  MEETING_ACTION_ITEMS: 'MEETING_ACTION_ITEMS',
+  DAILY_DIGEST: 'DAILY_DIGEST'
+} as const
+
+export type InsightType = (typeof InsightType)[keyof typeof InsightType]
+
+
+export const InsightStatus = {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  DISMISSED: 'DISMISSED',
+  AUTO_APPLIED: 'AUTO_APPLIED',
+  REVERTED: 'REVERTED',
+  EXPIRED: 'EXPIRED'
+} as const
+
+export type InsightStatus = (typeof InsightStatus)[keyof typeof InsightStatus]
 
 
 export const PRStatus = {

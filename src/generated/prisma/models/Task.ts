@@ -278,6 +278,7 @@ export type TaskWhereInput = {
   blockedBy?: Prisma.DependencyListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
   githubPRs?: Prisma.GitHubPRListRelationFilter
+  agentInsights?: Prisma.AgentInsightListRelationFilter
 }
 
 export type TaskOrderByWithRelationInput = {
@@ -312,6 +313,7 @@ export type TaskOrderByWithRelationInput = {
   blockedBy?: Prisma.DependencyOrderByRelationAggregateInput
   notifications?: Prisma.NotificationOrderByRelationAggregateInput
   githubPRs?: Prisma.GitHubPROrderByRelationAggregateInput
+  agentInsights?: Prisma.AgentInsightOrderByRelationAggregateInput
 }
 
 export type TaskWhereUniqueInput = Prisma.AtLeast<{
@@ -349,6 +351,7 @@ export type TaskWhereUniqueInput = Prisma.AtLeast<{
   blockedBy?: Prisma.DependencyListRelationFilter
   notifications?: Prisma.NotificationListRelationFilter
   githubPRs?: Prisma.GitHubPRListRelationFilter
+  agentInsights?: Prisma.AgentInsightListRelationFilter
 }, "id" | "identifier">
 
 export type TaskOrderByWithAggregationInput = {
@@ -419,6 +422,7 @@ export type TaskCreateInput = {
   blockedBy?: Prisma.DependencyCreateNestedManyWithoutBlockedTaskInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutTaskInput
   githubPRs?: Prisma.GitHubPRCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTaskInput
 }
 
 export type TaskUncheckedCreateInput = {
@@ -447,6 +451,7 @@ export type TaskUncheckedCreateInput = {
   blockedBy?: Prisma.DependencyUncheckedCreateNestedManyWithoutBlockedTaskInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTaskInput
   githubPRs?: Prisma.GitHubPRUncheckedCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTaskInput
 }
 
 export type TaskUpdateInput = {
@@ -475,6 +480,7 @@ export type TaskUpdateInput = {
   blockedBy?: Prisma.DependencyUpdateManyWithoutBlockedTaskNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutTaskNestedInput
   githubPRs?: Prisma.GitHubPRUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateInput = {
@@ -503,6 +509,7 @@ export type TaskUncheckedUpdateInput = {
   blockedBy?: Prisma.DependencyUncheckedUpdateManyWithoutBlockedTaskNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTaskNestedInput
   githubPRs?: Prisma.GitHubPRUncheckedUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskCreateManyInput = {
@@ -1031,6 +1038,22 @@ export type TaskUpdateOneRequiredWithoutGithubPRsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.TaskUpdateToOneWithWhereWithoutGithubPRsInput, Prisma.TaskUpdateWithoutGithubPRsInput>, Prisma.TaskUncheckedUpdateWithoutGithubPRsInput>
 }
 
+export type TaskCreateNestedOneWithoutAgentInsightsInput = {
+  create?: Prisma.XOR<Prisma.TaskCreateWithoutAgentInsightsInput, Prisma.TaskUncheckedCreateWithoutAgentInsightsInput>
+  connectOrCreate?: Prisma.TaskCreateOrConnectWithoutAgentInsightsInput
+  connect?: Prisma.TaskWhereUniqueInput
+}
+
+export type TaskUpdateOneWithoutAgentInsightsNestedInput = {
+  create?: Prisma.XOR<Prisma.TaskCreateWithoutAgentInsightsInput, Prisma.TaskUncheckedCreateWithoutAgentInsightsInput>
+  connectOrCreate?: Prisma.TaskCreateOrConnectWithoutAgentInsightsInput
+  upsert?: Prisma.TaskUpsertWithoutAgentInsightsInput
+  disconnect?: Prisma.TaskWhereInput | boolean
+  delete?: Prisma.TaskWhereInput | boolean
+  connect?: Prisma.TaskWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.TaskUpdateToOneWithWhereWithoutAgentInsightsInput, Prisma.TaskUpdateWithoutAgentInsightsInput>, Prisma.TaskUncheckedUpdateWithoutAgentInsightsInput>
+}
+
 export type TaskCreateWithoutAssigneeInput = {
   id?: string
   identifier: string
@@ -1056,6 +1079,7 @@ export type TaskCreateWithoutAssigneeInput = {
   blockedBy?: Prisma.DependencyCreateNestedManyWithoutBlockedTaskInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutTaskInput
   githubPRs?: Prisma.GitHubPRCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTaskInput
 }
 
 export type TaskUncheckedCreateWithoutAssigneeInput = {
@@ -1083,6 +1107,7 @@ export type TaskUncheckedCreateWithoutAssigneeInput = {
   blockedBy?: Prisma.DependencyUncheckedCreateNestedManyWithoutBlockedTaskInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTaskInput
   githubPRs?: Prisma.GitHubPRUncheckedCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTaskInput
 }
 
 export type TaskCreateOrConnectWithoutAssigneeInput = {
@@ -1120,6 +1145,7 @@ export type TaskCreateWithoutCreatedByInput = {
   blockedBy?: Prisma.DependencyCreateNestedManyWithoutBlockedTaskInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutTaskInput
   githubPRs?: Prisma.GitHubPRCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTaskInput
 }
 
 export type TaskUncheckedCreateWithoutCreatedByInput = {
@@ -1147,6 +1173,7 @@ export type TaskUncheckedCreateWithoutCreatedByInput = {
   blockedBy?: Prisma.DependencyUncheckedCreateNestedManyWithoutBlockedTaskInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTaskInput
   githubPRs?: Prisma.GitHubPRUncheckedCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTaskInput
 }
 
 export type TaskCreateOrConnectWithoutCreatedByInput = {
@@ -1237,6 +1264,7 @@ export type TaskCreateWithoutWorkspaceInput = {
   blockedBy?: Prisma.DependencyCreateNestedManyWithoutBlockedTaskInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutTaskInput
   githubPRs?: Prisma.GitHubPRCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTaskInput
 }
 
 export type TaskUncheckedCreateWithoutWorkspaceInput = {
@@ -1264,6 +1292,7 @@ export type TaskUncheckedCreateWithoutWorkspaceInput = {
   blockedBy?: Prisma.DependencyUncheckedCreateNestedManyWithoutBlockedTaskInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTaskInput
   githubPRs?: Prisma.GitHubPRUncheckedCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTaskInput
 }
 
 export type TaskCreateOrConnectWithoutWorkspaceInput = {
@@ -1317,6 +1346,7 @@ export type TaskCreateWithoutProjectInput = {
   blockedBy?: Prisma.DependencyCreateNestedManyWithoutBlockedTaskInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutTaskInput
   githubPRs?: Prisma.GitHubPRCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTaskInput
 }
 
 export type TaskUncheckedCreateWithoutProjectInput = {
@@ -1344,6 +1374,7 @@ export type TaskUncheckedCreateWithoutProjectInput = {
   blockedBy?: Prisma.DependencyUncheckedCreateNestedManyWithoutBlockedTaskInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTaskInput
   githubPRs?: Prisma.GitHubPRUncheckedCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTaskInput
 }
 
 export type TaskCreateOrConnectWithoutProjectInput = {
@@ -1397,6 +1428,7 @@ export type TaskCreateWithoutSectionInput = {
   blockedBy?: Prisma.DependencyCreateNestedManyWithoutBlockedTaskInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutTaskInput
   githubPRs?: Prisma.GitHubPRCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTaskInput
 }
 
 export type TaskUncheckedCreateWithoutSectionInput = {
@@ -1424,6 +1456,7 @@ export type TaskUncheckedCreateWithoutSectionInput = {
   blockedBy?: Prisma.DependencyUncheckedCreateNestedManyWithoutBlockedTaskInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTaskInput
   githubPRs?: Prisma.GitHubPRUncheckedCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTaskInput
 }
 
 export type TaskCreateOrConnectWithoutSectionInput = {
@@ -1477,6 +1510,7 @@ export type TaskCreateWithoutSubtasksInput = {
   blockedBy?: Prisma.DependencyCreateNestedManyWithoutBlockedTaskInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutTaskInput
   githubPRs?: Prisma.GitHubPRCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTaskInput
 }
 
 export type TaskUncheckedCreateWithoutSubtasksInput = {
@@ -1504,6 +1538,7 @@ export type TaskUncheckedCreateWithoutSubtasksInput = {
   blockedBy?: Prisma.DependencyUncheckedCreateNestedManyWithoutBlockedTaskInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTaskInput
   githubPRs?: Prisma.GitHubPRUncheckedCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTaskInput
 }
 
 export type TaskCreateOrConnectWithoutSubtasksInput = {
@@ -1536,6 +1571,7 @@ export type TaskCreateWithoutParentInput = {
   blockedBy?: Prisma.DependencyCreateNestedManyWithoutBlockedTaskInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutTaskInput
   githubPRs?: Prisma.GitHubPRCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTaskInput
 }
 
 export type TaskUncheckedCreateWithoutParentInput = {
@@ -1563,6 +1599,7 @@ export type TaskUncheckedCreateWithoutParentInput = {
   blockedBy?: Prisma.DependencyUncheckedCreateNestedManyWithoutBlockedTaskInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTaskInput
   githubPRs?: Prisma.GitHubPRUncheckedCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTaskInput
 }
 
 export type TaskCreateOrConnectWithoutParentInput = {
@@ -1611,6 +1648,7 @@ export type TaskUpdateWithoutSubtasksInput = {
   blockedBy?: Prisma.DependencyUpdateManyWithoutBlockedTaskNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutTaskNestedInput
   githubPRs?: Prisma.GitHubPRUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateWithoutSubtasksInput = {
@@ -1638,6 +1676,7 @@ export type TaskUncheckedUpdateWithoutSubtasksInput = {
   blockedBy?: Prisma.DependencyUncheckedUpdateManyWithoutBlockedTaskNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTaskNestedInput
   githubPRs?: Prisma.GitHubPRUncheckedUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskUpsertWithWhereUniqueWithoutParentInput = {
@@ -1681,6 +1720,7 @@ export type TaskCreateWithoutAttachmentsInput = {
   blockedBy?: Prisma.DependencyCreateNestedManyWithoutBlockedTaskInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutTaskInput
   githubPRs?: Prisma.GitHubPRCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTaskInput
 }
 
 export type TaskUncheckedCreateWithoutAttachmentsInput = {
@@ -1708,6 +1748,7 @@ export type TaskUncheckedCreateWithoutAttachmentsInput = {
   blockedBy?: Prisma.DependencyUncheckedCreateNestedManyWithoutBlockedTaskInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTaskInput
   githubPRs?: Prisma.GitHubPRUncheckedCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTaskInput
 }
 
 export type TaskCreateOrConnectWithoutAttachmentsInput = {
@@ -1751,6 +1792,7 @@ export type TaskUpdateWithoutAttachmentsInput = {
   blockedBy?: Prisma.DependencyUpdateManyWithoutBlockedTaskNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutTaskNestedInput
   githubPRs?: Prisma.GitHubPRUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateWithoutAttachmentsInput = {
@@ -1778,6 +1820,7 @@ export type TaskUncheckedUpdateWithoutAttachmentsInput = {
   blockedBy?: Prisma.DependencyUncheckedUpdateManyWithoutBlockedTaskNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTaskNestedInput
   githubPRs?: Prisma.GitHubPRUncheckedUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskCreateWithoutCollaboratorsInput = {
@@ -1805,6 +1848,7 @@ export type TaskCreateWithoutCollaboratorsInput = {
   blockedBy?: Prisma.DependencyCreateNestedManyWithoutBlockedTaskInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutTaskInput
   githubPRs?: Prisma.GitHubPRCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTaskInput
 }
 
 export type TaskUncheckedCreateWithoutCollaboratorsInput = {
@@ -1832,6 +1876,7 @@ export type TaskUncheckedCreateWithoutCollaboratorsInput = {
   blockedBy?: Prisma.DependencyUncheckedCreateNestedManyWithoutBlockedTaskInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTaskInput
   githubPRs?: Prisma.GitHubPRUncheckedCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTaskInput
 }
 
 export type TaskCreateOrConnectWithoutCollaboratorsInput = {
@@ -1875,6 +1920,7 @@ export type TaskUpdateWithoutCollaboratorsInput = {
   blockedBy?: Prisma.DependencyUpdateManyWithoutBlockedTaskNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutTaskNestedInput
   githubPRs?: Prisma.GitHubPRUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateWithoutCollaboratorsInput = {
@@ -1902,6 +1948,7 @@ export type TaskUncheckedUpdateWithoutCollaboratorsInput = {
   blockedBy?: Prisma.DependencyUncheckedUpdateManyWithoutBlockedTaskNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTaskNestedInput
   githubPRs?: Prisma.GitHubPRUncheckedUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskCreateWithoutBlockingInput = {
@@ -1929,6 +1976,7 @@ export type TaskCreateWithoutBlockingInput = {
   blockedBy?: Prisma.DependencyCreateNestedManyWithoutBlockedTaskInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutTaskInput
   githubPRs?: Prisma.GitHubPRCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTaskInput
 }
 
 export type TaskUncheckedCreateWithoutBlockingInput = {
@@ -1956,6 +2004,7 @@ export type TaskUncheckedCreateWithoutBlockingInput = {
   blockedBy?: Prisma.DependencyUncheckedCreateNestedManyWithoutBlockedTaskInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTaskInput
   githubPRs?: Prisma.GitHubPRUncheckedCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTaskInput
 }
 
 export type TaskCreateOrConnectWithoutBlockingInput = {
@@ -1988,6 +2037,7 @@ export type TaskCreateWithoutBlockedByInput = {
   blocking?: Prisma.DependencyCreateNestedManyWithoutBlockingTaskInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutTaskInput
   githubPRs?: Prisma.GitHubPRCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTaskInput
 }
 
 export type TaskUncheckedCreateWithoutBlockedByInput = {
@@ -2015,6 +2065,7 @@ export type TaskUncheckedCreateWithoutBlockedByInput = {
   blocking?: Prisma.DependencyUncheckedCreateNestedManyWithoutBlockingTaskInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTaskInput
   githubPRs?: Prisma.GitHubPRUncheckedCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTaskInput
 }
 
 export type TaskCreateOrConnectWithoutBlockedByInput = {
@@ -2058,6 +2109,7 @@ export type TaskUpdateWithoutBlockingInput = {
   blockedBy?: Prisma.DependencyUpdateManyWithoutBlockedTaskNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutTaskNestedInput
   githubPRs?: Prisma.GitHubPRUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateWithoutBlockingInput = {
@@ -2085,6 +2137,7 @@ export type TaskUncheckedUpdateWithoutBlockingInput = {
   blockedBy?: Prisma.DependencyUncheckedUpdateManyWithoutBlockedTaskNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTaskNestedInput
   githubPRs?: Prisma.GitHubPRUncheckedUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskUpsertWithoutBlockedByInput = {
@@ -2123,6 +2176,7 @@ export type TaskUpdateWithoutBlockedByInput = {
   blocking?: Prisma.DependencyUpdateManyWithoutBlockingTaskNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutTaskNestedInput
   githubPRs?: Prisma.GitHubPRUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateWithoutBlockedByInput = {
@@ -2150,6 +2204,7 @@ export type TaskUncheckedUpdateWithoutBlockedByInput = {
   blocking?: Prisma.DependencyUncheckedUpdateManyWithoutBlockingTaskNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTaskNestedInput
   githubPRs?: Prisma.GitHubPRUncheckedUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskCreateWithoutCommentsInput = {
@@ -2177,6 +2232,7 @@ export type TaskCreateWithoutCommentsInput = {
   blockedBy?: Prisma.DependencyCreateNestedManyWithoutBlockedTaskInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutTaskInput
   githubPRs?: Prisma.GitHubPRCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTaskInput
 }
 
 export type TaskUncheckedCreateWithoutCommentsInput = {
@@ -2204,6 +2260,7 @@ export type TaskUncheckedCreateWithoutCommentsInput = {
   blockedBy?: Prisma.DependencyUncheckedCreateNestedManyWithoutBlockedTaskInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTaskInput
   githubPRs?: Prisma.GitHubPRUncheckedCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTaskInput
 }
 
 export type TaskCreateOrConnectWithoutCommentsInput = {
@@ -2247,6 +2304,7 @@ export type TaskUpdateWithoutCommentsInput = {
   blockedBy?: Prisma.DependencyUpdateManyWithoutBlockedTaskNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutTaskNestedInput
   githubPRs?: Prisma.GitHubPRUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateWithoutCommentsInput = {
@@ -2274,6 +2332,7 @@ export type TaskUncheckedUpdateWithoutCommentsInput = {
   blockedBy?: Prisma.DependencyUncheckedUpdateManyWithoutBlockedTaskNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTaskNestedInput
   githubPRs?: Prisma.GitHubPRUncheckedUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskCreateWithoutLabelsInput = {
@@ -2301,6 +2360,7 @@ export type TaskCreateWithoutLabelsInput = {
   blockedBy?: Prisma.DependencyCreateNestedManyWithoutBlockedTaskInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutTaskInput
   githubPRs?: Prisma.GitHubPRCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTaskInput
 }
 
 export type TaskUncheckedCreateWithoutLabelsInput = {
@@ -2328,6 +2388,7 @@ export type TaskUncheckedCreateWithoutLabelsInput = {
   blockedBy?: Prisma.DependencyUncheckedCreateNestedManyWithoutBlockedTaskInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTaskInput
   githubPRs?: Prisma.GitHubPRUncheckedCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTaskInput
 }
 
 export type TaskCreateOrConnectWithoutLabelsInput = {
@@ -2371,6 +2432,7 @@ export type TaskUpdateWithoutLabelsInput = {
   blockedBy?: Prisma.DependencyUpdateManyWithoutBlockedTaskNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutTaskNestedInput
   githubPRs?: Prisma.GitHubPRUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateWithoutLabelsInput = {
@@ -2398,6 +2460,7 @@ export type TaskUncheckedUpdateWithoutLabelsInput = {
   blockedBy?: Prisma.DependencyUncheckedUpdateManyWithoutBlockedTaskNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTaskNestedInput
   githubPRs?: Prisma.GitHubPRUncheckedUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskCreateWithoutActivitiesInput = {
@@ -2425,6 +2488,7 @@ export type TaskCreateWithoutActivitiesInput = {
   blockedBy?: Prisma.DependencyCreateNestedManyWithoutBlockedTaskInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutTaskInput
   githubPRs?: Prisma.GitHubPRCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTaskInput
 }
 
 export type TaskUncheckedCreateWithoutActivitiesInput = {
@@ -2452,6 +2516,7 @@ export type TaskUncheckedCreateWithoutActivitiesInput = {
   blockedBy?: Prisma.DependencyUncheckedCreateNestedManyWithoutBlockedTaskInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTaskInput
   githubPRs?: Prisma.GitHubPRUncheckedCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTaskInput
 }
 
 export type TaskCreateOrConnectWithoutActivitiesInput = {
@@ -2495,6 +2560,7 @@ export type TaskUpdateWithoutActivitiesInput = {
   blockedBy?: Prisma.DependencyUpdateManyWithoutBlockedTaskNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutTaskNestedInput
   githubPRs?: Prisma.GitHubPRUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateWithoutActivitiesInput = {
@@ -2522,6 +2588,7 @@ export type TaskUncheckedUpdateWithoutActivitiesInput = {
   blockedBy?: Prisma.DependencyUncheckedUpdateManyWithoutBlockedTaskNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTaskNestedInput
   githubPRs?: Prisma.GitHubPRUncheckedUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskCreateWithoutNotificationsInput = {
@@ -2549,6 +2616,7 @@ export type TaskCreateWithoutNotificationsInput = {
   blocking?: Prisma.DependencyCreateNestedManyWithoutBlockingTaskInput
   blockedBy?: Prisma.DependencyCreateNestedManyWithoutBlockedTaskInput
   githubPRs?: Prisma.GitHubPRCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTaskInput
 }
 
 export type TaskUncheckedCreateWithoutNotificationsInput = {
@@ -2576,6 +2644,7 @@ export type TaskUncheckedCreateWithoutNotificationsInput = {
   blocking?: Prisma.DependencyUncheckedCreateNestedManyWithoutBlockingTaskInput
   blockedBy?: Prisma.DependencyUncheckedCreateNestedManyWithoutBlockedTaskInput
   githubPRs?: Prisma.GitHubPRUncheckedCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTaskInput
 }
 
 export type TaskCreateOrConnectWithoutNotificationsInput = {
@@ -2619,6 +2688,7 @@ export type TaskUpdateWithoutNotificationsInput = {
   blocking?: Prisma.DependencyUpdateManyWithoutBlockingTaskNestedInput
   blockedBy?: Prisma.DependencyUpdateManyWithoutBlockedTaskNestedInput
   githubPRs?: Prisma.GitHubPRUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateWithoutNotificationsInput = {
@@ -2646,6 +2716,7 @@ export type TaskUncheckedUpdateWithoutNotificationsInput = {
   blocking?: Prisma.DependencyUncheckedUpdateManyWithoutBlockingTaskNestedInput
   blockedBy?: Prisma.DependencyUncheckedUpdateManyWithoutBlockedTaskNestedInput
   githubPRs?: Prisma.GitHubPRUncheckedUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskCreateWithoutGithubPRsInput = {
@@ -2673,6 +2744,7 @@ export type TaskCreateWithoutGithubPRsInput = {
   blocking?: Prisma.DependencyCreateNestedManyWithoutBlockingTaskInput
   blockedBy?: Prisma.DependencyCreateNestedManyWithoutBlockedTaskInput
   notifications?: Prisma.NotificationCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTaskInput
 }
 
 export type TaskUncheckedCreateWithoutGithubPRsInput = {
@@ -2700,6 +2772,7 @@ export type TaskUncheckedCreateWithoutGithubPRsInput = {
   blocking?: Prisma.DependencyUncheckedCreateNestedManyWithoutBlockingTaskInput
   blockedBy?: Prisma.DependencyUncheckedCreateNestedManyWithoutBlockedTaskInput
   notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTaskInput
+  agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTaskInput
 }
 
 export type TaskCreateOrConnectWithoutGithubPRsInput = {
@@ -2743,6 +2816,7 @@ export type TaskUpdateWithoutGithubPRsInput = {
   blocking?: Prisma.DependencyUpdateManyWithoutBlockingTaskNestedInput
   blockedBy?: Prisma.DependencyUpdateManyWithoutBlockedTaskNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateWithoutGithubPRsInput = {
@@ -2770,6 +2844,135 @@ export type TaskUncheckedUpdateWithoutGithubPRsInput = {
   blocking?: Prisma.DependencyUncheckedUpdateManyWithoutBlockingTaskNestedInput
   blockedBy?: Prisma.DependencyUncheckedUpdateManyWithoutBlockedTaskNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTaskNestedInput
+}
+
+export type TaskCreateWithoutAgentInsightsInput = {
+  id?: string
+  identifier: string
+  title: string
+  description?: string | null
+  status?: $Enums.TaskStatus
+  priority?: $Enums.Priority
+  dueDate?: Date | string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  workspace: Prisma.WorkspaceCreateNestedOneWithoutTasksInput
+  project?: Prisma.ProjectCreateNestedOneWithoutTasksInput
+  section?: Prisma.SectionCreateNestedOneWithoutTasksInput
+  assignee?: Prisma.UserCreateNestedOneWithoutAssignedTasksInput
+  createdBy: Prisma.UserCreateNestedOneWithoutCreatedTasksInput
+  parent?: Prisma.TaskCreateNestedOneWithoutSubtasksInput
+  subtasks?: Prisma.TaskCreateNestedManyWithoutParentInput
+  labels?: Prisma.TaskLabelCreateNestedManyWithoutTaskInput
+  collaborators?: Prisma.TaskCollaboratorCreateNestedManyWithoutTaskInput
+  attachments?: Prisma.TaskAttachmentCreateNestedManyWithoutTaskInput
+  comments?: Prisma.CommentCreateNestedManyWithoutTaskInput
+  activities?: Prisma.ActivityCreateNestedManyWithoutTaskInput
+  blocking?: Prisma.DependencyCreateNestedManyWithoutBlockingTaskInput
+  blockedBy?: Prisma.DependencyCreateNestedManyWithoutBlockedTaskInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutTaskInput
+  githubPRs?: Prisma.GitHubPRCreateNestedManyWithoutTaskInput
+}
+
+export type TaskUncheckedCreateWithoutAgentInsightsInput = {
+  id?: string
+  identifier: string
+  title: string
+  description?: string | null
+  status?: $Enums.TaskStatus
+  priority?: $Enums.Priority
+  workspaceId: string
+  projectId?: string | null
+  sectionId?: string | null
+  assigneeId?: string | null
+  parentId?: string | null
+  dueDate?: Date | string | null
+  createdById: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  subtasks?: Prisma.TaskUncheckedCreateNestedManyWithoutParentInput
+  labels?: Prisma.TaskLabelUncheckedCreateNestedManyWithoutTaskInput
+  collaborators?: Prisma.TaskCollaboratorUncheckedCreateNestedManyWithoutTaskInput
+  attachments?: Prisma.TaskAttachmentUncheckedCreateNestedManyWithoutTaskInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutTaskInput
+  activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutTaskInput
+  blocking?: Prisma.DependencyUncheckedCreateNestedManyWithoutBlockingTaskInput
+  blockedBy?: Prisma.DependencyUncheckedCreateNestedManyWithoutBlockedTaskInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutTaskInput
+  githubPRs?: Prisma.GitHubPRUncheckedCreateNestedManyWithoutTaskInput
+}
+
+export type TaskCreateOrConnectWithoutAgentInsightsInput = {
+  where: Prisma.TaskWhereUniqueInput
+  create: Prisma.XOR<Prisma.TaskCreateWithoutAgentInsightsInput, Prisma.TaskUncheckedCreateWithoutAgentInsightsInput>
+}
+
+export type TaskUpsertWithoutAgentInsightsInput = {
+  update: Prisma.XOR<Prisma.TaskUpdateWithoutAgentInsightsInput, Prisma.TaskUncheckedUpdateWithoutAgentInsightsInput>
+  create: Prisma.XOR<Prisma.TaskCreateWithoutAgentInsightsInput, Prisma.TaskUncheckedCreateWithoutAgentInsightsInput>
+  where?: Prisma.TaskWhereInput
+}
+
+export type TaskUpdateToOneWithWhereWithoutAgentInsightsInput = {
+  where?: Prisma.TaskWhereInput
+  data: Prisma.XOR<Prisma.TaskUpdateWithoutAgentInsightsInput, Prisma.TaskUncheckedUpdateWithoutAgentInsightsInput>
+}
+
+export type TaskUpdateWithoutAgentInsightsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  identifier?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  priority?: Prisma.EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  workspace?: Prisma.WorkspaceUpdateOneRequiredWithoutTasksNestedInput
+  project?: Prisma.ProjectUpdateOneWithoutTasksNestedInput
+  section?: Prisma.SectionUpdateOneWithoutTasksNestedInput
+  assignee?: Prisma.UserUpdateOneWithoutAssignedTasksNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedTasksNestedInput
+  parent?: Prisma.TaskUpdateOneWithoutSubtasksNestedInput
+  subtasks?: Prisma.TaskUpdateManyWithoutParentNestedInput
+  labels?: Prisma.TaskLabelUpdateManyWithoutTaskNestedInput
+  collaborators?: Prisma.TaskCollaboratorUpdateManyWithoutTaskNestedInput
+  attachments?: Prisma.TaskAttachmentUpdateManyWithoutTaskNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutTaskNestedInput
+  activities?: Prisma.ActivityUpdateManyWithoutTaskNestedInput
+  blocking?: Prisma.DependencyUpdateManyWithoutBlockingTaskNestedInput
+  blockedBy?: Prisma.DependencyUpdateManyWithoutBlockedTaskNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutTaskNestedInput
+  githubPRs?: Prisma.GitHubPRUpdateManyWithoutTaskNestedInput
+}
+
+export type TaskUncheckedUpdateWithoutAgentInsightsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  identifier?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumTaskStatusFieldUpdateOperationsInput | $Enums.TaskStatus
+  priority?: Prisma.EnumPriorityFieldUpdateOperationsInput | $Enums.Priority
+  workspaceId?: Prisma.StringFieldUpdateOperationsInput | string
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  sectionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  assigneeId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  parentId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  dueDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  subtasks?: Prisma.TaskUncheckedUpdateManyWithoutParentNestedInput
+  labels?: Prisma.TaskLabelUncheckedUpdateManyWithoutTaskNestedInput
+  collaborators?: Prisma.TaskCollaboratorUncheckedUpdateManyWithoutTaskNestedInput
+  attachments?: Prisma.TaskAttachmentUncheckedUpdateManyWithoutTaskNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutTaskNestedInput
+  activities?: Prisma.ActivityUncheckedUpdateManyWithoutTaskNestedInput
+  blocking?: Prisma.DependencyUncheckedUpdateManyWithoutBlockingTaskNestedInput
+  blockedBy?: Prisma.DependencyUncheckedUpdateManyWithoutBlockedTaskNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTaskNestedInput
+  githubPRs?: Prisma.GitHubPRUncheckedUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskCreateManyAssigneeInput = {
@@ -2831,6 +3034,7 @@ export type TaskUpdateWithoutAssigneeInput = {
   blockedBy?: Prisma.DependencyUpdateManyWithoutBlockedTaskNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutTaskNestedInput
   githubPRs?: Prisma.GitHubPRUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateWithoutAssigneeInput = {
@@ -2858,6 +3062,7 @@ export type TaskUncheckedUpdateWithoutAssigneeInput = {
   blockedBy?: Prisma.DependencyUncheckedUpdateManyWithoutBlockedTaskNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTaskNestedInput
   githubPRs?: Prisma.GitHubPRUncheckedUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateManyWithoutAssigneeInput = {
@@ -2902,6 +3107,7 @@ export type TaskUpdateWithoutCreatedByInput = {
   blockedBy?: Prisma.DependencyUpdateManyWithoutBlockedTaskNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutTaskNestedInput
   githubPRs?: Prisma.GitHubPRUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateWithoutCreatedByInput = {
@@ -2929,6 +3135,7 @@ export type TaskUncheckedUpdateWithoutCreatedByInput = {
   blockedBy?: Prisma.DependencyUncheckedUpdateManyWithoutBlockedTaskNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTaskNestedInput
   githubPRs?: Prisma.GitHubPRUncheckedUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateManyWithoutCreatedByInput = {
@@ -2990,6 +3197,7 @@ export type TaskUpdateWithoutWorkspaceInput = {
   blockedBy?: Prisma.DependencyUpdateManyWithoutBlockedTaskNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutTaskNestedInput
   githubPRs?: Prisma.GitHubPRUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateWithoutWorkspaceInput = {
@@ -3017,6 +3225,7 @@ export type TaskUncheckedUpdateWithoutWorkspaceInput = {
   blockedBy?: Prisma.DependencyUncheckedUpdateManyWithoutBlockedTaskNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTaskNestedInput
   githubPRs?: Prisma.GitHubPRUncheckedUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateManyWithoutWorkspaceInput = {
@@ -3078,6 +3287,7 @@ export type TaskUpdateWithoutProjectInput = {
   blockedBy?: Prisma.DependencyUpdateManyWithoutBlockedTaskNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutTaskNestedInput
   githubPRs?: Prisma.GitHubPRUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateWithoutProjectInput = {
@@ -3105,6 +3315,7 @@ export type TaskUncheckedUpdateWithoutProjectInput = {
   blockedBy?: Prisma.DependencyUncheckedUpdateManyWithoutBlockedTaskNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTaskNestedInput
   githubPRs?: Prisma.GitHubPRUncheckedUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateManyWithoutProjectInput = {
@@ -3166,6 +3377,7 @@ export type TaskUpdateWithoutSectionInput = {
   blockedBy?: Prisma.DependencyUpdateManyWithoutBlockedTaskNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutTaskNestedInput
   githubPRs?: Prisma.GitHubPRUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateWithoutSectionInput = {
@@ -3193,6 +3405,7 @@ export type TaskUncheckedUpdateWithoutSectionInput = {
   blockedBy?: Prisma.DependencyUncheckedUpdateManyWithoutBlockedTaskNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTaskNestedInput
   githubPRs?: Prisma.GitHubPRUncheckedUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateManyWithoutSectionInput = {
@@ -3254,6 +3467,7 @@ export type TaskUpdateWithoutParentInput = {
   blockedBy?: Prisma.DependencyUpdateManyWithoutBlockedTaskNestedInput
   notifications?: Prisma.NotificationUpdateManyWithoutTaskNestedInput
   githubPRs?: Prisma.GitHubPRUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateWithoutParentInput = {
@@ -3281,6 +3495,7 @@ export type TaskUncheckedUpdateWithoutParentInput = {
   blockedBy?: Prisma.DependencyUncheckedUpdateManyWithoutBlockedTaskNestedInput
   notifications?: Prisma.NotificationUncheckedUpdateManyWithoutTaskNestedInput
   githubPRs?: Prisma.GitHubPRUncheckedUpdateManyWithoutTaskNestedInput
+  agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTaskNestedInput
 }
 
 export type TaskUncheckedUpdateManyWithoutParentInput = {
@@ -3316,6 +3531,7 @@ export type TaskCountOutputType = {
   blockedBy: number
   notifications: number
   githubPRs: number
+  agentInsights: number
 }
 
 export type TaskCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3329,6 +3545,7 @@ export type TaskCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   blockedBy?: boolean | TaskCountOutputTypeCountBlockedByArgs
   notifications?: boolean | TaskCountOutputTypeCountNotificationsArgs
   githubPRs?: boolean | TaskCountOutputTypeCountGithubPRsArgs
+  agentInsights?: boolean | TaskCountOutputTypeCountAgentInsightsArgs
 }
 
 /**
@@ -3411,6 +3628,13 @@ export type TaskCountOutputTypeCountGithubPRsArgs<ExtArgs extends runtime.Types.
   where?: Prisma.GitHubPRWhereInput
 }
 
+/**
+ * TaskCountOutputType without action
+ */
+export type TaskCountOutputTypeCountAgentInsightsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.AgentInsightWhereInput
+}
+
 
 export type TaskSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -3444,6 +3668,7 @@ export type TaskSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   blockedBy?: boolean | Prisma.Task$blockedByArgs<ExtArgs>
   notifications?: boolean | Prisma.Task$notificationsArgs<ExtArgs>
   githubPRs?: boolean | Prisma.Task$githubPRsArgs<ExtArgs>
+  agentInsights?: boolean | Prisma.Task$agentInsightsArgs<ExtArgs>
   _count?: boolean | Prisma.TaskCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["task"]>
 
@@ -3531,6 +3756,7 @@ export type TaskInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   blockedBy?: boolean | Prisma.Task$blockedByArgs<ExtArgs>
   notifications?: boolean | Prisma.Task$notificationsArgs<ExtArgs>
   githubPRs?: boolean | Prisma.Task$githubPRsArgs<ExtArgs>
+  agentInsights?: boolean | Prisma.Task$agentInsightsArgs<ExtArgs>
   _count?: boolean | Prisma.TaskCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type TaskIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3569,6 +3795,7 @@ export type $TaskPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     blockedBy: Prisma.$DependencyPayload<ExtArgs>[]
     notifications: Prisma.$NotificationPayload<ExtArgs>[]
     githubPRs: Prisma.$GitHubPRPayload<ExtArgs>[]
+    agentInsights: Prisma.$AgentInsightPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -3996,6 +4223,7 @@ export interface Prisma__TaskClient<T, Null = never, ExtArgs extends runtime.Typ
   blockedBy<T extends Prisma.Task$blockedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Task$blockedByArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DependencyPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   notifications<T extends Prisma.Task$notificationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Task$notificationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$NotificationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   githubPRs<T extends Prisma.Task$githubPRsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Task$githubPRsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$GitHubPRPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  agentInsights<T extends Prisma.Task$agentInsightsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Task$agentInsightsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AgentInsightPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4754,6 +4982,30 @@ export type Task$githubPRsArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.GitHubPRScalarFieldEnum | Prisma.GitHubPRScalarFieldEnum[]
+}
+
+/**
+ * Task.agentInsights
+ */
+export type Task$agentInsightsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the AgentInsight
+   */
+  select?: Prisma.AgentInsightSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the AgentInsight
+   */
+  omit?: Prisma.AgentInsightOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.AgentInsightInclude<ExtArgs> | null
+  where?: Prisma.AgentInsightWhereInput
+  orderBy?: Prisma.AgentInsightOrderByWithRelationInput | Prisma.AgentInsightOrderByWithRelationInput[]
+  cursor?: Prisma.AgentInsightWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.AgentInsightScalarFieldEnum | Prisma.AgentInsightScalarFieldEnum[]
 }
 
 /**

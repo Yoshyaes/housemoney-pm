@@ -49,6 +49,28 @@ enum NotificationType {
   COMMENT
   STATUS_CHANGE
   DEPENDENCY_RESOLVED
+  AI_INSIGHT
+}
+
+enum InsightType {
+  STALE_TASK
+  OVERDUE_ESCALATION
+  DEPENDENCY_UNBLOCKED
+  WORKLOAD_IMBALANCE
+  PROJECT_HEALTH_ALERT
+  DUPLICATE_DETECTED
+  DECOMPOSITION_SUGGESTED
+  MEETING_ACTION_ITEMS
+  DAILY_DIGEST
+}
+
+enum InsightStatus {
+  PENDING
+  ACCEPTED
+  DISMISSED
+  AUTO_APPLIED
+  REVERTED
+  EXPIRED
 }
 
 enum PRStatus {
@@ -93,6 +115,7 @@ model User {
   createdProjects    Project[]        @relation("ProjectCreator")
   projectMemberships ProjectMember[]
   sentInvitations    Invitation[]     @relation("InvitationSender")
+  agentInsights      AgentInsight[]   @relation("InsightTarget")
 }
 
 model Workspace {
@@ -102,13 +125,15 @@ model Workspace {
   taskCounter Int      @default(0)
   createdAt   DateTime @default(now())
 
-  projects    Project[]
-  labels      Label[]
-  members     WorkspaceMember[]
-  views       View[]
-  tasks       Task[]
-  documents   Document[]
-  invitations Invitation[]
+  projects      Project[]
+  labels        Label[]
+  members       WorkspaceMember[]
+  views         View[]
+  tasks         Task[]
+  documents     Document[]
+  invitations   Invitation[]
+  agentInsights AgentInsight[]
+  agentConfig   AgentConfig?
 }
 
 model WorkspaceMember {
@@ -188,6 +213,7 @@ model Task {
   blockedBy     Dependency[] @relation("blockedBy")
   notifications Notification[]
   githubPRs     GitHubPR[]
+  agentInsights AgentInsight[]
 }
 
 model TaskAttachment {
@@ -404,4 +430,50 @@ model Invitation {
 
   @@unique([workspaceId, email])
   @@index([token])
+}
+
+model AgentInsight {
+  id             String        @id @default(cuid())
+  workspaceId    String
+  type           InsightType
+  status         InsightStatus @default(PENDING)
+  targetUserId   String?
+  taskId         String?
+  projectId      String?
+  documentId     String?
+  title          String
+  body           String
+  confidence     Float         @default(0.5)
+  proposedAction Json?
+  previousState  Json?
+  digestId       String?
+  expiresAt      DateTime?
+  actedAt        DateTime?
+  createdAt      DateTime      @default(now())
+
+  workspace  Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  targetUser User?     @relation("InsightTarget", fields: [targetUserId], references: [id], onDelete: SetNull)
+  task       Task?     @relation(fields: [taskId], references: [id], onDelete: SetNull)
+
+  @@index([workspaceId, type, status])
+  @@index([targetUserId, status])
+  @@index([workspaceId, createdAt])
+}
+
+model AgentConfig {
+  id                 String  @id @default(cuid())
+  workspaceId        String  @unique
+  staleTaskDays      Int     @default(5)
+  overdueEnabled     Boolean @default(true)
+  digestEnabled      Boolean @default(true)
+  digestHourUtc      Int     @default(13)
+  duplicateCheck     Boolean @default(true)
+  autoUnblock        Boolean @default(false)
+  workloadAlerts     Boolean @default(true)
+  decomposeThreshold Int     @default(500)
+  maxInsightsPerDay  Int     @default(10)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
 }

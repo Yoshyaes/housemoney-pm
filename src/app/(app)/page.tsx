@@ -15,6 +15,8 @@ import { TaskDetailPanel } from '@/components/task/task-detail-panel';
 import { TaskCreateModal } from '@/components/task/task-create-modal';
 import { CommandPalette } from '@/components/command-palette/command-palette';
 import { NotificationInbox } from '@/components/notifications/notification-inbox';
+import { AgentInsightPanel } from '@/components/agent/agent-insight-panel';
+import { useAgentStore } from '@/lib/stores/agent-store';
 import { QuickActionPopover } from '@/components/shared/quick-action-popover';
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser';
 import { useRouter } from 'next/navigation';
@@ -34,6 +36,7 @@ export default function AppPage() {
     activeSort,
   } = useUIStore();
   const { setUnreadCount } = useNotificationStore();
+  const { insightPanelOpen, setInsightPanelOpen, setPendingInsightCount } = useAgentStore();
   const [currentUser, setCurrentUser] = useState<{ id: string; name: string; avatarUrl?: string | null; avatarColor?: string } | null>(null);
 
   // Auth check
@@ -110,6 +113,16 @@ export default function AppPage() {
   useEffect(() => {
     if (unreadCount !== undefined) setUnreadCount(unreadCount);
   }, [unreadCount, setUnreadCount]);
+
+  // Agent insight count
+  const { data: agentPendingCount } = trpc.agent.pendingCount.useQuery(
+    { workspaceId },
+    { enabled: !!workspaceId }
+  );
+
+  useEffect(() => {
+    if (agentPendingCount !== undefined) setPendingInsightCount(agentPendingCount);
+  }, [agentPendingCount, setPendingInsightCount]);
 
   // Set current user from members
   useEffect(() => {
@@ -235,6 +248,12 @@ export default function AppPage() {
         {inboxOpen && (
           <div className="fixed inset-0 z-30 bg-white dark:bg-zinc-950 md:static md:inset-auto md:z-auto">
             <NotificationInbox onClose={() => setInboxOpen(false)} />
+          </div>
+        )}
+
+        {insightPanelOpen && (
+          <div className="fixed inset-0 z-30 bg-white dark:bg-zinc-950 md:static md:inset-auto md:z-auto">
+            <AgentInsightPanel workspaceId={workspaceId} onClose={() => setInsightPanelOpen(false)} />
           </div>
         )}
       </div>

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { router, protectedProcedure, requireWorkspaceMember, getAccessibleProjectIds, requireProjectAccess } from '@/server/trpc/trpc';
 import { TRPCError } from '@trpc/server';
+import { handleTaskCreated, handleTaskCompleted } from '@/server/ai/agent-engine';
 
 const taskCreateInput = z.object({
   title: z.string().min(1),
@@ -121,6 +122,9 @@ export const tasksRouter = router({
           },
         });
       }
+
+      // Fire-and-forget: agent analysis on new task
+      handleTaskCreated(task.id, workspaceId).catch(() => {});
 
       return task;
     }),
@@ -365,6 +369,9 @@ export const tasksRouter = router({
             });
           }
         }
+
+        // Fire-and-forget: agent dependency chain analysis
+        handleTaskCompleted(id, existing.workspaceId).catch(() => {});
       }
 
       return updated;

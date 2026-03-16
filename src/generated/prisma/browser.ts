@@ -117,3 +117,13 @@ export type ProjectMember = Prisma.ProjectMemberModel
  * 
  */
 export type Invitation = Prisma.InvitationModel
+/**
+ * Model AgentInsight
+ * 
+ */
+export type AgentInsight = Prisma.AgentInsightModel
+/**
+ * Model AgentConfig
+ * 
+ */
+export type AgentConfig = Prisma.AgentConfigModel

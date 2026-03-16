@@ -70,7 +70,9 @@ export const ModelName = {
   Document: 'Document',
   DocumentComment: 'DocumentComment',
   ProjectMember: 'ProjectMember',
-  Invitation: 'Invitation'
+  Invitation: 'Invitation',
+  AgentInsight: 'AgentInsight',
+  AgentConfig: 'AgentConfig'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -359,6 +361,48 @@ export const InvitationScalarFieldEnum = {
 } as const
 
 export type InvitationScalarFieldEnum = (typeof InvitationScalarFieldEnum)[keyof typeof InvitationScalarFieldEnum]
+
+
+export const AgentInsightScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  type: 'type',
+  status: 'status',
+  targetUserId: 'targetUserId',
+  taskId: 'taskId',
+  projectId: 'projectId',
+  documentId: 'documentId',
+  title: 'title',
+  body: 'body',
+  confidence: 'confidence',
+  proposedAction: 'proposedAction',
+  previousState: 'previousState',
+  digestId: 'digestId',
+  expiresAt: 'expiresAt',
+  actedAt: 'actedAt',
+  createdAt: 'createdAt'
+} as const
+
+export type AgentInsightScalarFieldEnum = (typeof AgentInsightScalarFieldEnum)[keyof typeof AgentInsightScalarFieldEnum]
+
+
+export const AgentConfigScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  staleTaskDays: 'staleTaskDays',
+  overdueEnabled: 'overdueEnabled',
+  digestEnabled: 'digestEnabled',
+  digestHourUtc: 'digestHourUtc',
+  duplicateCheck: 'duplicateCheck',
+  autoUnblock: 'autoUnblock',
+  workloadAlerts: 'workloadAlerts',
+  decomposeThreshold: 'decomposeThreshold',
+  maxInsightsPerDay: 'maxInsightsPerDay',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type AgentConfigScalarFieldEnum = (typeof AgentConfigScalarFieldEnum)[keyof typeof AgentConfigScalarFieldEnum]
 
 
 export const SortOrder = {

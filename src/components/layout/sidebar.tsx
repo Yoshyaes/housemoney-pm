@@ -5,6 +5,7 @@ import { useRouter, usePathname } from 'next/navigation';
 import { useUIStore } from '@/lib/stores/ui-store';
 import type { ActiveFilters, ActiveSort } from '@/lib/stores/ui-store';
 import { useNotificationStore } from '@/lib/stores/notification-store';
+import { useAgentStore } from '@/lib/stores/agent-store';
 import { BRAND_AMBER } from '@/lib/constants';
 import { Avatar } from '@/components/shared/avatar';
 import { ThemeToggle } from '@/components/shared/theme-toggle';
@@ -28,6 +29,7 @@ import {
   Pencil,
   Trash2,
   Users,
+  Sparkles,
 } from 'lucide-react';
 
 interface SavedView {
@@ -112,6 +114,7 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
     setSettingsOpen,
   } = useUIStore();
   const { unreadCount } = useNotificationStore();
+  const { pendingInsightCount, insightPanelOpen, setInsightPanelOpen } = useAgentStore();
 
   const allNavItems = [
     { id: 'board' as const, label: 'Board', icon: LayoutGrid },
@@ -120,6 +123,7 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
     { id: 'inbox' as const, label: 'Inbox', icon: Inbox, badge: unreadCount },
     { id: 'analytics' as const, label: 'Analytics', icon: BarChart2, guestHidden: true },
     { id: 'docs' as const, label: 'Docs', icon: BookOpen },
+    { id: 'agent' as const, label: 'AI Insights', icon: Sparkles, badge: pendingInsightCount, guestHidden: true },
   ];
   const navItems = isGuest ? allNavItems.filter((item) => !item.guestHidden) : allNavItems;
 
@@ -135,6 +139,9 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
       router.push('/analytics');
     } else if (id === 'docs') {
       router.push('/docs');
+    } else if (id === 'agent') {
+      setInsightPanelOpen(!insightPanelOpen);
+      if (pathname !== '/') router.push('/');
     }
     setMobileSidebarOpen(false);
   };
@@ -195,9 +202,11 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
                 ? pathname.startsWith('/docs')
                 : item.id === 'inbox'
                   ? inboxOpen && pathname !== '/analytics' && !pathname.startsWith('/docs')
-                  : item.id === 'board' || item.id === 'list' || item.id === 'timeline'
-                    ? activeView === item.id && !inboxOpen && pathname !== '/analytics' && !pathname.startsWith('/docs')
-                    : false;
+                  : item.id === 'agent'
+                    ? insightPanelOpen && pathname !== '/analytics' && !pathname.startsWith('/docs')
+                    : item.id === 'board' || item.id === 'list' || item.id === 'timeline'
+                      ? activeView === item.id && !inboxOpen && !insightPanelOpen && pathname !== '/analytics' && !pathname.startsWith('/docs')
+                      : false;
           const Icon = item.icon;
 
           return (
