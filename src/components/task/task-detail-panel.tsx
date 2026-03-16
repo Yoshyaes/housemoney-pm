@@ -8,7 +8,7 @@ import { Avatar } from '@/components/shared/avatar';
 import { LabelChip } from '@/components/shared/label-chip';
 import { formatDueDateFull } from '@/lib/utils';
 import { STATUS_ORDER, PRIORITY_ORDER, STATUS_LABELS, STATUS_BG_COLORS, STATUS_TEXT_COLORS } from '@/lib/constants';
-import { X, Plus, UserMinus, CheckSquare, Square, Paperclip, Trash2, File as FileIcon } from 'lucide-react';
+import { X, Plus, UserMinus, CheckSquare, Square, Paperclip, Trash2, File as FileIcon, ArrowLeft, ChevronRight } from 'lucide-react';
 import { trpc } from '@/lib/trpc';
 import { CommentList } from '@/components/comments/comment-list';
 import { CommentInput } from '@/components/comments/comment-input';
@@ -24,7 +24,7 @@ interface TaskDetailPanelProps {
 }
 
 export function TaskDetailPanel({ onUpdate, members, workspaceId }: TaskDetailPanelProps) {
-  const { activeTaskId, closeTaskDetail } = useUIStore();
+  const { activeTaskId, closeTaskDetail, openTaskDetail } = useUIStore();
   const [editingField, setEditingField] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'comments' | 'activity'>('comments');
 
@@ -82,6 +82,18 @@ export function TaskDetailPanel({ onUpdate, members, workspaceId }: TaskDetailPa
           <X className="h-4 w-4" />
         </button>
       </div>
+
+      {/* Parent breadcrumb for subtasks */}
+      {task.parent && (
+        <button
+          onClick={() => openTaskDetail(task.parent!.id)}
+          className="flex w-full items-center gap-1.5 border-b border-zinc-200/60 dark:border-zinc-800 px-3.5 py-2 text-[11px] text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors"
+        >
+          <ArrowLeft className="h-3 w-3" />
+          <span className="text-zinc-300 dark:text-zinc-600">{task.parent.identifier}</span>
+          <span className="truncate">{task.parent.title}</span>
+        </button>
+      )}
 
       {/* Body */}
       <div className="flex-1 overflow-y-auto p-3.5">
@@ -266,21 +278,30 @@ export function TaskDetailPanel({ onUpdate, members, workspaceId }: TaskDetailPa
           </div>
           <div className="space-y-1">
             {(task.subtasks || []).map((sub) => (
-              <div key={sub.id} className="flex items-center gap-2 rounded px-1.5 py-1 hover:bg-zinc-50 dark:hover:bg-zinc-800 group">
+              <div key={sub.id} className="flex items-center gap-2 rounded px-1.5 py-1.5 hover:bg-zinc-50 dark:hover:bg-zinc-800 group cursor-pointer transition-colors">
                 <button
-                  onClick={() => updateSubtask.mutate({ id: sub.id, status: sub.status === 'DONE' ? 'TODO' : 'DONE' })}
+                  onClick={(e) => { e.stopPropagation(); updateSubtask.mutate({ id: sub.id, status: sub.status === 'DONE' ? 'TODO' : 'DONE' }); }}
                   className="flex-shrink-0 text-zinc-400 hover:text-zinc-600 dark:text-zinc-500"
                 >
                   {sub.status === 'DONE'
                     ? <CheckSquare className="h-3.5 w-3.5 text-green-500" />
                     : <Square className="h-3.5 w-3.5" />}
                 </button>
-                <span className={`flex-1 text-xs ${sub.status === 'DONE' ? 'line-through text-zinc-400' : 'text-zinc-800 dark:text-zinc-200'}`}>
-                  {sub.title}
-                </span>
-                {sub.assignee && (
-                  <Avatar name={sub.assignee.name} avatarUrl={sub.assignee.avatarUrl} avatarColor={sub.assignee.avatarColor} size="xs" />
-                )}
+                <div
+                  onClick={() => openTaskDetail(sub.id)}
+                  className="flex flex-1 items-center gap-2 min-w-0"
+                >
+                  <span className={`flex-1 text-xs truncate ${sub.status === 'DONE' ? 'line-through text-zinc-400' : 'text-zinc-800 dark:text-zinc-200'}`}>
+                    {sub.title}
+                  </span>
+                  {sub.priority && sub.priority !== 'NONE' && (
+                    <PriorityIndicator priority={sub.priority} />
+                  )}
+                  {sub.assignee && (
+                    <Avatar name={sub.assignee.name} avatarUrl={sub.assignee.avatarUrl} avatarColor={sub.assignee.avatarColor} size="xs" />
+                  )}
+                  <ChevronRight className="h-3 w-3 flex-shrink-0 text-zinc-300 dark:text-zinc-600 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </div>
               </div>
             ))}
             {addingSubtask && (

@@ -2,6 +2,8 @@
 
 import { useState, useRef, useCallback } from 'react';
 import { trpc } from '@/lib/trpc';
+import { SendHorizontal } from 'lucide-react';
+import { BRAND_AMBER } from '@/lib/constants';
 
 interface CommentInputProps {
   taskId: string;
@@ -105,15 +107,28 @@ export function CommentInput({ taskId, members, onCommentAdded }: CommentInputPr
 
   return (
     <div className="relative">
-      <textarea
-        ref={textareaRef}
-        value={body}
-        onChange={handleInput}
-        onKeyDown={handleKeyDown}
-        placeholder="Add a comment... (@ to mention)"
-        className="w-full resize-none rounded-md border border-zinc-200 bg-white px-2.5 py-2 text-xs text-zinc-900 outline-none placeholder:text-zinc-400 focus:border-zinc-300 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder:text-zinc-600 dark:focus:border-zinc-600"
-        rows={2}
-      />
+      <div className="relative">
+        <textarea
+          ref={textareaRef}
+          value={body}
+          onChange={handleInput}
+          onKeyDown={handleKeyDown}
+          placeholder="Add a comment... (@ to mention)"
+          className="w-full resize-none rounded-md border border-zinc-200 bg-white px-2.5 py-2 pr-9 text-xs text-zinc-900 outline-none placeholder:text-zinc-400 focus:border-zinc-300 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100 dark:placeholder:text-zinc-600 dark:focus:border-zinc-600"
+          rows={2}
+        />
+        {body.trim() && (
+          <button
+            onClick={handleSubmit}
+            disabled={createComment.isPending}
+            className="absolute right-2 bottom-2 flex h-6 w-6 items-center justify-center rounded-md text-white transition-opacity disabled:opacity-50"
+            style={{ backgroundColor: BRAND_AMBER }}
+            title="Send comment (Ctrl+Enter)"
+          >
+            <SendHorizontal className="h-3.5 w-3.5" />
+          </button>
+        )}
+      </div>
 
       {/* Mention dropdown */}
       {showMentions && filteredMembers.length > 0 && (

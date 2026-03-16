@@ -220,6 +220,7 @@ export const tasksRouter = router({
           project: true,
           collaborators: { include: { user: true } },
           attachments: { include: { uploadedBy: true }, orderBy: { createdAt: 'asc' as const } },
+          parent: { select: { id: true, identifier: true, title: true } },
           subtasks: {
             include: { assignee: true, labels: { include: { label: true } } },
             orderBy: { createdAt: 'asc' as const },
