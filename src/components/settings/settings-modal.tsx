@@ -137,6 +137,7 @@ export function SettingsModal({ workspaceId: workspaceIdProp }: SettingsModalPro
   });
 
   const [resentId, setResentId] = useState<string | null>(null);
+  const [resentEmail, setResentEmail] = useState<string | null>(null);
 
   const revokeInvitation = trpc.invitations.revoke.useMutation({
     onSuccess: () => utils.invitations.list.invalidate({ workspaceId }),
@@ -144,8 +145,10 @@ export function SettingsModal({ workspaceId: workspaceIdProp }: SettingsModalPro
 
   const resendInvitation = trpc.invitations.resend.useMutation({
     onSuccess: (_, vars) => {
+      const inv = pendingInvitations.find((i) => i.id === vars.id);
       setResentId(vars.id);
-      setTimeout(() => setResentId(null), 3000);
+      setResentEmail(inv?.email ?? null);
+      setTimeout(() => { setResentId(null); setResentEmail(null); }, 5000);
     },
     onError: (e) => setInviteError(e.message),
   });
@@ -534,6 +537,26 @@ export function SettingsModal({ workspaceId: workspaceIdProp }: SettingsModalPro
                   <p className="flex items-center gap-1 rounded bg-green-50 dark:bg-green-900/20 px-3 py-2 text-[10px] text-green-600 dark:text-green-400">
                     <Check className="h-3 w-3" /> {resetSuccess}
                   </p>
+                )}
+
+                {resentEmail && (
+                  <div className="flex items-center gap-3 rounded-md border border-green-200 dark:border-green-800 bg-green-50 dark:bg-green-900/20 px-4 py-3">
+                    <div className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-green-100 dark:bg-green-900/40">
+                      <Send className="h-4 w-4 text-green-600 dark:text-green-400" />
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-xs font-medium text-green-700 dark:text-green-300">Invite email resent</p>
+                      <p className="text-[10px] text-green-600 dark:text-green-400">
+                        A new invitation email has been sent to <strong>{resentEmail}</strong>
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => { setResentId(null); setResentEmail(null); }}
+                      className="text-green-400 hover:text-green-600 dark:text-green-600 dark:hover:text-green-400"
+                    >
+                      <X className="h-3.5 w-3.5" />
+                    </button>
+                  </div>
                 )}
 
                 {/* Team members */}
