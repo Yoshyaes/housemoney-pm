@@ -1,7 +1,7 @@
 import { z } from 'zod';
 import { router, protectedProcedure, requireWorkspaceMember, requireWorkspaceAdmin, requireNonGuest } from '@/server/trpc/trpc';
 import { TRPCError } from '@trpc/server';
-import { createClient } from '@supabase/supabase-js';
+import { createSupabaseAdmin } from '@/server/auth/supabase-admin';
 
 export const workspaceRouter = router({
   getCurrent: protectedProcedure.query(async ({ ctx }) => {
@@ -185,10 +185,7 @@ export const workspaceRouter = router({
   sendPasswordReset: protectedProcedure
     .input(z.object({ email: z.string().email() }))
     .mutation(async ({ input }) => {
-      const supabase = createClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.SUPABASE_SERVICE_ROLE_KEY!
-      );
+      const supabase = createSupabaseAdmin();
       const { error } = await supabase.auth.resetPasswordForEmail(input.email, {
         redirectTo: `${process.env.NEXT_PUBLIC_SUPABASE_URL?.replace('.supabase.co', '')}/auth/callback`,
       });

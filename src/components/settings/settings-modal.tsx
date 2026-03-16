@@ -123,7 +123,10 @@ export function SettingsModal({ workspaceId: workspaceIdProp }: SettingsModalPro
       } else {
         const link = `${window.location.origin}/api/invitations/accept?token=${data.token}`;
         setLastInviteLink(link);
-        setInviteSuccess('Invitation created! Share the link below.');
+        const emailNote = ('emailSent' in data && data.emailSent)
+          ? 'Invitation email sent! Link also available below.'
+          : 'Invitation created! Share the link below.';
+        setInviteSuccess(emailNote);
       }
     },
     onError: (e) => {

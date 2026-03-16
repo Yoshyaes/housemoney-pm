@@ -2,6 +2,7 @@ import { z } from 'zod';
 import { router, protectedProcedure, requireNonGuest } from '@/server/trpc/trpc';
 import { TRPCError } from '@trpc/server';
 import { acceptInvitation } from '@/server/invitations/accept-invitation';
+import { sendInviteEmail } from '@/server/invitations/send-invite-email';
 
 export const invitationsRouter = router({
   create: protectedProcedure
@@ -58,7 +59,7 @@ export const invitationsRouter = router({
         },
       });
 
-      // If the user already has an account, auto-accept
+      // If the user already has an account, auto-accept (no email needed)
       if (existingUser) {
         await acceptInvitation(ctx.db, invitation, existingUser.id);
         const accepted = await ctx.db.invitation.findUniqueOrThrow({
@@ -71,7 +72,16 @@ export const invitationsRouter = router({
         return accepted;
       }
 
-      return invitation;
+      // Send invite email to the new user (non-blocking — invitation link is the fallback)
+      const emailResult = await sendInviteEmail({
+        email: input.email,
+        role: input.role as 'MEMBER' | 'GUEST',
+        workspaceName: invitation.workspace.name,
+        inviterName: invitation.invitedBy.name,
+        inviteToken: invitation.token,
+      });
+
+      return { ...invitation, emailSent: emailResult.emailSent };
     }),
 
   accept: protectedProcedure
