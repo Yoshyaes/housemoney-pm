@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { useUIStore } from '@/lib/stores/ui-store';
 import { trpc } from '@/lib/trpc';
-import { X, Plus, Trash2, Edit2, Check, AlertCircle, KeyRound, ChevronDown, Lock, Globe, Copy, Clock, Link2 } from 'lucide-react';
+import { X, Plus, Trash2, Edit2, Check, AlertCircle, KeyRound, ChevronDown, Lock, Globe, Copy, Clock, Link2, Send } from 'lucide-react';
 import { BRAND_AMBER } from '@/lib/constants';
 import { GuestBadge } from '@/components/shared/guest-badge';
 import { AgentConfigPanel } from '@/components/agent/agent-config-panel';
@@ -136,8 +136,18 @@ export function SettingsModal({ workspaceId: workspaceIdProp }: SettingsModalPro
     },
   });
 
+  const [resentId, setResentId] = useState<string | null>(null);
+
   const revokeInvitation = trpc.invitations.revoke.useMutation({
     onSuccess: () => utils.invitations.list.invalidate({ workspaceId }),
+  });
+
+  const resendInvitation = trpc.invitations.resend.useMutation({
+    onSuccess: (_, vars) => {
+      setResentId(vars.id);
+      setTimeout(() => setResentId(null), 3000);
+    },
+    onError: (e) => setInviteError(e.message),
   });
   const removeMember = trpc.workspace.removeMember.useMutation({
     onSuccess: () => utils.workspace.getMembers.invalidate({ workspaceId }),
@@ -561,6 +571,14 @@ export function SettingsModal({ workspaceId: workspaceIdProp }: SettingsModalPro
                             {inv.role === 'GUEST' ? 'Guest' : 'Member'} · Expires {new Date(inv.expiresAt).toLocaleDateString()}
                           </p>
                         </div>
+                        <button
+                          onClick={() => resendInvitation.mutate({ id: inv.id })}
+                          disabled={resendInvitation.isPending || resentId === inv.id}
+                          className="text-zinc-300 hover:text-amber-500 dark:text-zinc-600 dark:hover:text-amber-400 disabled:opacity-50"
+                          title={resentId === inv.id ? 'Email sent!' : 'Resend invite email'}
+                        >
+                          {resentId === inv.id ? <Check className="h-3.5 w-3.5 text-green-500" /> : <Send className="h-3.5 w-3.5" />}
+                        </button>
                         <button
                           onClick={() => {
                             const link = `${window.location.origin}/api/invitations/accept?token=${inv.token}`;

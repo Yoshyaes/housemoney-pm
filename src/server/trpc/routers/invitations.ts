@@ -130,6 +130,44 @@ export const invitationsRouter = router({
       });
     }),
 
+  resend: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const invitation = await ctx.db.invitation.findUnique({
+        where: { id: input.id },
+        include: {
+          workspace: { select: { name: true } },
+          invitedBy: { select: { name: true } },
+        },
+      });
+
+      if (!invitation) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Invitation not found.' });
+      }
+      if (invitation.acceptedAt) {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Invitation has already been accepted.' });
+      }
+      if (invitation.expiresAt < new Date()) {
+        throw new TRPCError({ code: 'BAD_REQUEST', message: 'Invitation has expired.' });
+      }
+
+      await requireNonGuest(ctx.db, invitation.workspaceId, ctx.userId);
+
+      const result = await sendInviteEmail({
+        email: invitation.email,
+        role: invitation.role as 'MEMBER' | 'GUEST',
+        workspaceName: invitation.workspace.name,
+        inviterName: invitation.invitedBy.name,
+        inviteToken: invitation.token,
+      });
+
+      if (!result.emailSent) {
+        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to send email. The invite link can still be shared manually.' });
+      }
+
+      return { success: true };
+    }),
+
   revoke: protectedProcedure
     .input(z.object({ id: z.string() }))
     .mutation(async ({ ctx, input }) => {
