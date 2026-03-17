@@ -89,6 +89,13 @@ export const projectsRouter = router({
 
       const membership = await requireNonGuest(ctx.db, project.workspaceId, ctx.userId);
 
+      // Non-admin members can only update projects they have access to
+      if (membership.role !== 'ADMIN') {
+        if (project.isPrivate && project.createdById !== ctx.userId) {
+          await requireProjectAccess(ctx.db, id, ctx.userId);
+        }
+      }
+
       // Only admins or the creator can toggle privacy
       if (data.isPrivate !== undefined) {
         if (membership.role !== 'ADMIN' && project.createdById !== ctx.userId) {
@@ -105,7 +112,12 @@ export const projectsRouter = router({
       const project = await ctx.db.project.findUnique({ where: { id: input.id } });
       if (!project) throw new TRPCError({ code: 'NOT_FOUND', message: 'Project not found' });
 
-      await requireNonGuest(ctx.db, project.workspaceId, ctx.userId);
+      const membership = await requireNonGuest(ctx.db, project.workspaceId, ctx.userId);
+
+      // Only admins or the project creator can delete
+      if (membership.role !== 'ADMIN' && project.createdById !== ctx.userId) {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'Only admins or the project creator can delete a project.' });
+      }
 
       return ctx.db.project.delete({ where: { id: input.id } });
     }),

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { trpc } from '@/lib/trpc';
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser';
@@ -60,7 +60,7 @@ function formatMetadata(metadata: Record<string, unknown> | null) {
 export default function AuditLogsPage() {
   const router = useRouter();
   const pathname = usePathname();
-  const supabase = createBrowserSupabaseClient();
+  const supabase = useMemo(() => createBrowserSupabaseClient(), []);
 
   const { data: workspace } = trpc.workspace.getCurrent.useQuery();
   const workspaceId = workspace?.id || '';

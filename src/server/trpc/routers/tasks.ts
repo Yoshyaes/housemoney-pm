@@ -80,25 +80,27 @@ export const tasksRouter = router({
         await requireProjectAccess(ctx.db, input.projectId, ctx.userId);
       }
 
-      // Atomic identifier generation
-      const workspace = await ctx.db.workspace.update({
-        where: { id: workspaceId },
-        data: { taskCounter: { increment: 1 } },
-      });
+      // Atomic identifier generation + task creation in a transaction
+      const task = await ctx.db.$transaction(async (tx) => {
+        const workspace = await tx.workspace.update({
+          where: { id: workspaceId },
+          data: { taskCounter: { increment: 1 } },
+        });
 
-      const identifier = `HM-${workspace.taskCounter}`;
+        const identifier = `HM-${workspace.taskCounter}`;
 
-      const task = await ctx.db.task.create({
-        data: {
-          ...taskData,
-          workspaceId,
-          identifier,
-          createdById: ctx.userId,
-          labels: labelIds?.length
-            ? { create: labelIds.map((labelId: string) => ({ labelId })) }
-            : undefined,
-        },
-        include: taskIncludes,
+        return tx.task.create({
+          data: {
+            ...taskData,
+            workspaceId,
+            identifier,
+            createdById: ctx.userId,
+            labels: labelIds?.length
+              ? { create: labelIds.map((labelId: string) => ({ labelId })) }
+              : undefined,
+          },
+          include: taskIncludes,
+        });
       });
 
       // Create activity
@@ -138,6 +140,7 @@ export const tasksRouter = router({
       const where: any = {};
 
       where.workspaceId = input.workspaceId;
+      where.parentId = null; // Exclude subtasks from the main list
 
       // Scope guests to their accessible projects
       const accessibleIds = await getAccessibleProjectIds(ctx.db, input.workspaceId, ctx.userId);
@@ -459,7 +462,7 @@ export const tasksRouter = router({
     .input(z.object({
       taskId: z.string(),
       name: z.string(),
-      url: z.string(),
+      url: z.string().url(),
       size: z.number().optional(),
       mimeType: z.string().optional(),
     }))

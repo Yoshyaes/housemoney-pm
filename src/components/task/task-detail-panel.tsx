@@ -1,12 +1,12 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useUIStore } from '@/lib/stores/ui-store';
 import { StatusBadge } from '@/components/shared/status-badge';
 import { PriorityIndicator } from '@/components/shared/priority-indicator';
 import { Avatar } from '@/components/shared/avatar';
 import { LabelChip } from '@/components/shared/label-chip';
-import { formatDueDateFull } from '@/lib/utils';
+import { formatDueDateFull, linkifyParts } from '@/lib/utils';
 import { STATUS_ORDER, PRIORITY_ORDER, STATUS_LABELS, STATUS_BG_COLORS, STATUS_TEXT_COLORS } from '@/lib/constants';
 import { X, Plus, UserMinus, CheckSquare, Square, Paperclip, Trash2, File as FileIcon, ArrowLeft, ChevronRight } from 'lucide-react';
 import { trpc } from '@/lib/trpc';
@@ -44,6 +44,19 @@ export function TaskDetailPanel({ onUpdate, members, workspaceId }: TaskDetailPa
   const [addingSubtask, setAddingSubtask] = useState(false);
   const [uploadingFile, setUploadingFile] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  // Close dropdowns on click outside
+  useEffect(() => {
+    if (!editingField) return;
+    const handler = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setEditingField(null);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, [editingField]);
 
   const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -101,7 +114,7 @@ export function TaskDetailPanel({ onUpdate, members, workspaceId }: TaskDetailPa
         <h2 className="mb-3.5 text-[15px] font-medium leading-[1.4] text-zinc-900 dark:text-zinc-100">{task.title}</h2>
 
         {/* Fields grid */}
-        <div className="mb-4 grid grid-cols-[80px_1fr] gap-x-2.5 gap-y-[7px]">
+        <div ref={dropdownRef} className="mb-4 grid grid-cols-[80px_1fr] gap-x-2.5 gap-y-[7px]">
           {/* Status */}
           <span className="self-center text-[11px] text-zinc-400 dark:text-zinc-500">Status</span>
           <div className="relative">
@@ -259,8 +272,24 @@ export function TaskDetailPanel({ onUpdate, members, workspaceId }: TaskDetailPa
 
         {/* Description */}
         <div className="mb-2 text-[11px] font-medium text-zinc-500 dark:text-zinc-400">Description</div>
-        <div className="mb-4 rounded-md bg-zinc-50 dark:bg-zinc-800 p-2 text-xs leading-[1.6] text-zinc-500 dark:text-zinc-400">
-          {task.description || 'No description'}
+        <div className="mb-4 rounded-md bg-zinc-50 dark:bg-zinc-800 p-2 text-xs leading-[1.6] text-zinc-500 dark:text-zinc-400 whitespace-pre-wrap break-words">
+          {task.description
+            ? linkifyParts(task.description).map((part, i) =>
+                typeof part === 'string' ? (
+                  <span key={i}>{part}</span>
+                ) : (
+                  <a
+                    key={i}
+                    href={part.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-amber-600 dark:text-amber-400 hover:underline break-all"
+                  >
+                    {part.url}
+                  </a>
+                )
+              )
+            : 'No description'}
         </div>
 
         {/* Subtasks */}

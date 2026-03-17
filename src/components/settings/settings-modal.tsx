@@ -37,7 +37,7 @@ export function SettingsModal({ workspaceId: workspaceIdProp }: SettingsModalPro
   const utils = trpc.useUtils();
 
   // ── Projects ──────────────────────────────────────────────
-  const { data: projects = [] } = trpc.projects.list.useQuery(
+  const { data: projects = [], isLoading: projectsLoading } = trpc.projects.list.useQuery(
     { workspaceId },
     { enabled: settingsOpen && !!workspaceId }
   );
@@ -66,7 +66,7 @@ export function SettingsModal({ workspaceId: workspaceIdProp }: SettingsModalPro
   });
 
   // ── Labels ────────────────────────────────────────────────
-  const { data: labels = [] } = trpc.workspace.getLabels.useQuery(
+  const { data: labels = [], isLoading: labelsLoading } = trpc.workspace.getLabels.useQuery(
     { workspaceId },
     { enabled: settingsOpen && !!workspaceId }
   );
@@ -88,7 +88,7 @@ export function SettingsModal({ workspaceId: workspaceIdProp }: SettingsModalPro
   });
 
   // ── Members ───────────────────────────────────────────────
-  const { data: members = [] } = trpc.workspace.getMembers.useQuery(
+  const { data: members = [], isLoading: membersLoading } = trpc.workspace.getMembers.useQuery(
     { workspaceId },
     { enabled: settingsOpen && !!workspaceId }
   );
@@ -174,6 +174,8 @@ export function SettingsModal({ workspaceId: workspaceIdProp }: SettingsModalPro
 
   if (!settingsOpen) return null;
 
+  const isDataLoading = projectsLoading || labelsLoading || membersLoading;
+
   return (
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
@@ -212,6 +214,9 @@ export function SettingsModal({ workspaceId: workspaceIdProp }: SettingsModalPro
         </div>
 
         {/* Content */}
+        {isDataLoading && (
+          <div className="flex items-center justify-center py-8 text-xs text-zinc-400 dark:text-zinc-500">Loading settings...</div>
+        )}
         <div className="flex-1 overflow-y-auto p-5">
 
           {/* ── Projects tab ── */}

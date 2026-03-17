@@ -89,6 +89,13 @@ enum DocType {
   RUNBOOK
 }
 
+enum DecisionStatus {
+  DRAFT
+  ACTIVE
+  SUPERSEDED
+  REVOKED
+}
+
 // ─── Models ──────────────────────────────────────────────
 
 model User {
@@ -118,6 +125,8 @@ model User {
   sentInvitations    Invitation[]     @relation("InvitationSender")
   agentInsights      AgentInsight[]   @relation("InsightTarget")
   auditLogs          AuditLog[]
+  createdDecisions   Decision[]       @relation("DecisionCreator")
+  decisionParticipations DecisionParticipant[]
 }
 
 model Workspace {
@@ -137,6 +146,7 @@ model Workspace {
   agentInsights AgentInsight[]
   agentConfig   AgentConfig?
   auditLogs     AuditLog[]
+  decisions     Decision[]
 }
 
 model WorkspaceMember {
@@ -167,6 +177,7 @@ model Project {
   tasks     Task[]
   sections  Section[]
   documents Document[]
+  decisions Decision[]
   members   ProjectMember[]
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   createdBy User?     @relation("ProjectCreator", fields: [createdById], references: [id], onDelete: SetNull)
@@ -498,4 +509,43 @@ model AuditLog {
   @@index([workspaceId, createdAt])
   @@index([email, createdAt])
   @@index([action, createdAt])
+}
+
+// ─── Decisions ──────────────────────────────────────────
+
+model Decision {
+  id             String         @id @default(cuid())
+  workspaceId    String
+  title          String
+  body           String         @default("")
+  status         DecisionStatus @default(DRAFT)
+  category       String?
+  decisionDate   DateTime       @default(now())
+  projectId      String?
+  createdById    String
+  supersededById String?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+
+  workspace    Workspace  @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  project      Project?   @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  createdBy    User       @relation("DecisionCreator", fields: [createdById], references: [id])
+  supersededBy Decision?  @relation("SupersededBy", fields: [supersededById], references: [id], onDelete: SetNull)
+  supersedes   Decision[] @relation("SupersededBy")
+  participants DecisionParticipant[]
+
+  @@index([workspaceId])
+  @@index([workspaceId, status])
+  @@index([workspaceId, decisionDate])
+}
+
+model DecisionParticipant {
+  decisionId String
+  userId     String
+  createdAt  DateTime @default(now())
+
+  decision Decision @relation(fields: [decisionId], references: [id], onDelete: Cascade)
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([decisionId, userId])
 }

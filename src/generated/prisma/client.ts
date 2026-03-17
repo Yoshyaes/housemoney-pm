@@ -156,3 +156,13 @@ export type AgentConfig = Prisma.AgentConfigModel
  * 
  */
 export type AuditLog = Prisma.AuditLogModel
+/**
+ * Model Decision
+ * 
+ */
+export type Decision = Prisma.DecisionModel
+/**
+ * Model DecisionParticipant
+ * 
+ */
+export type DecisionParticipant = Prisma.DecisionParticipantModel

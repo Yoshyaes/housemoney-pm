@@ -32,6 +32,46 @@ export function getInitials(name: string): string {
     .slice(0, 2);
 }
 
+// ─── URL Linkification ──────────────────────────────────
+
+const URL_REGEX = /(?:https?:\/\/)[^\s<>"')\]]+/g;
+
+/**
+ * Convert plain-text URLs in an HTML string to clickable `<a>` tags.
+ * Safe to call on already-sanitized HTML (does not touch URLs already inside href attributes).
+ */
+export function linkifyHtml(html: string): string {
+  // Split on existing tags to avoid linkifying URLs inside attributes
+  return html.replace(
+    /(<[^>]*>)|(?:https?:\/\/)[^\s<>"')\]]+/g,
+    (match, tag) => {
+      if (tag) return tag; // Keep existing HTML tags untouched
+      return `<a href="${match}" target="_blank" rel="noopener noreferrer" class="text-amber-600 dark:text-amber-400 hover:underline break-all">${match}</a>`;
+    }
+  );
+}
+
+/**
+ * Split text into an array of strings and { url } objects for React rendering.
+ */
+export function linkifyParts(text: string): Array<string | { url: string }> {
+  const parts: Array<string | { url: string }> = [];
+  let lastIndex = 0;
+  let match;
+  const regex = new RegExp(URL_REGEX.source, 'g');
+  while ((match = regex.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(text.slice(lastIndex, match.index));
+    }
+    parts.push({ url: match[0] });
+    lastIndex = regex.lastIndex;
+  }
+  if (lastIndex < text.length) {
+    parts.push(text.slice(lastIndex));
+  }
+  return parts;
+}
+
 export function getAvatarColor(name: string): { bg: string; color: string } {
   const colors = [
     { bg: 'rgba(186,117,23,.15)', color: '#BA7517' },

@@ -95,11 +95,11 @@ export function NotificationInbox({ onClose }: NotificationInboxProps) {
             )}
             {n.read && <span className="mt-1.5 h-2 w-2 flex-shrink-0" />}
 
-            <Avatar name={n.actor.name} avatarColor={n.actor.avatarColor} size="sm" />
+            <Avatar name={n.actor?.name ?? 'Unknown'} avatarColor={n.actor?.avatarColor} size="sm" />
 
             <div className="min-w-0 flex-1">
               <div className="text-xs text-zinc-700 dark:text-zinc-300">
-                <span className="font-medium">{n.actor.name}</span>{' '}
+                <span className="font-medium">{n.actor?.name ?? 'Unknown user'}</span>{' '}
                 {n.message}
               </div>
               {n.task && (

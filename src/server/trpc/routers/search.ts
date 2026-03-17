@@ -53,8 +53,8 @@ export const searchRouter = router({
               Prisma.sql`
                 SELECT t.id, t.identifier, t.title, t.status, t."projectId", 1.0 AS score
                 FROM "Task" t
-                JOIN "Project" p ON p.id = t."projectId"
-                WHERE p."workspaceId" = ${workspaceId}
+                LEFT JOIN "Project" p ON p.id = t."projectId"
+                WHERE (p."workspaceId" = ${workspaceId} OR (t."projectId" IS NULL AND t."workspaceId" = ${workspaceId}))
                   AND (t.title ILIKE ${'%' + trimmed + '%'} OR t.identifier ILIKE ${'%' + trimmed + '%'})
                   ${guestProjectFilter}
                 ORDER BY t."updatedAt" DESC
@@ -79,8 +79,8 @@ export const searchRouter = router({
                          similarity(COALESCE(t.description, ''), ${trimmed})
                        )::float8 AS score
                 FROM "Task" t
-                JOIN "Project" p ON p.id = t."projectId"
-                WHERE p."workspaceId" = ${workspaceId}
+                LEFT JOIN "Project" p ON p.id = t."projectId"
+                WHERE (p."workspaceId" = ${workspaceId} OR (t."projectId" IS NULL AND t."workspaceId" = ${workspaceId}))
                   AND (
                     t.title % ${trimmed}
                     OR t.identifier % ${trimmed}
@@ -109,8 +109,8 @@ export const searchRouter = router({
                        t.identifier AS "taskIdentifier", t.title AS "taskTitle", 1.0 AS score
                 FROM "Comment" c
                 JOIN "Task" t ON t.id = c."taskId"
-                JOIN "Project" p ON p.id = t."projectId"
-                WHERE p."workspaceId" = ${workspaceId}
+                LEFT JOIN "Project" p ON p.id = t."projectId"
+                WHERE (p."workspaceId" = ${workspaceId} OR (t."projectId" IS NULL AND t."workspaceId" = ${workspaceId}))
                   AND c.body ILIKE ${'%' + trimmed + '%'}
                   ${guestProjectFilter}
                 ORDER BY c."createdAt" DESC
@@ -134,8 +134,8 @@ export const searchRouter = router({
                        similarity(c.body, ${trimmed})::float8 AS score
                 FROM "Comment" c
                 JOIN "Task" t ON t.id = c."taskId"
-                JOIN "Project" p ON p.id = t."projectId"
-                WHERE p."workspaceId" = ${workspaceId}
+                LEFT JOIN "Project" p ON p.id = t."projectId"
+                WHERE (p."workspaceId" = ${workspaceId} OR (t."projectId" IS NULL AND t."workspaceId" = ${workspaceId}))
                   AND c.body % ${trimmed}
                   ${guestProjectFilter}
                 ORDER BY score DESC

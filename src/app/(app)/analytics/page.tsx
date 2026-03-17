@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { trpc } from '@/lib/trpc';
 import { useNotificationStore } from '@/lib/stores/notification-store';
@@ -33,7 +33,7 @@ export default function AnalyticsPage() {
   } | null>(null);
 
   // Auth check
-  const supabase = createBrowserSupabaseClient();
+  const supabase = useMemo(() => createBrowserSupabaseClient(), []);
   useEffect(() => {
     const checkAuth = async () => {
       const {

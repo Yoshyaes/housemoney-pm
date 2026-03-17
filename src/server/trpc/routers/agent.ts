@@ -111,6 +111,10 @@ export const agentRouter = router({
 
       await requireWorkspaceMember(ctx.db, insight.workspaceId, ctx.userId);
 
+      if (insight.targetUserId && insight.targetUserId !== ctx.userId) {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'Not your insight' });
+      }
+
       await ctx.db.agentInsight.update({
         where: { id: input.id },
         data: { status: 'DISMISSED', actedAt: new Date() },
@@ -129,6 +133,10 @@ export const agentRouter = router({
       }
 
       await requireWorkspaceMember(ctx.db, insight.workspaceId, ctx.userId);
+
+      if (insight.targetUserId && insight.targetUserId !== ctx.userId) {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'Not your insight' });
+      }
 
       const success = await revertInsightAction(input.id);
       if (!success) {

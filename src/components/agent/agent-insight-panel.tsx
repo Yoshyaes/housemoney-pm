@@ -187,14 +187,13 @@ export function AgentInsightPanel({ workspaceId, onClose }: AgentInsightPanelPro
 
               {isExpanded && (
                 <div className="border-t border-zinc-100 bg-zinc-50/50 px-4 py-3 dark:border-zinc-800 dark:bg-zinc-900/50">
-                  <div
-                    className="prose prose-xs max-w-none text-xs text-zinc-600 dark:text-zinc-400"
-                    dangerouslySetInnerHTML={{
-                      __html: insight.body
-                        .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                        .replace(/\n/g, '<br />'),
-                    }}
-                  />
+                  <div className="text-xs text-zinc-600 dark:text-zinc-400 whitespace-pre-wrap leading-relaxed">
+                    {insight.body.split(/(\*\*.*?\*\*)/).map((part, i) => {
+                      const boldMatch = part.match(/^\*\*(.*)\*\*$/);
+                      if (boldMatch) return <strong key={i}>{boldMatch[1]}</strong>;
+                      return <span key={i}>{part}</span>;
+                    })}
+                  </div>
 
                   {filter === 'PENDING' && (
                     <div className="mt-3 flex items-center gap-2">

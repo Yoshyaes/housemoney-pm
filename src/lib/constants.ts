@@ -77,5 +77,34 @@ export const AVATAR_COLORS: Record<string, { bg: string; color: string }> = {
   Jordan: { bg: 'rgba(127,119,221,.15)', color: '#534AB7' },
 };
 
+// ─── Decision Status Colors ─────────────────────────────
+export const DECISION_STATUS_COLORS = {
+  DRAFT: '#888780',
+  ACTIVE: '#639922',
+  SUPERSEDED: '#EF9F27',
+  REVOKED: '#E24B4A',
+} as const;
+
+export const DECISION_STATUS_BG_COLORS = {
+  DRAFT: 'rgba(136,135,128,.12)',
+  ACTIVE: 'rgba(99,153,34,.12)',
+  SUPERSEDED: 'rgba(239,159,39,.12)',
+  REVOKED: 'rgba(226,75,74,.12)',
+} as const;
+
+export const DECISION_STATUS_TEXT_COLORS = {
+  DRAFT: '#444441',
+  ACTIVE: '#27500A',
+  SUPERSEDED: '#854F0B',
+  REVOKED: '#A32D2D',
+} as const;
+
+export const DECISION_STATUS_LABELS = {
+  DRAFT: 'Draft',
+  ACTIVE: 'Active',
+  SUPERSEDED: 'Superseded',
+  REVOKED: 'Revoked',
+} as const;
+
 // ─── Board columns (visible statuses) ────────────────────
 export const BOARD_COLUMNS = ['BACKLOG', 'TODO', 'IN_PROGRESS', 'IN_REVIEW', 'DONE'] as const;

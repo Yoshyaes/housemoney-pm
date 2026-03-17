@@ -53,6 +53,9 @@ export function TaskCreateModal({
     },
   });
 
+  const triageTaskRef = useRef(triageTask);
+  triageTaskRef.current = triageTask;
+
   const triggerTriage = useCallback(
     (titleValue: string) => {
       if (triageTimerRef.current) clearTimeout(triageTimerRef.current);
@@ -61,10 +64,10 @@ export function TaskCreateModal({
         return;
       }
       triageTimerRef.current = setTimeout(() => {
-        triageTask.mutate({ title: titleValue.trim(), workspaceId });
+        triageTaskRef.current.mutate({ title: titleValue.trim(), workspaceId });
       }, 800);
     },
-    [workspaceId, triageTask]
+    [workspaceId]
   );
 
   const applySuggestion = (field: string) => {

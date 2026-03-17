@@ -212,6 +212,8 @@ export type UserWhereInput = {
   sentInvitations?: Prisma.InvitationListRelationFilter
   agentInsights?: Prisma.AgentInsightListRelationFilter
   auditLogs?: Prisma.AuditLogListRelationFilter
+  createdDecisions?: Prisma.DecisionListRelationFilter
+  decisionParticipations?: Prisma.DecisionParticipantListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -240,6 +242,8 @@ export type UserOrderByWithRelationInput = {
   sentInvitations?: Prisma.InvitationOrderByRelationAggregateInput
   agentInsights?: Prisma.AgentInsightOrderByRelationAggregateInput
   auditLogs?: Prisma.AuditLogOrderByRelationAggregateInput
+  createdDecisions?: Prisma.DecisionOrderByRelationAggregateInput
+  decisionParticipations?: Prisma.DecisionParticipantOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -271,6 +275,8 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   sentInvitations?: Prisma.InvitationListRelationFilter
   agentInsights?: Prisma.AgentInsightListRelationFilter
   auditLogs?: Prisma.AuditLogListRelationFilter
+  createdDecisions?: Prisma.DecisionListRelationFilter
+  decisionParticipations?: Prisma.DecisionParticipantListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -325,6 +331,8 @@ export type UserCreateInput = {
   sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -353,6 +361,8 @@ export type UserUncheckedCreateInput = {
   sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserUpdateInput = {
@@ -381,6 +391,8 @@ export type UserUpdateInput = {
   sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -409,6 +421,8 @@ export type UserUncheckedUpdateInput = {
   sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUncheckedUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -753,6 +767,34 @@ export type UserUpdateOneWithoutAuditLogsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAuditLogsInput, Prisma.UserUpdateWithoutAuditLogsInput>, Prisma.UserUncheckedUpdateWithoutAuditLogsInput>
 }
 
+export type UserCreateNestedOneWithoutCreatedDecisionsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedDecisionsInput, Prisma.UserUncheckedCreateWithoutCreatedDecisionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedDecisionsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutCreatedDecisionsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedDecisionsInput, Prisma.UserUncheckedCreateWithoutCreatedDecisionsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedDecisionsInput
+  upsert?: Prisma.UserUpsertWithoutCreatedDecisionsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreatedDecisionsInput, Prisma.UserUpdateWithoutCreatedDecisionsInput>, Prisma.UserUncheckedUpdateWithoutCreatedDecisionsInput>
+}
+
+export type UserCreateNestedOneWithoutDecisionParticipationsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDecisionParticipationsInput, Prisma.UserUncheckedCreateWithoutDecisionParticipationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDecisionParticipationsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutDecisionParticipationsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutDecisionParticipationsInput, Prisma.UserUncheckedCreateWithoutDecisionParticipationsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutDecisionParticipationsInput
+  upsert?: Prisma.UserUpsertWithoutDecisionParticipationsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutDecisionParticipationsInput, Prisma.UserUpdateWithoutDecisionParticipationsInput>, Prisma.UserUncheckedUpdateWithoutDecisionParticipationsInput>
+}
+
 export type UserCreateWithoutMembershipsInput = {
   id: string
   email: string
@@ -778,6 +820,8 @@ export type UserCreateWithoutMembershipsInput = {
   sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutMembershipsInput = {
@@ -805,6 +849,8 @@ export type UserUncheckedCreateWithoutMembershipsInput = {
   sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutMembershipsInput = {
@@ -848,6 +894,8 @@ export type UserUpdateWithoutMembershipsInput = {
   sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMembershipsInput = {
@@ -875,6 +923,8 @@ export type UserUncheckedUpdateWithoutMembershipsInput = {
   sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUncheckedUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCreatedProjectsInput = {
@@ -902,6 +952,8 @@ export type UserCreateWithoutCreatedProjectsInput = {
   sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCreatedProjectsInput = {
@@ -929,6 +981,8 @@ export type UserUncheckedCreateWithoutCreatedProjectsInput = {
   sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCreatedProjectsInput = {
@@ -972,6 +1026,8 @@ export type UserUpdateWithoutCreatedProjectsInput = {
   sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedProjectsInput = {
@@ -999,6 +1055,8 @@ export type UserUncheckedUpdateWithoutCreatedProjectsInput = {
   sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUncheckedUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAssignedTasksInput = {
@@ -1026,6 +1084,8 @@ export type UserCreateWithoutAssignedTasksInput = {
   sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAssignedTasksInput = {
@@ -1053,6 +1113,8 @@ export type UserUncheckedCreateWithoutAssignedTasksInput = {
   sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAssignedTasksInput = {
@@ -1085,6 +1147,8 @@ export type UserCreateWithoutCreatedTasksInput = {
   sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCreatedTasksInput = {
@@ -1112,6 +1176,8 @@ export type UserUncheckedCreateWithoutCreatedTasksInput = {
   sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCreatedTasksInput = {
@@ -1155,6 +1221,8 @@ export type UserUpdateWithoutAssignedTasksInput = {
   sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignedTasksInput = {
@@ -1182,6 +1250,8 @@ export type UserUncheckedUpdateWithoutAssignedTasksInput = {
   sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUncheckedUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutCreatedTasksInput = {
@@ -1220,6 +1290,8 @@ export type UserUpdateWithoutCreatedTasksInput = {
   sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedTasksInput = {
@@ -1247,6 +1319,8 @@ export type UserUncheckedUpdateWithoutCreatedTasksInput = {
   sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUncheckedUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutUploadedAttachmentsInput = {
@@ -1274,6 +1348,8 @@ export type UserCreateWithoutUploadedAttachmentsInput = {
   sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutUploadedAttachmentsInput = {
@@ -1301,6 +1377,8 @@ export type UserUncheckedCreateWithoutUploadedAttachmentsInput = {
   sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutUploadedAttachmentsInput = {
@@ -1344,6 +1422,8 @@ export type UserUpdateWithoutUploadedAttachmentsInput = {
   sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUploadedAttachmentsInput = {
@@ -1371,6 +1451,8 @@ export type UserUncheckedUpdateWithoutUploadedAttachmentsInput = {
   sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUncheckedUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCollaboratingTasksInput = {
@@ -1398,6 +1480,8 @@ export type UserCreateWithoutCollaboratingTasksInput = {
   sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCollaboratingTasksInput = {
@@ -1425,6 +1509,8 @@ export type UserUncheckedCreateWithoutCollaboratingTasksInput = {
   sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCollaboratingTasksInput = {
@@ -1468,6 +1554,8 @@ export type UserUpdateWithoutCollaboratingTasksInput = {
   sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCollaboratingTasksInput = {
@@ -1495,6 +1583,8 @@ export type UserUncheckedUpdateWithoutCollaboratingTasksInput = {
   sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUncheckedUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutCommentsInput = {
@@ -1522,6 +1612,8 @@ export type UserCreateWithoutCommentsInput = {
   sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutCommentsInput = {
@@ -1549,6 +1641,8 @@ export type UserUncheckedCreateWithoutCommentsInput = {
   sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutCommentsInput = {
@@ -1592,6 +1686,8 @@ export type UserUpdateWithoutCommentsInput = {
   sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCommentsInput = {
@@ -1619,6 +1715,8 @@ export type UserUncheckedUpdateWithoutCommentsInput = {
   sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUncheckedUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutActivitiesInput = {
@@ -1646,6 +1744,8 @@ export type UserCreateWithoutActivitiesInput = {
   sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutActivitiesInput = {
@@ -1673,6 +1773,8 @@ export type UserUncheckedCreateWithoutActivitiesInput = {
   sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutActivitiesInput = {
@@ -1716,6 +1818,8 @@ export type UserUpdateWithoutActivitiesInput = {
   sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutActivitiesInput = {
@@ -1743,6 +1847,8 @@ export type UserUncheckedUpdateWithoutActivitiesInput = {
   sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUncheckedUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutViewsInput = {
@@ -1770,6 +1876,8 @@ export type UserCreateWithoutViewsInput = {
   sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutViewsInput = {
@@ -1797,6 +1905,8 @@ export type UserUncheckedCreateWithoutViewsInput = {
   sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutViewsInput = {
@@ -1840,6 +1950,8 @@ export type UserUpdateWithoutViewsInput = {
   sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutViewsInput = {
@@ -1867,6 +1979,8 @@ export type UserUncheckedUpdateWithoutViewsInput = {
   sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUncheckedUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutNotificationsInput = {
@@ -1894,6 +2008,8 @@ export type UserCreateWithoutNotificationsInput = {
   sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -1921,6 +2037,8 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -1953,6 +2071,8 @@ export type UserCreateWithoutActedNotificationsInput = {
   sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutActedNotificationsInput = {
@@ -1980,6 +2100,8 @@ export type UserUncheckedCreateWithoutActedNotificationsInput = {
   sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutActedNotificationsInput = {
@@ -2023,6 +2145,8 @@ export type UserUpdateWithoutNotificationsInput = {
   sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -2050,6 +2174,8 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUncheckedUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutActedNotificationsInput = {
@@ -2088,6 +2214,8 @@ export type UserUpdateWithoutActedNotificationsInput = {
   sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutActedNotificationsInput = {
@@ -2115,6 +2243,8 @@ export type UserUncheckedUpdateWithoutActedNotificationsInput = {
   sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUncheckedUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutDocumentsInput = {
@@ -2142,6 +2272,8 @@ export type UserCreateWithoutDocumentsInput = {
   sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutDocumentsInput = {
@@ -2169,6 +2301,8 @@ export type UserUncheckedCreateWithoutDocumentsInput = {
   sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutDocumentsInput = {
@@ -2201,6 +2335,8 @@ export type UserCreateWithoutLastEditedDocsInput = {
   sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutLastEditedDocsInput = {
@@ -2228,6 +2364,8 @@ export type UserUncheckedCreateWithoutLastEditedDocsInput = {
   sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutLastEditedDocsInput = {
@@ -2271,6 +2409,8 @@ export type UserUpdateWithoutDocumentsInput = {
   sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDocumentsInput = {
@@ -2298,6 +2438,8 @@ export type UserUncheckedUpdateWithoutDocumentsInput = {
   sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUncheckedUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserUpsertWithoutLastEditedDocsInput = {
@@ -2336,6 +2478,8 @@ export type UserUpdateWithoutLastEditedDocsInput = {
   sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLastEditedDocsInput = {
@@ -2363,6 +2507,8 @@ export type UserUncheckedUpdateWithoutLastEditedDocsInput = {
   sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUncheckedUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutDocCommentsInput = {
@@ -2390,6 +2536,8 @@ export type UserCreateWithoutDocCommentsInput = {
   sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutDocCommentsInput = {
@@ -2417,6 +2565,8 @@ export type UserUncheckedCreateWithoutDocCommentsInput = {
   sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutDocCommentsInput = {
@@ -2460,6 +2610,8 @@ export type UserUpdateWithoutDocCommentsInput = {
   sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDocCommentsInput = {
@@ -2487,6 +2639,8 @@ export type UserUncheckedUpdateWithoutDocCommentsInput = {
   sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUncheckedUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutProjectMembershipsInput = {
@@ -2514,6 +2668,8 @@ export type UserCreateWithoutProjectMembershipsInput = {
   sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutProjectMembershipsInput = {
@@ -2541,6 +2697,8 @@ export type UserUncheckedCreateWithoutProjectMembershipsInput = {
   sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutProjectMembershipsInput = {
@@ -2584,6 +2742,8 @@ export type UserUpdateWithoutProjectMembershipsInput = {
   sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProjectMembershipsInput = {
@@ -2611,6 +2771,8 @@ export type UserUncheckedUpdateWithoutProjectMembershipsInput = {
   sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUncheckedUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutSentInvitationsInput = {
@@ -2638,6 +2800,8 @@ export type UserCreateWithoutSentInvitationsInput = {
   projectMemberships?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
   agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutSentInvitationsInput = {
@@ -2665,6 +2829,8 @@ export type UserUncheckedCreateWithoutSentInvitationsInput = {
   projectMemberships?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
   agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTargetUserInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutSentInvitationsInput = {
@@ -2708,6 +2874,8 @@ export type UserUpdateWithoutSentInvitationsInput = {
   projectMemberships?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
   agentInsights?: Prisma.AgentInsightUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSentInvitationsInput = {
@@ -2735,6 +2903,8 @@ export type UserUncheckedUpdateWithoutSentInvitationsInput = {
   projectMemberships?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
   agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTargetUserNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUncheckedUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAgentInsightsInput = {
@@ -2762,6 +2932,8 @@ export type UserCreateWithoutAgentInsightsInput = {
   projectMemberships?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
   sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAgentInsightsInput = {
@@ -2789,6 +2961,8 @@ export type UserUncheckedCreateWithoutAgentInsightsInput = {
   projectMemberships?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
   sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAgentInsightsInput = {
@@ -2832,6 +3006,8 @@ export type UserUpdateWithoutAgentInsightsInput = {
   projectMemberships?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
   sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAgentInsightsInput = {
@@ -2859,6 +3035,8 @@ export type UserUncheckedUpdateWithoutAgentInsightsInput = {
   projectMemberships?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
   sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUncheckedUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedUpdateManyWithoutUserNestedInput
 }
 
 export type UserCreateWithoutAuditLogsInput = {
@@ -2886,6 +3064,8 @@ export type UserCreateWithoutAuditLogsInput = {
   projectMemberships?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
   sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTargetUserInput
+  createdDecisions?: Prisma.DecisionCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantCreateNestedManyWithoutUserInput
 }
 
 export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -2913,6 +3093,8 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   projectMemberships?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
   sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
   agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTargetUserInput
+  createdDecisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedCreateNestedManyWithoutUserInput
 }
 
 export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -2956,6 +3138,8 @@ export type UserUpdateWithoutAuditLogsInput = {
   projectMemberships?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
   sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUpdateManyWithoutTargetUserNestedInput
+  createdDecisions?: Prisma.DecisionUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUpdateManyWithoutUserNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -2983,6 +3167,272 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   projectMemberships?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
   sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
   agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTargetUserNestedInput
+  createdDecisions?: Prisma.DecisionUncheckedUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutCreatedDecisionsInput = {
+  id: string
+  email: string
+  name: string
+  avatarUrl?: string | null
+  avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  memberships?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
+  createdTasks?: Prisma.TaskCreateNestedManyWithoutCreatedByInput
+  collaboratingTasks?: Prisma.TaskCollaboratorCreateNestedManyWithoutUserInput
+  uploadedAttachments?: Prisma.TaskAttachmentCreateNestedManyWithoutUploadedByInput
+  comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentCreateNestedManyWithoutAuthorInput
+  activities?: Prisma.ActivityCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
+  views?: Prisma.ViewCreateNestedManyWithoutOwnerInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutAuthorInput
+  lastEditedDocs?: Prisma.DocumentCreateNestedManyWithoutLastEditedByInput
+  createdProjects?: Prisma.ProjectCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
+  agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTargetUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  decisionParticipations?: Prisma.DecisionParticipantCreateNestedManyWithoutUserInput
+}
+
+export type UserUncheckedCreateWithoutCreatedDecisionsInput = {
+  id: string
+  email: string
+  name: string
+  avatarUrl?: string | null
+  avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  memberships?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
+  createdTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutCreatedByInput
+  collaboratingTasks?: Prisma.TaskCollaboratorUncheckedCreateNestedManyWithoutUserInput
+  uploadedAttachments?: Prisma.TaskAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
+  views?: Prisma.ViewUncheckedCreateNestedManyWithoutOwnerInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAuthorInput
+  lastEditedDocs?: Prisma.DocumentUncheckedCreateNestedManyWithoutLastEditedByInput
+  createdProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
+  agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTargetUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedCreateNestedManyWithoutUserInput
+}
+
+export type UserCreateOrConnectWithoutCreatedDecisionsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedDecisionsInput, Prisma.UserUncheckedCreateWithoutCreatedDecisionsInput>
+}
+
+export type UserUpsertWithoutCreatedDecisionsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCreatedDecisionsInput, Prisma.UserUncheckedUpdateWithoutCreatedDecisionsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedDecisionsInput, Prisma.UserUncheckedCreateWithoutCreatedDecisionsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCreatedDecisionsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCreatedDecisionsInput, Prisma.UserUncheckedUpdateWithoutCreatedDecisionsInput>
+}
+
+export type UserUpdateWithoutCreatedDecisionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
+  createdTasks?: Prisma.TaskUpdateManyWithoutCreatedByNestedInput
+  collaboratingTasks?: Prisma.TaskCollaboratorUpdateManyWithoutUserNestedInput
+  uploadedAttachments?: Prisma.TaskAttachmentUpdateManyWithoutUploadedByNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUpdateManyWithoutAuthorNestedInput
+  activities?: Prisma.ActivityUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
+  views?: Prisma.ViewUpdateManyWithoutOwnerNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutAuthorNestedInput
+  lastEditedDocs?: Prisma.DocumentUpdateManyWithoutLastEditedByNestedInput
+  createdProjects?: Prisma.ProjectUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
+  agentInsights?: Prisma.AgentInsightUpdateManyWithoutTargetUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUpdateManyWithoutUserNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCreatedDecisionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  createdTasks?: Prisma.TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+  collaboratingTasks?: Prisma.TaskCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+  uploadedAttachments?: Prisma.TaskAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
+  views?: Prisma.ViewUncheckedUpdateManyWithoutOwnerNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutAuthorNestedInput
+  lastEditedDocs?: Prisma.DocumentUncheckedUpdateManyWithoutLastEditedByNestedInput
+  createdProjects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+  agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTargetUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedUpdateManyWithoutUserNestedInput
+}
+
+export type UserCreateWithoutDecisionParticipationsInput = {
+  id: string
+  email: string
+  name: string
+  avatarUrl?: string | null
+  avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  memberships?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
+  createdTasks?: Prisma.TaskCreateNestedManyWithoutCreatedByInput
+  collaboratingTasks?: Prisma.TaskCollaboratorCreateNestedManyWithoutUserInput
+  uploadedAttachments?: Prisma.TaskAttachmentCreateNestedManyWithoutUploadedByInput
+  comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentCreateNestedManyWithoutAuthorInput
+  activities?: Prisma.ActivityCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
+  views?: Prisma.ViewCreateNestedManyWithoutOwnerInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutAuthorInput
+  lastEditedDocs?: Prisma.DocumentCreateNestedManyWithoutLastEditedByInput
+  createdProjects?: Prisma.ProjectCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
+  agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTargetUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserUncheckedCreateWithoutDecisionParticipationsInput = {
+  id: string
+  email: string
+  name: string
+  avatarUrl?: string | null
+  avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  memberships?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
+  createdTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutCreatedByInput
+  collaboratingTasks?: Prisma.TaskCollaboratorUncheckedCreateNestedManyWithoutUserInput
+  uploadedAttachments?: Prisma.TaskAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
+  views?: Prisma.ViewUncheckedCreateNestedManyWithoutOwnerInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAuthorInput
+  lastEditedDocs?: Prisma.DocumentUncheckedCreateNestedManyWithoutLastEditedByInput
+  createdProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
+  agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTargetUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutCreatedByInput
+}
+
+export type UserCreateOrConnectWithoutDecisionParticipationsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutDecisionParticipationsInput, Prisma.UserUncheckedCreateWithoutDecisionParticipationsInput>
+}
+
+export type UserUpsertWithoutDecisionParticipationsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutDecisionParticipationsInput, Prisma.UserUncheckedUpdateWithoutDecisionParticipationsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutDecisionParticipationsInput, Prisma.UserUncheckedCreateWithoutDecisionParticipationsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutDecisionParticipationsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutDecisionParticipationsInput, Prisma.UserUncheckedUpdateWithoutDecisionParticipationsInput>
+}
+
+export type UserUpdateWithoutDecisionParticipationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
+  createdTasks?: Prisma.TaskUpdateManyWithoutCreatedByNestedInput
+  collaboratingTasks?: Prisma.TaskCollaboratorUpdateManyWithoutUserNestedInput
+  uploadedAttachments?: Prisma.TaskAttachmentUpdateManyWithoutUploadedByNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUpdateManyWithoutAuthorNestedInput
+  activities?: Prisma.ActivityUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
+  views?: Prisma.ViewUpdateManyWithoutOwnerNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutAuthorNestedInput
+  lastEditedDocs?: Prisma.DocumentUpdateManyWithoutLastEditedByNestedInput
+  createdProjects?: Prisma.ProjectUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
+  agentInsights?: Prisma.AgentInsightUpdateManyWithoutTargetUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUpdateManyWithoutCreatedByNestedInput
+}
+
+export type UserUncheckedUpdateWithoutDecisionParticipationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  createdTasks?: Prisma.TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+  collaboratingTasks?: Prisma.TaskCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+  uploadedAttachments?: Prisma.TaskAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
+  views?: Prisma.ViewUncheckedUpdateManyWithoutOwnerNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutAuthorNestedInput
+  lastEditedDocs?: Prisma.DocumentUncheckedUpdateManyWithoutLastEditedByNestedInput
+  createdProjects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+  agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTargetUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUncheckedUpdateManyWithoutCreatedByNestedInput
 }
 
 
@@ -3009,6 +3459,8 @@ export type UserCountOutputType = {
   sentInvitations: number
   agentInsights: number
   auditLogs: number
+  createdDecisions: number
+  decisionParticipations: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3030,6 +3482,8 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   sentInvitations?: boolean | UserCountOutputTypeCountSentInvitationsArgs
   agentInsights?: boolean | UserCountOutputTypeCountAgentInsightsArgs
   auditLogs?: boolean | UserCountOutputTypeCountAuditLogsArgs
+  createdDecisions?: boolean | UserCountOutputTypeCountCreatedDecisionsArgs
+  decisionParticipations?: boolean | UserCountOutputTypeCountDecisionParticipationsArgs
 }
 
 /**
@@ -3168,6 +3622,20 @@ export type UserCountOutputTypeCountAuditLogsArgs<ExtArgs extends runtime.Types.
   where?: Prisma.AuditLogWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCreatedDecisionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DecisionWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountDecisionParticipationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DecisionParticipantWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -3195,6 +3663,8 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   sentInvitations?: boolean | Prisma.User$sentInvitationsArgs<ExtArgs>
   agentInsights?: boolean | Prisma.User$agentInsightsArgs<ExtArgs>
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
+  createdDecisions?: boolean | Prisma.User$createdDecisionsArgs<ExtArgs>
+  decisionParticipations?: boolean | Prisma.User$decisionParticipationsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -3248,6 +3718,8 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   sentInvitations?: boolean | Prisma.User$sentInvitationsArgs<ExtArgs>
   agentInsights?: boolean | Prisma.User$agentInsightsArgs<ExtArgs>
   auditLogs?: boolean | Prisma.User$auditLogsArgs<ExtArgs>
+  createdDecisions?: boolean | Prisma.User$createdDecisionsArgs<ExtArgs>
+  decisionParticipations?: boolean | Prisma.User$decisionParticipationsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -3274,6 +3746,8 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     sentInvitations: Prisma.$InvitationPayload<ExtArgs>[]
     agentInsights: Prisma.$AgentInsightPayload<ExtArgs>[]
     auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
+    createdDecisions: Prisma.$DecisionPayload<ExtArgs>[]
+    decisionParticipations: Prisma.$DecisionParticipantPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -3695,6 +4169,8 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   sentInvitations<T extends Prisma.User$sentInvitationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$sentInvitationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$InvitationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   agentInsights<T extends Prisma.User$agentInsightsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$agentInsightsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AgentInsightPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   auditLogs<T extends Prisma.User$auditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  createdDecisions<T extends Prisma.User$createdDecisionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdDecisionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DecisionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  decisionParticipations<T extends Prisma.User$decisionParticipationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$decisionParticipationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DecisionParticipantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4553,6 +5029,54 @@ export type User$auditLogsArgs<ExtArgs extends runtime.Types.Extensions.Internal
   take?: number
   skip?: number
   distinct?: Prisma.AuditLogScalarFieldEnum | Prisma.AuditLogScalarFieldEnum[]
+}
+
+/**
+ * User.createdDecisions
+ */
+export type User$createdDecisionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Decision
+   */
+  select?: Prisma.DecisionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Decision
+   */
+  omit?: Prisma.DecisionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DecisionInclude<ExtArgs> | null
+  where?: Prisma.DecisionWhereInput
+  orderBy?: Prisma.DecisionOrderByWithRelationInput | Prisma.DecisionOrderByWithRelationInput[]
+  cursor?: Prisma.DecisionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DecisionScalarFieldEnum | Prisma.DecisionScalarFieldEnum[]
+}
+
+/**
+ * User.decisionParticipations
+ */
+export type User$decisionParticipationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DecisionParticipant
+   */
+  select?: Prisma.DecisionParticipantSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DecisionParticipant
+   */
+  omit?: Prisma.DecisionParticipantOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DecisionParticipantInclude<ExtArgs> | null
+  where?: Prisma.DecisionParticipantWhereInput
+  orderBy?: Prisma.DecisionParticipantOrderByWithRelationInput | Prisma.DecisionParticipantOrderByWithRelationInput[]
+  cursor?: Prisma.DecisionParticipantWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DecisionParticipantScalarFieldEnum | Prisma.DecisionParticipantScalarFieldEnum[]
 }
 
 /**

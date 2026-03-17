@@ -152,7 +152,8 @@ export function BoardView({ tasks, onStatusChange, members }: BoardViewProps) {
     const statusMatch = overId.match(/^cell-.*-(.+)$/);
     if (statusMatch) {
       const newStatus = statusMatch[1];
-      if (active.id !== newStatus) {
+      const validStatuses = ['BACKLOG', 'TODO', 'IN_PROGRESS', 'IN_REVIEW', 'DONE', 'CANCELLED'];
+      if (validStatuses.includes(newStatus) && active.id !== newStatus) {
         onStatusChange(active.id as string, newStatus);
       }
     }

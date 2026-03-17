@@ -2,7 +2,7 @@
 
 import DOMPurify from 'isomorphic-dompurify';
 import { Avatar } from '@/components/shared/avatar';
-import { formatRelativeTime } from '@/lib/utils';
+import { formatRelativeTime, linkifyHtml } from '@/lib/utils';
 
 interface Comment {
   id: string;
@@ -33,14 +33,15 @@ export function CommentList({ comments, currentUserId, onReaction }: CommentList
       {comments.map((comment) => {
         // Sanitize before any HTML manipulation to prevent XSS
         const sanitized = DOMPurify.sanitize(comment.body, {
-          ALLOWED_TAGS: ['span', 'strong', 'em', 'code', 'br'],
-          ALLOWED_ATTR: ['class'],
+          ALLOWED_TAGS: ['span', 'strong', 'em', 'code', 'br', 'a'],
+          ALLOWED_ATTR: ['class', 'href', 'target', 'rel'],
         });
-        // Parse @mentions for display
-        const body = sanitized.replace(
+        // Parse @mentions for display, then auto-link URLs
+        const withMentions = sanitized.replace(
           /@\[([^\]]+)\]\([^)]+\)/g,
           '<span class="font-medium text-amber-700">@$1</span>'
         );
+        const body = linkifyHtml(withMentions);
 
         const reactions = (comment.reactions as Array<{ emoji: string; userIds: string[] }>) || [];
 

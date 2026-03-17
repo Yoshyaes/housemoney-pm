@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { trpc } from '@/lib/trpc';
 import { useUIStore } from '@/lib/stores/ui-store';
 import { useNotificationStore } from '@/lib/stores/notification-store';
@@ -40,7 +40,7 @@ export default function AppPage() {
   const [currentUser, setCurrentUser] = useState<{ id: string; name: string; avatarUrl?: string | null; avatarColor?: string } | null>(null);
 
   // Auth check
-  const supabase = createBrowserSupabaseClient();
+  const supabase = useMemo(() => createBrowserSupabaseClient(), []);
   useEffect(() => {
     const checkAuth = async () => {
       const { data: { session } } = await supabase.auth.getSession();

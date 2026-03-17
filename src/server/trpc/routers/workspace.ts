@@ -214,11 +214,22 @@ export const workspaceRouter = router({
 
   deleteAccount: protectedProcedure
     .mutation(async ({ ctx }) => {
-      // Remove all workspace memberships
-      await ctx.db.workspaceMember.deleteMany({ where: { userId: ctx.userId } });
-      await ctx.db.projectMember.deleteMany({ where: { userId: ctx.userId } });
-      // Delete the user record
-      await ctx.db.user.delete({ where: { id: ctx.userId } });
+      await ctx.db.$transaction(async (tx) => {
+        // Remove associated records that may have FK constraints
+        await tx.notification.deleteMany({ where: { userId: ctx.userId } });
+        await tx.notification.deleteMany({ where: { actorId: ctx.userId } });
+        await tx.activity.deleteMany({ where: { userId: ctx.userId } });
+        await tx.comment.deleteMany({ where: { authorId: ctx.userId } });
+        await tx.taskCollaborator.deleteMany({ where: { userId: ctx.userId } });
+        await tx.decisionParticipant.deleteMany({ where: { userId: ctx.userId } });
+        // Unassign tasks rather than deleting them
+        await tx.task.updateMany({ where: { assigneeId: ctx.userId }, data: { assigneeId: null } });
+        // Remove memberships
+        await tx.workspaceMember.deleteMany({ where: { userId: ctx.userId } });
+        await tx.projectMember.deleteMany({ where: { userId: ctx.userId } });
+        // Delete the user record
+        await tx.user.delete({ where: { id: ctx.userId } });
+      });
       // Delete from Supabase auth
       const supabase = createSupabaseAdmin();
       await supabase.auth.admin.deleteUser(ctx.userId);
@@ -228,6 +239,12 @@ export const workspaceRouter = router({
   sendPasswordReset: protectedProcedure
     .input(z.object({ email: z.string().email() }))
     .mutation(async ({ ctx, input }) => {
+      // Only allow users to reset their own password
+      const user = await ctx.db.user.findUnique({ where: { id: ctx.userId }, select: { email: true } });
+      if (!user || user.email !== input.email) {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'You can only request a password reset for your own email.' });
+      }
+
       const supabase = createSupabaseAdmin();
       const appUrl = process.env.NEXT_PUBLIC_APP_URL
         || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : null)

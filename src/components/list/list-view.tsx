@@ -227,7 +227,7 @@ export function ListView({
   const [sortField, setSortField] = useState<SortField>('identifier');
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('desc');
   const [collapsedSections, setCollapsedSections] = useState<Set<string>>(new Set());
-  const [addingTaskToSection, setAddingTaskToSection] = useState<string | null | 'unsectioned'>(undefined as unknown as null);
+  const [addingTaskToSection, setAddingTaskToSection] = useState<string | null | 'unsectioned'>(null);
   const [addingSection, setAddingSection] = useState(false);
   const [newSectionName, setNewSectionName] = useState('');
   const newSectionInputRef = useRef<HTMLInputElement>(null);
@@ -400,7 +400,7 @@ export function ListView({
   // Flat mode: no project selected or no sections defined
   const useSections = !!projectId && sections.length > 0;
 
-  // Build a flat index for keyboard nav
+  // Build a flat index for keyboard nav (with O(1) lookup map)
   const allTasksFlat = useMemo(() => {
     if (!useSections) return sortTasks(tasks);
     const result: Task[] = [];
@@ -414,6 +414,12 @@ export function ListView({
     return result;
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tasks, sections, sectionedTasks, unsectionedTasks, collapsedSections, sortField, sortDir, useSections]);
+
+  const taskIndexMap = useMemo(() => {
+    const map = new Map<string, number>();
+    allTasksFlat.forEach((t, i) => map.set(t.id, i));
+    return map;
+  }, [allTasksFlat]);
 
   const submitNewSection = () => {
     if (newSectionName.trim() && onSectionCreate) {
@@ -470,7 +476,7 @@ export function ListView({
                 />
                 {!collapsed && (
                   <>
-                    {sectionTasks.map((task) => renderTaskRow(task, allTasksFlat.indexOf(task)))}
+                    {sectionTasks.map((task) => renderTaskRow(task, taskIndexMap.get(task.id) ?? 0))}
                     {addingTaskToSection === section.id ? (
                       <QuickAddTaskRow
                         sectionId={section.id}
@@ -513,7 +519,7 @@ export function ListView({
                 <span className="text-[10px] text-zinc-400 tabular-nums">{unsectionedTasks.length}</span>
               </div>
               {!collapsedSections.has('__unsectioned__') &&
-                sortTasks(unsectionedTasks).map((task) => renderTaskRow(task, allTasksFlat.indexOf(task)))}
+                sortTasks(unsectionedTasks).map((task) => renderTaskRow(task, taskIndexMap.get(task.id) ?? 0))}
             </div>
           )}
 

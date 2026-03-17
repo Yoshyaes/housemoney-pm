@@ -117,3 +117,13 @@ export const DocType = {
 } as const
 
 export type DocType = (typeof DocType)[keyof typeof DocType]
+
+
+export const DecisionStatus = {
+  DRAFT: 'DRAFT',
+  ACTIVE: 'ACTIVE',
+  SUPERSEDED: 'SUPERSEDED',
+  REVOKED: 'REVOKED'
+} as const
+
+export type DecisionStatus = (typeof DecisionStatus)[keyof typeof DecisionStatus]

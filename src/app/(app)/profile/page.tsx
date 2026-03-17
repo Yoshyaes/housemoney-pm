@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
 import { trpc } from '@/lib/trpc';
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser';
@@ -23,7 +23,7 @@ const NOTIFICATION_TYPES = [
 
 export default function ProfilePage() {
   const router = useRouter();
-  const supabase = createBrowserSupabaseClient();
+  const supabase = useMemo(() => createBrowserSupabaseClient(), []);
   const utils = trpc.useUtils();
 
   const { data: workspace } = trpc.workspace.getCurrent.useQuery();

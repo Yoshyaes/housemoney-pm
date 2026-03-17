@@ -130,11 +130,18 @@ export const commentsRouter = router({
     .mutation(async ({ ctx, input }) => {
       const comment = await ctx.db.comment.findUnique({
         where: { id: input.id },
-        select: { authorId: true },
+        include: { task: { select: { workspaceId: true, projectId: true } } },
       });
 
-      if (!comment || comment.authorId !== ctx.userId) {
-        throw new Error('Not authorized to delete this comment');
+      if (!comment) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Comment not found' });
+      }
+
+      const membership = await requireWorkspaceMember(ctx.db, comment.task.workspaceId, ctx.userId);
+
+      // Only the author or an admin can delete
+      if (comment.authorId !== ctx.userId && membership.role !== 'ADMIN') {
+        throw new TRPCError({ code: 'FORBIDDEN', message: 'Only the author or an admin can delete this comment.' });
       }
 
       return ctx.db.comment.delete({ where: { id: input.id } });

@@ -20,16 +20,16 @@ export async function middleware(req: NextRequest) {
     }
   );
 
-  const { data: { session } } = await supabase.auth.getSession();
+  const { data: { user } } = await supabase.auth.getUser();
 
   const isAuthPage = req.nextUrl.pathname.startsWith('/login') || req.nextUrl.pathname.startsWith('/signup') || req.nextUrl.pathname.startsWith('/reset-password');
   const isApiRoute = req.nextUrl.pathname.startsWith('/api');
 
-  if (!session && !isAuthPage && !isApiRoute) {
+  if (!user && !isAuthPage && !isApiRoute) {
     return NextResponse.redirect(new URL('/login', req.url));
   }
 
-  if (session && isAuthPage) {
+  if (user && isAuthPage) {
     return NextResponse.redirect(new URL('/', req.url));
   }
 

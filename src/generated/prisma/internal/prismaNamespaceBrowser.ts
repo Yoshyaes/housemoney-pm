@@ -73,7 +73,9 @@ export const ModelName = {
   Invitation: 'Invitation',
   AgentInsight: 'AgentInsight',
   AgentConfig: 'AgentConfig',
-  AuditLog: 'AuditLog'
+  AuditLog: 'AuditLog',
+  Decision: 'Decision',
+  DecisionParticipant: 'DecisionParticipant'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -420,6 +422,33 @@ export const AuditLogScalarFieldEnum = {
 } as const
 
 export type AuditLogScalarFieldEnum = (typeof AuditLogScalarFieldEnum)[keyof typeof AuditLogScalarFieldEnum]
+
+
+export const DecisionScalarFieldEnum = {
+  id: 'id',
+  workspaceId: 'workspaceId',
+  title: 'title',
+  body: 'body',
+  status: 'status',
+  category: 'category',
+  decisionDate: 'decisionDate',
+  projectId: 'projectId',
+  createdById: 'createdById',
+  supersededById: 'supersededById',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type DecisionScalarFieldEnum = (typeof DecisionScalarFieldEnum)[keyof typeof DecisionScalarFieldEnum]
+
+
+export const DecisionParticipantScalarFieldEnum = {
+  decisionId: 'decisionId',
+  userId: 'userId',
+  createdAt: 'createdAt'
+} as const
+
+export type DecisionParticipantScalarFieldEnum = (typeof DecisionParticipantScalarFieldEnum)[keyof typeof DecisionParticipantScalarFieldEnum]
 
 
 export const SortOrder = {

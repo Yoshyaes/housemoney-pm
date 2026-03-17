@@ -1,6 +1,8 @@
 import { z } from 'zod';
 import { router, protectedProcedure, publicProcedure, requireWorkspaceAdmin } from '@/server/trpc/trpc';
 import { auditLog, AuditAction } from '@/server/audit/log';
+import { TRPCError } from '@trpc/server';
+import { rateLimit } from '@/lib/rate-limit';
 
 export const auditRouter = router({
   /**
@@ -19,11 +21,8 @@ export const auditRouter = router({
 
       const where: Record<string, unknown> = {};
 
-      // Show logs for this workspace OR global logs (workspaceId is null)
-      where.OR = [
-        { workspaceId: input.workspaceId },
-        { workspaceId: null },
-      ];
+      // Only show logs scoped to this workspace (not global logs from other workspaces)
+      where.workspaceId = input.workspaceId;
 
       if (input.action) {
         where.action = input.action;
@@ -67,6 +66,11 @@ export const auditRouter = router({
       metadata: z.record(z.string(), z.unknown()).optional(),
     }))
     .mutation(async ({ ctx, input }) => {
+      // Rate limit: max 10 auth log entries per email per minute
+      if (!rateLimit(`audit:${input.email}`, 10, 60_000)) {
+        throw new TRPCError({ code: 'TOO_MANY_REQUESTS', message: 'Too many requests. Please try again later.' });
+      }
+
       await auditLog(ctx.db, {
         action: input.action,
         email: input.email,
