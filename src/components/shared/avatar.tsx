@@ -24,6 +24,9 @@ const colorMap: Record<string, { bg: string; color: string }> = {
   '#0F6E56': { bg: 'rgba(29,158,117,.15)', color: '#0F6E56' },
   '#99355A': { bg: 'rgba(212,83,126,.12)', color: '#99355A' },
   '#534AB7': { bg: 'rgba(127,119,221,.15)', color: '#534AB7' },
+  '#D97706': { bg: 'rgba(217,119,6,.15)', color: '#D97706' },
+  '#059669': { bg: 'rgba(5,150,105,.15)', color: '#059669' },
+  '#DC2626': { bg: 'rgba(220,38,38,.12)', color: '#DC2626' },
 };
 
 export function Avatar({ name, avatarUrl, avatarColor, size = 'md', className = '' }: AvatarProps) {

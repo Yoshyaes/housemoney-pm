@@ -86,10 +86,18 @@ export default function ProfilePage() {
     if (profile) setEditName(profile.name);
   }, [profile]);
 
+  const [updateError, setUpdateError] = useState('');
+  const [colorSuccess, setColorSuccess] = useState(false);
+
   const updateUser = trpc.workspace.updateUser.useMutation({
     onSuccess: () => {
       refetchProfile();
       utils.workspace.getMembers.invalidate({ workspaceId });
+      setUpdateError('');
+    },
+    onError: (e) => {
+      setUpdateError(e.message);
+      setTimeout(() => setUpdateError(''), 5000);
     },
   });
   const deleteAccount = trpc.workspace.deleteAccount.useMutation({
@@ -101,14 +109,22 @@ export default function ProfilePage() {
 
   const handleNameSave = () => {
     if (!profile || !editName.trim() || editName === profile.name) return;
-    updateUser.mutate({ userId: profile.id, name: editName.trim() });
-    setNameSuccess(true);
-    setTimeout(() => setNameSuccess(false), 2000);
+    updateUser.mutate({ userId: profile.id, name: editName.trim() }, {
+      onSuccess: () => {
+        setNameSuccess(true);
+        setTimeout(() => setNameSuccess(false), 2000);
+      },
+    });
   };
 
   const handleAvatarColorChange = (color: string) => {
     if (!profile) return;
-    updateUser.mutate({ userId: profile.id, avatarColor: color });
+    updateUser.mutate({ userId: profile.id, avatarColor: color }, {
+      onSuccess: () => {
+        setColorSuccess(true);
+        setTimeout(() => setColorSuccess(false), 1500);
+      },
+    });
   };
 
   const handleAvatarUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -199,6 +215,12 @@ export default function ProfilePage() {
             <p className="text-xs text-zinc-400 mt-0.5">Manage your account and preferences</p>
           </div>
 
+          {updateError && (
+            <div className="rounded-md border border-red-200 dark:border-red-800 bg-red-50 dark:bg-red-900/20 px-3 py-2 text-xs text-red-600 dark:text-red-400">
+              {updateError}
+            </div>
+          )}
+
           {/* ── Profile Info ── */}
           <section className="space-y-4">
             <h2 className="flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-zinc-400">
@@ -235,7 +257,9 @@ export default function ProfilePage() {
 
             {/* Avatar color */}
             <div>
-              <label className="text-[11px] text-zinc-500 dark:text-zinc-400">Avatar color</label>
+              <label className="text-[11px] text-zinc-500 dark:text-zinc-400">
+                Avatar color {colorSuccess && <span className="text-green-500 ml-1">Updated!</span>}
+              </label>
               <div className="flex gap-1.5 mt-1">
                 {AVATAR_COLORS.map((c) => (
                   <button
@@ -403,7 +427,7 @@ export default function ProfilePage() {
                     <input
                       value={deleteText}
                       onChange={(e) => setDeleteText(e.target.value)}
-                      className="flex-1 rounded-md border border-red-300 dark:border-red-800 bg-white dark:bg-zinc-800 px-3 py-1.5 text-sm outline-none"
+                      className="flex-1 rounded-md border border-red-300 dark:border-red-800 bg-white dark:bg-zinc-800 px-3 py-1.5 text-sm text-zinc-900 dark:text-zinc-100 outline-none"
                       placeholder="DELETE"
                     />
                     <button
