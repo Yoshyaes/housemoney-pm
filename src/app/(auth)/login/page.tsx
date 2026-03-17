@@ -4,7 +4,6 @@ import { useState, useEffect } from 'react';
 import { createBrowserSupabaseClient } from '@/lib/supabase-browser';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { BRAND_AMBER } from '@/lib/constants';
-import { trpc } from '@/lib/trpc';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -15,7 +14,6 @@ export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const supabase = createBrowserSupabaseClient();
-  const logAuth = trpc.audit.logAuth.useMutation();
 
   // Handle Supabase auth errors from URL hash (e.g. expired invite links)
   useEffect(() => {
@@ -48,11 +46,11 @@ export default function LoginPage() {
 
     const { error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) {
-      logAuth.mutate({ action: 'LOGIN_FAILED', email, metadata: { error: error.message } });
+      fetch('/api/trpc/audit.logAuth', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ json: { action: 'LOGIN_FAILED', email, metadata: { error: error.message } } }) }).catch(() => {});
       setError(error.message);
       setLoading(false);
     } else {
-      logAuth.mutate({ action: 'LOGIN_SUCCESS', email });
+      fetch('/api/trpc/audit.logAuth', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ json: { action: 'LOGIN_SUCCESS', email } }) }).catch(() => {});
       router.push('/');
       router.refresh();
     }
