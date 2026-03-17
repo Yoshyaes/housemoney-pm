@@ -406,7 +406,7 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
         {currentUser && (
           <button
             onClick={() => router.push('/profile')}
-            className="flex items-center gap-2 rounded-md px-1 py-0.5 -ml-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+            className="flex items-center gap-2 rounded-md px-1 py-0.5 -ml-1 min-w-0 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
             title="View profile"
           >
             <Avatar
@@ -415,11 +415,11 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
               avatarColor={currentUser.avatarColor}
               size="md"
             />
-            <span>{currentUser.name}</span>
+            <span className="truncate max-w-[80px]">{currentUser.name}</span>
             {isGuest && <GuestBadge />}
           </button>
         )}
-        <div className="ml-auto flex items-center gap-1.5">
+        <div className="ml-auto flex flex-shrink-0 items-center gap-1.5">
           <ThemeToggle />
           {!isGuest && (
             <button onClick={() => setSettingsOpen(true)} className="rounded p-0.5 text-zinc-400 hover:text-zinc-600 dark:text-zinc-500 dark:hover:text-zinc-300" title="Settings">
