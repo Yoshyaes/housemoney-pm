@@ -75,7 +75,7 @@ export default function SignupPage() {
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
-            className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-amber-600 focus:ring-1 focus:ring-amber-600"
+            className="w-full rounded-md border border-zinc-300 bg-white text-zinc-900 px-3 py-2 text-sm outline-none focus:border-amber-600 focus:ring-1 focus:ring-amber-600"
             placeholder="Fred Thompson"
             required
           />
@@ -86,7 +86,7 @@ export default function SignupPage() {
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-amber-600 focus:ring-1 focus:ring-amber-600"
+            className="w-full rounded-md border border-zinc-300 bg-white text-zinc-900 px-3 py-2 text-sm outline-none focus:border-amber-600 focus:ring-1 focus:ring-amber-600"
             placeholder="you@housemoney.com"
             required
           />
@@ -97,7 +97,7 @@ export default function SignupPage() {
             type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none focus:border-amber-600 focus:ring-1 focus:ring-amber-600"
+            className="w-full rounded-md border border-zinc-300 bg-white text-zinc-900 px-3 py-2 text-sm outline-none focus:border-amber-600 focus:ring-1 focus:ring-amber-600"
             placeholder="••••••••"
             minLength={6}
             required
