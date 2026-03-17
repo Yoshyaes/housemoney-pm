@@ -22,7 +22,7 @@ export async function middleware(req: NextRequest) {
 
   const { data: { session } } = await supabase.auth.getSession();
 
-  const isAuthPage = req.nextUrl.pathname.startsWith('/login') || req.nextUrl.pathname.startsWith('/signup');
+  const isAuthPage = req.nextUrl.pathname.startsWith('/login') || req.nextUrl.pathname.startsWith('/signup') || req.nextUrl.pathname.startsWith('/reset-password');
   const isApiRoute = req.nextUrl.pathname.startsWith('/api');
 
   if (!session && !isAuthPage && !isApiRoute) {

@@ -229,8 +229,11 @@ export const workspaceRouter = router({
     .input(z.object({ email: z.string().email() }))
     .mutation(async ({ ctx, input }) => {
       const supabase = createSupabaseAdmin();
+      const appUrl = process.env.NEXT_PUBLIC_APP_URL
+        || (process.env.VERCEL_PROJECT_PRODUCTION_URL ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}` : null)
+        || 'http://localhost:3000';
       const { error } = await supabase.auth.resetPasswordForEmail(input.email, {
-        redirectTo: `${process.env.NEXT_PUBLIC_SUPABASE_URL?.replace('.supabase.co', '')}/auth/callback`,
+        redirectTo: `${appUrl}/reset-password`,
       });
       if (error) throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: error.message });
       await auditLog(ctx.db, {
