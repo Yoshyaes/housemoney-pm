@@ -52,7 +52,7 @@ export function DecisionDetailPanel({ workspaceId, currentUserId, isAdmin, membe
   const updateDecision = trpc.decisions.update.useMutation({
     onSuccess: () => {
       utils.decisions.get.invalidate({ id: selectedDecisionId! });
-      utils.decisions.list.invalidate({ workspaceId });
+      utils.decisions.list.invalidate();
       setMutationError(null);
     },
     onError: (err) => {
@@ -63,7 +63,7 @@ export function DecisionDetailPanel({ workspaceId, currentUserId, isAdmin, membe
   const deleteDecision = trpc.decisions.delete.useMutation({
     onSuccess: () => {
       setSelectedDecisionId(null);
-      utils.decisions.list.invalidate({ workspaceId });
+      utils.decisions.list.invalidate();
       setMutationError(null);
     },
     onError: (err) => {

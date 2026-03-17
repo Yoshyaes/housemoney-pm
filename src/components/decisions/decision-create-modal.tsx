@@ -57,7 +57,7 @@ export function DecisionCreateModal({ workspaceId, members, projects, currentUse
 
   const createDecision = trpc.decisions.create.useMutation({
     onSuccess: () => {
-      utils.decisions.list.invalidate({ workspaceId });
+      utils.decisions.list.invalidate();
       utils.decisions.listCategories.invalidate({ workspaceId });
       resetForm();
       setCreateModalOpen(false);

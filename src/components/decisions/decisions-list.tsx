@@ -54,7 +54,7 @@ export function DecisionsList({ workspaceId }: DecisionsListProps) {
     trpc.decisions.list.useInfiniteQuery(
       {
         workspaceId,
-        status: statusFilter as 'DRAFT' | 'ACTIVE' | 'SUPERSEDED' | 'REVOKED' | undefined,
+        status: (statusFilter ?? undefined) as 'DRAFT' | 'ACTIVE' | 'SUPERSEDED' | 'REVOKED' | undefined,
         category: categoryFilter ?? undefined,
         search: debouncedSearch || undefined,
         limit: 30,
