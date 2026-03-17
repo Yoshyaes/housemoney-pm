@@ -404,7 +404,11 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
       {/* User profile */}
       <div className="flex items-center gap-2 border-t border-zinc-200/60 dark:border-zinc-800 px-3.5 py-2.5 text-xs text-zinc-500 dark:text-zinc-400">
         {currentUser && (
-          <>
+          <button
+            onClick={() => router.push('/profile')}
+            className="flex items-center gap-2 rounded-md px-1 py-0.5 -ml-1 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors"
+            title="View profile"
+          >
             <Avatar
               name={currentUser.name}
               avatarUrl={currentUser.avatarUrl}
@@ -413,7 +417,7 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
             />
             <span>{currentUser.name}</span>
             {isGuest && <GuestBadge />}
-          </>
+          </button>
         )}
         <div className="ml-auto flex items-center gap-1.5">
           <ThemeToggle />

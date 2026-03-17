@@ -6,7 +6,7 @@ interface AvatarProps {
   name: string;
   avatarUrl?: string | null;
   avatarColor?: string;
-  size?: 'xs' | 'sm' | 'md' | 'lg';
+  size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl';
   className?: string;
 }
 
@@ -15,6 +15,7 @@ const sizeMap = {
   sm: { container: 'w-5 h-5 text-[8px]', text: 'text-[8px]' },
   md: { container: 'w-6 h-6 text-[10px]', text: 'text-[10px]' },
   lg: { container: 'w-8 h-8 text-xs', text: 'text-xs' },
+  xl: { container: 'w-16 h-16 text-xl', text: 'text-xl' },
 };
 
 const colorMap: Record<string, { bg: string; color: string }> = {

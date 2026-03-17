@@ -97,6 +97,7 @@ model User {
   name        String
   avatarUrl   String?
   avatarColor String   @default("#BA7517") // Hex color for initials avatar
+  notificationPrefs Json?    // { assigned: true, mentioned: true, comment: true, statusChange: true, ... }
   createdAt   DateTime @default(now())
 
   memberships        WorkspaceMember[]

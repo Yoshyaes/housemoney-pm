@@ -183,13 +183,46 @@ export const workspaceRouter = router({
       userId: z.string(),
       name: z.string().min(1).optional(),
       avatarColor: z.string().optional(),
+      avatarUrl: z.string().nullable().optional(),
+      notificationPrefs: z.record(z.string(), z.boolean()).optional(),
     }))
     .mutation(async ({ ctx, input }) => {
       if (input.userId !== ctx.userId) {
         throw new TRPCError({ code: 'FORBIDDEN', message: 'You can only update your own profile.' });
       }
-      const { userId, ...data } = input;
-      return ctx.db.user.update({ where: { id: userId }, data });
+      const { userId, notificationPrefs, ...data } = input;
+      return ctx.db.user.update({
+        where: { id: userId },
+        data: {
+          ...data,
+          ...(notificationPrefs !== undefined ? { notificationPrefs: JSON.parse(JSON.stringify(notificationPrefs)) } : {}),
+        },
+      });
+    }),
+
+  getProfile: protectedProcedure
+    .query(async ({ ctx }) => {
+      return ctx.db.user.findUniqueOrThrow({
+        where: { id: ctx.userId },
+        include: {
+          memberships: {
+            include: { workspace: { select: { id: true, name: true, slug: true } } },
+          },
+        },
+      });
+    }),
+
+  deleteAccount: protectedProcedure
+    .mutation(async ({ ctx }) => {
+      // Remove all workspace memberships
+      await ctx.db.workspaceMember.deleteMany({ where: { userId: ctx.userId } });
+      await ctx.db.projectMember.deleteMany({ where: { userId: ctx.userId } });
+      // Delete the user record
+      await ctx.db.user.delete({ where: { id: ctx.userId } });
+      // Delete from Supabase auth
+      const supabase = createSupabaseAdmin();
+      await supabase.auth.admin.deleteUser(ctx.userId);
+      return { success: true };
     }),
 
   sendPasswordReset: protectedProcedure

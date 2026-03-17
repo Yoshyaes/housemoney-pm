@@ -48,6 +48,7 @@ export type UserCountAggregateOutputType = {
   name: number
   avatarUrl: number
   avatarColor: number
+  notificationPrefs: number
   createdAt: number
   _all: number
 }
@@ -77,6 +78,7 @@ export type UserCountAggregateInputType = {
   name?: true
   avatarUrl?: true
   avatarColor?: true
+  notificationPrefs?: true
   createdAt?: true
   _all?: true
 }
@@ -159,6 +161,7 @@ export type UserGroupByOutputType = {
   name: string
   avatarUrl: string | null
   avatarColor: string
+  notificationPrefs: runtime.JsonValue | null
   createdAt: Date
   _count: UserCountAggregateOutputType | null
   _min: UserMinAggregateOutputType | null
@@ -189,6 +192,7 @@ export type UserWhereInput = {
   name?: Prisma.StringFilter<"User"> | string
   avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null
   avatarColor?: Prisma.StringFilter<"User"> | string
+  notificationPrefs?: Prisma.JsonNullableFilter<"User">
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   memberships?: Prisma.WorkspaceMemberListRelationFilter
   assignedTasks?: Prisma.TaskListRelationFilter
@@ -216,6 +220,7 @@ export type UserOrderByWithRelationInput = {
   name?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   avatarColor?: Prisma.SortOrder
+  notificationPrefs?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   memberships?: Prisma.WorkspaceMemberOrderByRelationAggregateInput
   assignedTasks?: Prisma.TaskOrderByRelationAggregateInput
@@ -246,6 +251,7 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"User"> | string
   avatarUrl?: Prisma.StringNullableFilter<"User"> | string | null
   avatarColor?: Prisma.StringFilter<"User"> | string
+  notificationPrefs?: Prisma.JsonNullableFilter<"User">
   createdAt?: Prisma.DateTimeFilter<"User"> | Date | string
   memberships?: Prisma.WorkspaceMemberListRelationFilter
   assignedTasks?: Prisma.TaskListRelationFilter
@@ -273,6 +279,7 @@ export type UserOrderByWithAggregationInput = {
   name?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrderInput | Prisma.SortOrder
   avatarColor?: Prisma.SortOrder
+  notificationPrefs?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.UserCountOrderByAggregateInput
   _max?: Prisma.UserMaxOrderByAggregateInput
@@ -288,6 +295,7 @@ export type UserScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"User"> | string
   avatarUrl?: Prisma.StringNullableWithAggregatesFilter<"User"> | string | null
   avatarColor?: Prisma.StringWithAggregatesFilter<"User"> | string
+  notificationPrefs?: Prisma.JsonNullableWithAggregatesFilter<"User">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"User"> | Date | string
 }
 
@@ -297,6 +305,7 @@ export type UserCreateInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
@@ -324,6 +333,7 @@ export type UserUncheckedCreateInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
@@ -351,6 +361,7 @@ export type UserUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
@@ -378,6 +389,7 @@ export type UserUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
@@ -405,6 +417,7 @@ export type UserCreateManyInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
 }
 
@@ -414,6 +427,7 @@ export type UserUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -423,6 +437,7 @@ export type UserUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -432,6 +447,7 @@ export type UserCountOrderByAggregateInput = {
   name?: Prisma.SortOrder
   avatarUrl?: Prisma.SortOrder
   avatarColor?: Prisma.SortOrder
+  notificationPrefs?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -743,6 +759,7 @@ export type UserCreateWithoutMembershipsInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
   createdTasks?: Prisma.TaskCreateNestedManyWithoutCreatedByInput
@@ -769,6 +786,7 @@ export type UserUncheckedCreateWithoutMembershipsInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
   createdTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutCreatedByInput
@@ -811,6 +829,7 @@ export type UserUpdateWithoutMembershipsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
   createdTasks?: Prisma.TaskUpdateManyWithoutCreatedByNestedInput
@@ -837,6 +856,7 @@ export type UserUncheckedUpdateWithoutMembershipsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
   createdTasks?: Prisma.TaskUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -863,6 +883,7 @@ export type UserCreateWithoutCreatedProjectsInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
@@ -889,6 +910,7 @@ export type UserUncheckedCreateWithoutCreatedProjectsInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
@@ -931,6 +953,7 @@ export type UserUpdateWithoutCreatedProjectsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
@@ -957,6 +980,7 @@ export type UserUncheckedUpdateWithoutCreatedProjectsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
@@ -983,6 +1007,7 @@ export type UserCreateWithoutAssignedTasksInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
   createdTasks?: Prisma.TaskCreateNestedManyWithoutCreatedByInput
@@ -1009,6 +1034,7 @@ export type UserUncheckedCreateWithoutAssignedTasksInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
   createdTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutCreatedByInput
@@ -1040,6 +1066,7 @@ export type UserCreateWithoutCreatedTasksInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
@@ -1066,6 +1093,7 @@ export type UserUncheckedCreateWithoutCreatedTasksInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
@@ -1108,6 +1136,7 @@ export type UserUpdateWithoutAssignedTasksInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
   createdTasks?: Prisma.TaskUpdateManyWithoutCreatedByNestedInput
@@ -1134,6 +1163,7 @@ export type UserUncheckedUpdateWithoutAssignedTasksInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
   createdTasks?: Prisma.TaskUncheckedUpdateManyWithoutCreatedByNestedInput
@@ -1171,6 +1201,7 @@ export type UserUpdateWithoutCreatedTasksInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
@@ -1197,6 +1228,7 @@ export type UserUncheckedUpdateWithoutCreatedTasksInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
@@ -1223,6 +1255,7 @@ export type UserCreateWithoutUploadedAttachmentsInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
@@ -1249,6 +1282,7 @@ export type UserUncheckedCreateWithoutUploadedAttachmentsInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
@@ -1291,6 +1325,7 @@ export type UserUpdateWithoutUploadedAttachmentsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
@@ -1317,6 +1352,7 @@ export type UserUncheckedUpdateWithoutUploadedAttachmentsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
@@ -1343,6 +1379,7 @@ export type UserCreateWithoutCollaboratingTasksInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
@@ -1369,6 +1406,7 @@ export type UserUncheckedCreateWithoutCollaboratingTasksInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
@@ -1411,6 +1449,7 @@ export type UserUpdateWithoutCollaboratingTasksInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
@@ -1437,6 +1476,7 @@ export type UserUncheckedUpdateWithoutCollaboratingTasksInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
@@ -1463,6 +1503,7 @@ export type UserCreateWithoutCommentsInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
@@ -1489,6 +1530,7 @@ export type UserUncheckedCreateWithoutCommentsInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
@@ -1531,6 +1573,7 @@ export type UserUpdateWithoutCommentsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
@@ -1557,6 +1600,7 @@ export type UserUncheckedUpdateWithoutCommentsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
@@ -1583,6 +1627,7 @@ export type UserCreateWithoutActivitiesInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
@@ -1609,6 +1654,7 @@ export type UserUncheckedCreateWithoutActivitiesInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
@@ -1651,6 +1697,7 @@ export type UserUpdateWithoutActivitiesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
@@ -1677,6 +1724,7 @@ export type UserUncheckedUpdateWithoutActivitiesInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
@@ -1703,6 +1751,7 @@ export type UserCreateWithoutViewsInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
@@ -1729,6 +1778,7 @@ export type UserUncheckedCreateWithoutViewsInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
@@ -1771,6 +1821,7 @@ export type UserUpdateWithoutViewsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
@@ -1797,6 +1848,7 @@ export type UserUncheckedUpdateWithoutViewsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
@@ -1823,6 +1875,7 @@ export type UserCreateWithoutNotificationsInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
@@ -1849,6 +1902,7 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
@@ -1880,6 +1934,7 @@ export type UserCreateWithoutActedNotificationsInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
@@ -1906,6 +1961,7 @@ export type UserUncheckedCreateWithoutActedNotificationsInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
@@ -1948,6 +2004,7 @@ export type UserUpdateWithoutNotificationsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
@@ -1974,6 +2031,7 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
@@ -2011,6 +2069,7 @@ export type UserUpdateWithoutActedNotificationsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
@@ -2037,6 +2096,7 @@ export type UserUncheckedUpdateWithoutActedNotificationsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
@@ -2063,6 +2123,7 @@ export type UserCreateWithoutDocumentsInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
@@ -2089,6 +2150,7 @@ export type UserUncheckedCreateWithoutDocumentsInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
@@ -2120,6 +2182,7 @@ export type UserCreateWithoutLastEditedDocsInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
@@ -2146,6 +2209,7 @@ export type UserUncheckedCreateWithoutLastEditedDocsInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
@@ -2188,6 +2252,7 @@ export type UserUpdateWithoutDocumentsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
@@ -2214,6 +2279,7 @@ export type UserUncheckedUpdateWithoutDocumentsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
@@ -2251,6 +2317,7 @@ export type UserUpdateWithoutLastEditedDocsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
@@ -2277,6 +2344,7 @@ export type UserUncheckedUpdateWithoutLastEditedDocsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
@@ -2303,6 +2371,7 @@ export type UserCreateWithoutDocCommentsInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
@@ -2329,6 +2398,7 @@ export type UserUncheckedCreateWithoutDocCommentsInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
@@ -2371,6 +2441,7 @@ export type UserUpdateWithoutDocCommentsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
@@ -2397,6 +2468,7 @@ export type UserUncheckedUpdateWithoutDocCommentsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
@@ -2423,6 +2495,7 @@ export type UserCreateWithoutProjectMembershipsInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
@@ -2449,6 +2522,7 @@ export type UserUncheckedCreateWithoutProjectMembershipsInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
@@ -2491,6 +2565,7 @@ export type UserUpdateWithoutProjectMembershipsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
@@ -2517,6 +2592,7 @@ export type UserUncheckedUpdateWithoutProjectMembershipsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
@@ -2543,6 +2619,7 @@ export type UserCreateWithoutSentInvitationsInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
@@ -2569,6 +2646,7 @@ export type UserUncheckedCreateWithoutSentInvitationsInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
@@ -2611,6 +2689,7 @@ export type UserUpdateWithoutSentInvitationsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
@@ -2637,6 +2716,7 @@ export type UserUncheckedUpdateWithoutSentInvitationsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
@@ -2663,6 +2743,7 @@ export type UserCreateWithoutAgentInsightsInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
@@ -2689,6 +2770,7 @@ export type UserUncheckedCreateWithoutAgentInsightsInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
@@ -2731,6 +2813,7 @@ export type UserUpdateWithoutAgentInsightsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
@@ -2757,6 +2840,7 @@ export type UserUncheckedUpdateWithoutAgentInsightsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
@@ -2783,6 +2867,7 @@ export type UserCreateWithoutAuditLogsInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
@@ -2809,6 +2894,7 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   name: string
   avatarUrl?: string | null
   avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
   assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
@@ -2851,6 +2937,7 @@ export type UserUpdateWithoutAuditLogsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
@@ -2877,6 +2964,7 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string
   avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   memberships?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
   assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
@@ -3087,6 +3175,7 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   name?: boolean
   avatarUrl?: boolean
   avatarColor?: boolean
+  notificationPrefs?: boolean
   createdAt?: boolean
   memberships?: boolean | Prisma.User$membershipsArgs<ExtArgs>
   assignedTasks?: boolean | Prisma.User$assignedTasksArgs<ExtArgs>
@@ -3115,6 +3204,7 @@ export type UserSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   name?: boolean
   avatarUrl?: boolean
   avatarColor?: boolean
+  notificationPrefs?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["user"]>
 
@@ -3124,6 +3214,7 @@ export type UserSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   name?: boolean
   avatarUrl?: boolean
   avatarColor?: boolean
+  notificationPrefs?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["user"]>
 
@@ -3133,10 +3224,11 @@ export type UserSelectScalar = {
   name?: boolean
   avatarUrl?: boolean
   avatarColor?: boolean
+  notificationPrefs?: boolean
   createdAt?: boolean
 }
 
-export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "avatarUrl" | "avatarColor" | "createdAt", ExtArgs["result"]["user"]>
+export type UserOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "email" | "name" | "avatarUrl" | "avatarColor" | "notificationPrefs" | "createdAt", ExtArgs["result"]["user"]>
 export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   memberships?: boolean | Prisma.User$membershipsArgs<ExtArgs>
   assignedTasks?: boolean | Prisma.User$assignedTasksArgs<ExtArgs>
@@ -3189,6 +3281,7 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     name: string
     avatarUrl: string | null
     avatarColor: string
+    notificationPrefs: runtime.JsonValue | null
     createdAt: Date
   }, ExtArgs["result"]["user"]>
   composites: {}
@@ -3636,6 +3729,7 @@ export interface UserFieldRefs {
   readonly name: Prisma.FieldRef<"User", 'String'>
   readonly avatarUrl: Prisma.FieldRef<"User", 'String'>
   readonly avatarColor: Prisma.FieldRef<"User", 'String'>
+  readonly notificationPrefs: Prisma.FieldRef<"User", 'Json'>
   readonly createdAt: Prisma.FieldRef<"User", 'DateTime'>
 }
     
