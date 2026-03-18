@@ -96,6 +96,51 @@ enum DecisionStatus {
   REVOKED
 }
 
+enum ExperimentStatus {
+  BACKLOG
+  IN_PROGRESS
+  COMPLETED
+  ICEBOX
+}
+
+enum ExperimentPersona {
+  RENTER
+  HENRY
+  FOUNDER
+  FINANCE_BRO
+  YOUNG_PERSON
+  GLOBAL_TRAVELER
+  LANDLORD
+}
+
+enum ExperimentChannel {
+  FOUNDER_DM
+  EMAIL
+  TEXT
+  PM_PARTNER
+  REFERRAL
+  TIKTOK
+  TWITTER_X
+  IG
+  LINKEDIN
+  IN_PERSON
+  CHURCH_COMMUNITY
+  PM_CONFERENCE
+}
+
+enum ExperimentType {
+  DISCOVERY
+  SMOKE_TEST
+  FAKE_DOOR
+  CONCIERGE
+  WIZARD_OF_OZ
+  MONEY_TEST
+  AB_TEST
+  GROWTH
+  PM_PARTNER_WEDGE
+  CUSTOMER_INTERVIEW
+}
+
 // ─── Models ──────────────────────────────────────────────
 
 model User {
@@ -127,14 +172,17 @@ model User {
   auditLogs          AuditLog[]
   createdDecisions   Decision[]       @relation("DecisionCreator")
   decisionParticipations DecisionParticipant[]
+  createdExperiments Experiment[]     @relation("ExperimentCreator")
+  ownedExperiments   Experiment[]     @relation("ExperimentOwner")
 }
 
 model Workspace {
   id          String   @id @default(cuid())
   name        String
   slug        String   @unique
-  taskCounter Int      @default(0)
-  createdAt   DateTime @default(now())
+  taskCounter       Int      @default(0)
+  experimentCounter Int      @default(0)
+  createdAt         DateTime @default(now())
 
   projects      Project[]
   labels        Label[]
@@ -147,6 +195,7 @@ model Workspace {
   agentConfig   AgentConfig?
   auditLogs     AuditLog[]
   decisions     Decision[]
+  experiments   Experiment[]
 }
 
 model WorkspaceMember {
@@ -177,8 +226,9 @@ model Project {
   tasks     Task[]
   sections  Section[]
   documents Document[]
-  decisions Decision[]
-  members   ProjectMember[]
+  decisions   Decision[]
+  experiments Experiment[]
+  members     ProjectMember[]
   workspace Workspace @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   createdBy User?     @relation("ProjectCreator", fields: [createdById], references: [id], onDelete: SetNull)
 }
@@ -548,4 +598,76 @@ model DecisionParticipant {
   user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([decisionId, userId])
+}
+
+// ─── Experiments ────────────────────────────────────────
+
+model Experiment {
+  id              String             @id @default(cuid())
+  identifier      String             @unique // e.g. "EXP-001"
+  workspaceId     String
+  projectId       String?
+  createdById     String
+  ownerId         String?
+
+  // Identity
+  title           String
+  sprint          String?
+  persona         ExperimentPersona?
+  cohort          String?
+  channel         ExperimentChannel?
+  experimentType  ExperimentType?
+  status          ExperimentStatus   @default(BACKLOG)
+
+  // Hypothesis
+  hypothesis         String          @default("")
+  riskiestAssumption String?
+  learningGoal       String?
+
+  // Unit Economics
+  cacEstimate     Float?
+  monthlyArpu     Float?
+  ltvEstimate     Float?
+  paybackPeriod   Float?
+  depositTarget   Float?
+
+  // Scoring (8-criteria JSON + computed int)
+  scoringCriteria Json?
+  score           Int?
+
+  // Execution
+  startDate       DateTime?
+  endDate         DateTime?
+  resourceCost    String?
+  testSize        String?
+
+  // Success Measures
+  primaryMetric          String?
+  secondaryMetrics       String?
+  killCondition          String?
+
+  // Results
+  whatHappened            String?
+  primaryMetricResult    String?
+  secondaryMetricResults String?
+  unexpectedFindings     String?
+
+  // Decisions
+  didWeLearn             String?
+  continueExperiment     String?
+  continuePersona        String?
+  nextAction             String?
+  investorReadyInsight   String?
+
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+
+  workspace       Workspace          @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
+  project         Project?           @relation(fields: [projectId], references: [id], onDelete: SetNull)
+  createdBy       User               @relation("ExperimentCreator", fields: [createdById], references: [id])
+  owner           User?              @relation("ExperimentOwner", fields: [ownerId], references: [id], onDelete: SetNull)
+
+  @@index([workspaceId])
+  @@index([workspaceId, status])
+  @@index([workspaceId, persona])
 }

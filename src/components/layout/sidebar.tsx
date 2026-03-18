@@ -34,6 +34,7 @@ import {
   Shield,
   LogOut,
   Scale,
+  FlaskConical,
 } from 'lucide-react';
 
 interface SavedView {
@@ -129,6 +130,7 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
     { id: 'analytics' as const, label: 'Analytics', icon: BarChart2, guestHidden: true },
     { id: 'docs' as const, label: 'Docs', icon: BookOpen },
     { id: 'decisions' as const, label: 'Decisions', icon: Scale, guestHidden: true },
+    { id: 'experiments' as const, label: 'Experiments', icon: FlaskConical, guestHidden: true },
     { id: 'agent' as const, label: 'AI Insights', icon: Sparkles, badge: pendingInsightCount, guestHidden: true },
     { id: 'audit-log' as const, label: 'Audit Log', icon: Shield, guestHidden: true, adminOnly: true },
   ];
@@ -152,6 +154,8 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
       router.push('/docs');
     } else if (id === 'decisions') {
       router.push('/decisions');
+    } else if (id === 'experiments') {
+      router.push('/experiments');
     } else if (id === 'agent') {
       setInsightPanelOpen(!insightPanelOpen);
       if (pathname !== '/') router.push('/');
@@ -210,6 +214,7 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
         </div>
 
         {navItems.map((item) => {
+          const isOnSubpage = pathname === '/analytics' || pathname.startsWith('/docs') || pathname.startsWith('/decisions') || pathname.startsWith('/experiments');
           const isActive =
             item.id === 'analytics'
               ? pathname === '/analytics'
@@ -217,13 +222,15 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
                 ? pathname.startsWith('/docs')
                 : item.id === 'decisions'
                   ? pathname.startsWith('/decisions')
-                  : item.id === 'inbox'
-                    ? inboxOpen && pathname !== '/analytics' && !pathname.startsWith('/docs') && !pathname.startsWith('/decisions')
-                    : item.id === 'agent'
-                      ? insightPanelOpen && pathname !== '/analytics' && !pathname.startsWith('/docs') && !pathname.startsWith('/decisions')
-                      : item.id === 'board' || item.id === 'list' || item.id === 'timeline'
-                        ? activeView === item.id && !inboxOpen && !insightPanelOpen && pathname !== '/analytics' && !pathname.startsWith('/docs') && !pathname.startsWith('/decisions')
-                        : false;
+                  : item.id === 'experiments'
+                    ? pathname.startsWith('/experiments')
+                    : item.id === 'inbox'
+                      ? inboxOpen && !isOnSubpage
+                      : item.id === 'agent'
+                        ? insightPanelOpen && !isOnSubpage
+                        : item.id === 'board' || item.id === 'list' || item.id === 'timeline'
+                          ? activeView === item.id && !inboxOpen && !insightPanelOpen && !isOnSubpage
+                          : false;
           const Icon = item.icon;
 
           return (

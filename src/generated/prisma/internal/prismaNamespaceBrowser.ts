@@ -75,7 +75,8 @@ export const ModelName = {
   AgentConfig: 'AgentConfig',
   AuditLog: 'AuditLog',
   Decision: 'Decision',
-  DecisionParticipant: 'DecisionParticipant'
+  DecisionParticipant: 'DecisionParticipant',
+  Experiment: 'Experiment'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -112,6 +113,7 @@ export const WorkspaceScalarFieldEnum = {
   name: 'name',
   slug: 'slug',
   taskCounter: 'taskCounter',
+  experimentCounter: 'experimentCounter',
   createdAt: 'createdAt'
 } as const
 
@@ -449,6 +451,53 @@ export const DecisionParticipantScalarFieldEnum = {
 } as const
 
 export type DecisionParticipantScalarFieldEnum = (typeof DecisionParticipantScalarFieldEnum)[keyof typeof DecisionParticipantScalarFieldEnum]
+
+
+export const ExperimentScalarFieldEnum = {
+  id: 'id',
+  identifier: 'identifier',
+  workspaceId: 'workspaceId',
+  projectId: 'projectId',
+  createdById: 'createdById',
+  ownerId: 'ownerId',
+  title: 'title',
+  sprint: 'sprint',
+  persona: 'persona',
+  cohort: 'cohort',
+  channel: 'channel',
+  experimentType: 'experimentType',
+  status: 'status',
+  hypothesis: 'hypothesis',
+  riskiestAssumption: 'riskiestAssumption',
+  learningGoal: 'learningGoal',
+  cacEstimate: 'cacEstimate',
+  monthlyArpu: 'monthlyArpu',
+  ltvEstimate: 'ltvEstimate',
+  paybackPeriod: 'paybackPeriod',
+  depositTarget: 'depositTarget',
+  scoringCriteria: 'scoringCriteria',
+  score: 'score',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  resourceCost: 'resourceCost',
+  testSize: 'testSize',
+  primaryMetric: 'primaryMetric',
+  secondaryMetrics: 'secondaryMetrics',
+  killCondition: 'killCondition',
+  whatHappened: 'whatHappened',
+  primaryMetricResult: 'primaryMetricResult',
+  secondaryMetricResults: 'secondaryMetricResults',
+  unexpectedFindings: 'unexpectedFindings',
+  didWeLearn: 'didWeLearn',
+  continueExperiment: 'continueExperiment',
+  continuePersona: 'continuePersona',
+  nextAction: 'nextAction',
+  investorReadyInsight: 'investorReadyInsight',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ExperimentScalarFieldEnum = (typeof ExperimentScalarFieldEnum)[keyof typeof ExperimentScalarFieldEnum]
 
 
 export const SortOrder = {

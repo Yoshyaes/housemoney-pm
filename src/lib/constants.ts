@@ -108,3 +108,87 @@ export const DECISION_STATUS_LABELS = {
 
 // ─── Board columns (visible statuses) ────────────────────
 export const BOARD_COLUMNS = ['BACKLOG', 'TODO', 'IN_PROGRESS', 'IN_REVIEW', 'DONE'] as const;
+
+// ─── Experiment Status ─────────────────────────────────
+export const EXPERIMENT_STATUS_COLORS = {
+  BACKLOG: '#888780',
+  IN_PROGRESS: '#EF9F27',
+  COMPLETED: '#639922',
+  ICEBOX: '#378ADD',
+} as const;
+
+export const EXPERIMENT_STATUS_BG_COLORS = {
+  BACKLOG: 'rgba(136,135,128,.12)',
+  IN_PROGRESS: 'rgba(239,159,39,.12)',
+  COMPLETED: 'rgba(99,153,34,.12)',
+  ICEBOX: 'rgba(55,138,221,.12)',
+} as const;
+
+export const EXPERIMENT_STATUS_TEXT_COLORS = {
+  BACKLOG: '#444441',
+  IN_PROGRESS: '#854F0B',
+  COMPLETED: '#27500A',
+  ICEBOX: '#185FA5',
+} as const;
+
+export const EXPERIMENT_STATUS_LABELS: Record<string, string> = {
+  BACKLOG: 'Backlog',
+  IN_PROGRESS: 'In Progress',
+  COMPLETED: 'Completed',
+  ICEBOX: 'Icebox',
+};
+
+export const EXPERIMENT_STATUS_ORDER = ['BACKLOG', 'IN_PROGRESS', 'COMPLETED', 'ICEBOX'] as const;
+
+// ─── Experiment Persona ────────────────────────────────
+export const EXPERIMENT_PERSONA_LABELS: Record<string, string> = {
+  RENTER: 'Renter',
+  HENRY: 'HENRY',
+  FOUNDER: 'Founder',
+  FINANCE_BRO: 'Finance Bro',
+  YOUNG_PERSON: 'Young Person',
+  GLOBAL_TRAVELER: 'Global Traveler',
+  LANDLORD: 'Landlord',
+};
+
+// ─── Experiment Channel ────────────────────────────────
+export const EXPERIMENT_CHANNEL_LABELS: Record<string, string> = {
+  FOUNDER_DM: 'Founder DM',
+  EMAIL: 'Email',
+  TEXT: 'Text',
+  PM_PARTNER: 'PM Partner',
+  REFERRAL: 'Referral',
+  TIKTOK: 'TikTok',
+  TWITTER_X: 'Twitter/X',
+  IG: 'IG',
+  LINKEDIN: 'LinkedIn',
+  IN_PERSON: 'In-Person',
+  CHURCH_COMMUNITY: 'Church/Community',
+  PM_CONFERENCE: 'PM Conference',
+};
+
+// ─── Experiment Type ───────────────────────────────────
+export const EXPERIMENT_TYPE_LABELS: Record<string, string> = {
+  DISCOVERY: 'Discovery',
+  SMOKE_TEST: 'Smoke Test',
+  FAKE_DOOR: 'Fake Door',
+  CONCIERGE: 'Concierge',
+  WIZARD_OF_OZ: 'Wizard of Oz',
+  MONEY_TEST: 'Money Test',
+  AB_TEST: 'A/B Test',
+  GROWTH: 'Growth',
+  PM_PARTNER_WEDGE: 'PM Partner Wedge',
+  CUSTOMER_INTERVIEW: 'Customer Interview',
+};
+
+// ─── Experiment Scoring Criteria ───────────────────────
+export const EXPERIMENT_SCORING_CRITERIA = [
+  { key: 'personaWants', label: 'Does persona actively want this?' },
+  { key: 'acceleratesDeposit', label: 'Directly accelerates first deposit OR referral?' },
+  { key: 'twoWeekExecute', label: 'Can execute in ≤2 weeks?' },
+  { key: 'cacBelowArpu', label: 'CAC ≤ 1 month of ARPU?' },
+  { key: 'existingEvidence', label: 'Existing evidence this works?' },
+  { key: 'aiStickinessBoost', label: 'Improves AI Private Banker stickiness?' },
+  { key: 'opensDataMoat', label: 'Opens proprietary data moat?' },
+  { key: 'beatsTopExperiment', label: 'Scores higher than current top experiment?' },
+] as const;

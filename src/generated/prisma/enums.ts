@@ -127,3 +127,60 @@ export const DecisionStatus = {
 } as const
 
 export type DecisionStatus = (typeof DecisionStatus)[keyof typeof DecisionStatus]
+
+
+export const ExperimentStatus = {
+  BACKLOG: 'BACKLOG',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  ICEBOX: 'ICEBOX'
+} as const
+
+export type ExperimentStatus = (typeof ExperimentStatus)[keyof typeof ExperimentStatus]
+
+
+export const ExperimentPersona = {
+  RENTER: 'RENTER',
+  HENRY: 'HENRY',
+  FOUNDER: 'FOUNDER',
+  FINANCE_BRO: 'FINANCE_BRO',
+  YOUNG_PERSON: 'YOUNG_PERSON',
+  GLOBAL_TRAVELER: 'GLOBAL_TRAVELER',
+  LANDLORD: 'LANDLORD'
+} as const
+
+export type ExperimentPersona = (typeof ExperimentPersona)[keyof typeof ExperimentPersona]
+
+
+export const ExperimentChannel = {
+  FOUNDER_DM: 'FOUNDER_DM',
+  EMAIL: 'EMAIL',
+  TEXT: 'TEXT',
+  PM_PARTNER: 'PM_PARTNER',
+  REFERRAL: 'REFERRAL',
+  TIKTOK: 'TIKTOK',
+  TWITTER_X: 'TWITTER_X',
+  IG: 'IG',
+  LINKEDIN: 'LINKEDIN',
+  IN_PERSON: 'IN_PERSON',
+  CHURCH_COMMUNITY: 'CHURCH_COMMUNITY',
+  PM_CONFERENCE: 'PM_CONFERENCE'
+} as const
+
+export type ExperimentChannel = (typeof ExperimentChannel)[keyof typeof ExperimentChannel]
+
+
+export const ExperimentType = {
+  DISCOVERY: 'DISCOVERY',
+  SMOKE_TEST: 'SMOKE_TEST',
+  FAKE_DOOR: 'FAKE_DOOR',
+  CONCIERGE: 'CONCIERGE',
+  WIZARD_OF_OZ: 'WIZARD_OF_OZ',
+  MONEY_TEST: 'MONEY_TEST',
+  AB_TEST: 'AB_TEST',
+  GROWTH: 'GROWTH',
+  PM_PARTNER_WEDGE: 'PM_PARTNER_WEDGE',
+  CUSTOMER_INTERVIEW: 'CUSTOMER_INTERVIEW'
+} as const
+
+export type ExperimentType = (typeof ExperimentType)[keyof typeof ExperimentType]

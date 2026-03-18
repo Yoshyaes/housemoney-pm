@@ -518,6 +518,101 @@ export type EnumDecisionStatusWithAggregatesFilter<$PrismaModel = never> = {
   _max?: Prisma.NestedEnumDecisionStatusFilter<$PrismaModel>
 }
 
+export type EnumExperimentPersonaNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExperimentPersona | Prisma.EnumExperimentPersonaFieldRefInput<$PrismaModel> | null
+  in?: $Enums.ExperimentPersona[] | Prisma.ListEnumExperimentPersonaFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.ExperimentPersona[] | Prisma.ListEnumExperimentPersonaFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumExperimentPersonaNullableFilter<$PrismaModel> | $Enums.ExperimentPersona | null
+}
+
+export type EnumExperimentChannelNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExperimentChannel | Prisma.EnumExperimentChannelFieldRefInput<$PrismaModel> | null
+  in?: $Enums.ExperimentChannel[] | Prisma.ListEnumExperimentChannelFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.ExperimentChannel[] | Prisma.ListEnumExperimentChannelFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumExperimentChannelNullableFilter<$PrismaModel> | $Enums.ExperimentChannel | null
+}
+
+export type EnumExperimentTypeNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExperimentType | Prisma.EnumExperimentTypeFieldRefInput<$PrismaModel> | null
+  in?: $Enums.ExperimentType[] | Prisma.ListEnumExperimentTypeFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.ExperimentType[] | Prisma.ListEnumExperimentTypeFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumExperimentTypeNullableFilter<$PrismaModel> | $Enums.ExperimentType | null
+}
+
+export type EnumExperimentStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExperimentStatus | Prisma.EnumExperimentStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ExperimentStatus[] | Prisma.ListEnumExperimentStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ExperimentStatus[] | Prisma.ListEnumExperimentStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumExperimentStatusFilter<$PrismaModel> | $Enums.ExperimentStatus
+}
+
+export type FloatNullableFilter<$PrismaModel = never> = {
+  equals?: number | Prisma.FloatFieldRefInput<$PrismaModel> | null
+  in?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel> | null
+  notIn?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel> | null
+  lt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  lte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  gt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  gte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedFloatNullableFilter<$PrismaModel> | number | null
+}
+
+export type EnumExperimentPersonaNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExperimentPersona | Prisma.EnumExperimentPersonaFieldRefInput<$PrismaModel> | null
+  in?: $Enums.ExperimentPersona[] | Prisma.ListEnumExperimentPersonaFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.ExperimentPersona[] | Prisma.ListEnumExperimentPersonaFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumExperimentPersonaNullableWithAggregatesFilter<$PrismaModel> | $Enums.ExperimentPersona | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumExperimentPersonaNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumExperimentPersonaNullableFilter<$PrismaModel>
+}
+
+export type EnumExperimentChannelNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExperimentChannel | Prisma.EnumExperimentChannelFieldRefInput<$PrismaModel> | null
+  in?: $Enums.ExperimentChannel[] | Prisma.ListEnumExperimentChannelFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.ExperimentChannel[] | Prisma.ListEnumExperimentChannelFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumExperimentChannelNullableWithAggregatesFilter<$PrismaModel> | $Enums.ExperimentChannel | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumExperimentChannelNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumExperimentChannelNullableFilter<$PrismaModel>
+}
+
+export type EnumExperimentTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExperimentType | Prisma.EnumExperimentTypeFieldRefInput<$PrismaModel> | null
+  in?: $Enums.ExperimentType[] | Prisma.ListEnumExperimentTypeFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.ExperimentType[] | Prisma.ListEnumExperimentTypeFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumExperimentTypeNullableWithAggregatesFilter<$PrismaModel> | $Enums.ExperimentType | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumExperimentTypeNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumExperimentTypeNullableFilter<$PrismaModel>
+}
+
+export type EnumExperimentStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExperimentStatus | Prisma.EnumExperimentStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ExperimentStatus[] | Prisma.ListEnumExperimentStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ExperimentStatus[] | Prisma.ListEnumExperimentStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumExperimentStatusWithAggregatesFilter<$PrismaModel> | $Enums.ExperimentStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumExperimentStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumExperimentStatusFilter<$PrismaModel>
+}
+
+export type FloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: number | Prisma.FloatFieldRefInput<$PrismaModel> | null
+  in?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel> | null
+  notIn?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel> | null
+  lt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  lte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  gt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  gte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _avg?: Prisma.NestedFloatNullableFilter<$PrismaModel>
+  _sum?: Prisma.NestedFloatNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedFloatNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedFloatNullableFilter<$PrismaModel>
+}
+
 export type NestedStringFilter<$PrismaModel = never> = {
   equals?: string | Prisma.StringFieldRefInput<$PrismaModel>
   in?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
@@ -968,6 +1063,90 @@ export type NestedEnumDecisionStatusWithAggregatesFilter<$PrismaModel = never> =
   _count?: Prisma.NestedIntFilter<$PrismaModel>
   _min?: Prisma.NestedEnumDecisionStatusFilter<$PrismaModel>
   _max?: Prisma.NestedEnumDecisionStatusFilter<$PrismaModel>
+}
+
+export type NestedEnumExperimentPersonaNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExperimentPersona | Prisma.EnumExperimentPersonaFieldRefInput<$PrismaModel> | null
+  in?: $Enums.ExperimentPersona[] | Prisma.ListEnumExperimentPersonaFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.ExperimentPersona[] | Prisma.ListEnumExperimentPersonaFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumExperimentPersonaNullableFilter<$PrismaModel> | $Enums.ExperimentPersona | null
+}
+
+export type NestedEnumExperimentChannelNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExperimentChannel | Prisma.EnumExperimentChannelFieldRefInput<$PrismaModel> | null
+  in?: $Enums.ExperimentChannel[] | Prisma.ListEnumExperimentChannelFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.ExperimentChannel[] | Prisma.ListEnumExperimentChannelFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumExperimentChannelNullableFilter<$PrismaModel> | $Enums.ExperimentChannel | null
+}
+
+export type NestedEnumExperimentTypeNullableFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExperimentType | Prisma.EnumExperimentTypeFieldRefInput<$PrismaModel> | null
+  in?: $Enums.ExperimentType[] | Prisma.ListEnumExperimentTypeFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.ExperimentType[] | Prisma.ListEnumExperimentTypeFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumExperimentTypeNullableFilter<$PrismaModel> | $Enums.ExperimentType | null
+}
+
+export type NestedEnumExperimentStatusFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExperimentStatus | Prisma.EnumExperimentStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ExperimentStatus[] | Prisma.ListEnumExperimentStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ExperimentStatus[] | Prisma.ListEnumExperimentStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumExperimentStatusFilter<$PrismaModel> | $Enums.ExperimentStatus
+}
+
+export type NestedEnumExperimentPersonaNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExperimentPersona | Prisma.EnumExperimentPersonaFieldRefInput<$PrismaModel> | null
+  in?: $Enums.ExperimentPersona[] | Prisma.ListEnumExperimentPersonaFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.ExperimentPersona[] | Prisma.ListEnumExperimentPersonaFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumExperimentPersonaNullableWithAggregatesFilter<$PrismaModel> | $Enums.ExperimentPersona | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumExperimentPersonaNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumExperimentPersonaNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumExperimentChannelNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExperimentChannel | Prisma.EnumExperimentChannelFieldRefInput<$PrismaModel> | null
+  in?: $Enums.ExperimentChannel[] | Prisma.ListEnumExperimentChannelFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.ExperimentChannel[] | Prisma.ListEnumExperimentChannelFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumExperimentChannelNullableWithAggregatesFilter<$PrismaModel> | $Enums.ExperimentChannel | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumExperimentChannelNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumExperimentChannelNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumExperimentTypeNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExperimentType | Prisma.EnumExperimentTypeFieldRefInput<$PrismaModel> | null
+  in?: $Enums.ExperimentType[] | Prisma.ListEnumExperimentTypeFieldRefInput<$PrismaModel> | null
+  notIn?: $Enums.ExperimentType[] | Prisma.ListEnumExperimentTypeFieldRefInput<$PrismaModel> | null
+  not?: Prisma.NestedEnumExperimentTypeNullableWithAggregatesFilter<$PrismaModel> | $Enums.ExperimentType | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumExperimentTypeNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumExperimentTypeNullableFilter<$PrismaModel>
+}
+
+export type NestedEnumExperimentStatusWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: $Enums.ExperimentStatus | Prisma.EnumExperimentStatusFieldRefInput<$PrismaModel>
+  in?: $Enums.ExperimentStatus[] | Prisma.ListEnumExperimentStatusFieldRefInput<$PrismaModel>
+  notIn?: $Enums.ExperimentStatus[] | Prisma.ListEnumExperimentStatusFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedEnumExperimentStatusWithAggregatesFilter<$PrismaModel> | $Enums.ExperimentStatus
+  _count?: Prisma.NestedIntFilter<$PrismaModel>
+  _min?: Prisma.NestedEnumExperimentStatusFilter<$PrismaModel>
+  _max?: Prisma.NestedEnumExperimentStatusFilter<$PrismaModel>
+}
+
+export type NestedFloatNullableWithAggregatesFilter<$PrismaModel = never> = {
+  equals?: number | Prisma.FloatFieldRefInput<$PrismaModel> | null
+  in?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel> | null
+  notIn?: number[] | Prisma.ListFloatFieldRefInput<$PrismaModel> | null
+  lt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  lte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  gt?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  gte?: number | Prisma.FloatFieldRefInput<$PrismaModel>
+  not?: Prisma.NestedFloatNullableWithAggregatesFilter<$PrismaModel> | number | null
+  _count?: Prisma.NestedIntNullableFilter<$PrismaModel>
+  _avg?: Prisma.NestedFloatNullableFilter<$PrismaModel>
+  _sum?: Prisma.NestedFloatNullableFilter<$PrismaModel>
+  _min?: Prisma.NestedFloatNullableFilter<$PrismaModel>
+  _max?: Prisma.NestedFloatNullableFilter<$PrismaModel>
 }
 
 

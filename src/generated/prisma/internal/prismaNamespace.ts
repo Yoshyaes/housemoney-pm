@@ -408,7 +408,8 @@ export const ModelName = {
   AgentConfig: 'AgentConfig',
   AuditLog: 'AuditLog',
   Decision: 'Decision',
-  DecisionParticipant: 'DecisionParticipant'
+  DecisionParticipant: 'DecisionParticipant',
+  Experiment: 'Experiment'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -424,7 +425,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "workspace" | "workspaceMember" | "project" | "section" | "task" | "taskAttachment" | "taskCollaborator" | "dependency" | "comment" | "label" | "taskLabel" | "activity" | "view" | "notification" | "gitHubPR" | "document" | "documentComment" | "projectMember" | "invitation" | "agentInsight" | "agentConfig" | "auditLog" | "decision" | "decisionParticipant"
+    modelProps: "user" | "workspace" | "workspaceMember" | "project" | "section" | "task" | "taskAttachment" | "taskCollaborator" | "dependency" | "comment" | "label" | "taskLabel" | "activity" | "view" | "notification" | "gitHubPR" | "document" | "documentComment" | "projectMember" | "invitation" | "agentInsight" | "agentConfig" | "auditLog" | "decision" | "decisionParticipant" | "experiment"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2278,6 +2279,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Experiment: {
+      payload: Prisma.$ExperimentPayload<ExtArgs>
+      fields: Prisma.ExperimentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ExperimentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ExperimentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentPayload>
+        }
+        findFirst: {
+          args: Prisma.ExperimentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ExperimentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentPayload>
+        }
+        findMany: {
+          args: Prisma.ExperimentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentPayload>[]
+        }
+        create: {
+          args: Prisma.ExperimentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentPayload>
+        }
+        createMany: {
+          args: Prisma.ExperimentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ExperimentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentPayload>[]
+        }
+        delete: {
+          args: Prisma.ExperimentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentPayload>
+        }
+        update: {
+          args: Prisma.ExperimentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentPayload>
+        }
+        deleteMany: {
+          args: Prisma.ExperimentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ExperimentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ExperimentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentPayload>[]
+        }
+        upsert: {
+          args: Prisma.ExperimentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentPayload>
+        }
+        aggregate: {
+          args: Prisma.ExperimentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateExperiment>
+        }
+        groupBy: {
+          args: Prisma.ExperimentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ExperimentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ExperimentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ExperimentCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2335,6 +2410,7 @@ export const WorkspaceScalarFieldEnum = {
   name: 'name',
   slug: 'slug',
   taskCounter: 'taskCounter',
+  experimentCounter: 'experimentCounter',
   createdAt: 'createdAt'
 } as const
 
@@ -2674,6 +2750,53 @@ export const DecisionParticipantScalarFieldEnum = {
 export type DecisionParticipantScalarFieldEnum = (typeof DecisionParticipantScalarFieldEnum)[keyof typeof DecisionParticipantScalarFieldEnum]
 
 
+export const ExperimentScalarFieldEnum = {
+  id: 'id',
+  identifier: 'identifier',
+  workspaceId: 'workspaceId',
+  projectId: 'projectId',
+  createdById: 'createdById',
+  ownerId: 'ownerId',
+  title: 'title',
+  sprint: 'sprint',
+  persona: 'persona',
+  cohort: 'cohort',
+  channel: 'channel',
+  experimentType: 'experimentType',
+  status: 'status',
+  hypothesis: 'hypothesis',
+  riskiestAssumption: 'riskiestAssumption',
+  learningGoal: 'learningGoal',
+  cacEstimate: 'cacEstimate',
+  monthlyArpu: 'monthlyArpu',
+  ltvEstimate: 'ltvEstimate',
+  paybackPeriod: 'paybackPeriod',
+  depositTarget: 'depositTarget',
+  scoringCriteria: 'scoringCriteria',
+  score: 'score',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  resourceCost: 'resourceCost',
+  testSize: 'testSize',
+  primaryMetric: 'primaryMetric',
+  secondaryMetrics: 'secondaryMetrics',
+  killCondition: 'killCondition',
+  whatHappened: 'whatHappened',
+  primaryMetricResult: 'primaryMetricResult',
+  secondaryMetricResults: 'secondaryMetricResults',
+  unexpectedFindings: 'unexpectedFindings',
+  didWeLearn: 'didWeLearn',
+  continueExperiment: 'continueExperiment',
+  continuePersona: 'continuePersona',
+  nextAction: 'nextAction',
+  investorReadyInsight: 'investorReadyInsight',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ExperimentScalarFieldEnum = (typeof ExperimentScalarFieldEnum)[keyof typeof ExperimentScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -2958,6 +3081,62 @@ export type EnumDecisionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$P
 export type ListEnumDecisionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'DecisionStatus[]'>
     
 
+
+/**
+ * Reference to a field of type 'ExperimentPersona'
+ */
+export type EnumExperimentPersonaFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExperimentPersona'>
+    
+
+
+/**
+ * Reference to a field of type 'ExperimentPersona[]'
+ */
+export type ListEnumExperimentPersonaFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExperimentPersona[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ExperimentChannel'
+ */
+export type EnumExperimentChannelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExperimentChannel'>
+    
+
+
+/**
+ * Reference to a field of type 'ExperimentChannel[]'
+ */
+export type ListEnumExperimentChannelFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExperimentChannel[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ExperimentType'
+ */
+export type EnumExperimentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExperimentType'>
+    
+
+
+/**
+ * Reference to a field of type 'ExperimentType[]'
+ */
+export type ListEnumExperimentTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExperimentType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'ExperimentStatus'
+ */
+export type EnumExperimentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExperimentStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ExperimentStatus[]'
+ */
+export type ListEnumExperimentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExperimentStatus[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -3078,6 +3257,7 @@ export type GlobalOmitConfig = {
   auditLog?: Prisma.AuditLogOmit
   decision?: Prisma.DecisionOmit
   decisionParticipant?: Prisma.DecisionParticipantOmit
+  experiment?: Prisma.ExperimentOmit
 }
 
 /* Types for Logging */
