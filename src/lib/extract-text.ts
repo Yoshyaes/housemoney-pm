@@ -1,7 +1,3 @@
-import { PDFParse } from 'pdf-parse';
-import mammoth from 'mammoth';
-import * as XLSX from 'xlsx';
-
 const MAX_TEXT_LENGTH = 500 * 1024; // 500KB
 const MIN_MEANINGFUL_CHARS = 50;
 
@@ -15,6 +11,7 @@ const TEXT_MIME_TYPES = new Set([
 /**
  * Extract text content from a file buffer based on its MIME type.
  * Returns null if the file type is unsupported or extraction fails.
+ * Uses dynamic imports to avoid crashing the upload route if a package is unavailable.
  */
 export async function extractTextFromBuffer(
   buffer: Buffer,
@@ -24,6 +21,7 @@ export async function extractTextFromBuffer(
     let text: string | null = null;
 
     if (mimeType === 'application/pdf') {
+      const { PDFParse } = await import('pdf-parse');
       const pdf = new PDFParse({ data: new Uint8Array(buffer) });
       const result = await pdf.getText();
       text = result.text;
@@ -32,12 +30,14 @@ export async function extractTextFromBuffer(
       mimeType ===
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
     ) {
+      const mammoth = await import('mammoth');
       const result = await mammoth.extractRawText({ buffer });
       text = result.value;
     } else if (
       mimeType ===
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
     ) {
+      const XLSX = await import('xlsx');
       const workbook = XLSX.read(buffer, { type: 'buffer' });
       const parts: string[] = [];
       for (const sheetName of workbook.SheetNames) {
