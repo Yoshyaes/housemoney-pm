@@ -114,6 +114,10 @@ export const documentsRouter = router({
         tags: z.array(z.string()).default([]),
         projectId: z.string().optional(),
         pinned: z.boolean().default(false),
+        fileUrl: z.string().url().optional(),
+        fileName: z.string().optional(),
+        fileSize: z.number().optional(),
+        fileMimeType: z.string().optional(),
       })
     )
     .mutation(async ({ ctx, input }) => {
@@ -137,6 +141,10 @@ export const documentsRouter = router({
           tags: input.tags,
           projectId: input.projectId ?? null,
           pinned: input.pinned,
+          fileUrl: input.fileUrl ?? null,
+          fileName: input.fileName ?? null,
+          fileSize: input.fileSize ?? null,
+          fileMimeType: input.fileMimeType ?? null,
         },
         include: {
           author: { select: { id: true, name: true, avatarUrl: true, avatarColor: true } },

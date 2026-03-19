@@ -60,6 +60,10 @@ export function DocsListPanel({ workspaceId }: DocsListPanelProps) {
         pinned: doc.pinned,
         author: doc.author,
         updatedAt: doc.updatedAt,
+        fileUrl: doc.fileUrl,
+        fileName: doc.fileName,
+        fileMimeType: doc.fileMimeType,
+        fileSize: doc.fileSize,
       }));
 
   return (

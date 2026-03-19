@@ -20,8 +20,18 @@ export type DocumentModel = runtime.Types.Result.DefaultSelection<Prisma.$Docume
 
 export type AggregateDocument = {
   _count: DocumentCountAggregateOutputType | null
+  _avg: DocumentAvgAggregateOutputType | null
+  _sum: DocumentSumAggregateOutputType | null
   _min: DocumentMinAggregateOutputType | null
   _max: DocumentMaxAggregateOutputType | null
+}
+
+export type DocumentAvgAggregateOutputType = {
+  fileSize: number | null
+}
+
+export type DocumentSumAggregateOutputType = {
+  fileSize: number | null
 }
 
 export type DocumentMinAggregateOutputType = {
@@ -31,6 +41,10 @@ export type DocumentMinAggregateOutputType = {
   lastEditedById: string | null
   title: string | null
   content: string | null
+  fileUrl: string | null
+  fileName: string | null
+  fileSize: number | null
+  fileMimeType: string | null
   docType: $Enums.DocType | null
   projectId: string | null
   pinned: boolean | null
@@ -45,6 +59,10 @@ export type DocumentMaxAggregateOutputType = {
   lastEditedById: string | null
   title: string | null
   content: string | null
+  fileUrl: string | null
+  fileName: string | null
+  fileSize: number | null
+  fileMimeType: string | null
   docType: $Enums.DocType | null
   projectId: string | null
   pinned: boolean | null
@@ -59,6 +77,10 @@ export type DocumentCountAggregateOutputType = {
   lastEditedById: number
   title: number
   content: number
+  fileUrl: number
+  fileName: number
+  fileSize: number
+  fileMimeType: number
   docType: number
   tags: number
   projectId: number
@@ -69,6 +91,14 @@ export type DocumentCountAggregateOutputType = {
 }
 
 
+export type DocumentAvgAggregateInputType = {
+  fileSize?: true
+}
+
+export type DocumentSumAggregateInputType = {
+  fileSize?: true
+}
+
 export type DocumentMinAggregateInputType = {
   id?: true
   workspaceId?: true
@@ -76,6 +106,10 @@ export type DocumentMinAggregateInputType = {
   lastEditedById?: true
   title?: true
   content?: true
+  fileUrl?: true
+  fileName?: true
+  fileSize?: true
+  fileMimeType?: true
   docType?: true
   projectId?: true
   pinned?: true
@@ -90,6 +124,10 @@ export type DocumentMaxAggregateInputType = {
   lastEditedById?: true
   title?: true
   content?: true
+  fileUrl?: true
+  fileName?: true
+  fileSize?: true
+  fileMimeType?: true
   docType?: true
   projectId?: true
   pinned?: true
@@ -104,6 +142,10 @@ export type DocumentCountAggregateInputType = {
   lastEditedById?: true
   title?: true
   content?: true
+  fileUrl?: true
+  fileName?: true
+  fileSize?: true
+  fileMimeType?: true
   docType?: true
   tags?: true
   projectId?: true
@@ -151,6 +193,18 @@ export type DocumentAggregateArgs<ExtArgs extends runtime.Types.Extensions.Inter
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: DocumentAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: DocumentSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: DocumentMinAggregateInputType
@@ -181,6 +235,8 @@ export type DocumentGroupByArgs<ExtArgs extends runtime.Types.Extensions.Interna
   take?: number
   skip?: number
   _count?: DocumentCountAggregateInputType | true
+  _avg?: DocumentAvgAggregateInputType
+  _sum?: DocumentSumAggregateInputType
   _min?: DocumentMinAggregateInputType
   _max?: DocumentMaxAggregateInputType
 }
@@ -192,6 +248,10 @@ export type DocumentGroupByOutputType = {
   lastEditedById: string | null
   title: string
   content: string
+  fileUrl: string | null
+  fileName: string | null
+  fileSize: number | null
+  fileMimeType: string | null
   docType: $Enums.DocType
   tags: string[]
   projectId: string | null
@@ -199,6 +259,8 @@ export type DocumentGroupByOutputType = {
   createdAt: Date
   updatedAt: Date
   _count: DocumentCountAggregateOutputType | null
+  _avg: DocumentAvgAggregateOutputType | null
+  _sum: DocumentSumAggregateOutputType | null
   _min: DocumentMinAggregateOutputType | null
   _max: DocumentMaxAggregateOutputType | null
 }
@@ -228,6 +290,10 @@ export type DocumentWhereInput = {
   lastEditedById?: Prisma.StringNullableFilter<"Document"> | string | null
   title?: Prisma.StringFilter<"Document"> | string
   content?: Prisma.StringFilter<"Document"> | string
+  fileUrl?: Prisma.StringNullableFilter<"Document"> | string | null
+  fileName?: Prisma.StringNullableFilter<"Document"> | string | null
+  fileSize?: Prisma.IntNullableFilter<"Document"> | number | null
+  fileMimeType?: Prisma.StringNullableFilter<"Document"> | string | null
   docType?: Prisma.EnumDocTypeFilter<"Document"> | $Enums.DocType
   tags?: Prisma.StringNullableListFilter<"Document">
   projectId?: Prisma.StringNullableFilter<"Document"> | string | null
@@ -249,6 +315,10 @@ export type DocumentOrderByWithRelationInput = {
   lastEditedById?: Prisma.SortOrderInput | Prisma.SortOrder
   title?: Prisma.SortOrder
   content?: Prisma.SortOrder
+  fileUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  fileName?: Prisma.SortOrderInput | Prisma.SortOrder
+  fileSize?: Prisma.SortOrderInput | Prisma.SortOrder
+  fileMimeType?: Prisma.SortOrderInput | Prisma.SortOrder
   docType?: Prisma.SortOrder
   tags?: Prisma.SortOrder
   projectId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -273,6 +343,10 @@ export type DocumentWhereUniqueInput = Prisma.AtLeast<{
   lastEditedById?: Prisma.StringNullableFilter<"Document"> | string | null
   title?: Prisma.StringFilter<"Document"> | string
   content?: Prisma.StringFilter<"Document"> | string
+  fileUrl?: Prisma.StringNullableFilter<"Document"> | string | null
+  fileName?: Prisma.StringNullableFilter<"Document"> | string | null
+  fileSize?: Prisma.IntNullableFilter<"Document"> | number | null
+  fileMimeType?: Prisma.StringNullableFilter<"Document"> | string | null
   docType?: Prisma.EnumDocTypeFilter<"Document"> | $Enums.DocType
   tags?: Prisma.StringNullableListFilter<"Document">
   projectId?: Prisma.StringNullableFilter<"Document"> | string | null
@@ -294,6 +368,10 @@ export type DocumentOrderByWithAggregationInput = {
   lastEditedById?: Prisma.SortOrderInput | Prisma.SortOrder
   title?: Prisma.SortOrder
   content?: Prisma.SortOrder
+  fileUrl?: Prisma.SortOrderInput | Prisma.SortOrder
+  fileName?: Prisma.SortOrderInput | Prisma.SortOrder
+  fileSize?: Prisma.SortOrderInput | Prisma.SortOrder
+  fileMimeType?: Prisma.SortOrderInput | Prisma.SortOrder
   docType?: Prisma.SortOrder
   tags?: Prisma.SortOrder
   projectId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -301,8 +379,10 @@ export type DocumentOrderByWithAggregationInput = {
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.DocumentCountOrderByAggregateInput
+  _avg?: Prisma.DocumentAvgOrderByAggregateInput
   _max?: Prisma.DocumentMaxOrderByAggregateInput
   _min?: Prisma.DocumentMinOrderByAggregateInput
+  _sum?: Prisma.DocumentSumOrderByAggregateInput
 }
 
 export type DocumentScalarWhereWithAggregatesInput = {
@@ -315,6 +395,10 @@ export type DocumentScalarWhereWithAggregatesInput = {
   lastEditedById?: Prisma.StringNullableWithAggregatesFilter<"Document"> | string | null
   title?: Prisma.StringWithAggregatesFilter<"Document"> | string
   content?: Prisma.StringWithAggregatesFilter<"Document"> | string
+  fileUrl?: Prisma.StringNullableWithAggregatesFilter<"Document"> | string | null
+  fileName?: Prisma.StringNullableWithAggregatesFilter<"Document"> | string | null
+  fileSize?: Prisma.IntNullableWithAggregatesFilter<"Document"> | number | null
+  fileMimeType?: Prisma.StringNullableWithAggregatesFilter<"Document"> | string | null
   docType?: Prisma.EnumDocTypeWithAggregatesFilter<"Document"> | $Enums.DocType
   tags?: Prisma.StringNullableListFilter<"Document">
   projectId?: Prisma.StringNullableWithAggregatesFilter<"Document"> | string | null
@@ -327,6 +411,10 @@ export type DocumentCreateInput = {
   id?: string
   title: string
   content?: string
+  fileUrl?: string | null
+  fileName?: string | null
+  fileSize?: number | null
+  fileMimeType?: string | null
   docType?: $Enums.DocType
   tags?: Prisma.DocumentCreatetagsInput | string[]
   pinned?: boolean
@@ -347,6 +435,10 @@ export type DocumentUncheckedCreateInput = {
   lastEditedById?: string | null
   title: string
   content?: string
+  fileUrl?: string | null
+  fileName?: string | null
+  fileSize?: number | null
+  fileMimeType?: string | null
   docType?: $Enums.DocType
   tags?: Prisma.DocumentCreatetagsInput | string[]
   projectId?: string | null
@@ -361,6 +453,10 @@ export type DocumentUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileMimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
   tags?: Prisma.DocumentUpdatetagsInput | string[]
   pinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -381,6 +477,10 @@ export type DocumentUncheckedUpdateInput = {
   lastEditedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileMimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
   tags?: Prisma.DocumentUpdatetagsInput | string[]
   projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -398,6 +498,10 @@ export type DocumentCreateManyInput = {
   lastEditedById?: string | null
   title: string
   content?: string
+  fileUrl?: string | null
+  fileName?: string | null
+  fileSize?: number | null
+  fileMimeType?: string | null
   docType?: $Enums.DocType
   tags?: Prisma.DocumentCreatetagsInput | string[]
   projectId?: string | null
@@ -410,6 +514,10 @@ export type DocumentUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileMimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
   tags?: Prisma.DocumentUpdatetagsInput | string[]
   pinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -424,6 +532,10 @@ export type DocumentUncheckedUpdateManyInput = {
   lastEditedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileMimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
   tags?: Prisma.DocumentUpdatetagsInput | string[]
   projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -457,12 +569,20 @@ export type DocumentCountOrderByAggregateInput = {
   lastEditedById?: Prisma.SortOrder
   title?: Prisma.SortOrder
   content?: Prisma.SortOrder
+  fileUrl?: Prisma.SortOrder
+  fileName?: Prisma.SortOrder
+  fileSize?: Prisma.SortOrder
+  fileMimeType?: Prisma.SortOrder
   docType?: Prisma.SortOrder
   tags?: Prisma.SortOrder
   projectId?: Prisma.SortOrder
   pinned?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type DocumentAvgOrderByAggregateInput = {
+  fileSize?: Prisma.SortOrder
 }
 
 export type DocumentMaxOrderByAggregateInput = {
@@ -472,6 +592,10 @@ export type DocumentMaxOrderByAggregateInput = {
   lastEditedById?: Prisma.SortOrder
   title?: Prisma.SortOrder
   content?: Prisma.SortOrder
+  fileUrl?: Prisma.SortOrder
+  fileName?: Prisma.SortOrder
+  fileSize?: Prisma.SortOrder
+  fileMimeType?: Prisma.SortOrder
   docType?: Prisma.SortOrder
   projectId?: Prisma.SortOrder
   pinned?: Prisma.SortOrder
@@ -486,11 +610,19 @@ export type DocumentMinOrderByAggregateInput = {
   lastEditedById?: Prisma.SortOrder
   title?: Prisma.SortOrder
   content?: Prisma.SortOrder
+  fileUrl?: Prisma.SortOrder
+  fileName?: Prisma.SortOrder
+  fileSize?: Prisma.SortOrder
+  fileMimeType?: Prisma.SortOrder
   docType?: Prisma.SortOrder
   projectId?: Prisma.SortOrder
   pinned?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+}
+
+export type DocumentSumOrderByAggregateInput = {
+  fileSize?: Prisma.SortOrder
 }
 
 export type DocumentScalarRelationFilter = {
@@ -711,6 +843,10 @@ export type DocumentCreateWithoutAuthorInput = {
   id?: string
   title: string
   content?: string
+  fileUrl?: string | null
+  fileName?: string | null
+  fileSize?: number | null
+  fileMimeType?: string | null
   docType?: $Enums.DocType
   tags?: Prisma.DocumentCreatetagsInput | string[]
   pinned?: boolean
@@ -729,6 +865,10 @@ export type DocumentUncheckedCreateWithoutAuthorInput = {
   lastEditedById?: string | null
   title: string
   content?: string
+  fileUrl?: string | null
+  fileName?: string | null
+  fileSize?: number | null
+  fileMimeType?: string | null
   docType?: $Enums.DocType
   tags?: Prisma.DocumentCreatetagsInput | string[]
   projectId?: string | null
@@ -753,6 +893,10 @@ export type DocumentCreateWithoutLastEditedByInput = {
   id?: string
   title: string
   content?: string
+  fileUrl?: string | null
+  fileName?: string | null
+  fileSize?: number | null
+  fileMimeType?: string | null
   docType?: $Enums.DocType
   tags?: Prisma.DocumentCreatetagsInput | string[]
   pinned?: boolean
@@ -771,6 +915,10 @@ export type DocumentUncheckedCreateWithoutLastEditedByInput = {
   authorId: string
   title: string
   content?: string
+  fileUrl?: string | null
+  fileName?: string | null
+  fileSize?: number | null
+  fileMimeType?: string | null
   docType?: $Enums.DocType
   tags?: Prisma.DocumentCreatetagsInput | string[]
   projectId?: string | null
@@ -817,6 +965,10 @@ export type DocumentScalarWhereInput = {
   lastEditedById?: Prisma.StringNullableFilter<"Document"> | string | null
   title?: Prisma.StringFilter<"Document"> | string
   content?: Prisma.StringFilter<"Document"> | string
+  fileUrl?: Prisma.StringNullableFilter<"Document"> | string | null
+  fileName?: Prisma.StringNullableFilter<"Document"> | string | null
+  fileSize?: Prisma.IntNullableFilter<"Document"> | number | null
+  fileMimeType?: Prisma.StringNullableFilter<"Document"> | string | null
   docType?: Prisma.EnumDocTypeFilter<"Document"> | $Enums.DocType
   tags?: Prisma.StringNullableListFilter<"Document">
   projectId?: Prisma.StringNullableFilter<"Document"> | string | null
@@ -845,6 +997,10 @@ export type DocumentCreateWithoutWorkspaceInput = {
   id?: string
   title: string
   content?: string
+  fileUrl?: string | null
+  fileName?: string | null
+  fileSize?: number | null
+  fileMimeType?: string | null
   docType?: $Enums.DocType
   tags?: Prisma.DocumentCreatetagsInput | string[]
   pinned?: boolean
@@ -863,6 +1019,10 @@ export type DocumentUncheckedCreateWithoutWorkspaceInput = {
   lastEditedById?: string | null
   title: string
   content?: string
+  fileUrl?: string | null
+  fileName?: string | null
+  fileSize?: number | null
+  fileMimeType?: string | null
   docType?: $Enums.DocType
   tags?: Prisma.DocumentCreatetagsInput | string[]
   projectId?: string | null
@@ -903,6 +1063,10 @@ export type DocumentCreateWithoutProjectInput = {
   id?: string
   title: string
   content?: string
+  fileUrl?: string | null
+  fileName?: string | null
+  fileSize?: number | null
+  fileMimeType?: string | null
   docType?: $Enums.DocType
   tags?: Prisma.DocumentCreatetagsInput | string[]
   pinned?: boolean
@@ -922,6 +1086,10 @@ export type DocumentUncheckedCreateWithoutProjectInput = {
   lastEditedById?: string | null
   title: string
   content?: string
+  fileUrl?: string | null
+  fileName?: string | null
+  fileSize?: number | null
+  fileMimeType?: string | null
   docType?: $Enums.DocType
   tags?: Prisma.DocumentCreatetagsInput | string[]
   pinned?: boolean
@@ -961,6 +1129,10 @@ export type DocumentCreateWithoutDocCommentsInput = {
   id?: string
   title: string
   content?: string
+  fileUrl?: string | null
+  fileName?: string | null
+  fileSize?: number | null
+  fileMimeType?: string | null
   docType?: $Enums.DocType
   tags?: Prisma.DocumentCreatetagsInput | string[]
   pinned?: boolean
@@ -980,6 +1152,10 @@ export type DocumentUncheckedCreateWithoutDocCommentsInput = {
   lastEditedById?: string | null
   title: string
   content?: string
+  fileUrl?: string | null
+  fileName?: string | null
+  fileSize?: number | null
+  fileMimeType?: string | null
   docType?: $Enums.DocType
   tags?: Prisma.DocumentCreatetagsInput | string[]
   projectId?: string | null
@@ -1009,6 +1185,10 @@ export type DocumentUpdateWithoutDocCommentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileMimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
   tags?: Prisma.DocumentUpdatetagsInput | string[]
   pinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1028,6 +1208,10 @@ export type DocumentUncheckedUpdateWithoutDocCommentsInput = {
   lastEditedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileMimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
   tags?: Prisma.DocumentUpdatetagsInput | string[]
   projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1041,6 +1225,10 @@ export type DocumentCreateWithoutAttachmentsInput = {
   id?: string
   title: string
   content?: string
+  fileUrl?: string | null
+  fileName?: string | null
+  fileSize?: number | null
+  fileMimeType?: string | null
   docType?: $Enums.DocType
   tags?: Prisma.DocumentCreatetagsInput | string[]
   pinned?: boolean
@@ -1060,6 +1248,10 @@ export type DocumentUncheckedCreateWithoutAttachmentsInput = {
   lastEditedById?: string | null
   title: string
   content?: string
+  fileUrl?: string | null
+  fileName?: string | null
+  fileSize?: number | null
+  fileMimeType?: string | null
   docType?: $Enums.DocType
   tags?: Prisma.DocumentCreatetagsInput | string[]
   projectId?: string | null
@@ -1089,6 +1281,10 @@ export type DocumentUpdateWithoutAttachmentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileMimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
   tags?: Prisma.DocumentUpdatetagsInput | string[]
   pinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1108,6 +1304,10 @@ export type DocumentUncheckedUpdateWithoutAttachmentsInput = {
   lastEditedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileMimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
   tags?: Prisma.DocumentUpdatetagsInput | string[]
   projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1123,6 +1323,10 @@ export type DocumentCreateManyAuthorInput = {
   lastEditedById?: string | null
   title: string
   content?: string
+  fileUrl?: string | null
+  fileName?: string | null
+  fileSize?: number | null
+  fileMimeType?: string | null
   docType?: $Enums.DocType
   tags?: Prisma.DocumentCreatetagsInput | string[]
   projectId?: string | null
@@ -1137,6 +1341,10 @@ export type DocumentCreateManyLastEditedByInput = {
   authorId: string
   title: string
   content?: string
+  fileUrl?: string | null
+  fileName?: string | null
+  fileSize?: number | null
+  fileMimeType?: string | null
   docType?: $Enums.DocType
   tags?: Prisma.DocumentCreatetagsInput | string[]
   projectId?: string | null
@@ -1149,6 +1357,10 @@ export type DocumentUpdateWithoutAuthorInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileMimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
   tags?: Prisma.DocumentUpdatetagsInput | string[]
   pinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1167,6 +1379,10 @@ export type DocumentUncheckedUpdateWithoutAuthorInput = {
   lastEditedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileMimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
   tags?: Prisma.DocumentUpdatetagsInput | string[]
   projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1183,6 +1399,10 @@ export type DocumentUncheckedUpdateManyWithoutAuthorInput = {
   lastEditedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileMimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
   tags?: Prisma.DocumentUpdatetagsInput | string[]
   projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1195,6 +1415,10 @@ export type DocumentUpdateWithoutLastEditedByInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileMimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
   tags?: Prisma.DocumentUpdatetagsInput | string[]
   pinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1213,6 +1437,10 @@ export type DocumentUncheckedUpdateWithoutLastEditedByInput = {
   authorId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileMimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
   tags?: Prisma.DocumentUpdatetagsInput | string[]
   projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1229,6 +1457,10 @@ export type DocumentUncheckedUpdateManyWithoutLastEditedByInput = {
   authorId?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileMimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
   tags?: Prisma.DocumentUpdatetagsInput | string[]
   projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1243,6 +1475,10 @@ export type DocumentCreateManyWorkspaceInput = {
   lastEditedById?: string | null
   title: string
   content?: string
+  fileUrl?: string | null
+  fileName?: string | null
+  fileSize?: number | null
+  fileMimeType?: string | null
   docType?: $Enums.DocType
   tags?: Prisma.DocumentCreatetagsInput | string[]
   projectId?: string | null
@@ -1255,6 +1491,10 @@ export type DocumentUpdateWithoutWorkspaceInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileMimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
   tags?: Prisma.DocumentUpdatetagsInput | string[]
   pinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1273,6 +1513,10 @@ export type DocumentUncheckedUpdateWithoutWorkspaceInput = {
   lastEditedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileMimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
   tags?: Prisma.DocumentUpdatetagsInput | string[]
   projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1289,6 +1533,10 @@ export type DocumentUncheckedUpdateManyWithoutWorkspaceInput = {
   lastEditedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileMimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
   tags?: Prisma.DocumentUpdatetagsInput | string[]
   projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1304,6 +1552,10 @@ export type DocumentCreateManyProjectInput = {
   lastEditedById?: string | null
   title: string
   content?: string
+  fileUrl?: string | null
+  fileName?: string | null
+  fileSize?: number | null
+  fileMimeType?: string | null
   docType?: $Enums.DocType
   tags?: Prisma.DocumentCreatetagsInput | string[]
   pinned?: boolean
@@ -1315,6 +1567,10 @@ export type DocumentUpdateWithoutProjectInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileMimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
   tags?: Prisma.DocumentUpdatetagsInput | string[]
   pinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1334,6 +1590,10 @@ export type DocumentUncheckedUpdateWithoutProjectInput = {
   lastEditedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileMimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
   tags?: Prisma.DocumentUpdatetagsInput | string[]
   pinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1350,6 +1610,10 @@ export type DocumentUncheckedUpdateManyWithoutProjectInput = {
   lastEditedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   title?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
+  fileUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileName?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  fileSize?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  fileMimeType?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
   tags?: Prisma.DocumentUpdatetagsInput | string[]
   pinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
@@ -1404,6 +1668,10 @@ export type DocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   lastEditedById?: boolean
   title?: boolean
   content?: boolean
+  fileUrl?: boolean
+  fileName?: boolean
+  fileSize?: boolean
+  fileMimeType?: boolean
   docType?: boolean
   tags?: boolean
   projectId?: boolean
@@ -1426,6 +1694,10 @@ export type DocumentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   lastEditedById?: boolean
   title?: boolean
   content?: boolean
+  fileUrl?: boolean
+  fileName?: boolean
+  fileSize?: boolean
+  fileMimeType?: boolean
   docType?: boolean
   tags?: boolean
   projectId?: boolean
@@ -1445,6 +1717,10 @@ export type DocumentSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   lastEditedById?: boolean
   title?: boolean
   content?: boolean
+  fileUrl?: boolean
+  fileName?: boolean
+  fileSize?: boolean
+  fileMimeType?: boolean
   docType?: boolean
   tags?: boolean
   projectId?: boolean
@@ -1464,6 +1740,10 @@ export type DocumentSelectScalar = {
   lastEditedById?: boolean
   title?: boolean
   content?: boolean
+  fileUrl?: boolean
+  fileName?: boolean
+  fileSize?: boolean
+  fileMimeType?: boolean
   docType?: boolean
   tags?: boolean
   projectId?: boolean
@@ -1472,7 +1752,7 @@ export type DocumentSelectScalar = {
   updatedAt?: boolean
 }
 
-export type DocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "workspaceId" | "authorId" | "lastEditedById" | "title" | "content" | "docType" | "tags" | "projectId" | "pinned" | "createdAt" | "updatedAt", ExtArgs["result"]["document"]>
+export type DocumentOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "workspaceId" | "authorId" | "lastEditedById" | "title" | "content" | "fileUrl" | "fileName" | "fileSize" | "fileMimeType" | "docType" | "tags" | "projectId" | "pinned" | "createdAt" | "updatedAt", ExtArgs["result"]["document"]>
 export type DocumentInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   workspace?: boolean | Prisma.WorkspaceDefaultArgs<ExtArgs>
   author?: boolean | Prisma.UserDefaultArgs<ExtArgs>
@@ -1512,6 +1792,10 @@ export type $DocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     lastEditedById: string | null
     title: string
     content: string
+    fileUrl: string | null
+    fileName: string | null
+    fileSize: number | null
+    fileMimeType: string | null
     docType: $Enums.DocType
     tags: string[]
     projectId: string | null
@@ -1953,6 +2237,10 @@ export interface DocumentFieldRefs {
   readonly lastEditedById: Prisma.FieldRef<"Document", 'String'>
   readonly title: Prisma.FieldRef<"Document", 'String'>
   readonly content: Prisma.FieldRef<"Document", 'String'>
+  readonly fileUrl: Prisma.FieldRef<"Document", 'String'>
+  readonly fileName: Prisma.FieldRef<"Document", 'String'>
+  readonly fileSize: Prisma.FieldRef<"Document", 'Int'>
+  readonly fileMimeType: Prisma.FieldRef<"Document", 'String'>
   readonly docType: Prisma.FieldRef<"Document", 'DocType'>
   readonly tags: Prisma.FieldRef<"Document", 'String[]'>
   readonly projectId: Prisma.FieldRef<"Document", 'String'>

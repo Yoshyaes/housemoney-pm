@@ -1,6 +1,7 @@
 'use client';
 
-import { Plus, Sparkles, BookOpen } from 'lucide-react';
+import { useRef, useState } from 'react';
+import { Plus, Sparkles, BookOpen, Upload } from 'lucide-react';
 import { useDocsStore } from '@/lib/stores/docs-store';
 import { trpc } from '@/lib/trpc';
 
@@ -11,6 +12,8 @@ interface DocsTopbarProps {
 export function DocsTopbar({ workspaceId }: DocsTopbarProps) {
   const { docsView, setDocsView, setActiveDocId } = useDocsStore();
   const utils = trpc.useUtils();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploading, setUploading] = useState(false);
 
   const createDoc = trpc.documents.create.useMutation({
     onSuccess: (doc) => {
@@ -28,6 +31,41 @@ export function DocsTopbar({ workspaceId }: DocsTopbarProps) {
       docType: 'GENERAL',
       tags: [],
     });
+  };
+
+  const handleUploadDoc = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('bucket', 'document-attachments');
+      const res = await fetch('/api/upload', { method: 'POST', body: formData });
+      const data = await res.json();
+      if (data.error) {
+        alert(data.error);
+        return;
+      }
+      if (data.url) {
+        createDoc.mutate({
+          workspaceId,
+          title: file.name,
+          content: '',
+          docType: 'GENERAL',
+          tags: [],
+          fileUrl: data.url,
+          fileName: data.name,
+          fileSize: data.size,
+          fileMimeType: data.mimeType,
+        });
+      }
+    } catch {
+      alert('Upload failed. Please try again.');
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
   };
 
   return (
@@ -63,7 +101,22 @@ export function DocsTopbar({ workspaceId }: DocsTopbarProps) {
         </button>
       </div>
 
-      <div className="ml-auto">
+      <input
+        ref={fileInputRef}
+        type="file"
+        className="hidden"
+        onChange={handleUploadDoc}
+      />
+
+      <div className="ml-auto flex items-center gap-2">
+        <button
+          onClick={() => fileInputRef.current?.click()}
+          disabled={uploading || createDoc.isPending}
+          className="flex items-center gap-1.5 rounded-md border border-zinc-200 dark:border-zinc-700 px-3 py-1.5 text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 disabled:opacity-60 transition-colors"
+        >
+          <Upload className="h-3.5 w-3.5" />
+          {uploading ? 'Uploading...' : 'Upload File'}
+        </button>
         <button
           onClick={handleNewDoc}
           disabled={createDoc.isPending}

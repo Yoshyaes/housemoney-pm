@@ -12,7 +12,7 @@ import { DocTypeBadge } from './doc-type-badge';
 import { DocTagInput } from './doc-tag-input';
 import { DocType } from '@/generated/prisma/client';
 import { DOC_TYPE_CONFIG } from './doc-type-badge';
-import { Pin, PinOff, Trash2, ChevronDown, Check, Clock, User, Send, MessageSquare, Paperclip, FileText, X, Upload } from 'lucide-react';
+import { Pin, PinOff, Trash2, ChevronDown, Check, Clock, User, Send, MessageSquare, Paperclip, FileText, X, Upload, Download, FileImage, File } from 'lucide-react';
 import { Avatar } from '@/components/shared/avatar';
 import { formatDistanceToNow } from 'date-fns';
 
@@ -85,6 +85,8 @@ export function DocEditor({ docId, workspaceId, projects, onDelete }: DocEditorP
       },
     },
     onUpdate: ({ editor }) => {
+      // Skip autosave for file-based documents
+      if (doc?.fileUrl) return;
       if (saveTimer.current) clearTimeout(saveTimer.current);
       saveTimer.current = setTimeout(() => {
         // tiptap-markdown stores getMarkdown in storage.markdown
@@ -339,72 +341,118 @@ export function DocEditor({ docId, workspaceId, projects, onDelete }: DocEditorP
             />
           </div>
 
-          {/* Attachments */}
-          <div className="mb-5">
-            <input
-              ref={fileInputRef}
-              type="file"
-              className="hidden"
-              onChange={handleFileUpload}
-            />
-            <div className="flex items-center gap-2 mb-2">
-              <Paperclip className="h-3.5 w-3.5 text-zinc-400" />
-              <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400">Attachments</span>
-              {doc.attachments && doc.attachments.length > 0 && (
-                <span className="rounded-full bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 text-[10px] text-zinc-500 dark:text-zinc-400">
-                  {doc.attachments.length}
-                </span>
-              )}
-              <button
-                onClick={() => fileInputRef.current?.click()}
-                disabled={uploadingFile}
-                className="ml-auto flex items-center gap-1 rounded px-2 py-0.5 text-[11px] text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-300 disabled:opacity-40"
-              >
-                <Upload className="h-3 w-3" />
-                {uploadingFile ? 'Uploading...' : 'Upload'}
-              </button>
-            </div>
-
-            {doc.attachments && doc.attachments.length > 0 ? (
-              <div className="space-y-1">
-                {doc.attachments.map((att) => (
-                  <div
-                    key={att.id}
-                    className="group flex items-center gap-2 rounded-md px-2 py-1.5 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
-                  >
-                    <FileText className="h-3.5 w-3.5 flex-shrink-0 text-zinc-400" />
-                    <a
-                      href={att.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex-1 truncate text-xs text-zinc-700 dark:text-zinc-300 hover:underline"
-                    >
-                      {att.name}
-                    </a>
-                    {att.size && (
-                      <span className="text-[10px] text-zinc-400 flex-shrink-0">{formatFileSize(att.size)}</span>
+          {doc.fileUrl ? (
+            /* File preview for file-based documents */
+            <div className="mb-6">
+              {doc.fileMimeType?.startsWith('image/') ? (
+                <div className="rounded-lg border border-zinc-200 dark:border-zinc-700 overflow-hidden">
+                  <img
+                    src={doc.fileUrl}
+                    alt={doc.fileName || doc.title}
+                    className="max-w-full h-auto"
+                  />
+                </div>
+              ) : doc.fileMimeType === 'application/pdf' ? (
+                <iframe
+                  src={doc.fileUrl}
+                  title={doc.fileName || doc.title}
+                  className="w-full h-[600px] rounded-lg border border-zinc-200 dark:border-zinc-700"
+                />
+              ) : (
+                <div className="flex flex-col items-center gap-4 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 px-8 py-12">
+                  <File className="h-12 w-12 text-zinc-300 dark:text-zinc-600" />
+                  <div className="text-center">
+                    <p className="text-sm font-medium text-zinc-700 dark:text-zinc-300">{doc.fileName || doc.title}</p>
+                    {doc.fileSize && (
+                      <p className="mt-1 text-xs text-zinc-400">{formatFileSize(doc.fileSize)}</p>
                     )}
-                    <button
-                      onClick={() => deleteAttachment.mutate({ id: att.id })}
-                      className="hidden group-hover:block flex-shrink-0 rounded p-0.5 text-zinc-400 hover:text-red-500"
-                    >
-                      <X className="h-3 w-3" />
-                    </button>
+                    {doc.fileMimeType && (
+                      <p className="mt-0.5 text-[10px] text-zinc-400 uppercase">{doc.fileMimeType.split('/').pop()}</p>
+                    )}
                   </div>
-                ))}
-              </div>
-            ) : !uploadingFile ? (
-              <button
-                onClick={() => fileInputRef.current?.click()}
-                className="w-full rounded-md border border-dashed border-zinc-200 dark:border-zinc-700 px-4 py-3 text-center text-[11px] text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-600 hover:text-zinc-500 transition-colors"
-              >
-                Drop files here or click to upload
-              </button>
-            ) : null}
-          </div>
+                  <a
+                    href={doc.fileUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-1.5 rounded-md px-4 py-2 text-xs font-medium text-white transition-colors"
+                    style={{ backgroundColor: '#BA7517' }}
+                  >
+                    <Download className="h-3.5 w-3.5" />
+                    Download File
+                  </a>
+                </div>
+              )}
+            </div>
+          ) : (
+            <>
+              {/* Attachments */}
+              <div className="mb-5">
+                <input
+                  ref={fileInputRef}
+                  type="file"
+                  className="hidden"
+                  onChange={handleFileUpload}
+                />
+                <div className="flex items-center gap-2 mb-2">
+                  <Paperclip className="h-3.5 w-3.5 text-zinc-400" />
+                  <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400">Attachments</span>
+                  {doc.attachments && doc.attachments.length > 0 && (
+                    <span className="rounded-full bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 text-[10px] text-zinc-500 dark:text-zinc-400">
+                      {doc.attachments.length}
+                    </span>
+                  )}
+                  <button
+                    onClick={() => fileInputRef.current?.click()}
+                    disabled={uploadingFile}
+                    className="ml-auto flex items-center gap-1 rounded px-2 py-0.5 text-[11px] text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-300 disabled:opacity-40"
+                  >
+                    <Upload className="h-3 w-3" />
+                    {uploadingFile ? 'Uploading...' : 'Upload'}
+                  </button>
+                </div>
 
-          {/* Tiptap content */}
-          <EditorContent editor={editor} />
+                {doc.attachments && doc.attachments.length > 0 ? (
+                  <div className="space-y-1">
+                    {doc.attachments.map((att) => (
+                      <div
+                        key={att.id}
+                        className="group flex items-center gap-2 rounded-md px-2 py-1.5 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+                      >
+                        <FileText className="h-3.5 w-3.5 flex-shrink-0 text-zinc-400" />
+                        <a
+                          href={att.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="flex-1 truncate text-xs text-zinc-700 dark:text-zinc-300 hover:underline"
+                        >
+                          {att.name}
+                        </a>
+                        {att.size && (
+                          <span className="text-[10px] text-zinc-400 flex-shrink-0">{formatFileSize(att.size)}</span>
+                        )}
+                        <button
+                          onClick={() => deleteAttachment.mutate({ id: att.id })}
+                          className="hidden group-hover:block flex-shrink-0 rounded p-0.5 text-zinc-400 hover:text-red-500"
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                ) : !uploadingFile ? (
+                  <button
+                    onClick={() => fileInputRef.current?.click()}
+                    className="w-full rounded-md border border-dashed border-zinc-200 dark:border-zinc-700 px-4 py-3 text-center text-[11px] text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-600 hover:text-zinc-500 transition-colors"
+                  >
+                    Drop files here or click to upload
+                  </button>
+                ) : null}
+              </div>
+
+              {/* Tiptap content */}
+              <EditorContent editor={editor} />
+            </>
+          )}
 
           {/* Comments section */}
           <div className="mt-10 border-t border-zinc-100 dark:border-zinc-800 pt-6">

@@ -1,4 +1,4 @@
-import { Pin } from 'lucide-react';
+import { Pin, FileText, FileImage, File } from 'lucide-react';
 import { Avatar } from '@/components/shared/avatar';
 import { DocTypeBadge } from './doc-type-badge';
 import { DocType } from '@/generated/prisma/client';
@@ -14,6 +14,10 @@ interface DocumentCardProps {
   updatedAt: Date;
   isActive: boolean;
   onClick: () => void;
+  fileUrl?: string | null;
+  fileName?: string | null;
+  fileMimeType?: string | null;
+  fileSize?: number | null;
 }
 
 function timeAgo(date: Date): string {
@@ -28,6 +32,20 @@ function timeAgo(date: Date): string {
   return new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 }
 
+function FileTypeIcon({ mimeType }: { mimeType: string | null | undefined }) {
+  if (!mimeType) return <File className="h-3 w-3 text-zinc-400" />;
+  if (mimeType.startsWith('image/')) return <FileImage className="h-3 w-3 text-blue-400" />;
+  if (mimeType === 'application/pdf') return <FileText className="h-3 w-3 text-red-400" />;
+  return <File className="h-3 w-3 text-zinc-400" />;
+}
+
+function formatFileSize(bytes: number | null | undefined) {
+  if (!bytes) return '';
+  if (bytes < 1024) return `${bytes} B`;
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
+
 export function DocumentCard({
   title,
   docType,
@@ -38,7 +56,13 @@ export function DocumentCard({
   updatedAt,
   isActive,
   onClick,
+  fileUrl,
+  fileName,
+  fileMimeType,
+  fileSize,
 }: DocumentCardProps) {
+  const isFileDoc = !!fileUrl;
+
   return (
     <button
       onClick={onClick}
@@ -47,9 +71,12 @@ export function DocumentCard({
       }`}
     >
       <div className="flex items-start justify-between gap-2">
-        <span className="flex-1 text-sm font-medium text-zinc-900 dark:text-zinc-100 truncate leading-snug">
-          {title || 'Untitled'}
-        </span>
+        <div className="flex items-center gap-1.5 flex-1 min-w-0">
+          {isFileDoc && <FileTypeIcon mimeType={fileMimeType} />}
+          <span className="text-sm font-medium text-zinc-900 dark:text-zinc-100 truncate leading-snug">
+            {title || 'Untitled'}
+          </span>
+        </div>
         {pinned && <Pin className="h-3 w-3 flex-shrink-0 text-zinc-400 mt-0.5" />}
       </div>
 
@@ -65,11 +92,16 @@ export function DocumentCard({
         ))}
       </div>
 
-      {contentPreview && (
+      {isFileDoc ? (
+        <p className="mt-1 text-[11px] text-zinc-400 dark:text-zinc-500 leading-relaxed">
+          {fileMimeType?.split('/').pop()?.toUpperCase()}
+          {fileSize ? ` · ${formatFileSize(fileSize)}` : ''}
+        </p>
+      ) : contentPreview ? (
         <p className="mt-1 text-[11px] text-zinc-400 dark:text-zinc-500 line-clamp-2 leading-relaxed">
           {contentPreview}
         </p>
-      )}
+      ) : null}
 
       <div className="mt-1.5 flex items-center gap-1.5">
         <Avatar

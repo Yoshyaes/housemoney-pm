@@ -434,6 +434,10 @@ model Document {
   lastEditedById  String?
   title           String
   content         String   @default("") // Markdown string
+  fileUrl         String?   // When set, this is a file-based document
+  fileName        String?
+  fileSize        Int?
+  fileMimeType    String?
   docType         DocType  @default(GENERAL)
   tags            String[] // PostgreSQL text array
   projectId       String?  // Optional link to a project
