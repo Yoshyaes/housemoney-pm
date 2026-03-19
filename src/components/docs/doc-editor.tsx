@@ -12,7 +12,7 @@ import { DocTypeBadge } from './doc-type-badge';
 import { DocTagInput } from './doc-tag-input';
 import { DocType } from '@/generated/prisma/client';
 import { DOC_TYPE_CONFIG } from './doc-type-badge';
-import { Pin, PinOff, Trash2, ChevronDown, Check, Clock, User, Send, MessageSquare } from 'lucide-react';
+import { Pin, PinOff, Trash2, ChevronDown, Check, Clock, User, Send, MessageSquare, Paperclip, FileText, X, Upload } from 'lucide-react';
 import { Avatar } from '@/components/shared/avatar';
 import { formatDistanceToNow } from 'date-fns';
 
@@ -32,6 +32,9 @@ export function DocEditor({ docId, workspaceId, projects, onDelete }: DocEditorP
   const [projectMenuOpen, setProjectMenuOpen] = useState(false);
   const [commentBody, setCommentBody] = useState('');
   const commentInputRef = useRef<HTMLTextAreaElement>(null);
+  const [uploadingFile, setUploadingFile] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const { data: doc, isLoading } = trpc.documents.get.useQuery({ id: docId });
 
@@ -58,6 +61,13 @@ export function DocEditor({ docId, workspaceId, projects, onDelete }: DocEditorP
   });
   const deleteComment = trpc.docComments.delete.useMutation({
     onSuccess: () => utils.docComments.list.invalidate({ documentId: docId }),
+  });
+
+  const addAttachment = trpc.documents.addAttachment.useMutation({
+    onSuccess: () => utils.documents.get.invalidate({ id: docId }),
+  });
+  const deleteAttachment = trpc.documents.deleteAttachment.useMutation({
+    onSuccess: () => utils.documents.get.invalidate({ id: docId }),
   });
 
   const editor = useEditor({
@@ -108,6 +118,59 @@ export function DocEditor({ docId, workspaceId, projects, onDelete }: DocEditorP
     },
     [docId]
   );
+
+  const uploadFile = useCallback(async (file: File) => {
+    if (!file) return;
+    setUploadingFile(true);
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('bucket', 'document-attachments');
+      const res = await fetch('/api/upload', { method: 'POST', body: formData });
+      const data = await res.json();
+      if (data.url) {
+        addAttachment.mutate({
+          documentId: docId,
+          name: data.name,
+          url: data.url,
+          size: data.size,
+          mimeType: data.mimeType,
+        });
+      }
+    } finally {
+      setUploadingFile(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  }, [docId, addAttachment]);
+
+  const handleFileUpload = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) uploadFile(file);
+  }, [uploadFile]);
+
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+    const file = e.dataTransfer.files[0];
+    if (file) uploadFile(file);
+  }, [uploadFile]);
+
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(true);
+  }, []);
+
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragging(false);
+  }, []);
+
+  const formatFileSize = (bytes: number | null | undefined) => {
+    if (!bytes) return '';
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  };
 
   if (isLoading || !doc) {
     return (
@@ -226,7 +289,12 @@ export function DocEditor({ docId, workspaceId, projects, onDelete }: DocEditorP
       </div>
 
       {/* Editor area — centered, readable width */}
-      <div className="flex-1 overflow-y-auto">
+      <div
+        className={`flex-1 overflow-y-auto ${isDragging ? 'ring-2 ring-inset ring-amber-400/50 bg-amber-50/5' : ''}`}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+      >
         <div className="mx-auto w-full max-w-[780px] px-8 py-8">
           {/* Title */}
           <input
@@ -269,6 +337,70 @@ export function DocEditor({ docId, workspaceId, projects, onDelete }: DocEditorP
               onChange={(tags) => updateDoc.mutate({ id: docId, tags })}
               placeholder="Add tags (press Enter)..."
             />
+          </div>
+
+          {/* Attachments */}
+          <div className="mb-5">
+            <input
+              ref={fileInputRef}
+              type="file"
+              className="hidden"
+              onChange={handleFileUpload}
+            />
+            <div className="flex items-center gap-2 mb-2">
+              <Paperclip className="h-3.5 w-3.5 text-zinc-400" />
+              <span className="text-xs font-medium text-zinc-600 dark:text-zinc-400">Attachments</span>
+              {doc.attachments && doc.attachments.length > 0 && (
+                <span className="rounded-full bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 text-[10px] text-zinc-500 dark:text-zinc-400">
+                  {doc.attachments.length}
+                </span>
+              )}
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                disabled={uploadingFile}
+                className="ml-auto flex items-center gap-1 rounded px-2 py-0.5 text-[11px] text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-700 dark:hover:text-zinc-300 disabled:opacity-40"
+              >
+                <Upload className="h-3 w-3" />
+                {uploadingFile ? 'Uploading...' : 'Upload'}
+              </button>
+            </div>
+
+            {doc.attachments && doc.attachments.length > 0 ? (
+              <div className="space-y-1">
+                {doc.attachments.map((att) => (
+                  <div
+                    key={att.id}
+                    className="group flex items-center gap-2 rounded-md px-2 py-1.5 hover:bg-zinc-50 dark:hover:bg-zinc-800/50"
+                  >
+                    <FileText className="h-3.5 w-3.5 flex-shrink-0 text-zinc-400" />
+                    <a
+                      href={att.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 truncate text-xs text-zinc-700 dark:text-zinc-300 hover:underline"
+                    >
+                      {att.name}
+                    </a>
+                    {att.size && (
+                      <span className="text-[10px] text-zinc-400 flex-shrink-0">{formatFileSize(att.size)}</span>
+                    )}
+                    <button
+                      onClick={() => deleteAttachment.mutate({ id: att.id })}
+                      className="hidden group-hover:block flex-shrink-0 rounded p-0.5 text-zinc-400 hover:text-red-500"
+                    >
+                      <X className="h-3 w-3" />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            ) : !uploadingFile ? (
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                className="w-full rounded-md border border-dashed border-zinc-200 dark:border-zinc-700 px-4 py-3 text-center text-[11px] text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-600 hover:text-zinc-500 transition-colors"
+              >
+                Drop files here or click to upload
+              </button>
+            ) : null}
           </div>
 
           {/* Tiptap content */}

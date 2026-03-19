@@ -402,6 +402,7 @@ export const ModelName = {
   GitHubPR: 'GitHubPR',
   Document: 'Document',
   DocumentComment: 'DocumentComment',
+  DocumentAttachment: 'DocumentAttachment',
   ProjectMember: 'ProjectMember',
   Invitation: 'Invitation',
   AgentInsight: 'AgentInsight',
@@ -425,7 +426,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "workspace" | "workspaceMember" | "project" | "section" | "task" | "taskAttachment" | "taskCollaborator" | "dependency" | "comment" | "label" | "taskLabel" | "activity" | "view" | "notification" | "gitHubPR" | "document" | "documentComment" | "projectMember" | "invitation" | "agentInsight" | "agentConfig" | "auditLog" | "decision" | "decisionParticipant" | "experiment"
+    modelProps: "user" | "workspace" | "workspaceMember" | "project" | "section" | "task" | "taskAttachment" | "taskCollaborator" | "dependency" | "comment" | "label" | "taskLabel" | "activity" | "view" | "notification" | "gitHubPR" | "document" | "documentComment" | "documentAttachment" | "projectMember" | "invitation" | "agentInsight" | "agentConfig" | "auditLog" | "decision" | "decisionParticipant" | "experiment"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1761,6 +1762,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    DocumentAttachment: {
+      payload: Prisma.$DocumentAttachmentPayload<ExtArgs>
+      fields: Prisma.DocumentAttachmentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.DocumentAttachmentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAttachmentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.DocumentAttachmentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAttachmentPayload>
+        }
+        findFirst: {
+          args: Prisma.DocumentAttachmentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAttachmentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.DocumentAttachmentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAttachmentPayload>
+        }
+        findMany: {
+          args: Prisma.DocumentAttachmentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAttachmentPayload>[]
+        }
+        create: {
+          args: Prisma.DocumentAttachmentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAttachmentPayload>
+        }
+        createMany: {
+          args: Prisma.DocumentAttachmentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.DocumentAttachmentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAttachmentPayload>[]
+        }
+        delete: {
+          args: Prisma.DocumentAttachmentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAttachmentPayload>
+        }
+        update: {
+          args: Prisma.DocumentAttachmentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAttachmentPayload>
+        }
+        deleteMany: {
+          args: Prisma.DocumentAttachmentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.DocumentAttachmentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.DocumentAttachmentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAttachmentPayload>[]
+        }
+        upsert: {
+          args: Prisma.DocumentAttachmentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DocumentAttachmentPayload>
+        }
+        aggregate: {
+          args: Prisma.DocumentAttachmentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDocumentAttachment>
+        }
+        groupBy: {
+          args: Prisma.DocumentAttachmentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentAttachmentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.DocumentAttachmentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.DocumentAttachmentCountAggregateOutputType> | number
+        }
+      }
+    }
     ProjectMember: {
       payload: Prisma.$ProjectMemberPayload<ExtArgs>
       fields: Prisma.ProjectMemberFieldRefs
@@ -2640,6 +2715,20 @@ export const DocumentCommentScalarFieldEnum = {
 export type DocumentCommentScalarFieldEnum = (typeof DocumentCommentScalarFieldEnum)[keyof typeof DocumentCommentScalarFieldEnum]
 
 
+export const DocumentAttachmentScalarFieldEnum = {
+  id: 'id',
+  documentId: 'documentId',
+  name: 'name',
+  url: 'url',
+  size: 'size',
+  mimeType: 'mimeType',
+  uploadedById: 'uploadedById',
+  createdAt: 'createdAt'
+} as const
+
+export type DocumentAttachmentScalarFieldEnum = (typeof DocumentAttachmentScalarFieldEnum)[keyof typeof DocumentAttachmentScalarFieldEnum]
+
+
 export const ProjectMemberScalarFieldEnum = {
   id: 'id',
   projectId: 'projectId',
@@ -3250,6 +3339,7 @@ export type GlobalOmitConfig = {
   gitHubPR?: Prisma.GitHubPROmit
   document?: Prisma.DocumentOmit
   documentComment?: Prisma.DocumentCommentOmit
+  documentAttachment?: Prisma.DocumentAttachmentOmit
   projectMember?: Prisma.ProjectMemberOmit
   invitation?: Prisma.InvitationOmit
   agentInsight?: Prisma.AgentInsightOmit

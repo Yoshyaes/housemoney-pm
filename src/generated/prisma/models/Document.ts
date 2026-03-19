@@ -239,6 +239,7 @@ export type DocumentWhereInput = {
   lastEditedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   project?: Prisma.XOR<Prisma.ProjectNullableScalarRelationFilter, Prisma.ProjectWhereInput> | null
   docComments?: Prisma.DocumentCommentListRelationFilter
+  attachments?: Prisma.DocumentAttachmentListRelationFilter
 }
 
 export type DocumentOrderByWithRelationInput = {
@@ -259,6 +260,7 @@ export type DocumentOrderByWithRelationInput = {
   lastEditedBy?: Prisma.UserOrderByWithRelationInput
   project?: Prisma.ProjectOrderByWithRelationInput
   docComments?: Prisma.DocumentCommentOrderByRelationAggregateInput
+  attachments?: Prisma.DocumentAttachmentOrderByRelationAggregateInput
 }
 
 export type DocumentWhereUniqueInput = Prisma.AtLeast<{
@@ -282,6 +284,7 @@ export type DocumentWhereUniqueInput = Prisma.AtLeast<{
   lastEditedBy?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
   project?: Prisma.XOR<Prisma.ProjectNullableScalarRelationFilter, Prisma.ProjectWhereInput> | null
   docComments?: Prisma.DocumentCommentListRelationFilter
+  attachments?: Prisma.DocumentAttachmentListRelationFilter
 }, "id">
 
 export type DocumentOrderByWithAggregationInput = {
@@ -334,6 +337,7 @@ export type DocumentCreateInput = {
   lastEditedBy?: Prisma.UserCreateNestedOneWithoutLastEditedDocsInput
   project?: Prisma.ProjectCreateNestedOneWithoutDocumentsInput
   docComments?: Prisma.DocumentCommentCreateNestedManyWithoutDocumentInput
+  attachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutDocumentInput
 }
 
 export type DocumentUncheckedCreateInput = {
@@ -350,6 +354,7 @@ export type DocumentUncheckedCreateInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   docComments?: Prisma.DocumentCommentUncheckedCreateNestedManyWithoutDocumentInput
+  attachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutDocumentInput
 }
 
 export type DocumentUpdateInput = {
@@ -366,6 +371,7 @@ export type DocumentUpdateInput = {
   lastEditedBy?: Prisma.UserUpdateOneWithoutLastEditedDocsNestedInput
   project?: Prisma.ProjectUpdateOneWithoutDocumentsNestedInput
   docComments?: Prisma.DocumentCommentUpdateManyWithoutDocumentNestedInput
+  attachments?: Prisma.DocumentAttachmentUpdateManyWithoutDocumentNestedInput
 }
 
 export type DocumentUncheckedUpdateInput = {
@@ -382,6 +388,7 @@ export type DocumentUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   docComments?: Prisma.DocumentCommentUncheckedUpdateManyWithoutDocumentNestedInput
+  attachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutDocumentNestedInput
 }
 
 export type DocumentCreateManyInput = {
@@ -686,6 +693,20 @@ export type DocumentUpdateOneRequiredWithoutDocCommentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentUpdateToOneWithWhereWithoutDocCommentsInput, Prisma.DocumentUpdateWithoutDocCommentsInput>, Prisma.DocumentUncheckedUpdateWithoutDocCommentsInput>
 }
 
+export type DocumentCreateNestedOneWithoutAttachmentsInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutAttachmentsInput, Prisma.DocumentUncheckedCreateWithoutAttachmentsInput>
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutAttachmentsInput
+  connect?: Prisma.DocumentWhereUniqueInput
+}
+
+export type DocumentUpdateOneRequiredWithoutAttachmentsNestedInput = {
+  create?: Prisma.XOR<Prisma.DocumentCreateWithoutAttachmentsInput, Prisma.DocumentUncheckedCreateWithoutAttachmentsInput>
+  connectOrCreate?: Prisma.DocumentCreateOrConnectWithoutAttachmentsInput
+  upsert?: Prisma.DocumentUpsertWithoutAttachmentsInput
+  connect?: Prisma.DocumentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.DocumentUpdateToOneWithWhereWithoutAttachmentsInput, Prisma.DocumentUpdateWithoutAttachmentsInput>, Prisma.DocumentUncheckedUpdateWithoutAttachmentsInput>
+}
+
 export type DocumentCreateWithoutAuthorInput = {
   id?: string
   title: string
@@ -699,6 +720,7 @@ export type DocumentCreateWithoutAuthorInput = {
   lastEditedBy?: Prisma.UserCreateNestedOneWithoutLastEditedDocsInput
   project?: Prisma.ProjectCreateNestedOneWithoutDocumentsInput
   docComments?: Prisma.DocumentCommentCreateNestedManyWithoutDocumentInput
+  attachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutDocumentInput
 }
 
 export type DocumentUncheckedCreateWithoutAuthorInput = {
@@ -714,6 +736,7 @@ export type DocumentUncheckedCreateWithoutAuthorInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   docComments?: Prisma.DocumentCommentUncheckedCreateNestedManyWithoutDocumentInput
+  attachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutDocumentInput
 }
 
 export type DocumentCreateOrConnectWithoutAuthorInput = {
@@ -739,6 +762,7 @@ export type DocumentCreateWithoutLastEditedByInput = {
   author: Prisma.UserCreateNestedOneWithoutDocumentsInput
   project?: Prisma.ProjectCreateNestedOneWithoutDocumentsInput
   docComments?: Prisma.DocumentCommentCreateNestedManyWithoutDocumentInput
+  attachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutDocumentInput
 }
 
 export type DocumentUncheckedCreateWithoutLastEditedByInput = {
@@ -754,6 +778,7 @@ export type DocumentUncheckedCreateWithoutLastEditedByInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   docComments?: Prisma.DocumentCommentUncheckedCreateNestedManyWithoutDocumentInput
+  attachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutDocumentInput
 }
 
 export type DocumentCreateOrConnectWithoutLastEditedByInput = {
@@ -829,6 +854,7 @@ export type DocumentCreateWithoutWorkspaceInput = {
   lastEditedBy?: Prisma.UserCreateNestedOneWithoutLastEditedDocsInput
   project?: Prisma.ProjectCreateNestedOneWithoutDocumentsInput
   docComments?: Prisma.DocumentCommentCreateNestedManyWithoutDocumentInput
+  attachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutDocumentInput
 }
 
 export type DocumentUncheckedCreateWithoutWorkspaceInput = {
@@ -844,6 +870,7 @@ export type DocumentUncheckedCreateWithoutWorkspaceInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   docComments?: Prisma.DocumentCommentUncheckedCreateNestedManyWithoutDocumentInput
+  attachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutDocumentInput
 }
 
 export type DocumentCreateOrConnectWithoutWorkspaceInput = {
@@ -885,6 +912,7 @@ export type DocumentCreateWithoutProjectInput = {
   author: Prisma.UserCreateNestedOneWithoutDocumentsInput
   lastEditedBy?: Prisma.UserCreateNestedOneWithoutLastEditedDocsInput
   docComments?: Prisma.DocumentCommentCreateNestedManyWithoutDocumentInput
+  attachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutDocumentInput
 }
 
 export type DocumentUncheckedCreateWithoutProjectInput = {
@@ -900,6 +928,7 @@ export type DocumentUncheckedCreateWithoutProjectInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   docComments?: Prisma.DocumentCommentUncheckedCreateNestedManyWithoutDocumentInput
+  attachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutDocumentInput
 }
 
 export type DocumentCreateOrConnectWithoutProjectInput = {
@@ -941,6 +970,7 @@ export type DocumentCreateWithoutDocCommentsInput = {
   author: Prisma.UserCreateNestedOneWithoutDocumentsInput
   lastEditedBy?: Prisma.UserCreateNestedOneWithoutLastEditedDocsInput
   project?: Prisma.ProjectCreateNestedOneWithoutDocumentsInput
+  attachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutDocumentInput
 }
 
 export type DocumentUncheckedCreateWithoutDocCommentsInput = {
@@ -956,6 +986,7 @@ export type DocumentUncheckedCreateWithoutDocCommentsInput = {
   pinned?: boolean
   createdAt?: Date | string
   updatedAt?: Date | string
+  attachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutDocumentInput
 }
 
 export type DocumentCreateOrConnectWithoutDocCommentsInput = {
@@ -987,6 +1018,7 @@ export type DocumentUpdateWithoutDocCommentsInput = {
   author?: Prisma.UserUpdateOneRequiredWithoutDocumentsNestedInput
   lastEditedBy?: Prisma.UserUpdateOneWithoutLastEditedDocsNestedInput
   project?: Prisma.ProjectUpdateOneWithoutDocumentsNestedInput
+  attachments?: Prisma.DocumentAttachmentUpdateManyWithoutDocumentNestedInput
 }
 
 export type DocumentUncheckedUpdateWithoutDocCommentsInput = {
@@ -1002,6 +1034,87 @@ export type DocumentUncheckedUpdateWithoutDocCommentsInput = {
   pinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  attachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutDocumentNestedInput
+}
+
+export type DocumentCreateWithoutAttachmentsInput = {
+  id?: string
+  title: string
+  content?: string
+  docType?: $Enums.DocType
+  tags?: Prisma.DocumentCreatetagsInput | string[]
+  pinned?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  workspace: Prisma.WorkspaceCreateNestedOneWithoutDocumentsInput
+  author: Prisma.UserCreateNestedOneWithoutDocumentsInput
+  lastEditedBy?: Prisma.UserCreateNestedOneWithoutLastEditedDocsInput
+  project?: Prisma.ProjectCreateNestedOneWithoutDocumentsInput
+  docComments?: Prisma.DocumentCommentCreateNestedManyWithoutDocumentInput
+}
+
+export type DocumentUncheckedCreateWithoutAttachmentsInput = {
+  id?: string
+  workspaceId: string
+  authorId: string
+  lastEditedById?: string | null
+  title: string
+  content?: string
+  docType?: $Enums.DocType
+  tags?: Prisma.DocumentCreatetagsInput | string[]
+  projectId?: string | null
+  pinned?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  docComments?: Prisma.DocumentCommentUncheckedCreateNestedManyWithoutDocumentInput
+}
+
+export type DocumentCreateOrConnectWithoutAttachmentsInput = {
+  where: Prisma.DocumentWhereUniqueInput
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutAttachmentsInput, Prisma.DocumentUncheckedCreateWithoutAttachmentsInput>
+}
+
+export type DocumentUpsertWithoutAttachmentsInput = {
+  update: Prisma.XOR<Prisma.DocumentUpdateWithoutAttachmentsInput, Prisma.DocumentUncheckedUpdateWithoutAttachmentsInput>
+  create: Prisma.XOR<Prisma.DocumentCreateWithoutAttachmentsInput, Prisma.DocumentUncheckedCreateWithoutAttachmentsInput>
+  where?: Prisma.DocumentWhereInput
+}
+
+export type DocumentUpdateToOneWithWhereWithoutAttachmentsInput = {
+  where?: Prisma.DocumentWhereInput
+  data: Prisma.XOR<Prisma.DocumentUpdateWithoutAttachmentsInput, Prisma.DocumentUncheckedUpdateWithoutAttachmentsInput>
+}
+
+export type DocumentUpdateWithoutAttachmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
+  tags?: Prisma.DocumentUpdatetagsInput | string[]
+  pinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  workspace?: Prisma.WorkspaceUpdateOneRequiredWithoutDocumentsNestedInput
+  author?: Prisma.UserUpdateOneRequiredWithoutDocumentsNestedInput
+  lastEditedBy?: Prisma.UserUpdateOneWithoutLastEditedDocsNestedInput
+  project?: Prisma.ProjectUpdateOneWithoutDocumentsNestedInput
+  docComments?: Prisma.DocumentCommentUpdateManyWithoutDocumentNestedInput
+}
+
+export type DocumentUncheckedUpdateWithoutAttachmentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  workspaceId?: Prisma.StringFieldUpdateOperationsInput | string
+  authorId?: Prisma.StringFieldUpdateOperationsInput | string
+  lastEditedById?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  content?: Prisma.StringFieldUpdateOperationsInput | string
+  docType?: Prisma.EnumDocTypeFieldUpdateOperationsInput | $Enums.DocType
+  tags?: Prisma.DocumentUpdatetagsInput | string[]
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  pinned?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  docComments?: Prisma.DocumentCommentUncheckedUpdateManyWithoutDocumentNestedInput
 }
 
 export type DocumentCreateManyAuthorInput = {
@@ -1045,6 +1158,7 @@ export type DocumentUpdateWithoutAuthorInput = {
   lastEditedBy?: Prisma.UserUpdateOneWithoutLastEditedDocsNestedInput
   project?: Prisma.ProjectUpdateOneWithoutDocumentsNestedInput
   docComments?: Prisma.DocumentCommentUpdateManyWithoutDocumentNestedInput
+  attachments?: Prisma.DocumentAttachmentUpdateManyWithoutDocumentNestedInput
 }
 
 export type DocumentUncheckedUpdateWithoutAuthorInput = {
@@ -1060,6 +1174,7 @@ export type DocumentUncheckedUpdateWithoutAuthorInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   docComments?: Prisma.DocumentCommentUncheckedUpdateManyWithoutDocumentNestedInput
+  attachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutDocumentNestedInput
 }
 
 export type DocumentUncheckedUpdateManyWithoutAuthorInput = {
@@ -1089,6 +1204,7 @@ export type DocumentUpdateWithoutLastEditedByInput = {
   author?: Prisma.UserUpdateOneRequiredWithoutDocumentsNestedInput
   project?: Prisma.ProjectUpdateOneWithoutDocumentsNestedInput
   docComments?: Prisma.DocumentCommentUpdateManyWithoutDocumentNestedInput
+  attachments?: Prisma.DocumentAttachmentUpdateManyWithoutDocumentNestedInput
 }
 
 export type DocumentUncheckedUpdateWithoutLastEditedByInput = {
@@ -1104,6 +1220,7 @@ export type DocumentUncheckedUpdateWithoutLastEditedByInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   docComments?: Prisma.DocumentCommentUncheckedUpdateManyWithoutDocumentNestedInput
+  attachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutDocumentNestedInput
 }
 
 export type DocumentUncheckedUpdateManyWithoutLastEditedByInput = {
@@ -1147,6 +1264,7 @@ export type DocumentUpdateWithoutWorkspaceInput = {
   lastEditedBy?: Prisma.UserUpdateOneWithoutLastEditedDocsNestedInput
   project?: Prisma.ProjectUpdateOneWithoutDocumentsNestedInput
   docComments?: Prisma.DocumentCommentUpdateManyWithoutDocumentNestedInput
+  attachments?: Prisma.DocumentAttachmentUpdateManyWithoutDocumentNestedInput
 }
 
 export type DocumentUncheckedUpdateWithoutWorkspaceInput = {
@@ -1162,6 +1280,7 @@ export type DocumentUncheckedUpdateWithoutWorkspaceInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   docComments?: Prisma.DocumentCommentUncheckedUpdateManyWithoutDocumentNestedInput
+  attachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutDocumentNestedInput
 }
 
 export type DocumentUncheckedUpdateManyWithoutWorkspaceInput = {
@@ -1205,6 +1324,7 @@ export type DocumentUpdateWithoutProjectInput = {
   author?: Prisma.UserUpdateOneRequiredWithoutDocumentsNestedInput
   lastEditedBy?: Prisma.UserUpdateOneWithoutLastEditedDocsNestedInput
   docComments?: Prisma.DocumentCommentUpdateManyWithoutDocumentNestedInput
+  attachments?: Prisma.DocumentAttachmentUpdateManyWithoutDocumentNestedInput
 }
 
 export type DocumentUncheckedUpdateWithoutProjectInput = {
@@ -1220,6 +1340,7 @@ export type DocumentUncheckedUpdateWithoutProjectInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   docComments?: Prisma.DocumentCommentUncheckedUpdateManyWithoutDocumentNestedInput
+  attachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutDocumentNestedInput
 }
 
 export type DocumentUncheckedUpdateManyWithoutProjectInput = {
@@ -1243,10 +1364,12 @@ export type DocumentUncheckedUpdateManyWithoutProjectInput = {
 
 export type DocumentCountOutputType = {
   docComments: number
+  attachments: number
 }
 
 export type DocumentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   docComments?: boolean | DocumentCountOutputTypeCountDocCommentsArgs
+  attachments?: boolean | DocumentCountOutputTypeCountAttachmentsArgs
 }
 
 /**
@@ -1264,6 +1387,13 @@ export type DocumentCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Ext
  */
 export type DocumentCountOutputTypeCountDocCommentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.DocumentCommentWhereInput
+}
+
+/**
+ * DocumentCountOutputType without action
+ */
+export type DocumentCountOutputTypeCountAttachmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.DocumentAttachmentWhereInput
 }
 
 
@@ -1285,6 +1415,7 @@ export type DocumentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   lastEditedBy?: boolean | Prisma.Document$lastEditedByArgs<ExtArgs>
   project?: boolean | Prisma.Document$projectArgs<ExtArgs>
   docComments?: boolean | Prisma.Document$docCommentsArgs<ExtArgs>
+  attachments?: boolean | Prisma.Document$attachmentsArgs<ExtArgs>
   _count?: boolean | Prisma.DocumentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["document"]>
 
@@ -1348,6 +1479,7 @@ export type DocumentInclude<ExtArgs extends runtime.Types.Extensions.InternalArg
   lastEditedBy?: boolean | Prisma.Document$lastEditedByArgs<ExtArgs>
   project?: boolean | Prisma.Document$projectArgs<ExtArgs>
   docComments?: boolean | Prisma.Document$docCommentsArgs<ExtArgs>
+  attachments?: boolean | Prisma.Document$attachmentsArgs<ExtArgs>
   _count?: boolean | Prisma.DocumentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type DocumentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1371,6 +1503,7 @@ export type $DocumentPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     lastEditedBy: Prisma.$UserPayload<ExtArgs> | null
     project: Prisma.$ProjectPayload<ExtArgs> | null
     docComments: Prisma.$DocumentCommentPayload<ExtArgs>[]
+    attachments: Prisma.$DocumentAttachmentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1784,6 +1917,7 @@ export interface Prisma__DocumentClient<T, Null = never, ExtArgs extends runtime
   lastEditedBy<T extends Prisma.Document$lastEditedByArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$lastEditedByArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   project<T extends Prisma.Document$projectArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$projectArgs<ExtArgs>>): Prisma.Prisma__ProjectClient<runtime.Types.Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   docComments<T extends Prisma.Document$docCommentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$docCommentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  attachments<T extends Prisma.Document$attachmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Document$attachmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentAttachmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2285,6 +2419,30 @@ export type Document$docCommentsArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.DocumentCommentScalarFieldEnum | Prisma.DocumentCommentScalarFieldEnum[]
+}
+
+/**
+ * Document.attachments
+ */
+export type Document$attachmentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the DocumentAttachment
+   */
+  select?: Prisma.DocumentAttachmentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the DocumentAttachment
+   */
+  omit?: Prisma.DocumentAttachmentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DocumentAttachmentInclude<ExtArgs> | null
+  where?: Prisma.DocumentAttachmentWhereInput
+  orderBy?: Prisma.DocumentAttachmentOrderByWithRelationInput | Prisma.DocumentAttachmentOrderByWithRelationInput[]
+  cursor?: Prisma.DocumentAttachmentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.DocumentAttachmentScalarFieldEnum | Prisma.DocumentAttachmentScalarFieldEnum[]
 }
 
 /**

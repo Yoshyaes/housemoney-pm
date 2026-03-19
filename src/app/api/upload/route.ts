@@ -3,7 +3,8 @@ import { createClient } from '@supabase/supabase-js';
 import { createServerSupabaseClient } from '@/server/auth/supabase-server';
 import { rateLimit } from '@/lib/rate-limit';
 
-const BUCKET = 'task-attachments';
+const ALLOWED_BUCKETS = ['task-attachments', 'document-attachments'];
+const DEFAULT_BUCKET = 'task-attachments';
 
 export async function POST(req: NextRequest) {
   // Verify user is authenticated
@@ -24,14 +25,17 @@ export async function POST(req: NextRequest) {
     process.env.SUPABASE_SERVICE_ROLE_KEY!
   );
 
+  const formData = await req.formData();
+  const bucketParam = (formData.get('bucket') as string | null) ?? DEFAULT_BUCKET;
+  const bucket = ALLOWED_BUCKETS.includes(bucketParam) ? bucketParam : DEFAULT_BUCKET;
+
   // Ensure bucket exists
   const { data: buckets } = await supabase.storage.listBuckets();
-  const bucketExists = buckets?.some((b) => b.name === BUCKET);
+  const bucketExists = buckets?.some((b) => b.name === bucket);
   if (!bucketExists) {
-    await supabase.storage.createBucket(BUCKET, { public: true, fileSizeLimit: 52428800 }); // 50MB
+    await supabase.storage.createBucket(bucket, { public: true, fileSizeLimit: 52428800 }); // 50MB
   }
 
-  const formData = await req.formData();
   const file = formData.get('file') as File | null;
   if (!file) {
     return NextResponse.json({ error: 'No file provided' }, { status: 400 });
@@ -63,7 +67,7 @@ export async function POST(req: NextRequest) {
   const path = `${session.user.id}/${Date.now()}_${safeName}`;
 
   const arrayBuffer = await file.arrayBuffer();
-  const { error } = await supabase.storage.from(BUCKET).upload(path, arrayBuffer, {
+  const { error } = await supabase.storage.from(bucket).upload(path, arrayBuffer, {
     contentType: file.type || 'application/octet-stream',
     upsert: false,
   });
@@ -72,7 +76,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 
-  const { data: { publicUrl } } = supabase.storage.from(BUCKET).getPublicUrl(path);
+  const { data: { publicUrl } } = supabase.storage.from(bucket).getPublicUrl(path);
 
   return NextResponse.json({
     url: publicUrl,

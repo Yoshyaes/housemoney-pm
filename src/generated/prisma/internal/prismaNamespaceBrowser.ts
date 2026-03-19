@@ -69,6 +69,7 @@ export const ModelName = {
   GitHubPR: 'GitHubPR',
   Document: 'Document',
   DocumentComment: 'DocumentComment',
+  DocumentAttachment: 'DocumentAttachment',
   ProjectMember: 'ProjectMember',
   Invitation: 'Invitation',
   AgentInsight: 'AgentInsight',
@@ -341,6 +342,20 @@ export const DocumentCommentScalarFieldEnum = {
 } as const
 
 export type DocumentCommentScalarFieldEnum = (typeof DocumentCommentScalarFieldEnum)[keyof typeof DocumentCommentScalarFieldEnum]
+
+
+export const DocumentAttachmentScalarFieldEnum = {
+  id: 'id',
+  documentId: 'documentId',
+  name: 'name',
+  url: 'url',
+  size: 'size',
+  mimeType: 'mimeType',
+  uploadedById: 'uploadedById',
+  createdAt: 'createdAt'
+} as const
+
+export type DocumentAttachmentScalarFieldEnum = (typeof DocumentAttachmentScalarFieldEnum)[keyof typeof DocumentAttachmentScalarFieldEnum]
 
 
 export const ProjectMemberScalarFieldEnum = {

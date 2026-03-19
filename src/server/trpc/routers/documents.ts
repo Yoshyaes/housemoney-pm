@@ -83,6 +83,7 @@ export const documentsRouter = router({
           author: { select: { id: true, name: true, avatarUrl: true, avatarColor: true } },
           lastEditedBy: { select: { id: true, name: true, avatarUrl: true, avatarColor: true } },
           project: { select: { id: true, name: true, color: true } },
+          attachments: { orderBy: { createdAt: 'desc' }, include: { uploadedBy: { select: { id: true, name: true } } } },
         },
       });
 
@@ -291,5 +292,56 @@ export const documentsRouter = router({
       );
 
       return results.map((r) => ({ tag: r.tag, count: Number(r.count) }));
+    }),
+
+  addAttachment: protectedProcedure
+    .input(
+      z.object({
+        documentId: z.string(),
+        name: z.string(),
+        url: z.string().url(),
+        size: z.number().optional(),
+        mimeType: z.string().optional(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const doc = await ctx.db.document.findUniqueOrThrow({ where: { id: input.documentId } });
+
+      const membership = await requireWorkspaceMember(ctx.db, doc.workspaceId, ctx.userId);
+
+      if (membership.role === 'GUEST') {
+        if (!doc.projectId) throw new TRPCError({ code: 'FORBIDDEN', message: 'No access to this document' });
+        await requireProjectAccess(ctx.db, doc.projectId, ctx.userId);
+      }
+
+      return ctx.db.documentAttachment.create({
+        data: {
+          documentId: input.documentId,
+          name: input.name,
+          url: input.url,
+          size: input.size,
+          mimeType: input.mimeType,
+          uploadedById: ctx.userId,
+        },
+        include: { uploadedBy: { select: { id: true, name: true } } },
+      });
+    }),
+
+  deleteAttachment: protectedProcedure
+    .input(z.object({ id: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      const attachment = await ctx.db.documentAttachment.findUniqueOrThrow({
+        where: { id: input.id },
+        include: { document: { select: { workspaceId: true, projectId: true } } },
+      });
+
+      const membership = await requireWorkspaceMember(ctx.db, attachment.document.workspaceId, ctx.userId);
+
+      if (membership.role === 'GUEST') {
+        if (!attachment.document.projectId) throw new TRPCError({ code: 'FORBIDDEN', message: 'No access' });
+        await requireProjectAccess(ctx.db, attachment.document.projectId, ctx.userId);
+      }
+
+      return ctx.db.documentAttachment.delete({ where: { id: input.id } });
     }),
 });

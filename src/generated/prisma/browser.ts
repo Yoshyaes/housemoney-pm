@@ -108,6 +108,11 @@ export type Document = Prisma.DocumentModel
  */
 export type DocumentComment = Prisma.DocumentCommentModel
 /**
+ * Model DocumentAttachment
+ * 
+ */
+export type DocumentAttachment = Prisma.DocumentAttachmentModel
+/**
  * Model ProjectMember
  * 
  */
