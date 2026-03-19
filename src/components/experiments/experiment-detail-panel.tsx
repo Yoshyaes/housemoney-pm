@@ -1,12 +1,13 @@
 'use client';
 
 import { useState, useEffect, useRef } from 'react';
-import { X, Trash2, ChevronDown, ChevronRight } from 'lucide-react';
+import { X, Trash2, ChevronDown, ChevronRight, MessageSquare, Send } from 'lucide-react';
 import { trpc } from '@/lib/trpc';
 import { useExperimentsStore } from '@/lib/stores/experiments-store';
 import { ExperimentStatusBadge } from './experiment-status-badge';
 import { ExperimentScoreBadge } from './experiment-score-badge';
 import { Avatar } from '@/components/shared/avatar';
+import { formatDistanceToNow } from 'date-fns';
 import {
   BRAND_AMBER,
   EXPERIMENT_STATUS_LABELS,
@@ -45,6 +46,8 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
   const [titleValue, setTitleValue] = useState('');
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [mutationError, setMutationError] = useState<string | null>(null);
+  const [commentBody, setCommentBody] = useState('');
+  const commentInputRef = useRef<HTMLTextAreaElement>(null);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
     identity: true,
     hypothesis: true,
@@ -85,6 +88,20 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
     onError: (err) => {
       setMutationError(err.message);
     },
+  });
+
+  const { data: comments = [] } = trpc.experimentComments.list.useQuery(
+    { experimentId: selectedExperimentId! },
+    { enabled: !!selectedExperimentId }
+  );
+  const addComment = trpc.experimentComments.create.useMutation({
+    onSuccess: () => {
+      utils.experimentComments.list.invalidate({ experimentId: selectedExperimentId! });
+      setCommentBody('');
+    },
+  });
+  const deleteComment = trpc.experimentComments.delete.useMutation({
+    onSuccess: () => utils.experimentComments.list.invalidate({ experimentId: selectedExperimentId! }),
   });
 
   const debounceRef = useRef<ReturnType<typeof setTimeout>>();
@@ -611,6 +628,79 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
               )}
             </>
           )}
+
+          {/* === COMMENTS === */}
+          <div className="pt-3 border-t border-zinc-100 dark:border-zinc-800/60">
+            <div className="mb-3 flex items-center gap-2 text-[10px] uppercase tracking-wider font-medium text-zinc-400 dark:text-zinc-500">
+              <MessageSquare className="h-3.5 w-3.5" />
+              Comments
+              {comments.length > 0 && (
+                <span className="rounded-full bg-zinc-100 dark:bg-zinc-800 px-1.5 py-0.5 text-[10px] text-zinc-500 dark:text-zinc-400 normal-case tracking-normal">
+                  {comments.length}
+                </span>
+              )}
+            </div>
+
+            {/* Comment list */}
+            <div className="mb-3 space-y-3">
+              {comments.map((c) => (
+                <div key={c.id} className="group flex gap-2">
+                  <Avatar
+                    name={c.author.name}
+                    avatarUrl={c.author.avatarUrl}
+                    avatarColor={c.author.avatarColor ?? undefined}
+                    size="sm"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-[11px] font-medium text-zinc-800 dark:text-zinc-200">{c.author.name}</span>
+                      <span className="text-[10px] text-zinc-400 dark:text-zinc-500">
+                        {formatDistanceToNow(new Date(c.createdAt), { addSuffix: true })}
+                      </span>
+                      <button
+                        onClick={() => deleteComment.mutate({ id: c.id })}
+                        className="ml-auto hidden group-hover:block text-[10px] text-zinc-400 hover:text-red-500 dark:text-zinc-500 dark:hover:text-red-400"
+                      >
+                        Delete
+                      </button>
+                    </div>
+                    <p className="mt-0.5 text-[11px] text-zinc-600 dark:text-zinc-300 whitespace-pre-wrap">{c.body}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* New comment input */}
+            <div className="rounded-md border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 focus-within:ring-1 focus-within:ring-zinc-300 dark:focus-within:ring-zinc-600">
+              <textarea
+                ref={commentInputRef}
+                value={commentBody}
+                onChange={(e) => setCommentBody(e.target.value)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+                    e.preventDefault();
+                    if (commentBody.trim()) addComment.mutate({ experimentId: selectedExperimentId!, body: commentBody.trim() });
+                  }
+                }}
+                placeholder="Add a comment… (Ctrl+Enter to submit)"
+                rows={2}
+                className="w-full resize-none bg-transparent px-2.5 py-1.5 text-[11px] text-zinc-900 dark:text-zinc-100 placeholder:text-zinc-400 outline-none"
+              />
+              <div className="flex justify-end px-2 pb-1.5">
+                <button
+                  onClick={() => {
+                    if (commentBody.trim()) addComment.mutate({ experimentId: selectedExperimentId!, body: commentBody.trim() });
+                  }}
+                  disabled={!commentBody.trim() || addComment.isPending}
+                  className="flex items-center gap-1 rounded px-2 py-0.5 text-[10px] font-medium text-white disabled:opacity-40"
+                  style={{ backgroundColor: BRAND_AMBER }}
+                >
+                  <Send className="h-2.5 w-2.5" />
+                  Comment
+                </button>
+              </div>
+            </div>
+          </div>
 
           {/* Delete */}
           {canEdit && (

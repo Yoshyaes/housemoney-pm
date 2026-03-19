@@ -152,3 +152,8 @@ export type DecisionParticipant = Prisma.DecisionParticipantModel
  * 
  */
 export type Experiment = Prisma.ExperimentModel
+/**
+ * Model ExperimentComment
+ * 
+ */
+export type ExperimentComment = Prisma.ExperimentCommentModel

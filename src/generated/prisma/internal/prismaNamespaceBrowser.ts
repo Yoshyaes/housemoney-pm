@@ -77,7 +77,8 @@ export const ModelName = {
   AuditLog: 'AuditLog',
   Decision: 'Decision',
   DecisionParticipant: 'DecisionParticipant',
-  Experiment: 'Experiment'
+  Experiment: 'Experiment',
+  ExperimentComment: 'ExperimentComment'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -517,6 +518,18 @@ export const ExperimentScalarFieldEnum = {
 } as const
 
 export type ExperimentScalarFieldEnum = (typeof ExperimentScalarFieldEnum)[keyof typeof ExperimentScalarFieldEnum]
+
+
+export const ExperimentCommentScalarFieldEnum = {
+  id: 'id',
+  experimentId: 'experimentId',
+  authorId: 'authorId',
+  body: 'body',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ExperimentCommentScalarFieldEnum = (typeof ExperimentCommentScalarFieldEnum)[keyof typeof ExperimentCommentScalarFieldEnum]
 
 
 export const SortOrder = {

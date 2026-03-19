@@ -35,7 +35,7 @@ function SectionHeader({ title, open, onToggle }: { title: string; open: boolean
 }
 
 export function ExperimentCreateModal({ workspaceId, members, projects }: ExperimentCreateModalProps) {
-  const { createModalOpen, setCreateModalOpen } = useExperimentsStore();
+  const { createModalOpen, setCreateModalOpen, setSelectedExperimentId } = useExperimentsStore();
   const utils = trpc.useUtils();
 
   // Identity
@@ -105,6 +105,19 @@ export function ExperimentCreateModal({ workspaceId, members, projects }: Experi
     },
   });
 
+  const saveDraftExperiment = trpc.experiments.create.useMutation({
+    onSuccess: (exp) => {
+      utils.experiments.list.invalidate();
+      utils.experiments.getStats.invalidate();
+      resetForm();
+      setCreateModalOpen(false);
+      setSelectedExperimentId(exp.id);
+    },
+    onError: (err) => {
+      setMutationError(err.message);
+    },
+  });
+
   const resetForm = () => {
     setTitle('');
     setSprint('');
@@ -148,6 +161,38 @@ export function ExperimentCreateModal({ workspaceId, members, projects }: Experi
     if (!title.trim()) return;
     setMutationError(null);
     createExperiment.mutate({
+      workspaceId,
+      title: title.trim(),
+      sprint: sprint.trim() || undefined,
+      persona: (persona || undefined) as ExperimentPersona | undefined,
+      cohort: cohort.trim() || undefined,
+      channel: (channel || undefined) as ExperimentChannel | undefined,
+      experimentType: (experimentType || undefined) as ExperimentType | undefined,
+      hypothesis,
+      riskiestAssumption: riskiestAssumption.trim() || undefined,
+      learningGoal: learningGoal.trim() || undefined,
+      cacEstimate: parseFloat(cacEstimate),
+      monthlyArpu: parseFloat(monthlyArpu),
+      ltvEstimate: parseFloat(ltvEstimate),
+      paybackPeriod: parseFloat(paybackPeriod),
+      depositTarget: parseFloat(depositTarget),
+      scoringCriteria,
+      startDate: parseDate(startDate),
+      endDate: parseDate(endDate),
+      resourceCost: resourceCost.trim() || undefined,
+      testSize: testSize.trim() || undefined,
+      primaryMetric: primaryMetric.trim() || undefined,
+      secondaryMetrics: secondaryMetrics.trim() || undefined,
+      killCondition: killCondition.trim() || undefined,
+      projectId: projectId || undefined,
+      ownerId: ownerId || undefined,
+    });
+  };
+
+  const handleSaveDraft = () => {
+    if (!title.trim()) return;
+    setMutationError(null);
+    saveDraftExperiment.mutate({
       workspaceId,
       title: title.trim(),
       sprint: sprint.trim() || undefined,
@@ -449,8 +494,15 @@ export function ExperimentCreateModal({ workspaceId, members, projects }: Experi
               Cancel
             </button>
             <button
+              onClick={handleSaveDraft}
+              disabled={!title.trim() || saveDraftExperiment.isPending || createExperiment.isPending}
+              className="rounded-md border border-zinc-200 dark:border-zinc-700 px-3 py-1.5 text-xs font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 disabled:opacity-50 transition-colors"
+            >
+              {saveDraftExperiment.isPending ? 'Saving...' : 'Save Draft'}
+            </button>
+            <button
               onClick={handleSubmit}
-              disabled={!title.trim() || createExperiment.isPending}
+              disabled={!title.trim() || createExperiment.isPending || saveDraftExperiment.isPending}
               className="rounded-md px-4 py-1.5 text-xs font-medium text-white transition-colors hover:opacity-90 disabled:opacity-50"
               style={{ backgroundColor: BRAND_AMBER }}
             >

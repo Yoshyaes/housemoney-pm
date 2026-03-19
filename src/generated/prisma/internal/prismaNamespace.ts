@@ -410,7 +410,8 @@ export const ModelName = {
   AuditLog: 'AuditLog',
   Decision: 'Decision',
   DecisionParticipant: 'DecisionParticipant',
-  Experiment: 'Experiment'
+  Experiment: 'Experiment',
+  ExperimentComment: 'ExperimentComment'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -426,7 +427,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "workspace" | "workspaceMember" | "project" | "section" | "task" | "taskAttachment" | "taskCollaborator" | "dependency" | "comment" | "label" | "taskLabel" | "activity" | "view" | "notification" | "gitHubPR" | "document" | "documentComment" | "documentAttachment" | "projectMember" | "invitation" | "agentInsight" | "agentConfig" | "auditLog" | "decision" | "decisionParticipant" | "experiment"
+    modelProps: "user" | "workspace" | "workspaceMember" | "project" | "section" | "task" | "taskAttachment" | "taskCollaborator" | "dependency" | "comment" | "label" | "taskLabel" | "activity" | "view" | "notification" | "gitHubPR" | "document" | "documentComment" | "documentAttachment" | "projectMember" | "invitation" | "agentInsight" | "agentConfig" | "auditLog" | "decision" | "decisionParticipant" | "experiment" | "experimentComment"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2428,6 +2429,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ExperimentComment: {
+      payload: Prisma.$ExperimentCommentPayload<ExtArgs>
+      fields: Prisma.ExperimentCommentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ExperimentCommentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentCommentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ExperimentCommentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentCommentPayload>
+        }
+        findFirst: {
+          args: Prisma.ExperimentCommentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentCommentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ExperimentCommentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentCommentPayload>
+        }
+        findMany: {
+          args: Prisma.ExperimentCommentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentCommentPayload>[]
+        }
+        create: {
+          args: Prisma.ExperimentCommentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentCommentPayload>
+        }
+        createMany: {
+          args: Prisma.ExperimentCommentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ExperimentCommentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentCommentPayload>[]
+        }
+        delete: {
+          args: Prisma.ExperimentCommentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentCommentPayload>
+        }
+        update: {
+          args: Prisma.ExperimentCommentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentCommentPayload>
+        }
+        deleteMany: {
+          args: Prisma.ExperimentCommentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ExperimentCommentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ExperimentCommentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentCommentPayload>[]
+        }
+        upsert: {
+          args: Prisma.ExperimentCommentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ExperimentCommentPayload>
+        }
+        aggregate: {
+          args: Prisma.ExperimentCommentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateExperimentComment>
+        }
+        groupBy: {
+          args: Prisma.ExperimentCommentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ExperimentCommentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ExperimentCommentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ExperimentCommentCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2888,6 +2963,18 @@ export const ExperimentScalarFieldEnum = {
 } as const
 
 export type ExperimentScalarFieldEnum = (typeof ExperimentScalarFieldEnum)[keyof typeof ExperimentScalarFieldEnum]
+
+
+export const ExperimentCommentScalarFieldEnum = {
+  id: 'id',
+  experimentId: 'experimentId',
+  authorId: 'authorId',
+  body: 'body',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ExperimentCommentScalarFieldEnum = (typeof ExperimentCommentScalarFieldEnum)[keyof typeof ExperimentCommentScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -3352,6 +3439,7 @@ export type GlobalOmitConfig = {
   decision?: Prisma.DecisionOmit
   decisionParticipant?: Prisma.DecisionParticipantOmit
   experiment?: Prisma.ExperimentOmit
+  experimentComment?: Prisma.ExperimentCommentOmit
 }
 
 /* Types for Logging */

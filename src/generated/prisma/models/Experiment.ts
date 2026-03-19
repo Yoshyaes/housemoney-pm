@@ -524,6 +524,7 @@ export type ExperimentWhereInput = {
   project?: Prisma.XOR<Prisma.ProjectNullableScalarRelationFilter, Prisma.ProjectWhereInput> | null
   createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   owner?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  comments?: Prisma.ExperimentCommentListRelationFilter
 }
 
 export type ExperimentOrderByWithRelationInput = {
@@ -572,6 +573,7 @@ export type ExperimentOrderByWithRelationInput = {
   project?: Prisma.ProjectOrderByWithRelationInput
   createdBy?: Prisma.UserOrderByWithRelationInput
   owner?: Prisma.UserOrderByWithRelationInput
+  comments?: Prisma.ExperimentCommentOrderByRelationAggregateInput
 }
 
 export type ExperimentWhereUniqueInput = Prisma.AtLeast<{
@@ -623,6 +625,7 @@ export type ExperimentWhereUniqueInput = Prisma.AtLeast<{
   project?: Prisma.XOR<Prisma.ProjectNullableScalarRelationFilter, Prisma.ProjectWhereInput> | null
   createdBy?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   owner?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  comments?: Prisma.ExperimentCommentListRelationFilter
 }, "id" | "identifier">
 
 export type ExperimentOrderByWithAggregationInput = {
@@ -763,6 +766,7 @@ export type ExperimentCreateInput = {
   project?: Prisma.ProjectCreateNestedOneWithoutExperimentsInput
   createdBy: Prisma.UserCreateNestedOneWithoutCreatedExperimentsInput
   owner?: Prisma.UserCreateNestedOneWithoutOwnedExperimentsInput
+  comments?: Prisma.ExperimentCommentCreateNestedManyWithoutExperimentInput
 }
 
 export type ExperimentUncheckedCreateInput = {
@@ -807,6 +811,7 @@ export type ExperimentUncheckedCreateInput = {
   investorReadyInsight?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  comments?: Prisma.ExperimentCommentUncheckedCreateNestedManyWithoutExperimentInput
 }
 
 export type ExperimentUpdateInput = {
@@ -851,6 +856,7 @@ export type ExperimentUpdateInput = {
   project?: Prisma.ProjectUpdateOneWithoutExperimentsNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedExperimentsNestedInput
   owner?: Prisma.UserUpdateOneWithoutOwnedExperimentsNestedInput
+  comments?: Prisma.ExperimentCommentUpdateManyWithoutExperimentNestedInput
 }
 
 export type ExperimentUncheckedUpdateInput = {
@@ -895,6 +901,7 @@ export type ExperimentUncheckedUpdateInput = {
   investorReadyInsight?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  comments?: Prisma.ExperimentCommentUncheckedUpdateManyWithoutExperimentNestedInput
 }
 
 export type ExperimentCreateManyInput = {
@@ -1183,6 +1190,11 @@ export type ExperimentSumOrderByAggregateInput = {
   score?: Prisma.SortOrder
 }
 
+export type ExperimentScalarRelationFilter = {
+  is?: Prisma.ExperimentWhereInput
+  isNot?: Prisma.ExperimentWhereInput
+}
+
 export type ExperimentCreateNestedManyWithoutCreatedByInput = {
   create?: Prisma.XOR<Prisma.ExperimentCreateWithoutCreatedByInput, Prisma.ExperimentUncheckedCreateWithoutCreatedByInput> | Prisma.ExperimentCreateWithoutCreatedByInput[] | Prisma.ExperimentUncheckedCreateWithoutCreatedByInput[]
   connectOrCreate?: Prisma.ExperimentCreateOrConnectWithoutCreatedByInput | Prisma.ExperimentCreateOrConnectWithoutCreatedByInput[]
@@ -1375,6 +1387,20 @@ export type NullableFloatFieldUpdateOperationsInput = {
   divide?: number
 }
 
+export type ExperimentCreateNestedOneWithoutCommentsInput = {
+  create?: Prisma.XOR<Prisma.ExperimentCreateWithoutCommentsInput, Prisma.ExperimentUncheckedCreateWithoutCommentsInput>
+  connectOrCreate?: Prisma.ExperimentCreateOrConnectWithoutCommentsInput
+  connect?: Prisma.ExperimentWhereUniqueInput
+}
+
+export type ExperimentUpdateOneRequiredWithoutCommentsNestedInput = {
+  create?: Prisma.XOR<Prisma.ExperimentCreateWithoutCommentsInput, Prisma.ExperimentUncheckedCreateWithoutCommentsInput>
+  connectOrCreate?: Prisma.ExperimentCreateOrConnectWithoutCommentsInput
+  upsert?: Prisma.ExperimentUpsertWithoutCommentsInput
+  connect?: Prisma.ExperimentWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ExperimentUpdateToOneWithWhereWithoutCommentsInput, Prisma.ExperimentUpdateWithoutCommentsInput>, Prisma.ExperimentUncheckedUpdateWithoutCommentsInput>
+}
+
 export type ExperimentCreateWithoutCreatedByInput = {
   id?: string
   identifier: string
@@ -1416,6 +1442,7 @@ export type ExperimentCreateWithoutCreatedByInput = {
   workspace: Prisma.WorkspaceCreateNestedOneWithoutExperimentsInput
   project?: Prisma.ProjectCreateNestedOneWithoutExperimentsInput
   owner?: Prisma.UserCreateNestedOneWithoutOwnedExperimentsInput
+  comments?: Prisma.ExperimentCommentCreateNestedManyWithoutExperimentInput
 }
 
 export type ExperimentUncheckedCreateWithoutCreatedByInput = {
@@ -1459,6 +1486,7 @@ export type ExperimentUncheckedCreateWithoutCreatedByInput = {
   investorReadyInsight?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  comments?: Prisma.ExperimentCommentUncheckedCreateNestedManyWithoutExperimentInput
 }
 
 export type ExperimentCreateOrConnectWithoutCreatedByInput = {
@@ -1512,6 +1540,7 @@ export type ExperimentCreateWithoutOwnerInput = {
   workspace: Prisma.WorkspaceCreateNestedOneWithoutExperimentsInput
   project?: Prisma.ProjectCreateNestedOneWithoutExperimentsInput
   createdBy: Prisma.UserCreateNestedOneWithoutCreatedExperimentsInput
+  comments?: Prisma.ExperimentCommentCreateNestedManyWithoutExperimentInput
 }
 
 export type ExperimentUncheckedCreateWithoutOwnerInput = {
@@ -1555,6 +1584,7 @@ export type ExperimentUncheckedCreateWithoutOwnerInput = {
   investorReadyInsight?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  comments?: Prisma.ExperimentCommentUncheckedCreateNestedManyWithoutExperimentInput
 }
 
 export type ExperimentCreateOrConnectWithoutOwnerInput = {
@@ -1687,6 +1717,7 @@ export type ExperimentCreateWithoutWorkspaceInput = {
   project?: Prisma.ProjectCreateNestedOneWithoutExperimentsInput
   createdBy: Prisma.UserCreateNestedOneWithoutCreatedExperimentsInput
   owner?: Prisma.UserCreateNestedOneWithoutOwnedExperimentsInput
+  comments?: Prisma.ExperimentCommentCreateNestedManyWithoutExperimentInput
 }
 
 export type ExperimentUncheckedCreateWithoutWorkspaceInput = {
@@ -1730,6 +1761,7 @@ export type ExperimentUncheckedCreateWithoutWorkspaceInput = {
   investorReadyInsight?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  comments?: Prisma.ExperimentCommentUncheckedCreateNestedManyWithoutExperimentInput
 }
 
 export type ExperimentCreateOrConnectWithoutWorkspaceInput = {
@@ -1799,6 +1831,7 @@ export type ExperimentCreateWithoutProjectInput = {
   workspace: Prisma.WorkspaceCreateNestedOneWithoutExperimentsInput
   createdBy: Prisma.UserCreateNestedOneWithoutCreatedExperimentsInput
   owner?: Prisma.UserCreateNestedOneWithoutOwnedExperimentsInput
+  comments?: Prisma.ExperimentCommentCreateNestedManyWithoutExperimentInput
 }
 
 export type ExperimentUncheckedCreateWithoutProjectInput = {
@@ -1842,6 +1875,7 @@ export type ExperimentUncheckedCreateWithoutProjectInput = {
   investorReadyInsight?: string | null
   createdAt?: Date | string
   updatedAt?: Date | string
+  comments?: Prisma.ExperimentCommentUncheckedCreateNestedManyWithoutExperimentInput
 }
 
 export type ExperimentCreateOrConnectWithoutProjectInput = {
@@ -1868,6 +1902,198 @@ export type ExperimentUpdateWithWhereUniqueWithoutProjectInput = {
 export type ExperimentUpdateManyWithWhereWithoutProjectInput = {
   where: Prisma.ExperimentScalarWhereInput
   data: Prisma.XOR<Prisma.ExperimentUpdateManyMutationInput, Prisma.ExperimentUncheckedUpdateManyWithoutProjectInput>
+}
+
+export type ExperimentCreateWithoutCommentsInput = {
+  id?: string
+  identifier: string
+  title: string
+  sprint?: string | null
+  persona?: $Enums.ExperimentPersona | null
+  cohort?: string | null
+  channel?: $Enums.ExperimentChannel | null
+  experimentType?: $Enums.ExperimentType | null
+  status?: $Enums.ExperimentStatus
+  hypothesis?: string
+  riskiestAssumption?: string | null
+  learningGoal?: string | null
+  cacEstimate?: number | null
+  monthlyArpu?: number | null
+  ltvEstimate?: number | null
+  paybackPeriod?: number | null
+  depositTarget?: number | null
+  scoringCriteria?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  score?: number | null
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  resourceCost?: string | null
+  testSize?: string | null
+  primaryMetric?: string | null
+  secondaryMetrics?: string | null
+  killCondition?: string | null
+  whatHappened?: string | null
+  primaryMetricResult?: string | null
+  secondaryMetricResults?: string | null
+  unexpectedFindings?: string | null
+  didWeLearn?: string | null
+  continueExperiment?: string | null
+  continuePersona?: string | null
+  nextAction?: string | null
+  investorReadyInsight?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  workspace: Prisma.WorkspaceCreateNestedOneWithoutExperimentsInput
+  project?: Prisma.ProjectCreateNestedOneWithoutExperimentsInput
+  createdBy: Prisma.UserCreateNestedOneWithoutCreatedExperimentsInput
+  owner?: Prisma.UserCreateNestedOneWithoutOwnedExperimentsInput
+}
+
+export type ExperimentUncheckedCreateWithoutCommentsInput = {
+  id?: string
+  identifier: string
+  workspaceId: string
+  projectId?: string | null
+  createdById: string
+  ownerId?: string | null
+  title: string
+  sprint?: string | null
+  persona?: $Enums.ExperimentPersona | null
+  cohort?: string | null
+  channel?: $Enums.ExperimentChannel | null
+  experimentType?: $Enums.ExperimentType | null
+  status?: $Enums.ExperimentStatus
+  hypothesis?: string
+  riskiestAssumption?: string | null
+  learningGoal?: string | null
+  cacEstimate?: number | null
+  monthlyArpu?: number | null
+  ltvEstimate?: number | null
+  paybackPeriod?: number | null
+  depositTarget?: number | null
+  scoringCriteria?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  score?: number | null
+  startDate?: Date | string | null
+  endDate?: Date | string | null
+  resourceCost?: string | null
+  testSize?: string | null
+  primaryMetric?: string | null
+  secondaryMetrics?: string | null
+  killCondition?: string | null
+  whatHappened?: string | null
+  primaryMetricResult?: string | null
+  secondaryMetricResults?: string | null
+  unexpectedFindings?: string | null
+  didWeLearn?: string | null
+  continueExperiment?: string | null
+  continuePersona?: string | null
+  nextAction?: string | null
+  investorReadyInsight?: string | null
+  createdAt?: Date | string
+  updatedAt?: Date | string
+}
+
+export type ExperimentCreateOrConnectWithoutCommentsInput = {
+  where: Prisma.ExperimentWhereUniqueInput
+  create: Prisma.XOR<Prisma.ExperimentCreateWithoutCommentsInput, Prisma.ExperimentUncheckedCreateWithoutCommentsInput>
+}
+
+export type ExperimentUpsertWithoutCommentsInput = {
+  update: Prisma.XOR<Prisma.ExperimentUpdateWithoutCommentsInput, Prisma.ExperimentUncheckedUpdateWithoutCommentsInput>
+  create: Prisma.XOR<Prisma.ExperimentCreateWithoutCommentsInput, Prisma.ExperimentUncheckedCreateWithoutCommentsInput>
+  where?: Prisma.ExperimentWhereInput
+}
+
+export type ExperimentUpdateToOneWithWhereWithoutCommentsInput = {
+  where?: Prisma.ExperimentWhereInput
+  data: Prisma.XOR<Prisma.ExperimentUpdateWithoutCommentsInput, Prisma.ExperimentUncheckedUpdateWithoutCommentsInput>
+}
+
+export type ExperimentUpdateWithoutCommentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  identifier?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  sprint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  persona?: Prisma.NullableEnumExperimentPersonaFieldUpdateOperationsInput | $Enums.ExperimentPersona | null
+  cohort?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  channel?: Prisma.NullableEnumExperimentChannelFieldUpdateOperationsInput | $Enums.ExperimentChannel | null
+  experimentType?: Prisma.NullableEnumExperimentTypeFieldUpdateOperationsInput | $Enums.ExperimentType | null
+  status?: Prisma.EnumExperimentStatusFieldUpdateOperationsInput | $Enums.ExperimentStatus
+  hypothesis?: Prisma.StringFieldUpdateOperationsInput | string
+  riskiestAssumption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  learningGoal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cacEstimate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyArpu?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  ltvEstimate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  paybackPeriod?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  depositTarget?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  scoringCriteria?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  score?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  resourceCost?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  testSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  primaryMetric?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  secondaryMetrics?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  killCondition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatHappened?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  primaryMetricResult?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  secondaryMetricResults?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  unexpectedFindings?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  didWeLearn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  continueExperiment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  continuePersona?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextAction?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  investorReadyInsight?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  workspace?: Prisma.WorkspaceUpdateOneRequiredWithoutExperimentsNestedInput
+  project?: Prisma.ProjectUpdateOneWithoutExperimentsNestedInput
+  createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedExperimentsNestedInput
+  owner?: Prisma.UserUpdateOneWithoutOwnedExperimentsNestedInput
+}
+
+export type ExperimentUncheckedUpdateWithoutCommentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  identifier?: Prisma.StringFieldUpdateOperationsInput | string
+  workspaceId?: Prisma.StringFieldUpdateOperationsInput | string
+  projectId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdById?: Prisma.StringFieldUpdateOperationsInput | string
+  ownerId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  sprint?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  persona?: Prisma.NullableEnumExperimentPersonaFieldUpdateOperationsInput | $Enums.ExperimentPersona | null
+  cohort?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  channel?: Prisma.NullableEnumExperimentChannelFieldUpdateOperationsInput | $Enums.ExperimentChannel | null
+  experimentType?: Prisma.NullableEnumExperimentTypeFieldUpdateOperationsInput | $Enums.ExperimentType | null
+  status?: Prisma.EnumExperimentStatusFieldUpdateOperationsInput | $Enums.ExperimentStatus
+  hypothesis?: Prisma.StringFieldUpdateOperationsInput | string
+  riskiestAssumption?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  learningGoal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  cacEstimate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  monthlyArpu?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  ltvEstimate?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  paybackPeriod?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  depositTarget?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  scoringCriteria?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  score?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  startDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  endDate?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  resourceCost?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  testSize?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  primaryMetric?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  secondaryMetrics?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  killCondition?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  whatHappened?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  primaryMetricResult?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  secondaryMetricResults?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  unexpectedFindings?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  didWeLearn?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  continueExperiment?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  continuePersona?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  nextAction?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  investorReadyInsight?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type ExperimentCreateManyCreatedByInput = {
@@ -1997,6 +2223,7 @@ export type ExperimentUpdateWithoutCreatedByInput = {
   workspace?: Prisma.WorkspaceUpdateOneRequiredWithoutExperimentsNestedInput
   project?: Prisma.ProjectUpdateOneWithoutExperimentsNestedInput
   owner?: Prisma.UserUpdateOneWithoutOwnedExperimentsNestedInput
+  comments?: Prisma.ExperimentCommentUpdateManyWithoutExperimentNestedInput
 }
 
 export type ExperimentUncheckedUpdateWithoutCreatedByInput = {
@@ -2040,6 +2267,7 @@ export type ExperimentUncheckedUpdateWithoutCreatedByInput = {
   investorReadyInsight?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  comments?: Prisma.ExperimentCommentUncheckedUpdateManyWithoutExperimentNestedInput
 }
 
 export type ExperimentUncheckedUpdateManyWithoutCreatedByInput = {
@@ -2126,6 +2354,7 @@ export type ExperimentUpdateWithoutOwnerInput = {
   workspace?: Prisma.WorkspaceUpdateOneRequiredWithoutExperimentsNestedInput
   project?: Prisma.ProjectUpdateOneWithoutExperimentsNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedExperimentsNestedInput
+  comments?: Prisma.ExperimentCommentUpdateManyWithoutExperimentNestedInput
 }
 
 export type ExperimentUncheckedUpdateWithoutOwnerInput = {
@@ -2169,6 +2398,7 @@ export type ExperimentUncheckedUpdateWithoutOwnerInput = {
   investorReadyInsight?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  comments?: Prisma.ExperimentCommentUncheckedUpdateManyWithoutExperimentNestedInput
 }
 
 export type ExperimentUncheckedUpdateManyWithoutOwnerInput = {
@@ -2298,6 +2528,7 @@ export type ExperimentUpdateWithoutWorkspaceInput = {
   project?: Prisma.ProjectUpdateOneWithoutExperimentsNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedExperimentsNestedInput
   owner?: Prisma.UserUpdateOneWithoutOwnedExperimentsNestedInput
+  comments?: Prisma.ExperimentCommentUpdateManyWithoutExperimentNestedInput
 }
 
 export type ExperimentUncheckedUpdateWithoutWorkspaceInput = {
@@ -2341,6 +2572,7 @@ export type ExperimentUncheckedUpdateWithoutWorkspaceInput = {
   investorReadyInsight?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  comments?: Prisma.ExperimentCommentUncheckedUpdateManyWithoutExperimentNestedInput
 }
 
 export type ExperimentUncheckedUpdateManyWithoutWorkspaceInput = {
@@ -2470,6 +2702,7 @@ export type ExperimentUpdateWithoutProjectInput = {
   workspace?: Prisma.WorkspaceUpdateOneRequiredWithoutExperimentsNestedInput
   createdBy?: Prisma.UserUpdateOneRequiredWithoutCreatedExperimentsNestedInput
   owner?: Prisma.UserUpdateOneWithoutOwnedExperimentsNestedInput
+  comments?: Prisma.ExperimentCommentUpdateManyWithoutExperimentNestedInput
 }
 
 export type ExperimentUncheckedUpdateWithoutProjectInput = {
@@ -2513,6 +2746,7 @@ export type ExperimentUncheckedUpdateWithoutProjectInput = {
   investorReadyInsight?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  comments?: Prisma.ExperimentCommentUncheckedUpdateManyWithoutExperimentNestedInput
 }
 
 export type ExperimentUncheckedUpdateManyWithoutProjectInput = {
@@ -2558,6 +2792,35 @@ export type ExperimentUncheckedUpdateManyWithoutProjectInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
+
+/**
+ * Count Type ExperimentCountOutputType
+ */
+
+export type ExperimentCountOutputType = {
+  comments: number
+}
+
+export type ExperimentCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  comments?: boolean | ExperimentCountOutputTypeCountCommentsArgs
+}
+
+/**
+ * ExperimentCountOutputType without action
+ */
+export type ExperimentCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ExperimentCountOutputType
+   */
+  select?: Prisma.ExperimentCountOutputTypeSelect<ExtArgs> | null
+}
+
+/**
+ * ExperimentCountOutputType without action
+ */
+export type ExperimentCountOutputTypeCountCommentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ExperimentCommentWhereInput
+}
 
 
 export type ExperimentSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -2606,6 +2869,8 @@ export type ExperimentSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   project?: boolean | Prisma.Experiment$projectArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   owner?: boolean | Prisma.Experiment$ownerArgs<ExtArgs>
+  comments?: boolean | Prisma.Experiment$commentsArgs<ExtArgs>
+  _count?: boolean | Prisma.ExperimentCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["experiment"]>
 
 export type ExperimentSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -2754,6 +3019,8 @@ export type ExperimentInclude<ExtArgs extends runtime.Types.Extensions.InternalA
   project?: boolean | Prisma.Experiment$projectArgs<ExtArgs>
   createdBy?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   owner?: boolean | Prisma.Experiment$ownerArgs<ExtArgs>
+  comments?: boolean | Prisma.Experiment$commentsArgs<ExtArgs>
+  _count?: boolean | Prisma.ExperimentCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ExperimentIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   workspace?: boolean | Prisma.WorkspaceDefaultArgs<ExtArgs>
@@ -2775,6 +3042,7 @@ export type $ExperimentPayload<ExtArgs extends runtime.Types.Extensions.Internal
     project: Prisma.$ProjectPayload<ExtArgs> | null
     createdBy: Prisma.$UserPayload<ExtArgs>
     owner: Prisma.$UserPayload<ExtArgs> | null
+    comments: Prisma.$ExperimentCommentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -3216,6 +3484,7 @@ export interface Prisma__ExperimentClient<T, Null = never, ExtArgs extends runti
   project<T extends Prisma.Experiment$projectArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Experiment$projectArgs<ExtArgs>>): Prisma.Prisma__ProjectClient<runtime.Types.Result.GetResult<Prisma.$ProjectPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   createdBy<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   owner<T extends Prisma.Experiment$ownerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Experiment$ownerArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  comments<T extends Prisma.Experiment$commentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Experiment$commentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExperimentCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3722,6 +3991,30 @@ export type Experiment$ownerArgs<ExtArgs extends runtime.Types.Extensions.Intern
    */
   include?: Prisma.UserInclude<ExtArgs> | null
   where?: Prisma.UserWhereInput
+}
+
+/**
+ * Experiment.comments
+ */
+export type Experiment$commentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ExperimentComment
+   */
+  select?: Prisma.ExperimentCommentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ExperimentComment
+   */
+  omit?: Prisma.ExperimentCommentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ExperimentCommentInclude<ExtArgs> | null
+  where?: Prisma.ExperimentCommentWhereInput
+  orderBy?: Prisma.ExperimentCommentOrderByWithRelationInput | Prisma.ExperimentCommentOrderByWithRelationInput[]
+  cursor?: Prisma.ExperimentCommentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ExperimentCommentScalarFieldEnum | Prisma.ExperimentCommentScalarFieldEnum[]
 }
 
 /**

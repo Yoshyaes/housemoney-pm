@@ -17,6 +17,7 @@ import { agentRouter } from './agent';
 import { auditRouter } from './audit';
 import { decisionsRouter } from './decisions';
 import { experimentsRouter } from './experiments';
+import { experimentCommentsRouter } from './experiment-comments';
 
 export const appRouter = router({
   tasks: tasksRouter,
@@ -37,6 +38,7 @@ export const appRouter = router({
   audit: auditRouter,
   decisions: decisionsRouter,
   experiments: experimentsRouter,
+  experimentComments: experimentCommentsRouter,
 });
 
 export type AppRouter = typeof appRouter;

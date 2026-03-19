@@ -175,6 +175,7 @@ model User {
   createdExperiments Experiment[]     @relation("ExperimentCreator")
   ownedExperiments   Experiment[]     @relation("ExperimentOwner")
   uploadedDocAttachments DocumentAttachment[] @relation("DocAttachmentUploader")
+  experimentComments ExperimentComment[] @relation("ExperimentCommentAuthor")
 }
 
 model Workspace {
@@ -688,8 +689,23 @@ model Experiment {
   project         Project?           @relation(fields: [projectId], references: [id], onDelete: SetNull)
   createdBy       User               @relation("ExperimentCreator", fields: [createdById], references: [id])
   owner           User?              @relation("ExperimentOwner", fields: [ownerId], references: [id], onDelete: SetNull)
+  comments        ExperimentComment[]
 
   @@index([workspaceId])
   @@index([workspaceId, status])
   @@index([workspaceId, persona])
+}
+
+model ExperimentComment {
+  id           String   @id @default(cuid())
+  experimentId String
+  authorId     String
+  body         String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  experiment Experiment @relation(fields: [experimentId], references: [id], onDelete: Cascade)
+  author     User       @relation("ExperimentCommentAuthor", fields: [authorId], references: [id])
+
+  @@index([experimentId])
 }
