@@ -35,6 +35,7 @@ import {
   LogOut,
   Scale,
   FlaskConical,
+  MessageSquareText,
 } from 'lucide-react';
 
 interface SavedView {
@@ -131,6 +132,7 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
     { id: 'docs' as const, label: 'Docs', icon: BookOpen },
     { id: 'decisions' as const, label: 'Decisions', icon: Scale, guestHidden: true },
     { id: 'experiments' as const, label: 'Experiments', icon: FlaskConical, guestHidden: true },
+    { id: 'feedback' as const, label: 'Feedback', icon: MessageSquareText, guestHidden: true },
     { id: 'agent' as const, label: 'AI Insights', icon: Sparkles, badge: pendingInsightCount, guestHidden: true },
     { id: 'audit-log' as const, label: 'Audit Log', icon: Shield, guestHidden: true, adminOnly: true },
   ];
@@ -156,6 +158,8 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
       router.push('/decisions');
     } else if (id === 'experiments') {
       router.push('/experiments');
+    } else if (id === 'feedback') {
+      router.push('/feedback');
     } else if (id === 'agent') {
       setInsightPanelOpen(!insightPanelOpen);
       if (pathname !== '/') router.push('/');
@@ -214,7 +218,7 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
         </div>
 
         {navItems.map((item) => {
-          const isOnSubpage = pathname === '/analytics' || pathname.startsWith('/docs') || pathname.startsWith('/decisions') || pathname.startsWith('/experiments');
+          const isOnSubpage = pathname === '/analytics' || pathname.startsWith('/docs') || pathname.startsWith('/decisions') || pathname.startsWith('/experiments') || pathname.startsWith('/feedback');
           const isActive =
             item.id === 'analytics'
               ? pathname === '/analytics'
@@ -224,13 +228,15 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
                   ? pathname.startsWith('/decisions')
                   : item.id === 'experiments'
                     ? pathname.startsWith('/experiments')
-                    : item.id === 'inbox'
-                      ? inboxOpen && !isOnSubpage
-                      : item.id === 'agent'
-                        ? insightPanelOpen && !isOnSubpage
-                        : item.id === 'board' || item.id === 'list' || item.id === 'timeline'
-                          ? activeView === item.id && !inboxOpen && !insightPanelOpen && !isOnSubpage
-                          : false;
+                    : item.id === 'feedback'
+                      ? pathname.startsWith('/feedback')
+                      : item.id === 'inbox'
+                        ? inboxOpen && !isOnSubpage
+                        : item.id === 'agent'
+                          ? insightPanelOpen && !isOnSubpage
+                          : item.id === 'board' || item.id === 'list' || item.id === 'timeline'
+                            ? activeView === item.id && !inboxOpen && !insightPanelOpen && !isOnSubpage
+                            : false;
           const Icon = item.icon;
 
           return (

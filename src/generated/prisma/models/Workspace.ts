@@ -29,11 +29,13 @@ export type AggregateWorkspace = {
 export type WorkspaceAvgAggregateOutputType = {
   taskCounter: number | null
   experimentCounter: number | null
+  feedbackCounter: number | null
 }
 
 export type WorkspaceSumAggregateOutputType = {
   taskCounter: number | null
   experimentCounter: number | null
+  feedbackCounter: number | null
 }
 
 export type WorkspaceMinAggregateOutputType = {
@@ -42,6 +44,7 @@ export type WorkspaceMinAggregateOutputType = {
   slug: string | null
   taskCounter: number | null
   experimentCounter: number | null
+  feedbackCounter: number | null
   createdAt: Date | null
 }
 
@@ -51,6 +54,7 @@ export type WorkspaceMaxAggregateOutputType = {
   slug: string | null
   taskCounter: number | null
   experimentCounter: number | null
+  feedbackCounter: number | null
   createdAt: Date | null
 }
 
@@ -60,6 +64,7 @@ export type WorkspaceCountAggregateOutputType = {
   slug: number
   taskCounter: number
   experimentCounter: number
+  feedbackCounter: number
   createdAt: number
   _all: number
 }
@@ -68,11 +73,13 @@ export type WorkspaceCountAggregateOutputType = {
 export type WorkspaceAvgAggregateInputType = {
   taskCounter?: true
   experimentCounter?: true
+  feedbackCounter?: true
 }
 
 export type WorkspaceSumAggregateInputType = {
   taskCounter?: true
   experimentCounter?: true
+  feedbackCounter?: true
 }
 
 export type WorkspaceMinAggregateInputType = {
@@ -81,6 +88,7 @@ export type WorkspaceMinAggregateInputType = {
   slug?: true
   taskCounter?: true
   experimentCounter?: true
+  feedbackCounter?: true
   createdAt?: true
 }
 
@@ -90,6 +98,7 @@ export type WorkspaceMaxAggregateInputType = {
   slug?: true
   taskCounter?: true
   experimentCounter?: true
+  feedbackCounter?: true
   createdAt?: true
 }
 
@@ -99,6 +108,7 @@ export type WorkspaceCountAggregateInputType = {
   slug?: true
   taskCounter?: true
   experimentCounter?: true
+  feedbackCounter?: true
   createdAt?: true
   _all?: true
 }
@@ -195,6 +205,7 @@ export type WorkspaceGroupByOutputType = {
   slug: string
   taskCounter: number
   experimentCounter: number
+  feedbackCounter: number
   createdAt: Date
   _count: WorkspaceCountAggregateOutputType | null
   _avg: WorkspaceAvgAggregateOutputType | null
@@ -227,6 +238,7 @@ export type WorkspaceWhereInput = {
   slug?: Prisma.StringFilter<"Workspace"> | string
   taskCounter?: Prisma.IntFilter<"Workspace"> | number
   experimentCounter?: Prisma.IntFilter<"Workspace"> | number
+  feedbackCounter?: Prisma.IntFilter<"Workspace"> | number
   createdAt?: Prisma.DateTimeFilter<"Workspace"> | Date | string
   projects?: Prisma.ProjectListRelationFilter
   labels?: Prisma.LabelListRelationFilter
@@ -240,6 +252,7 @@ export type WorkspaceWhereInput = {
   auditLogs?: Prisma.AuditLogListRelationFilter
   decisions?: Prisma.DecisionListRelationFilter
   experiments?: Prisma.ExperimentListRelationFilter
+  feedback?: Prisma.FeedbackListRelationFilter
 }
 
 export type WorkspaceOrderByWithRelationInput = {
@@ -248,6 +261,7 @@ export type WorkspaceOrderByWithRelationInput = {
   slug?: Prisma.SortOrder
   taskCounter?: Prisma.SortOrder
   experimentCounter?: Prisma.SortOrder
+  feedbackCounter?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   projects?: Prisma.ProjectOrderByRelationAggregateInput
   labels?: Prisma.LabelOrderByRelationAggregateInput
@@ -261,6 +275,7 @@ export type WorkspaceOrderByWithRelationInput = {
   auditLogs?: Prisma.AuditLogOrderByRelationAggregateInput
   decisions?: Prisma.DecisionOrderByRelationAggregateInput
   experiments?: Prisma.ExperimentOrderByRelationAggregateInput
+  feedback?: Prisma.FeedbackOrderByRelationAggregateInput
 }
 
 export type WorkspaceWhereUniqueInput = Prisma.AtLeast<{
@@ -272,6 +287,7 @@ export type WorkspaceWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringFilter<"Workspace"> | string
   taskCounter?: Prisma.IntFilter<"Workspace"> | number
   experimentCounter?: Prisma.IntFilter<"Workspace"> | number
+  feedbackCounter?: Prisma.IntFilter<"Workspace"> | number
   createdAt?: Prisma.DateTimeFilter<"Workspace"> | Date | string
   projects?: Prisma.ProjectListRelationFilter
   labels?: Prisma.LabelListRelationFilter
@@ -285,6 +301,7 @@ export type WorkspaceWhereUniqueInput = Prisma.AtLeast<{
   auditLogs?: Prisma.AuditLogListRelationFilter
   decisions?: Prisma.DecisionListRelationFilter
   experiments?: Prisma.ExperimentListRelationFilter
+  feedback?: Prisma.FeedbackListRelationFilter
 }, "id" | "slug">
 
 export type WorkspaceOrderByWithAggregationInput = {
@@ -293,6 +310,7 @@ export type WorkspaceOrderByWithAggregationInput = {
   slug?: Prisma.SortOrder
   taskCounter?: Prisma.SortOrder
   experimentCounter?: Prisma.SortOrder
+  feedbackCounter?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.WorkspaceCountOrderByAggregateInput
   _avg?: Prisma.WorkspaceAvgOrderByAggregateInput
@@ -310,6 +328,7 @@ export type WorkspaceScalarWhereWithAggregatesInput = {
   slug?: Prisma.StringWithAggregatesFilter<"Workspace"> | string
   taskCounter?: Prisma.IntWithAggregatesFilter<"Workspace"> | number
   experimentCounter?: Prisma.IntWithAggregatesFilter<"Workspace"> | number
+  feedbackCounter?: Prisma.IntWithAggregatesFilter<"Workspace"> | number
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Workspace"> | Date | string
 }
 
@@ -319,6 +338,7 @@ export type WorkspaceCreateInput = {
   slug: string
   taskCounter?: number
   experimentCounter?: number
+  feedbackCounter?: number
   createdAt?: Date | string
   projects?: Prisma.ProjectCreateNestedManyWithoutWorkspaceInput
   labels?: Prisma.LabelCreateNestedManyWithoutWorkspaceInput
@@ -332,6 +352,7 @@ export type WorkspaceCreateInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutWorkspaceInput
   decisions?: Prisma.DecisionCreateNestedManyWithoutWorkspaceInput
   experiments?: Prisma.ExperimentCreateNestedManyWithoutWorkspaceInput
+  feedback?: Prisma.FeedbackCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateInput = {
@@ -340,6 +361,7 @@ export type WorkspaceUncheckedCreateInput = {
   slug: string
   taskCounter?: number
   experimentCounter?: number
+  feedbackCounter?: number
   createdAt?: Date | string
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
   labels?: Prisma.LabelUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -353,6 +375,7 @@ export type WorkspaceUncheckedCreateInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutWorkspaceInput
   decisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutWorkspaceInput
   experiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutWorkspaceInput
+  feedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUpdateInput = {
@@ -361,6 +384,7 @@ export type WorkspaceUpdateInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   taskCounter?: Prisma.IntFieldUpdateOperationsInput | number
   experimentCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  feedbackCounter?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.ProjectUpdateManyWithoutWorkspaceNestedInput
   labels?: Prisma.LabelUpdateManyWithoutWorkspaceNestedInput
@@ -374,6 +398,7 @@ export type WorkspaceUpdateInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutWorkspaceNestedInput
   decisions?: Prisma.DecisionUpdateManyWithoutWorkspaceNestedInput
   experiments?: Prisma.ExperimentUpdateManyWithoutWorkspaceNestedInput
+  feedback?: Prisma.FeedbackUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateInput = {
@@ -382,6 +407,7 @@ export type WorkspaceUncheckedUpdateInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   taskCounter?: Prisma.IntFieldUpdateOperationsInput | number
   experimentCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  feedbackCounter?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
   labels?: Prisma.LabelUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -395,6 +421,7 @@ export type WorkspaceUncheckedUpdateInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutWorkspaceNestedInput
   decisions?: Prisma.DecisionUncheckedUpdateManyWithoutWorkspaceNestedInput
   experiments?: Prisma.ExperimentUncheckedUpdateManyWithoutWorkspaceNestedInput
+  feedback?: Prisma.FeedbackUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateManyInput = {
@@ -403,6 +430,7 @@ export type WorkspaceCreateManyInput = {
   slug: string
   taskCounter?: number
   experimentCounter?: number
+  feedbackCounter?: number
   createdAt?: Date | string
 }
 
@@ -412,6 +440,7 @@ export type WorkspaceUpdateManyMutationInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   taskCounter?: Prisma.IntFieldUpdateOperationsInput | number
   experimentCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  feedbackCounter?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -421,6 +450,7 @@ export type WorkspaceUncheckedUpdateManyInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   taskCounter?: Prisma.IntFieldUpdateOperationsInput | number
   experimentCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  feedbackCounter?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -430,12 +460,14 @@ export type WorkspaceCountOrderByAggregateInput = {
   slug?: Prisma.SortOrder
   taskCounter?: Prisma.SortOrder
   experimentCounter?: Prisma.SortOrder
+  feedbackCounter?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type WorkspaceAvgOrderByAggregateInput = {
   taskCounter?: Prisma.SortOrder
   experimentCounter?: Prisma.SortOrder
+  feedbackCounter?: Prisma.SortOrder
 }
 
 export type WorkspaceMaxOrderByAggregateInput = {
@@ -444,6 +476,7 @@ export type WorkspaceMaxOrderByAggregateInput = {
   slug?: Prisma.SortOrder
   taskCounter?: Prisma.SortOrder
   experimentCounter?: Prisma.SortOrder
+  feedbackCounter?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -453,12 +486,14 @@ export type WorkspaceMinOrderByAggregateInput = {
   slug?: Prisma.SortOrder
   taskCounter?: Prisma.SortOrder
   experimentCounter?: Prisma.SortOrder
+  feedbackCounter?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
 export type WorkspaceSumOrderByAggregateInput = {
   taskCounter?: Prisma.SortOrder
   experimentCounter?: Prisma.SortOrder
+  feedbackCounter?: Prisma.SortOrder
 }
 
 export type WorkspaceScalarRelationFilter = {
@@ -649,12 +684,27 @@ export type WorkspaceUpdateOneRequiredWithoutExperimentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.WorkspaceUpdateToOneWithWhereWithoutExperimentsInput, Prisma.WorkspaceUpdateWithoutExperimentsInput>, Prisma.WorkspaceUncheckedUpdateWithoutExperimentsInput>
 }
 
+export type WorkspaceCreateNestedOneWithoutFeedbackInput = {
+  create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutFeedbackInput, Prisma.WorkspaceUncheckedCreateWithoutFeedbackInput>
+  connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutFeedbackInput
+  connect?: Prisma.WorkspaceWhereUniqueInput
+}
+
+export type WorkspaceUpdateOneRequiredWithoutFeedbackNestedInput = {
+  create?: Prisma.XOR<Prisma.WorkspaceCreateWithoutFeedbackInput, Prisma.WorkspaceUncheckedCreateWithoutFeedbackInput>
+  connectOrCreate?: Prisma.WorkspaceCreateOrConnectWithoutFeedbackInput
+  upsert?: Prisma.WorkspaceUpsertWithoutFeedbackInput
+  connect?: Prisma.WorkspaceWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.WorkspaceUpdateToOneWithWhereWithoutFeedbackInput, Prisma.WorkspaceUpdateWithoutFeedbackInput>, Prisma.WorkspaceUncheckedUpdateWithoutFeedbackInput>
+}
+
 export type WorkspaceCreateWithoutMembersInput = {
   id?: string
   name: string
   slug: string
   taskCounter?: number
   experimentCounter?: number
+  feedbackCounter?: number
   createdAt?: Date | string
   projects?: Prisma.ProjectCreateNestedManyWithoutWorkspaceInput
   labels?: Prisma.LabelCreateNestedManyWithoutWorkspaceInput
@@ -667,6 +717,7 @@ export type WorkspaceCreateWithoutMembersInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutWorkspaceInput
   decisions?: Prisma.DecisionCreateNestedManyWithoutWorkspaceInput
   experiments?: Prisma.ExperimentCreateNestedManyWithoutWorkspaceInput
+  feedback?: Prisma.FeedbackCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutMembersInput = {
@@ -675,6 +726,7 @@ export type WorkspaceUncheckedCreateWithoutMembersInput = {
   slug: string
   taskCounter?: number
   experimentCounter?: number
+  feedbackCounter?: number
   createdAt?: Date | string
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
   labels?: Prisma.LabelUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -687,6 +739,7 @@ export type WorkspaceUncheckedCreateWithoutMembersInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutWorkspaceInput
   decisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutWorkspaceInput
   experiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutWorkspaceInput
+  feedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutMembersInput = {
@@ -711,6 +764,7 @@ export type WorkspaceUpdateWithoutMembersInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   taskCounter?: Prisma.IntFieldUpdateOperationsInput | number
   experimentCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  feedbackCounter?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.ProjectUpdateManyWithoutWorkspaceNestedInput
   labels?: Prisma.LabelUpdateManyWithoutWorkspaceNestedInput
@@ -723,6 +777,7 @@ export type WorkspaceUpdateWithoutMembersInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutWorkspaceNestedInput
   decisions?: Prisma.DecisionUpdateManyWithoutWorkspaceNestedInput
   experiments?: Prisma.ExperimentUpdateManyWithoutWorkspaceNestedInput
+  feedback?: Prisma.FeedbackUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutMembersInput = {
@@ -731,6 +786,7 @@ export type WorkspaceUncheckedUpdateWithoutMembersInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   taskCounter?: Prisma.IntFieldUpdateOperationsInput | number
   experimentCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  feedbackCounter?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
   labels?: Prisma.LabelUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -743,6 +799,7 @@ export type WorkspaceUncheckedUpdateWithoutMembersInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutWorkspaceNestedInput
   decisions?: Prisma.DecisionUncheckedUpdateManyWithoutWorkspaceNestedInput
   experiments?: Prisma.ExperimentUncheckedUpdateManyWithoutWorkspaceNestedInput
+  feedback?: Prisma.FeedbackUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateWithoutProjectsInput = {
@@ -751,6 +808,7 @@ export type WorkspaceCreateWithoutProjectsInput = {
   slug: string
   taskCounter?: number
   experimentCounter?: number
+  feedbackCounter?: number
   createdAt?: Date | string
   labels?: Prisma.LabelCreateNestedManyWithoutWorkspaceInput
   members?: Prisma.WorkspaceMemberCreateNestedManyWithoutWorkspaceInput
@@ -763,6 +821,7 @@ export type WorkspaceCreateWithoutProjectsInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutWorkspaceInput
   decisions?: Prisma.DecisionCreateNestedManyWithoutWorkspaceInput
   experiments?: Prisma.ExperimentCreateNestedManyWithoutWorkspaceInput
+  feedback?: Prisma.FeedbackCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutProjectsInput = {
@@ -771,6 +830,7 @@ export type WorkspaceUncheckedCreateWithoutProjectsInput = {
   slug: string
   taskCounter?: number
   experimentCounter?: number
+  feedbackCounter?: number
   createdAt?: Date | string
   labels?: Prisma.LabelUncheckedCreateNestedManyWithoutWorkspaceInput
   members?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -783,6 +843,7 @@ export type WorkspaceUncheckedCreateWithoutProjectsInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutWorkspaceInput
   decisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutWorkspaceInput
   experiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutWorkspaceInput
+  feedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutProjectsInput = {
@@ -807,6 +868,7 @@ export type WorkspaceUpdateWithoutProjectsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   taskCounter?: Prisma.IntFieldUpdateOperationsInput | number
   experimentCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  feedbackCounter?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   labels?: Prisma.LabelUpdateManyWithoutWorkspaceNestedInput
   members?: Prisma.WorkspaceMemberUpdateManyWithoutWorkspaceNestedInput
@@ -819,6 +881,7 @@ export type WorkspaceUpdateWithoutProjectsInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutWorkspaceNestedInput
   decisions?: Prisma.DecisionUpdateManyWithoutWorkspaceNestedInput
   experiments?: Prisma.ExperimentUpdateManyWithoutWorkspaceNestedInput
+  feedback?: Prisma.FeedbackUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutProjectsInput = {
@@ -827,6 +890,7 @@ export type WorkspaceUncheckedUpdateWithoutProjectsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   taskCounter?: Prisma.IntFieldUpdateOperationsInput | number
   experimentCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  feedbackCounter?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   labels?: Prisma.LabelUncheckedUpdateManyWithoutWorkspaceNestedInput
   members?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -839,6 +903,7 @@ export type WorkspaceUncheckedUpdateWithoutProjectsInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutWorkspaceNestedInput
   decisions?: Prisma.DecisionUncheckedUpdateManyWithoutWorkspaceNestedInput
   experiments?: Prisma.ExperimentUncheckedUpdateManyWithoutWorkspaceNestedInput
+  feedback?: Prisma.FeedbackUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateWithoutTasksInput = {
@@ -847,6 +912,7 @@ export type WorkspaceCreateWithoutTasksInput = {
   slug: string
   taskCounter?: number
   experimentCounter?: number
+  feedbackCounter?: number
   createdAt?: Date | string
   projects?: Prisma.ProjectCreateNestedManyWithoutWorkspaceInput
   labels?: Prisma.LabelCreateNestedManyWithoutWorkspaceInput
@@ -859,6 +925,7 @@ export type WorkspaceCreateWithoutTasksInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutWorkspaceInput
   decisions?: Prisma.DecisionCreateNestedManyWithoutWorkspaceInput
   experiments?: Prisma.ExperimentCreateNestedManyWithoutWorkspaceInput
+  feedback?: Prisma.FeedbackCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutTasksInput = {
@@ -867,6 +934,7 @@ export type WorkspaceUncheckedCreateWithoutTasksInput = {
   slug: string
   taskCounter?: number
   experimentCounter?: number
+  feedbackCounter?: number
   createdAt?: Date | string
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
   labels?: Prisma.LabelUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -879,6 +947,7 @@ export type WorkspaceUncheckedCreateWithoutTasksInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutWorkspaceInput
   decisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutWorkspaceInput
   experiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutWorkspaceInput
+  feedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutTasksInput = {
@@ -903,6 +972,7 @@ export type WorkspaceUpdateWithoutTasksInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   taskCounter?: Prisma.IntFieldUpdateOperationsInput | number
   experimentCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  feedbackCounter?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.ProjectUpdateManyWithoutWorkspaceNestedInput
   labels?: Prisma.LabelUpdateManyWithoutWorkspaceNestedInput
@@ -915,6 +985,7 @@ export type WorkspaceUpdateWithoutTasksInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutWorkspaceNestedInput
   decisions?: Prisma.DecisionUpdateManyWithoutWorkspaceNestedInput
   experiments?: Prisma.ExperimentUpdateManyWithoutWorkspaceNestedInput
+  feedback?: Prisma.FeedbackUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutTasksInput = {
@@ -923,6 +994,7 @@ export type WorkspaceUncheckedUpdateWithoutTasksInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   taskCounter?: Prisma.IntFieldUpdateOperationsInput | number
   experimentCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  feedbackCounter?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
   labels?: Prisma.LabelUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -935,6 +1007,7 @@ export type WorkspaceUncheckedUpdateWithoutTasksInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutWorkspaceNestedInput
   decisions?: Prisma.DecisionUncheckedUpdateManyWithoutWorkspaceNestedInput
   experiments?: Prisma.ExperimentUncheckedUpdateManyWithoutWorkspaceNestedInput
+  feedback?: Prisma.FeedbackUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateWithoutLabelsInput = {
@@ -943,6 +1016,7 @@ export type WorkspaceCreateWithoutLabelsInput = {
   slug: string
   taskCounter?: number
   experimentCounter?: number
+  feedbackCounter?: number
   createdAt?: Date | string
   projects?: Prisma.ProjectCreateNestedManyWithoutWorkspaceInput
   members?: Prisma.WorkspaceMemberCreateNestedManyWithoutWorkspaceInput
@@ -955,6 +1029,7 @@ export type WorkspaceCreateWithoutLabelsInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutWorkspaceInput
   decisions?: Prisma.DecisionCreateNestedManyWithoutWorkspaceInput
   experiments?: Prisma.ExperimentCreateNestedManyWithoutWorkspaceInput
+  feedback?: Prisma.FeedbackCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutLabelsInput = {
@@ -963,6 +1038,7 @@ export type WorkspaceUncheckedCreateWithoutLabelsInput = {
   slug: string
   taskCounter?: number
   experimentCounter?: number
+  feedbackCounter?: number
   createdAt?: Date | string
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
   members?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -975,6 +1051,7 @@ export type WorkspaceUncheckedCreateWithoutLabelsInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutWorkspaceInput
   decisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutWorkspaceInput
   experiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutWorkspaceInput
+  feedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutLabelsInput = {
@@ -999,6 +1076,7 @@ export type WorkspaceUpdateWithoutLabelsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   taskCounter?: Prisma.IntFieldUpdateOperationsInput | number
   experimentCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  feedbackCounter?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.ProjectUpdateManyWithoutWorkspaceNestedInput
   members?: Prisma.WorkspaceMemberUpdateManyWithoutWorkspaceNestedInput
@@ -1011,6 +1089,7 @@ export type WorkspaceUpdateWithoutLabelsInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutWorkspaceNestedInput
   decisions?: Prisma.DecisionUpdateManyWithoutWorkspaceNestedInput
   experiments?: Prisma.ExperimentUpdateManyWithoutWorkspaceNestedInput
+  feedback?: Prisma.FeedbackUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutLabelsInput = {
@@ -1019,6 +1098,7 @@ export type WorkspaceUncheckedUpdateWithoutLabelsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   taskCounter?: Prisma.IntFieldUpdateOperationsInput | number
   experimentCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  feedbackCounter?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
   members?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -1031,6 +1111,7 @@ export type WorkspaceUncheckedUpdateWithoutLabelsInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutWorkspaceNestedInput
   decisions?: Prisma.DecisionUncheckedUpdateManyWithoutWorkspaceNestedInput
   experiments?: Prisma.ExperimentUncheckedUpdateManyWithoutWorkspaceNestedInput
+  feedback?: Prisma.FeedbackUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateWithoutViewsInput = {
@@ -1039,6 +1120,7 @@ export type WorkspaceCreateWithoutViewsInput = {
   slug: string
   taskCounter?: number
   experimentCounter?: number
+  feedbackCounter?: number
   createdAt?: Date | string
   projects?: Prisma.ProjectCreateNestedManyWithoutWorkspaceInput
   labels?: Prisma.LabelCreateNestedManyWithoutWorkspaceInput
@@ -1051,6 +1133,7 @@ export type WorkspaceCreateWithoutViewsInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutWorkspaceInput
   decisions?: Prisma.DecisionCreateNestedManyWithoutWorkspaceInput
   experiments?: Prisma.ExperimentCreateNestedManyWithoutWorkspaceInput
+  feedback?: Prisma.FeedbackCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutViewsInput = {
@@ -1059,6 +1142,7 @@ export type WorkspaceUncheckedCreateWithoutViewsInput = {
   slug: string
   taskCounter?: number
   experimentCounter?: number
+  feedbackCounter?: number
   createdAt?: Date | string
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
   labels?: Prisma.LabelUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -1071,6 +1155,7 @@ export type WorkspaceUncheckedCreateWithoutViewsInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutWorkspaceInput
   decisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutWorkspaceInput
   experiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutWorkspaceInput
+  feedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutViewsInput = {
@@ -1095,6 +1180,7 @@ export type WorkspaceUpdateWithoutViewsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   taskCounter?: Prisma.IntFieldUpdateOperationsInput | number
   experimentCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  feedbackCounter?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.ProjectUpdateManyWithoutWorkspaceNestedInput
   labels?: Prisma.LabelUpdateManyWithoutWorkspaceNestedInput
@@ -1107,6 +1193,7 @@ export type WorkspaceUpdateWithoutViewsInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutWorkspaceNestedInput
   decisions?: Prisma.DecisionUpdateManyWithoutWorkspaceNestedInput
   experiments?: Prisma.ExperimentUpdateManyWithoutWorkspaceNestedInput
+  feedback?: Prisma.FeedbackUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutViewsInput = {
@@ -1115,6 +1202,7 @@ export type WorkspaceUncheckedUpdateWithoutViewsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   taskCounter?: Prisma.IntFieldUpdateOperationsInput | number
   experimentCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  feedbackCounter?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
   labels?: Prisma.LabelUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -1127,6 +1215,7 @@ export type WorkspaceUncheckedUpdateWithoutViewsInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutWorkspaceNestedInput
   decisions?: Prisma.DecisionUncheckedUpdateManyWithoutWorkspaceNestedInput
   experiments?: Prisma.ExperimentUncheckedUpdateManyWithoutWorkspaceNestedInput
+  feedback?: Prisma.FeedbackUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateWithoutDocumentsInput = {
@@ -1135,6 +1224,7 @@ export type WorkspaceCreateWithoutDocumentsInput = {
   slug: string
   taskCounter?: number
   experimentCounter?: number
+  feedbackCounter?: number
   createdAt?: Date | string
   projects?: Prisma.ProjectCreateNestedManyWithoutWorkspaceInput
   labels?: Prisma.LabelCreateNestedManyWithoutWorkspaceInput
@@ -1147,6 +1237,7 @@ export type WorkspaceCreateWithoutDocumentsInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutWorkspaceInput
   decisions?: Prisma.DecisionCreateNestedManyWithoutWorkspaceInput
   experiments?: Prisma.ExperimentCreateNestedManyWithoutWorkspaceInput
+  feedback?: Prisma.FeedbackCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutDocumentsInput = {
@@ -1155,6 +1246,7 @@ export type WorkspaceUncheckedCreateWithoutDocumentsInput = {
   slug: string
   taskCounter?: number
   experimentCounter?: number
+  feedbackCounter?: number
   createdAt?: Date | string
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
   labels?: Prisma.LabelUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -1167,6 +1259,7 @@ export type WorkspaceUncheckedCreateWithoutDocumentsInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutWorkspaceInput
   decisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutWorkspaceInput
   experiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutWorkspaceInput
+  feedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutDocumentsInput = {
@@ -1191,6 +1284,7 @@ export type WorkspaceUpdateWithoutDocumentsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   taskCounter?: Prisma.IntFieldUpdateOperationsInput | number
   experimentCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  feedbackCounter?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.ProjectUpdateManyWithoutWorkspaceNestedInput
   labels?: Prisma.LabelUpdateManyWithoutWorkspaceNestedInput
@@ -1203,6 +1297,7 @@ export type WorkspaceUpdateWithoutDocumentsInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutWorkspaceNestedInput
   decisions?: Prisma.DecisionUpdateManyWithoutWorkspaceNestedInput
   experiments?: Prisma.ExperimentUpdateManyWithoutWorkspaceNestedInput
+  feedback?: Prisma.FeedbackUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutDocumentsInput = {
@@ -1211,6 +1306,7 @@ export type WorkspaceUncheckedUpdateWithoutDocumentsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   taskCounter?: Prisma.IntFieldUpdateOperationsInput | number
   experimentCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  feedbackCounter?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
   labels?: Prisma.LabelUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -1223,6 +1319,7 @@ export type WorkspaceUncheckedUpdateWithoutDocumentsInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutWorkspaceNestedInput
   decisions?: Prisma.DecisionUncheckedUpdateManyWithoutWorkspaceNestedInput
   experiments?: Prisma.ExperimentUncheckedUpdateManyWithoutWorkspaceNestedInput
+  feedback?: Prisma.FeedbackUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateWithoutInvitationsInput = {
@@ -1231,6 +1328,7 @@ export type WorkspaceCreateWithoutInvitationsInput = {
   slug: string
   taskCounter?: number
   experimentCounter?: number
+  feedbackCounter?: number
   createdAt?: Date | string
   projects?: Prisma.ProjectCreateNestedManyWithoutWorkspaceInput
   labels?: Prisma.LabelCreateNestedManyWithoutWorkspaceInput
@@ -1243,6 +1341,7 @@ export type WorkspaceCreateWithoutInvitationsInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutWorkspaceInput
   decisions?: Prisma.DecisionCreateNestedManyWithoutWorkspaceInput
   experiments?: Prisma.ExperimentCreateNestedManyWithoutWorkspaceInput
+  feedback?: Prisma.FeedbackCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutInvitationsInput = {
@@ -1251,6 +1350,7 @@ export type WorkspaceUncheckedCreateWithoutInvitationsInput = {
   slug: string
   taskCounter?: number
   experimentCounter?: number
+  feedbackCounter?: number
   createdAt?: Date | string
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
   labels?: Prisma.LabelUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -1263,6 +1363,7 @@ export type WorkspaceUncheckedCreateWithoutInvitationsInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutWorkspaceInput
   decisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutWorkspaceInput
   experiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutWorkspaceInput
+  feedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutInvitationsInput = {
@@ -1287,6 +1388,7 @@ export type WorkspaceUpdateWithoutInvitationsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   taskCounter?: Prisma.IntFieldUpdateOperationsInput | number
   experimentCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  feedbackCounter?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.ProjectUpdateManyWithoutWorkspaceNestedInput
   labels?: Prisma.LabelUpdateManyWithoutWorkspaceNestedInput
@@ -1299,6 +1401,7 @@ export type WorkspaceUpdateWithoutInvitationsInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutWorkspaceNestedInput
   decisions?: Prisma.DecisionUpdateManyWithoutWorkspaceNestedInput
   experiments?: Prisma.ExperimentUpdateManyWithoutWorkspaceNestedInput
+  feedback?: Prisma.FeedbackUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutInvitationsInput = {
@@ -1307,6 +1410,7 @@ export type WorkspaceUncheckedUpdateWithoutInvitationsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   taskCounter?: Prisma.IntFieldUpdateOperationsInput | number
   experimentCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  feedbackCounter?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
   labels?: Prisma.LabelUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -1319,6 +1423,7 @@ export type WorkspaceUncheckedUpdateWithoutInvitationsInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutWorkspaceNestedInput
   decisions?: Prisma.DecisionUncheckedUpdateManyWithoutWorkspaceNestedInput
   experiments?: Prisma.ExperimentUncheckedUpdateManyWithoutWorkspaceNestedInput
+  feedback?: Prisma.FeedbackUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateWithoutAgentInsightsInput = {
@@ -1327,6 +1432,7 @@ export type WorkspaceCreateWithoutAgentInsightsInput = {
   slug: string
   taskCounter?: number
   experimentCounter?: number
+  feedbackCounter?: number
   createdAt?: Date | string
   projects?: Prisma.ProjectCreateNestedManyWithoutWorkspaceInput
   labels?: Prisma.LabelCreateNestedManyWithoutWorkspaceInput
@@ -1339,6 +1445,7 @@ export type WorkspaceCreateWithoutAgentInsightsInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutWorkspaceInput
   decisions?: Prisma.DecisionCreateNestedManyWithoutWorkspaceInput
   experiments?: Prisma.ExperimentCreateNestedManyWithoutWorkspaceInput
+  feedback?: Prisma.FeedbackCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutAgentInsightsInput = {
@@ -1347,6 +1454,7 @@ export type WorkspaceUncheckedCreateWithoutAgentInsightsInput = {
   slug: string
   taskCounter?: number
   experimentCounter?: number
+  feedbackCounter?: number
   createdAt?: Date | string
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
   labels?: Prisma.LabelUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -1359,6 +1467,7 @@ export type WorkspaceUncheckedCreateWithoutAgentInsightsInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutWorkspaceInput
   decisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutWorkspaceInput
   experiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutWorkspaceInput
+  feedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutAgentInsightsInput = {
@@ -1383,6 +1492,7 @@ export type WorkspaceUpdateWithoutAgentInsightsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   taskCounter?: Prisma.IntFieldUpdateOperationsInput | number
   experimentCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  feedbackCounter?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.ProjectUpdateManyWithoutWorkspaceNestedInput
   labels?: Prisma.LabelUpdateManyWithoutWorkspaceNestedInput
@@ -1395,6 +1505,7 @@ export type WorkspaceUpdateWithoutAgentInsightsInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutWorkspaceNestedInput
   decisions?: Prisma.DecisionUpdateManyWithoutWorkspaceNestedInput
   experiments?: Prisma.ExperimentUpdateManyWithoutWorkspaceNestedInput
+  feedback?: Prisma.FeedbackUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutAgentInsightsInput = {
@@ -1403,6 +1514,7 @@ export type WorkspaceUncheckedUpdateWithoutAgentInsightsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   taskCounter?: Prisma.IntFieldUpdateOperationsInput | number
   experimentCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  feedbackCounter?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
   labels?: Prisma.LabelUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -1415,6 +1527,7 @@ export type WorkspaceUncheckedUpdateWithoutAgentInsightsInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutWorkspaceNestedInput
   decisions?: Prisma.DecisionUncheckedUpdateManyWithoutWorkspaceNestedInput
   experiments?: Prisma.ExperimentUncheckedUpdateManyWithoutWorkspaceNestedInput
+  feedback?: Prisma.FeedbackUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateWithoutAgentConfigInput = {
@@ -1423,6 +1536,7 @@ export type WorkspaceCreateWithoutAgentConfigInput = {
   slug: string
   taskCounter?: number
   experimentCounter?: number
+  feedbackCounter?: number
   createdAt?: Date | string
   projects?: Prisma.ProjectCreateNestedManyWithoutWorkspaceInput
   labels?: Prisma.LabelCreateNestedManyWithoutWorkspaceInput
@@ -1435,6 +1549,7 @@ export type WorkspaceCreateWithoutAgentConfigInput = {
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutWorkspaceInput
   decisions?: Prisma.DecisionCreateNestedManyWithoutWorkspaceInput
   experiments?: Prisma.ExperimentCreateNestedManyWithoutWorkspaceInput
+  feedback?: Prisma.FeedbackCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutAgentConfigInput = {
@@ -1443,6 +1558,7 @@ export type WorkspaceUncheckedCreateWithoutAgentConfigInput = {
   slug: string
   taskCounter?: number
   experimentCounter?: number
+  feedbackCounter?: number
   createdAt?: Date | string
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
   labels?: Prisma.LabelUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -1455,6 +1571,7 @@ export type WorkspaceUncheckedCreateWithoutAgentConfigInput = {
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutWorkspaceInput
   decisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutWorkspaceInput
   experiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutWorkspaceInput
+  feedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutAgentConfigInput = {
@@ -1479,6 +1596,7 @@ export type WorkspaceUpdateWithoutAgentConfigInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   taskCounter?: Prisma.IntFieldUpdateOperationsInput | number
   experimentCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  feedbackCounter?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.ProjectUpdateManyWithoutWorkspaceNestedInput
   labels?: Prisma.LabelUpdateManyWithoutWorkspaceNestedInput
@@ -1491,6 +1609,7 @@ export type WorkspaceUpdateWithoutAgentConfigInput = {
   auditLogs?: Prisma.AuditLogUpdateManyWithoutWorkspaceNestedInput
   decisions?: Prisma.DecisionUpdateManyWithoutWorkspaceNestedInput
   experiments?: Prisma.ExperimentUpdateManyWithoutWorkspaceNestedInput
+  feedback?: Prisma.FeedbackUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutAgentConfigInput = {
@@ -1499,6 +1618,7 @@ export type WorkspaceUncheckedUpdateWithoutAgentConfigInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   taskCounter?: Prisma.IntFieldUpdateOperationsInput | number
   experimentCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  feedbackCounter?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
   labels?: Prisma.LabelUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -1511,6 +1631,7 @@ export type WorkspaceUncheckedUpdateWithoutAgentConfigInput = {
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutWorkspaceNestedInput
   decisions?: Prisma.DecisionUncheckedUpdateManyWithoutWorkspaceNestedInput
   experiments?: Prisma.ExperimentUncheckedUpdateManyWithoutWorkspaceNestedInput
+  feedback?: Prisma.FeedbackUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateWithoutAuditLogsInput = {
@@ -1519,6 +1640,7 @@ export type WorkspaceCreateWithoutAuditLogsInput = {
   slug: string
   taskCounter?: number
   experimentCounter?: number
+  feedbackCounter?: number
   createdAt?: Date | string
   projects?: Prisma.ProjectCreateNestedManyWithoutWorkspaceInput
   labels?: Prisma.LabelCreateNestedManyWithoutWorkspaceInput
@@ -1531,6 +1653,7 @@ export type WorkspaceCreateWithoutAuditLogsInput = {
   agentConfig?: Prisma.AgentConfigCreateNestedOneWithoutWorkspaceInput
   decisions?: Prisma.DecisionCreateNestedManyWithoutWorkspaceInput
   experiments?: Prisma.ExperimentCreateNestedManyWithoutWorkspaceInput
+  feedback?: Prisma.FeedbackCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutAuditLogsInput = {
@@ -1539,6 +1662,7 @@ export type WorkspaceUncheckedCreateWithoutAuditLogsInput = {
   slug: string
   taskCounter?: number
   experimentCounter?: number
+  feedbackCounter?: number
   createdAt?: Date | string
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
   labels?: Prisma.LabelUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -1551,6 +1675,7 @@ export type WorkspaceUncheckedCreateWithoutAuditLogsInput = {
   agentConfig?: Prisma.AgentConfigUncheckedCreateNestedOneWithoutWorkspaceInput
   decisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutWorkspaceInput
   experiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutWorkspaceInput
+  feedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutAuditLogsInput = {
@@ -1575,6 +1700,7 @@ export type WorkspaceUpdateWithoutAuditLogsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   taskCounter?: Prisma.IntFieldUpdateOperationsInput | number
   experimentCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  feedbackCounter?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.ProjectUpdateManyWithoutWorkspaceNestedInput
   labels?: Prisma.LabelUpdateManyWithoutWorkspaceNestedInput
@@ -1587,6 +1713,7 @@ export type WorkspaceUpdateWithoutAuditLogsInput = {
   agentConfig?: Prisma.AgentConfigUpdateOneWithoutWorkspaceNestedInput
   decisions?: Prisma.DecisionUpdateManyWithoutWorkspaceNestedInput
   experiments?: Prisma.ExperimentUpdateManyWithoutWorkspaceNestedInput
+  feedback?: Prisma.FeedbackUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutAuditLogsInput = {
@@ -1595,6 +1722,7 @@ export type WorkspaceUncheckedUpdateWithoutAuditLogsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   taskCounter?: Prisma.IntFieldUpdateOperationsInput | number
   experimentCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  feedbackCounter?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
   labels?: Prisma.LabelUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -1607,6 +1735,7 @@ export type WorkspaceUncheckedUpdateWithoutAuditLogsInput = {
   agentConfig?: Prisma.AgentConfigUncheckedUpdateOneWithoutWorkspaceNestedInput
   decisions?: Prisma.DecisionUncheckedUpdateManyWithoutWorkspaceNestedInput
   experiments?: Prisma.ExperimentUncheckedUpdateManyWithoutWorkspaceNestedInput
+  feedback?: Prisma.FeedbackUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateWithoutDecisionsInput = {
@@ -1615,6 +1744,7 @@ export type WorkspaceCreateWithoutDecisionsInput = {
   slug: string
   taskCounter?: number
   experimentCounter?: number
+  feedbackCounter?: number
   createdAt?: Date | string
   projects?: Prisma.ProjectCreateNestedManyWithoutWorkspaceInput
   labels?: Prisma.LabelCreateNestedManyWithoutWorkspaceInput
@@ -1627,6 +1757,7 @@ export type WorkspaceCreateWithoutDecisionsInput = {
   agentConfig?: Prisma.AgentConfigCreateNestedOneWithoutWorkspaceInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutWorkspaceInput
   experiments?: Prisma.ExperimentCreateNestedManyWithoutWorkspaceInput
+  feedback?: Prisma.FeedbackCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutDecisionsInput = {
@@ -1635,6 +1766,7 @@ export type WorkspaceUncheckedCreateWithoutDecisionsInput = {
   slug: string
   taskCounter?: number
   experimentCounter?: number
+  feedbackCounter?: number
   createdAt?: Date | string
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
   labels?: Prisma.LabelUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -1647,6 +1779,7 @@ export type WorkspaceUncheckedCreateWithoutDecisionsInput = {
   agentConfig?: Prisma.AgentConfigUncheckedCreateNestedOneWithoutWorkspaceInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutWorkspaceInput
   experiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutWorkspaceInput
+  feedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutDecisionsInput = {
@@ -1671,6 +1804,7 @@ export type WorkspaceUpdateWithoutDecisionsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   taskCounter?: Prisma.IntFieldUpdateOperationsInput | number
   experimentCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  feedbackCounter?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.ProjectUpdateManyWithoutWorkspaceNestedInput
   labels?: Prisma.LabelUpdateManyWithoutWorkspaceNestedInput
@@ -1683,6 +1817,7 @@ export type WorkspaceUpdateWithoutDecisionsInput = {
   agentConfig?: Prisma.AgentConfigUpdateOneWithoutWorkspaceNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutWorkspaceNestedInput
   experiments?: Prisma.ExperimentUpdateManyWithoutWorkspaceNestedInput
+  feedback?: Prisma.FeedbackUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutDecisionsInput = {
@@ -1691,6 +1826,7 @@ export type WorkspaceUncheckedUpdateWithoutDecisionsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   taskCounter?: Prisma.IntFieldUpdateOperationsInput | number
   experimentCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  feedbackCounter?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
   labels?: Prisma.LabelUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -1703,6 +1839,7 @@ export type WorkspaceUncheckedUpdateWithoutDecisionsInput = {
   agentConfig?: Prisma.AgentConfigUncheckedUpdateOneWithoutWorkspaceNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutWorkspaceNestedInput
   experiments?: Prisma.ExperimentUncheckedUpdateManyWithoutWorkspaceNestedInput
+  feedback?: Prisma.FeedbackUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceCreateWithoutExperimentsInput = {
@@ -1711,6 +1848,7 @@ export type WorkspaceCreateWithoutExperimentsInput = {
   slug: string
   taskCounter?: number
   experimentCounter?: number
+  feedbackCounter?: number
   createdAt?: Date | string
   projects?: Prisma.ProjectCreateNestedManyWithoutWorkspaceInput
   labels?: Prisma.LabelCreateNestedManyWithoutWorkspaceInput
@@ -1723,6 +1861,7 @@ export type WorkspaceCreateWithoutExperimentsInput = {
   agentConfig?: Prisma.AgentConfigCreateNestedOneWithoutWorkspaceInput
   auditLogs?: Prisma.AuditLogCreateNestedManyWithoutWorkspaceInput
   decisions?: Prisma.DecisionCreateNestedManyWithoutWorkspaceInput
+  feedback?: Prisma.FeedbackCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceUncheckedCreateWithoutExperimentsInput = {
@@ -1731,6 +1870,7 @@ export type WorkspaceUncheckedCreateWithoutExperimentsInput = {
   slug: string
   taskCounter?: number
   experimentCounter?: number
+  feedbackCounter?: number
   createdAt?: Date | string
   projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
   labels?: Prisma.LabelUncheckedCreateNestedManyWithoutWorkspaceInput
@@ -1743,6 +1883,7 @@ export type WorkspaceUncheckedCreateWithoutExperimentsInput = {
   agentConfig?: Prisma.AgentConfigUncheckedCreateNestedOneWithoutWorkspaceInput
   auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutWorkspaceInput
   decisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutWorkspaceInput
+  feedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutWorkspaceInput
 }
 
 export type WorkspaceCreateOrConnectWithoutExperimentsInput = {
@@ -1767,6 +1908,7 @@ export type WorkspaceUpdateWithoutExperimentsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   taskCounter?: Prisma.IntFieldUpdateOperationsInput | number
   experimentCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  feedbackCounter?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.ProjectUpdateManyWithoutWorkspaceNestedInput
   labels?: Prisma.LabelUpdateManyWithoutWorkspaceNestedInput
@@ -1779,6 +1921,7 @@ export type WorkspaceUpdateWithoutExperimentsInput = {
   agentConfig?: Prisma.AgentConfigUpdateOneWithoutWorkspaceNestedInput
   auditLogs?: Prisma.AuditLogUpdateManyWithoutWorkspaceNestedInput
   decisions?: Prisma.DecisionUpdateManyWithoutWorkspaceNestedInput
+  feedback?: Prisma.FeedbackUpdateManyWithoutWorkspaceNestedInput
 }
 
 export type WorkspaceUncheckedUpdateWithoutExperimentsInput = {
@@ -1787,6 +1930,7 @@ export type WorkspaceUncheckedUpdateWithoutExperimentsInput = {
   slug?: Prisma.StringFieldUpdateOperationsInput | string
   taskCounter?: Prisma.IntFieldUpdateOperationsInput | number
   experimentCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  feedbackCounter?: Prisma.IntFieldUpdateOperationsInput | number
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   projects?: Prisma.ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
   labels?: Prisma.LabelUncheckedUpdateManyWithoutWorkspaceNestedInput
@@ -1799,6 +1943,111 @@ export type WorkspaceUncheckedUpdateWithoutExperimentsInput = {
   agentConfig?: Prisma.AgentConfigUncheckedUpdateOneWithoutWorkspaceNestedInput
   auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutWorkspaceNestedInput
   decisions?: Prisma.DecisionUncheckedUpdateManyWithoutWorkspaceNestedInput
+  feedback?: Prisma.FeedbackUncheckedUpdateManyWithoutWorkspaceNestedInput
+}
+
+export type WorkspaceCreateWithoutFeedbackInput = {
+  id?: string
+  name: string
+  slug: string
+  taskCounter?: number
+  experimentCounter?: number
+  feedbackCounter?: number
+  createdAt?: Date | string
+  projects?: Prisma.ProjectCreateNestedManyWithoutWorkspaceInput
+  labels?: Prisma.LabelCreateNestedManyWithoutWorkspaceInput
+  members?: Prisma.WorkspaceMemberCreateNestedManyWithoutWorkspaceInput
+  views?: Prisma.ViewCreateNestedManyWithoutWorkspaceInput
+  tasks?: Prisma.TaskCreateNestedManyWithoutWorkspaceInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutWorkspaceInput
+  invitations?: Prisma.InvitationCreateNestedManyWithoutWorkspaceInput
+  agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutWorkspaceInput
+  agentConfig?: Prisma.AgentConfigCreateNestedOneWithoutWorkspaceInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutWorkspaceInput
+  decisions?: Prisma.DecisionCreateNestedManyWithoutWorkspaceInput
+  experiments?: Prisma.ExperimentCreateNestedManyWithoutWorkspaceInput
+}
+
+export type WorkspaceUncheckedCreateWithoutFeedbackInput = {
+  id?: string
+  name: string
+  slug: string
+  taskCounter?: number
+  experimentCounter?: number
+  feedbackCounter?: number
+  createdAt?: Date | string
+  projects?: Prisma.ProjectUncheckedCreateNestedManyWithoutWorkspaceInput
+  labels?: Prisma.LabelUncheckedCreateNestedManyWithoutWorkspaceInput
+  members?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutWorkspaceInput
+  views?: Prisma.ViewUncheckedCreateNestedManyWithoutWorkspaceInput
+  tasks?: Prisma.TaskUncheckedCreateNestedManyWithoutWorkspaceInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutWorkspaceInput
+  invitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutWorkspaceInput
+  agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutWorkspaceInput
+  agentConfig?: Prisma.AgentConfigUncheckedCreateNestedOneWithoutWorkspaceInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutWorkspaceInput
+  decisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutWorkspaceInput
+  experiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutWorkspaceInput
+}
+
+export type WorkspaceCreateOrConnectWithoutFeedbackInput = {
+  where: Prisma.WorkspaceWhereUniqueInput
+  create: Prisma.XOR<Prisma.WorkspaceCreateWithoutFeedbackInput, Prisma.WorkspaceUncheckedCreateWithoutFeedbackInput>
+}
+
+export type WorkspaceUpsertWithoutFeedbackInput = {
+  update: Prisma.XOR<Prisma.WorkspaceUpdateWithoutFeedbackInput, Prisma.WorkspaceUncheckedUpdateWithoutFeedbackInput>
+  create: Prisma.XOR<Prisma.WorkspaceCreateWithoutFeedbackInput, Prisma.WorkspaceUncheckedCreateWithoutFeedbackInput>
+  where?: Prisma.WorkspaceWhereInput
+}
+
+export type WorkspaceUpdateToOneWithWhereWithoutFeedbackInput = {
+  where?: Prisma.WorkspaceWhereInput
+  data: Prisma.XOR<Prisma.WorkspaceUpdateWithoutFeedbackInput, Prisma.WorkspaceUncheckedUpdateWithoutFeedbackInput>
+}
+
+export type WorkspaceUpdateWithoutFeedbackInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  taskCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  experimentCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  feedbackCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  projects?: Prisma.ProjectUpdateManyWithoutWorkspaceNestedInput
+  labels?: Prisma.LabelUpdateManyWithoutWorkspaceNestedInput
+  members?: Prisma.WorkspaceMemberUpdateManyWithoutWorkspaceNestedInput
+  views?: Prisma.ViewUpdateManyWithoutWorkspaceNestedInput
+  tasks?: Prisma.TaskUpdateManyWithoutWorkspaceNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutWorkspaceNestedInput
+  invitations?: Prisma.InvitationUpdateManyWithoutWorkspaceNestedInput
+  agentInsights?: Prisma.AgentInsightUpdateManyWithoutWorkspaceNestedInput
+  agentConfig?: Prisma.AgentConfigUpdateOneWithoutWorkspaceNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutWorkspaceNestedInput
+  decisions?: Prisma.DecisionUpdateManyWithoutWorkspaceNestedInput
+  experiments?: Prisma.ExperimentUpdateManyWithoutWorkspaceNestedInput
+}
+
+export type WorkspaceUncheckedUpdateWithoutFeedbackInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  taskCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  experimentCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  feedbackCounter?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  projects?: Prisma.ProjectUncheckedUpdateManyWithoutWorkspaceNestedInput
+  labels?: Prisma.LabelUncheckedUpdateManyWithoutWorkspaceNestedInput
+  members?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutWorkspaceNestedInput
+  views?: Prisma.ViewUncheckedUpdateManyWithoutWorkspaceNestedInput
+  tasks?: Prisma.TaskUncheckedUpdateManyWithoutWorkspaceNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutWorkspaceNestedInput
+  invitations?: Prisma.InvitationUncheckedUpdateManyWithoutWorkspaceNestedInput
+  agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutWorkspaceNestedInput
+  agentConfig?: Prisma.AgentConfigUncheckedUpdateOneWithoutWorkspaceNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutWorkspaceNestedInput
+  decisions?: Prisma.DecisionUncheckedUpdateManyWithoutWorkspaceNestedInput
+  experiments?: Prisma.ExperimentUncheckedUpdateManyWithoutWorkspaceNestedInput
 }
 
 
@@ -1818,6 +2067,7 @@ export type WorkspaceCountOutputType = {
   auditLogs: number
   decisions: number
   experiments: number
+  feedback: number
 }
 
 export type WorkspaceCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1832,6 +2082,7 @@ export type WorkspaceCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensi
   auditLogs?: boolean | WorkspaceCountOutputTypeCountAuditLogsArgs
   decisions?: boolean | WorkspaceCountOutputTypeCountDecisionsArgs
   experiments?: boolean | WorkspaceCountOutputTypeCountExperimentsArgs
+  feedback?: boolean | WorkspaceCountOutputTypeCountFeedbackArgs
 }
 
 /**
@@ -1921,6 +2172,13 @@ export type WorkspaceCountOutputTypeCountExperimentsArgs<ExtArgs extends runtime
   where?: Prisma.ExperimentWhereInput
 }
 
+/**
+ * WorkspaceCountOutputType without action
+ */
+export type WorkspaceCountOutputTypeCountFeedbackArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FeedbackWhereInput
+}
+
 
 export type WorkspaceSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1928,6 +2186,7 @@ export type WorkspaceSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   slug?: boolean
   taskCounter?: boolean
   experimentCounter?: boolean
+  feedbackCounter?: boolean
   createdAt?: boolean
   projects?: boolean | Prisma.Workspace$projectsArgs<ExtArgs>
   labels?: boolean | Prisma.Workspace$labelsArgs<ExtArgs>
@@ -1941,6 +2200,7 @@ export type WorkspaceSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   auditLogs?: boolean | Prisma.Workspace$auditLogsArgs<ExtArgs>
   decisions?: boolean | Prisma.Workspace$decisionsArgs<ExtArgs>
   experiments?: boolean | Prisma.Workspace$experimentsArgs<ExtArgs>
+  feedback?: boolean | Prisma.Workspace$feedbackArgs<ExtArgs>
   _count?: boolean | Prisma.WorkspaceCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["workspace"]>
 
@@ -1950,6 +2210,7 @@ export type WorkspaceSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Ext
   slug?: boolean
   taskCounter?: boolean
   experimentCounter?: boolean
+  feedbackCounter?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["workspace"]>
 
@@ -1959,6 +2220,7 @@ export type WorkspaceSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Ext
   slug?: boolean
   taskCounter?: boolean
   experimentCounter?: boolean
+  feedbackCounter?: boolean
   createdAt?: boolean
 }, ExtArgs["result"]["workspace"]>
 
@@ -1968,10 +2230,11 @@ export type WorkspaceSelectScalar = {
   slug?: boolean
   taskCounter?: boolean
   experimentCounter?: boolean
+  feedbackCounter?: boolean
   createdAt?: boolean
 }
 
-export type WorkspaceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "taskCounter" | "experimentCounter" | "createdAt", ExtArgs["result"]["workspace"]>
+export type WorkspaceOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "slug" | "taskCounter" | "experimentCounter" | "feedbackCounter" | "createdAt", ExtArgs["result"]["workspace"]>
 export type WorkspaceInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   projects?: boolean | Prisma.Workspace$projectsArgs<ExtArgs>
   labels?: boolean | Prisma.Workspace$labelsArgs<ExtArgs>
@@ -1985,6 +2248,7 @@ export type WorkspaceInclude<ExtArgs extends runtime.Types.Extensions.InternalAr
   auditLogs?: boolean | Prisma.Workspace$auditLogsArgs<ExtArgs>
   decisions?: boolean | Prisma.Workspace$decisionsArgs<ExtArgs>
   experiments?: boolean | Prisma.Workspace$experimentsArgs<ExtArgs>
+  feedback?: boolean | Prisma.Workspace$feedbackArgs<ExtArgs>
   _count?: boolean | Prisma.WorkspaceCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type WorkspaceIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -2005,6 +2269,7 @@ export type $WorkspacePayload<ExtArgs extends runtime.Types.Extensions.InternalA
     auditLogs: Prisma.$AuditLogPayload<ExtArgs>[]
     decisions: Prisma.$DecisionPayload<ExtArgs>[]
     experiments: Prisma.$ExperimentPayload<ExtArgs>[]
+    feedback: Prisma.$FeedbackPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2012,6 +2277,7 @@ export type $WorkspacePayload<ExtArgs extends runtime.Types.Extensions.InternalA
     slug: string
     taskCounter: number
     experimentCounter: number
+    feedbackCounter: number
     createdAt: Date
   }, ExtArgs["result"]["workspace"]>
   composites: {}
@@ -2419,6 +2685,7 @@ export interface Prisma__WorkspaceClient<T, Null = never, ExtArgs extends runtim
   auditLogs<T extends Prisma.Workspace$auditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Workspace$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   decisions<T extends Prisma.Workspace$decisionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Workspace$decisionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DecisionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   experiments<T extends Prisma.Workspace$experimentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Workspace$experimentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExperimentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  feedback<T extends Prisma.Workspace$feedbackArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Workspace$feedbackArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FeedbackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2453,6 +2720,7 @@ export interface WorkspaceFieldRefs {
   readonly slug: Prisma.FieldRef<"Workspace", 'String'>
   readonly taskCounter: Prisma.FieldRef<"Workspace", 'Int'>
   readonly experimentCounter: Prisma.FieldRef<"Workspace", 'Int'>
+  readonly feedbackCounter: Prisma.FieldRef<"Workspace", 'Int'>
   readonly createdAt: Prisma.FieldRef<"Workspace", 'DateTime'>
 }
     
@@ -3127,6 +3395,30 @@ export type Workspace$experimentsArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   distinct?: Prisma.ExperimentScalarFieldEnum | Prisma.ExperimentScalarFieldEnum[]
+}
+
+/**
+ * Workspace.feedback
+ */
+export type Workspace$feedbackArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Feedback
+   */
+  select?: Prisma.FeedbackSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Feedback
+   */
+  omit?: Prisma.FeedbackOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FeedbackInclude<ExtArgs> | null
+  where?: Prisma.FeedbackWhereInput
+  orderBy?: Prisma.FeedbackOrderByWithRelationInput | Prisma.FeedbackOrderByWithRelationInput[]
+  cursor?: Prisma.FeedbackWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FeedbackScalarFieldEnum | Prisma.FeedbackScalarFieldEnum[]
 }
 
 /**

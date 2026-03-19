@@ -218,6 +218,9 @@ export type UserWhereInput = {
   ownedExperiments?: Prisma.ExperimentListRelationFilter
   uploadedDocAttachments?: Prisma.DocumentAttachmentListRelationFilter
   experimentComments?: Prisma.ExperimentCommentListRelationFilter
+  createdFeedback?: Prisma.FeedbackListRelationFilter
+  assignedFeedback?: Prisma.FeedbackListRelationFilter
+  feedbackComments?: Prisma.FeedbackCommentListRelationFilter
 }
 
 export type UserOrderByWithRelationInput = {
@@ -252,6 +255,9 @@ export type UserOrderByWithRelationInput = {
   ownedExperiments?: Prisma.ExperimentOrderByRelationAggregateInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentOrderByRelationAggregateInput
   experimentComments?: Prisma.ExperimentCommentOrderByRelationAggregateInput
+  createdFeedback?: Prisma.FeedbackOrderByRelationAggregateInput
+  assignedFeedback?: Prisma.FeedbackOrderByRelationAggregateInput
+  feedbackComments?: Prisma.FeedbackCommentOrderByRelationAggregateInput
 }
 
 export type UserWhereUniqueInput = Prisma.AtLeast<{
@@ -289,6 +295,9 @@ export type UserWhereUniqueInput = Prisma.AtLeast<{
   ownedExperiments?: Prisma.ExperimentListRelationFilter
   uploadedDocAttachments?: Prisma.DocumentAttachmentListRelationFilter
   experimentComments?: Prisma.ExperimentCommentListRelationFilter
+  createdFeedback?: Prisma.FeedbackListRelationFilter
+  assignedFeedback?: Prisma.FeedbackListRelationFilter
+  feedbackComments?: Prisma.FeedbackCommentListRelationFilter
 }, "id" | "email">
 
 export type UserOrderByWithAggregationInput = {
@@ -349,6 +358,9 @@ export type UserCreateInput = {
   ownedExperiments?: Prisma.ExperimentCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateInput = {
@@ -383,6 +395,9 @@ export type UserUncheckedCreateInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUpdateInput = {
@@ -417,6 +432,9 @@ export type UserUpdateInput = {
   ownedExperiments?: Prisma.ExperimentUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateInput = {
@@ -451,6 +469,9 @@ export type UserUncheckedUpdateInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserCreateManyInput = {
@@ -881,6 +902,50 @@ export type UserUpdateOneRequiredWithoutExperimentCommentsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutExperimentCommentsInput, Prisma.UserUpdateWithoutExperimentCommentsInput>, Prisma.UserUncheckedUpdateWithoutExperimentCommentsInput>
 }
 
+export type UserCreateNestedOneWithoutCreatedFeedbackInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedFeedbackInput, Prisma.UserUncheckedCreateWithoutCreatedFeedbackInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedFeedbackInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserCreateNestedOneWithoutAssignedFeedbackInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAssignedFeedbackInput, Prisma.UserUncheckedCreateWithoutAssignedFeedbackInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAssignedFeedbackInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutCreatedFeedbackNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutCreatedFeedbackInput, Prisma.UserUncheckedCreateWithoutCreatedFeedbackInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutCreatedFeedbackInput
+  upsert?: Prisma.UserUpsertWithoutCreatedFeedbackInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutCreatedFeedbackInput, Prisma.UserUpdateWithoutCreatedFeedbackInput>, Prisma.UserUncheckedUpdateWithoutCreatedFeedbackInput>
+}
+
+export type UserUpdateOneWithoutAssignedFeedbackNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutAssignedFeedbackInput, Prisma.UserUncheckedCreateWithoutAssignedFeedbackInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutAssignedFeedbackInput
+  upsert?: Prisma.UserUpsertWithoutAssignedFeedbackInput
+  disconnect?: Prisma.UserWhereInput | boolean
+  delete?: Prisma.UserWhereInput | boolean
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutAssignedFeedbackInput, Prisma.UserUpdateWithoutAssignedFeedbackInput>, Prisma.UserUncheckedUpdateWithoutAssignedFeedbackInput>
+}
+
+export type UserCreateNestedOneWithoutFeedbackCommentsInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFeedbackCommentsInput, Prisma.UserUncheckedCreateWithoutFeedbackCommentsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFeedbackCommentsInput
+  connect?: Prisma.UserWhereUniqueInput
+}
+
+export type UserUpdateOneRequiredWithoutFeedbackCommentsNestedInput = {
+  create?: Prisma.XOR<Prisma.UserCreateWithoutFeedbackCommentsInput, Prisma.UserUncheckedCreateWithoutFeedbackCommentsInput>
+  connectOrCreate?: Prisma.UserCreateOrConnectWithoutFeedbackCommentsInput
+  upsert?: Prisma.UserUpsertWithoutFeedbackCommentsInput
+  connect?: Prisma.UserWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.UserUpdateToOneWithWhereWithoutFeedbackCommentsInput, Prisma.UserUpdateWithoutFeedbackCommentsInput>, Prisma.UserUncheckedUpdateWithoutFeedbackCommentsInput>
+}
+
 export type UserCreateWithoutMembershipsInput = {
   id: string
   email: string
@@ -912,6 +977,9 @@ export type UserCreateWithoutMembershipsInput = {
   ownedExperiments?: Prisma.ExperimentCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutMembershipsInput = {
@@ -945,6 +1013,9 @@ export type UserUncheckedCreateWithoutMembershipsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutMembershipsInput = {
@@ -994,6 +1065,9 @@ export type UserUpdateWithoutMembershipsInput = {
   ownedExperiments?: Prisma.ExperimentUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutMembershipsInput = {
@@ -1027,6 +1101,9 @@ export type UserUncheckedUpdateWithoutMembershipsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserCreateWithoutCreatedProjectsInput = {
@@ -1060,6 +1137,9 @@ export type UserCreateWithoutCreatedProjectsInput = {
   ownedExperiments?: Prisma.ExperimentCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutCreatedProjectsInput = {
@@ -1093,6 +1173,9 @@ export type UserUncheckedCreateWithoutCreatedProjectsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutCreatedProjectsInput = {
@@ -1142,6 +1225,9 @@ export type UserUpdateWithoutCreatedProjectsInput = {
   ownedExperiments?: Prisma.ExperimentUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedProjectsInput = {
@@ -1175,6 +1261,9 @@ export type UserUncheckedUpdateWithoutCreatedProjectsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserCreateWithoutAssignedTasksInput = {
@@ -1208,6 +1297,9 @@ export type UserCreateWithoutAssignedTasksInput = {
   ownedExperiments?: Prisma.ExperimentCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutAssignedTasksInput = {
@@ -1241,6 +1333,9 @@ export type UserUncheckedCreateWithoutAssignedTasksInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutAssignedTasksInput = {
@@ -1279,6 +1374,9 @@ export type UserCreateWithoutCreatedTasksInput = {
   ownedExperiments?: Prisma.ExperimentCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutCreatedTasksInput = {
@@ -1312,6 +1410,9 @@ export type UserUncheckedCreateWithoutCreatedTasksInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutCreatedTasksInput = {
@@ -1361,6 +1462,9 @@ export type UserUpdateWithoutAssignedTasksInput = {
   ownedExperiments?: Prisma.ExperimentUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAssignedTasksInput = {
@@ -1394,6 +1498,9 @@ export type UserUncheckedUpdateWithoutAssignedTasksInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUpsertWithoutCreatedTasksInput = {
@@ -1438,6 +1545,9 @@ export type UserUpdateWithoutCreatedTasksInput = {
   ownedExperiments?: Prisma.ExperimentUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedTasksInput = {
@@ -1471,6 +1581,9 @@ export type UserUncheckedUpdateWithoutCreatedTasksInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserCreateWithoutUploadedAttachmentsInput = {
@@ -1504,6 +1617,9 @@ export type UserCreateWithoutUploadedAttachmentsInput = {
   ownedExperiments?: Prisma.ExperimentCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutUploadedAttachmentsInput = {
@@ -1537,6 +1653,9 @@ export type UserUncheckedCreateWithoutUploadedAttachmentsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutUploadedAttachmentsInput = {
@@ -1586,6 +1705,9 @@ export type UserUpdateWithoutUploadedAttachmentsInput = {
   ownedExperiments?: Prisma.ExperimentUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUploadedAttachmentsInput = {
@@ -1619,6 +1741,9 @@ export type UserUncheckedUpdateWithoutUploadedAttachmentsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserCreateWithoutCollaboratingTasksInput = {
@@ -1652,6 +1777,9 @@ export type UserCreateWithoutCollaboratingTasksInput = {
   ownedExperiments?: Prisma.ExperimentCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutCollaboratingTasksInput = {
@@ -1685,6 +1813,9 @@ export type UserUncheckedCreateWithoutCollaboratingTasksInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutCollaboratingTasksInput = {
@@ -1734,6 +1865,9 @@ export type UserUpdateWithoutCollaboratingTasksInput = {
   ownedExperiments?: Prisma.ExperimentUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCollaboratingTasksInput = {
@@ -1767,6 +1901,9 @@ export type UserUncheckedUpdateWithoutCollaboratingTasksInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserCreateWithoutCommentsInput = {
@@ -1800,6 +1937,9 @@ export type UserCreateWithoutCommentsInput = {
   ownedExperiments?: Prisma.ExperimentCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutCommentsInput = {
@@ -1833,6 +1973,9 @@ export type UserUncheckedCreateWithoutCommentsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutCommentsInput = {
@@ -1882,6 +2025,9 @@ export type UserUpdateWithoutCommentsInput = {
   ownedExperiments?: Prisma.ExperimentUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCommentsInput = {
@@ -1915,6 +2061,9 @@ export type UserUncheckedUpdateWithoutCommentsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserCreateWithoutActivitiesInput = {
@@ -1948,6 +2097,9 @@ export type UserCreateWithoutActivitiesInput = {
   ownedExperiments?: Prisma.ExperimentCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutActivitiesInput = {
@@ -1981,6 +2133,9 @@ export type UserUncheckedCreateWithoutActivitiesInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutActivitiesInput = {
@@ -2030,6 +2185,9 @@ export type UserUpdateWithoutActivitiesInput = {
   ownedExperiments?: Prisma.ExperimentUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutActivitiesInput = {
@@ -2063,6 +2221,9 @@ export type UserUncheckedUpdateWithoutActivitiesInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserCreateWithoutViewsInput = {
@@ -2096,6 +2257,9 @@ export type UserCreateWithoutViewsInput = {
   ownedExperiments?: Prisma.ExperimentCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutViewsInput = {
@@ -2129,6 +2293,9 @@ export type UserUncheckedCreateWithoutViewsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutViewsInput = {
@@ -2178,6 +2345,9 @@ export type UserUpdateWithoutViewsInput = {
   ownedExperiments?: Prisma.ExperimentUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutViewsInput = {
@@ -2211,6 +2381,9 @@ export type UserUncheckedUpdateWithoutViewsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserCreateWithoutNotificationsInput = {
@@ -2244,6 +2417,9 @@ export type UserCreateWithoutNotificationsInput = {
   ownedExperiments?: Prisma.ExperimentCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutNotificationsInput = {
@@ -2277,6 +2453,9 @@ export type UserUncheckedCreateWithoutNotificationsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutNotificationsInput = {
@@ -2315,6 +2494,9 @@ export type UserCreateWithoutActedNotificationsInput = {
   ownedExperiments?: Prisma.ExperimentCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutActedNotificationsInput = {
@@ -2348,6 +2530,9 @@ export type UserUncheckedCreateWithoutActedNotificationsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutActedNotificationsInput = {
@@ -2397,6 +2582,9 @@ export type UserUpdateWithoutNotificationsInput = {
   ownedExperiments?: Prisma.ExperimentUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutNotificationsInput = {
@@ -2430,6 +2618,9 @@ export type UserUncheckedUpdateWithoutNotificationsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUpsertWithoutActedNotificationsInput = {
@@ -2474,6 +2665,9 @@ export type UserUpdateWithoutActedNotificationsInput = {
   ownedExperiments?: Prisma.ExperimentUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutActedNotificationsInput = {
@@ -2507,6 +2701,9 @@ export type UserUncheckedUpdateWithoutActedNotificationsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserCreateWithoutDocumentsInput = {
@@ -2540,6 +2737,9 @@ export type UserCreateWithoutDocumentsInput = {
   ownedExperiments?: Prisma.ExperimentCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutDocumentsInput = {
@@ -2573,6 +2773,9 @@ export type UserUncheckedCreateWithoutDocumentsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutDocumentsInput = {
@@ -2611,6 +2814,9 @@ export type UserCreateWithoutLastEditedDocsInput = {
   ownedExperiments?: Prisma.ExperimentCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutLastEditedDocsInput = {
@@ -2644,6 +2850,9 @@ export type UserUncheckedCreateWithoutLastEditedDocsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutLastEditedDocsInput = {
@@ -2693,6 +2902,9 @@ export type UserUpdateWithoutDocumentsInput = {
   ownedExperiments?: Prisma.ExperimentUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDocumentsInput = {
@@ -2726,6 +2938,9 @@ export type UserUncheckedUpdateWithoutDocumentsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUpsertWithoutLastEditedDocsInput = {
@@ -2770,6 +2985,9 @@ export type UserUpdateWithoutLastEditedDocsInput = {
   ownedExperiments?: Prisma.ExperimentUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutLastEditedDocsInput = {
@@ -2803,6 +3021,9 @@ export type UserUncheckedUpdateWithoutLastEditedDocsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserCreateWithoutDocCommentsInput = {
@@ -2836,6 +3057,9 @@ export type UserCreateWithoutDocCommentsInput = {
   ownedExperiments?: Prisma.ExperimentCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutDocCommentsInput = {
@@ -2869,6 +3093,9 @@ export type UserUncheckedCreateWithoutDocCommentsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutDocCommentsInput = {
@@ -2918,6 +3145,9 @@ export type UserUpdateWithoutDocCommentsInput = {
   ownedExperiments?: Prisma.ExperimentUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDocCommentsInput = {
@@ -2951,6 +3181,9 @@ export type UserUncheckedUpdateWithoutDocCommentsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserCreateWithoutUploadedDocAttachmentsInput = {
@@ -2984,6 +3217,9 @@ export type UserCreateWithoutUploadedDocAttachmentsInput = {
   createdExperiments?: Prisma.ExperimentCreateNestedManyWithoutCreatedByInput
   ownedExperiments?: Prisma.ExperimentCreateNestedManyWithoutOwnerInput
   experimentComments?: Prisma.ExperimentCommentCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutUploadedDocAttachmentsInput = {
@@ -3017,6 +3253,9 @@ export type UserUncheckedCreateWithoutUploadedDocAttachmentsInput = {
   createdExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutCreatedByInput
   ownedExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutOwnerInput
   experimentComments?: Prisma.ExperimentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutUploadedDocAttachmentsInput = {
@@ -3066,6 +3305,9 @@ export type UserUpdateWithoutUploadedDocAttachmentsInput = {
   createdExperiments?: Prisma.ExperimentUpdateManyWithoutCreatedByNestedInput
   ownedExperiments?: Prisma.ExperimentUpdateManyWithoutOwnerNestedInput
   experimentComments?: Prisma.ExperimentCommentUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutUploadedDocAttachmentsInput = {
@@ -3099,6 +3341,9 @@ export type UserUncheckedUpdateWithoutUploadedDocAttachmentsInput = {
   createdExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutCreatedByNestedInput
   ownedExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutOwnerNestedInput
   experimentComments?: Prisma.ExperimentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserCreateWithoutProjectMembershipsInput = {
@@ -3132,6 +3377,9 @@ export type UserCreateWithoutProjectMembershipsInput = {
   ownedExperiments?: Prisma.ExperimentCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutProjectMembershipsInput = {
@@ -3165,6 +3413,9 @@ export type UserUncheckedCreateWithoutProjectMembershipsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutProjectMembershipsInput = {
@@ -3214,6 +3465,9 @@ export type UserUpdateWithoutProjectMembershipsInput = {
   ownedExperiments?: Prisma.ExperimentUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutProjectMembershipsInput = {
@@ -3247,6 +3501,9 @@ export type UserUncheckedUpdateWithoutProjectMembershipsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserCreateWithoutSentInvitationsInput = {
@@ -3280,6 +3537,9 @@ export type UserCreateWithoutSentInvitationsInput = {
   ownedExperiments?: Prisma.ExperimentCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutSentInvitationsInput = {
@@ -3313,6 +3573,9 @@ export type UserUncheckedCreateWithoutSentInvitationsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutSentInvitationsInput = {
@@ -3362,6 +3625,9 @@ export type UserUpdateWithoutSentInvitationsInput = {
   ownedExperiments?: Prisma.ExperimentUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutSentInvitationsInput = {
@@ -3395,6 +3661,9 @@ export type UserUncheckedUpdateWithoutSentInvitationsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserCreateWithoutAgentInsightsInput = {
@@ -3428,6 +3697,9 @@ export type UserCreateWithoutAgentInsightsInput = {
   ownedExperiments?: Prisma.ExperimentCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutAgentInsightsInput = {
@@ -3461,6 +3733,9 @@ export type UserUncheckedCreateWithoutAgentInsightsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutAgentInsightsInput = {
@@ -3510,6 +3785,9 @@ export type UserUpdateWithoutAgentInsightsInput = {
   ownedExperiments?: Prisma.ExperimentUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAgentInsightsInput = {
@@ -3543,6 +3821,9 @@ export type UserUncheckedUpdateWithoutAgentInsightsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserCreateWithoutAuditLogsInput = {
@@ -3576,6 +3857,9 @@ export type UserCreateWithoutAuditLogsInput = {
   ownedExperiments?: Prisma.ExperimentCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutAuditLogsInput = {
@@ -3609,6 +3893,9 @@ export type UserUncheckedCreateWithoutAuditLogsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutAuditLogsInput = {
@@ -3658,6 +3945,9 @@ export type UserUpdateWithoutAuditLogsInput = {
   ownedExperiments?: Prisma.ExperimentUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutAuditLogsInput = {
@@ -3691,6 +3981,9 @@ export type UserUncheckedUpdateWithoutAuditLogsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserCreateWithoutCreatedDecisionsInput = {
@@ -3724,6 +4017,9 @@ export type UserCreateWithoutCreatedDecisionsInput = {
   ownedExperiments?: Prisma.ExperimentCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutCreatedDecisionsInput = {
@@ -3757,6 +4053,9 @@ export type UserUncheckedCreateWithoutCreatedDecisionsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutCreatedDecisionsInput = {
@@ -3806,6 +4105,9 @@ export type UserUpdateWithoutCreatedDecisionsInput = {
   ownedExperiments?: Prisma.ExperimentUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedDecisionsInput = {
@@ -3839,6 +4141,9 @@ export type UserUncheckedUpdateWithoutCreatedDecisionsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserCreateWithoutDecisionParticipationsInput = {
@@ -3872,6 +4177,9 @@ export type UserCreateWithoutDecisionParticipationsInput = {
   ownedExperiments?: Prisma.ExperimentCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutDecisionParticipationsInput = {
@@ -3905,6 +4213,9 @@ export type UserUncheckedCreateWithoutDecisionParticipationsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutDecisionParticipationsInput = {
@@ -3954,6 +4265,9 @@ export type UserUpdateWithoutDecisionParticipationsInput = {
   ownedExperiments?: Prisma.ExperimentUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutDecisionParticipationsInput = {
@@ -3987,6 +4301,9 @@ export type UserUncheckedUpdateWithoutDecisionParticipationsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserCreateWithoutCreatedExperimentsInput = {
@@ -4020,6 +4337,9 @@ export type UserCreateWithoutCreatedExperimentsInput = {
   ownedExperiments?: Prisma.ExperimentCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutCreatedExperimentsInput = {
@@ -4053,6 +4373,9 @@ export type UserUncheckedCreateWithoutCreatedExperimentsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutCreatedExperimentsInput = {
@@ -4091,6 +4414,9 @@ export type UserCreateWithoutOwnedExperimentsInput = {
   createdExperiments?: Prisma.ExperimentCreateNestedManyWithoutCreatedByInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutOwnedExperimentsInput = {
@@ -4124,6 +4450,9 @@ export type UserUncheckedCreateWithoutOwnedExperimentsInput = {
   createdExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutCreatedByInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
   experimentComments?: Prisma.ExperimentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutOwnedExperimentsInput = {
@@ -4173,6 +4502,9 @@ export type UserUpdateWithoutCreatedExperimentsInput = {
   ownedExperiments?: Prisma.ExperimentUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutCreatedExperimentsInput = {
@@ -4206,6 +4538,9 @@ export type UserUncheckedUpdateWithoutCreatedExperimentsInput = {
   ownedExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUpsertWithoutOwnedExperimentsInput = {
@@ -4250,6 +4585,9 @@ export type UserUpdateWithoutOwnedExperimentsInput = {
   createdExperiments?: Prisma.ExperimentUpdateManyWithoutCreatedByNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutOwnedExperimentsInput = {
@@ -4283,6 +4621,9 @@ export type UserUncheckedUpdateWithoutOwnedExperimentsInput = {
   createdExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutCreatedByNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
   experimentComments?: Prisma.ExperimentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserCreateWithoutExperimentCommentsInput = {
@@ -4316,6 +4657,9 @@ export type UserCreateWithoutExperimentCommentsInput = {
   createdExperiments?: Prisma.ExperimentCreateNestedManyWithoutCreatedByInput
   ownedExperiments?: Prisma.ExperimentCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutUploadedByInput
+  createdFeedback?: Prisma.FeedbackCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentCreateNestedManyWithoutAuthorInput
 }
 
 export type UserUncheckedCreateWithoutExperimentCommentsInput = {
@@ -4349,6 +4693,9 @@ export type UserUncheckedCreateWithoutExperimentCommentsInput = {
   createdExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutCreatedByInput
   ownedExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutOwnerInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
+  createdFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutAuthorInput
 }
 
 export type UserCreateOrConnectWithoutExperimentCommentsInput = {
@@ -4398,6 +4745,9 @@ export type UserUpdateWithoutExperimentCommentsInput = {
   createdExperiments?: Prisma.ExperimentUpdateManyWithoutCreatedByNestedInput
   ownedExperiments?: Prisma.ExperimentUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUpdateManyWithoutUploadedByNestedInput
+  createdFeedback?: Prisma.FeedbackUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUpdateManyWithoutAuthorNestedInput
 }
 
 export type UserUncheckedUpdateWithoutExperimentCommentsInput = {
@@ -4431,6 +4781,489 @@ export type UserUncheckedUpdateWithoutExperimentCommentsInput = {
   createdExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutCreatedByNestedInput
   ownedExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutOwnerNestedInput
   uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
+  createdFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutAuthorNestedInput
+}
+
+export type UserCreateWithoutCreatedFeedbackInput = {
+  id: string
+  email: string
+  name: string
+  avatarUrl?: string | null
+  avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  memberships?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
+  createdTasks?: Prisma.TaskCreateNestedManyWithoutCreatedByInput
+  collaboratingTasks?: Prisma.TaskCollaboratorCreateNestedManyWithoutUserInput
+  uploadedAttachments?: Prisma.TaskAttachmentCreateNestedManyWithoutUploadedByInput
+  comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentCreateNestedManyWithoutAuthorInput
+  activities?: Prisma.ActivityCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
+  views?: Prisma.ViewCreateNestedManyWithoutOwnerInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutAuthorInput
+  lastEditedDocs?: Prisma.DocumentCreateNestedManyWithoutLastEditedByInput
+  createdProjects?: Prisma.ProjectCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
+  agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTargetUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantCreateNestedManyWithoutUserInput
+  createdExperiments?: Prisma.ExperimentCreateNestedManyWithoutCreatedByInput
+  ownedExperiments?: Prisma.ExperimentCreateNestedManyWithoutOwnerInput
+  uploadedDocAttachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutUploadedByInput
+  experimentComments?: Prisma.ExperimentCommentCreateNestedManyWithoutAuthorInput
+  assignedFeedback?: Prisma.FeedbackCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentCreateNestedManyWithoutAuthorInput
+}
+
+export type UserUncheckedCreateWithoutCreatedFeedbackInput = {
+  id: string
+  email: string
+  name: string
+  avatarUrl?: string | null
+  avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  memberships?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
+  createdTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutCreatedByInput
+  collaboratingTasks?: Prisma.TaskCollaboratorUncheckedCreateNestedManyWithoutUserInput
+  uploadedAttachments?: Prisma.TaskAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
+  views?: Prisma.ViewUncheckedCreateNestedManyWithoutOwnerInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAuthorInput
+  lastEditedDocs?: Prisma.DocumentUncheckedCreateNestedManyWithoutLastEditedByInput
+  createdProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
+  agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTargetUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedCreateNestedManyWithoutUserInput
+  createdExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutCreatedByInput
+  ownedExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutOwnerInput
+  uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
+  experimentComments?: Prisma.ExperimentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  assignedFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssigneeInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutAuthorInput
+}
+
+export type UserCreateOrConnectWithoutCreatedFeedbackInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedFeedbackInput, Prisma.UserUncheckedCreateWithoutCreatedFeedbackInput>
+}
+
+export type UserCreateWithoutAssignedFeedbackInput = {
+  id: string
+  email: string
+  name: string
+  avatarUrl?: string | null
+  avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  memberships?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
+  createdTasks?: Prisma.TaskCreateNestedManyWithoutCreatedByInput
+  collaboratingTasks?: Prisma.TaskCollaboratorCreateNestedManyWithoutUserInput
+  uploadedAttachments?: Prisma.TaskAttachmentCreateNestedManyWithoutUploadedByInput
+  comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentCreateNestedManyWithoutAuthorInput
+  activities?: Prisma.ActivityCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
+  views?: Prisma.ViewCreateNestedManyWithoutOwnerInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutAuthorInput
+  lastEditedDocs?: Prisma.DocumentCreateNestedManyWithoutLastEditedByInput
+  createdProjects?: Prisma.ProjectCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
+  agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTargetUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantCreateNestedManyWithoutUserInput
+  createdExperiments?: Prisma.ExperimentCreateNestedManyWithoutCreatedByInput
+  ownedExperiments?: Prisma.ExperimentCreateNestedManyWithoutOwnerInput
+  uploadedDocAttachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutUploadedByInput
+  experimentComments?: Prisma.ExperimentCommentCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackCreateNestedManyWithoutCreatedByInput
+  feedbackComments?: Prisma.FeedbackCommentCreateNestedManyWithoutAuthorInput
+}
+
+export type UserUncheckedCreateWithoutAssignedFeedbackInput = {
+  id: string
+  email: string
+  name: string
+  avatarUrl?: string | null
+  avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  memberships?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
+  createdTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutCreatedByInput
+  collaboratingTasks?: Prisma.TaskCollaboratorUncheckedCreateNestedManyWithoutUserInput
+  uploadedAttachments?: Prisma.TaskAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
+  views?: Prisma.ViewUncheckedCreateNestedManyWithoutOwnerInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAuthorInput
+  lastEditedDocs?: Prisma.DocumentUncheckedCreateNestedManyWithoutLastEditedByInput
+  createdProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
+  agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTargetUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedCreateNestedManyWithoutUserInput
+  createdExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutCreatedByInput
+  ownedExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutOwnerInput
+  uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
+  experimentComments?: Prisma.ExperimentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutCreatedByInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedCreateNestedManyWithoutAuthorInput
+}
+
+export type UserCreateOrConnectWithoutAssignedFeedbackInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutAssignedFeedbackInput, Prisma.UserUncheckedCreateWithoutAssignedFeedbackInput>
+}
+
+export type UserUpsertWithoutCreatedFeedbackInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutCreatedFeedbackInput, Prisma.UserUncheckedUpdateWithoutCreatedFeedbackInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutCreatedFeedbackInput, Prisma.UserUncheckedCreateWithoutCreatedFeedbackInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutCreatedFeedbackInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutCreatedFeedbackInput, Prisma.UserUncheckedUpdateWithoutCreatedFeedbackInput>
+}
+
+export type UserUpdateWithoutCreatedFeedbackInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
+  createdTasks?: Prisma.TaskUpdateManyWithoutCreatedByNestedInput
+  collaboratingTasks?: Prisma.TaskCollaboratorUpdateManyWithoutUserNestedInput
+  uploadedAttachments?: Prisma.TaskAttachmentUpdateManyWithoutUploadedByNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUpdateManyWithoutAuthorNestedInput
+  activities?: Prisma.ActivityUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
+  views?: Prisma.ViewUpdateManyWithoutOwnerNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutAuthorNestedInput
+  lastEditedDocs?: Prisma.DocumentUpdateManyWithoutLastEditedByNestedInput
+  createdProjects?: Prisma.ProjectUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
+  agentInsights?: Prisma.AgentInsightUpdateManyWithoutTargetUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUpdateManyWithoutUserNestedInput
+  createdExperiments?: Prisma.ExperimentUpdateManyWithoutCreatedByNestedInput
+  ownedExperiments?: Prisma.ExperimentUpdateManyWithoutOwnerNestedInput
+  uploadedDocAttachments?: Prisma.DocumentAttachmentUpdateManyWithoutUploadedByNestedInput
+  experimentComments?: Prisma.ExperimentCommentUpdateManyWithoutAuthorNestedInput
+  assignedFeedback?: Prisma.FeedbackUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUpdateManyWithoutAuthorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutCreatedFeedbackInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  createdTasks?: Prisma.TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+  collaboratingTasks?: Prisma.TaskCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+  uploadedAttachments?: Prisma.TaskAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
+  views?: Prisma.ViewUncheckedUpdateManyWithoutOwnerNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutAuthorNestedInput
+  lastEditedDocs?: Prisma.DocumentUncheckedUpdateManyWithoutLastEditedByNestedInput
+  createdProjects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+  agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTargetUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUncheckedUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedUpdateManyWithoutUserNestedInput
+  createdExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutCreatedByNestedInput
+  ownedExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutOwnerNestedInput
+  uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
+  experimentComments?: Prisma.ExperimentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  assignedFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssigneeNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutAuthorNestedInput
+}
+
+export type UserUpsertWithoutAssignedFeedbackInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutAssignedFeedbackInput, Prisma.UserUncheckedUpdateWithoutAssignedFeedbackInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutAssignedFeedbackInput, Prisma.UserUncheckedCreateWithoutAssignedFeedbackInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutAssignedFeedbackInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutAssignedFeedbackInput, Prisma.UserUncheckedUpdateWithoutAssignedFeedbackInput>
+}
+
+export type UserUpdateWithoutAssignedFeedbackInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
+  createdTasks?: Prisma.TaskUpdateManyWithoutCreatedByNestedInput
+  collaboratingTasks?: Prisma.TaskCollaboratorUpdateManyWithoutUserNestedInput
+  uploadedAttachments?: Prisma.TaskAttachmentUpdateManyWithoutUploadedByNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUpdateManyWithoutAuthorNestedInput
+  activities?: Prisma.ActivityUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
+  views?: Prisma.ViewUpdateManyWithoutOwnerNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutAuthorNestedInput
+  lastEditedDocs?: Prisma.DocumentUpdateManyWithoutLastEditedByNestedInput
+  createdProjects?: Prisma.ProjectUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
+  agentInsights?: Prisma.AgentInsightUpdateManyWithoutTargetUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUpdateManyWithoutUserNestedInput
+  createdExperiments?: Prisma.ExperimentUpdateManyWithoutCreatedByNestedInput
+  ownedExperiments?: Prisma.ExperimentUpdateManyWithoutOwnerNestedInput
+  uploadedDocAttachments?: Prisma.DocumentAttachmentUpdateManyWithoutUploadedByNestedInput
+  experimentComments?: Prisma.ExperimentCommentUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUpdateManyWithoutCreatedByNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUpdateManyWithoutAuthorNestedInput
+}
+
+export type UserUncheckedUpdateWithoutAssignedFeedbackInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  createdTasks?: Prisma.TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+  collaboratingTasks?: Prisma.TaskCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+  uploadedAttachments?: Prisma.TaskAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
+  views?: Prisma.ViewUncheckedUpdateManyWithoutOwnerNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutAuthorNestedInput
+  lastEditedDocs?: Prisma.DocumentUncheckedUpdateManyWithoutLastEditedByNestedInput
+  createdProjects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+  agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTargetUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUncheckedUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedUpdateManyWithoutUserNestedInput
+  createdExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutCreatedByNestedInput
+  ownedExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutOwnerNestedInput
+  uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
+  experimentComments?: Prisma.ExperimentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutCreatedByNestedInput
+  feedbackComments?: Prisma.FeedbackCommentUncheckedUpdateManyWithoutAuthorNestedInput
+}
+
+export type UserCreateWithoutFeedbackCommentsInput = {
+  id: string
+  email: string
+  name: string
+  avatarUrl?: string | null
+  avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  memberships?: Prisma.WorkspaceMemberCreateNestedManyWithoutUserInput
+  assignedTasks?: Prisma.TaskCreateNestedManyWithoutAssigneeInput
+  createdTasks?: Prisma.TaskCreateNestedManyWithoutCreatedByInput
+  collaboratingTasks?: Prisma.TaskCollaboratorCreateNestedManyWithoutUserInput
+  uploadedAttachments?: Prisma.TaskAttachmentCreateNestedManyWithoutUploadedByInput
+  comments?: Prisma.CommentCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentCreateNestedManyWithoutAuthorInput
+  activities?: Prisma.ActivityCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationCreateNestedManyWithoutActorInput
+  views?: Prisma.ViewCreateNestedManyWithoutOwnerInput
+  documents?: Prisma.DocumentCreateNestedManyWithoutAuthorInput
+  lastEditedDocs?: Prisma.DocumentCreateNestedManyWithoutLastEditedByInput
+  createdProjects?: Prisma.ProjectCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationCreateNestedManyWithoutInvitedByInput
+  agentInsights?: Prisma.AgentInsightCreateNestedManyWithoutTargetUserInput
+  auditLogs?: Prisma.AuditLogCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantCreateNestedManyWithoutUserInput
+  createdExperiments?: Prisma.ExperimentCreateNestedManyWithoutCreatedByInput
+  ownedExperiments?: Prisma.ExperimentCreateNestedManyWithoutOwnerInput
+  uploadedDocAttachments?: Prisma.DocumentAttachmentCreateNestedManyWithoutUploadedByInput
+  experimentComments?: Prisma.ExperimentCommentCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackCreateNestedManyWithoutAssigneeInput
+}
+
+export type UserUncheckedCreateWithoutFeedbackCommentsInput = {
+  id: string
+  email: string
+  name: string
+  avatarUrl?: string | null
+  avatarColor?: string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Date | string
+  memberships?: Prisma.WorkspaceMemberUncheckedCreateNestedManyWithoutUserInput
+  assignedTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutAssigneeInput
+  createdTasks?: Prisma.TaskUncheckedCreateNestedManyWithoutCreatedByInput
+  collaboratingTasks?: Prisma.TaskCollaboratorUncheckedCreateNestedManyWithoutUserInput
+  uploadedAttachments?: Prisma.TaskAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
+  comments?: Prisma.CommentUncheckedCreateNestedManyWithoutAuthorInput
+  docComments?: Prisma.DocumentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  activities?: Prisma.ActivityUncheckedCreateNestedManyWithoutUserInput
+  notifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutUserInput
+  actedNotifications?: Prisma.NotificationUncheckedCreateNestedManyWithoutActorInput
+  views?: Prisma.ViewUncheckedCreateNestedManyWithoutOwnerInput
+  documents?: Prisma.DocumentUncheckedCreateNestedManyWithoutAuthorInput
+  lastEditedDocs?: Prisma.DocumentUncheckedCreateNestedManyWithoutLastEditedByInput
+  createdProjects?: Prisma.ProjectUncheckedCreateNestedManyWithoutCreatedByInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutUserInput
+  sentInvitations?: Prisma.InvitationUncheckedCreateNestedManyWithoutInvitedByInput
+  agentInsights?: Prisma.AgentInsightUncheckedCreateNestedManyWithoutTargetUserInput
+  auditLogs?: Prisma.AuditLogUncheckedCreateNestedManyWithoutUserInput
+  createdDecisions?: Prisma.DecisionUncheckedCreateNestedManyWithoutCreatedByInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedCreateNestedManyWithoutUserInput
+  createdExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutCreatedByInput
+  ownedExperiments?: Prisma.ExperimentUncheckedCreateNestedManyWithoutOwnerInput
+  uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedCreateNestedManyWithoutUploadedByInput
+  experimentComments?: Prisma.ExperimentCommentUncheckedCreateNestedManyWithoutAuthorInput
+  createdFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutCreatedByInput
+  assignedFeedback?: Prisma.FeedbackUncheckedCreateNestedManyWithoutAssigneeInput
+}
+
+export type UserCreateOrConnectWithoutFeedbackCommentsInput = {
+  where: Prisma.UserWhereUniqueInput
+  create: Prisma.XOR<Prisma.UserCreateWithoutFeedbackCommentsInput, Prisma.UserUncheckedCreateWithoutFeedbackCommentsInput>
+}
+
+export type UserUpsertWithoutFeedbackCommentsInput = {
+  update: Prisma.XOR<Prisma.UserUpdateWithoutFeedbackCommentsInput, Prisma.UserUncheckedUpdateWithoutFeedbackCommentsInput>
+  create: Prisma.XOR<Prisma.UserCreateWithoutFeedbackCommentsInput, Prisma.UserUncheckedCreateWithoutFeedbackCommentsInput>
+  where?: Prisma.UserWhereInput
+}
+
+export type UserUpdateToOneWithWhereWithoutFeedbackCommentsInput = {
+  where?: Prisma.UserWhereInput
+  data: Prisma.XOR<Prisma.UserUpdateWithoutFeedbackCommentsInput, Prisma.UserUncheckedUpdateWithoutFeedbackCommentsInput>
+}
+
+export type UserUpdateWithoutFeedbackCommentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.WorkspaceMemberUpdateManyWithoutUserNestedInput
+  assignedTasks?: Prisma.TaskUpdateManyWithoutAssigneeNestedInput
+  createdTasks?: Prisma.TaskUpdateManyWithoutCreatedByNestedInput
+  collaboratingTasks?: Prisma.TaskCollaboratorUpdateManyWithoutUserNestedInput
+  uploadedAttachments?: Prisma.TaskAttachmentUpdateManyWithoutUploadedByNestedInput
+  comments?: Prisma.CommentUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUpdateManyWithoutAuthorNestedInput
+  activities?: Prisma.ActivityUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUpdateManyWithoutActorNestedInput
+  views?: Prisma.ViewUpdateManyWithoutOwnerNestedInput
+  documents?: Prisma.DocumentUpdateManyWithoutAuthorNestedInput
+  lastEditedDocs?: Prisma.DocumentUpdateManyWithoutLastEditedByNestedInput
+  createdProjects?: Prisma.ProjectUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUpdateManyWithoutInvitedByNestedInput
+  agentInsights?: Prisma.AgentInsightUpdateManyWithoutTargetUserNestedInput
+  auditLogs?: Prisma.AuditLogUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUpdateManyWithoutUserNestedInput
+  createdExperiments?: Prisma.ExperimentUpdateManyWithoutCreatedByNestedInput
+  ownedExperiments?: Prisma.ExperimentUpdateManyWithoutOwnerNestedInput
+  uploadedDocAttachments?: Prisma.DocumentAttachmentUpdateManyWithoutUploadedByNestedInput
+  experimentComments?: Prisma.ExperimentCommentUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUpdateManyWithoutAssigneeNestedInput
+}
+
+export type UserUncheckedUpdateWithoutFeedbackCommentsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  email?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  avatarUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarColor?: Prisma.StringFieldUpdateOperationsInput | string
+  notificationPrefs?: Prisma.NullableJsonNullValueInput | runtime.InputJsonValue
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  memberships?: Prisma.WorkspaceMemberUncheckedUpdateManyWithoutUserNestedInput
+  assignedTasks?: Prisma.TaskUncheckedUpdateManyWithoutAssigneeNestedInput
+  createdTasks?: Prisma.TaskUncheckedUpdateManyWithoutCreatedByNestedInput
+  collaboratingTasks?: Prisma.TaskCollaboratorUncheckedUpdateManyWithoutUserNestedInput
+  uploadedAttachments?: Prisma.TaskAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
+  comments?: Prisma.CommentUncheckedUpdateManyWithoutAuthorNestedInput
+  docComments?: Prisma.DocumentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  activities?: Prisma.ActivityUncheckedUpdateManyWithoutUserNestedInput
+  notifications?: Prisma.NotificationUncheckedUpdateManyWithoutUserNestedInput
+  actedNotifications?: Prisma.NotificationUncheckedUpdateManyWithoutActorNestedInput
+  views?: Prisma.ViewUncheckedUpdateManyWithoutOwnerNestedInput
+  documents?: Prisma.DocumentUncheckedUpdateManyWithoutAuthorNestedInput
+  lastEditedDocs?: Prisma.DocumentUncheckedUpdateManyWithoutLastEditedByNestedInput
+  createdProjects?: Prisma.ProjectUncheckedUpdateManyWithoutCreatedByNestedInput
+  projectMemberships?: Prisma.ProjectMemberUncheckedUpdateManyWithoutUserNestedInput
+  sentInvitations?: Prisma.InvitationUncheckedUpdateManyWithoutInvitedByNestedInput
+  agentInsights?: Prisma.AgentInsightUncheckedUpdateManyWithoutTargetUserNestedInput
+  auditLogs?: Prisma.AuditLogUncheckedUpdateManyWithoutUserNestedInput
+  createdDecisions?: Prisma.DecisionUncheckedUpdateManyWithoutCreatedByNestedInput
+  decisionParticipations?: Prisma.DecisionParticipantUncheckedUpdateManyWithoutUserNestedInput
+  createdExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutCreatedByNestedInput
+  ownedExperiments?: Prisma.ExperimentUncheckedUpdateManyWithoutOwnerNestedInput
+  uploadedDocAttachments?: Prisma.DocumentAttachmentUncheckedUpdateManyWithoutUploadedByNestedInput
+  experimentComments?: Prisma.ExperimentCommentUncheckedUpdateManyWithoutAuthorNestedInput
+  createdFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutCreatedByNestedInput
+  assignedFeedback?: Prisma.FeedbackUncheckedUpdateManyWithoutAssigneeNestedInput
 }
 
 
@@ -4463,6 +5296,9 @@ export type UserCountOutputType = {
   ownedExperiments: number
   uploadedDocAttachments: number
   experimentComments: number
+  createdFeedback: number
+  assignedFeedback: number
+  feedbackComments: number
 }
 
 export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -4490,6 +5326,9 @@ export type UserCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.I
   ownedExperiments?: boolean | UserCountOutputTypeCountOwnedExperimentsArgs
   uploadedDocAttachments?: boolean | UserCountOutputTypeCountUploadedDocAttachmentsArgs
   experimentComments?: boolean | UserCountOutputTypeCountExperimentCommentsArgs
+  createdFeedback?: boolean | UserCountOutputTypeCountCreatedFeedbackArgs
+  assignedFeedback?: boolean | UserCountOutputTypeCountAssignedFeedbackArgs
+  feedbackComments?: boolean | UserCountOutputTypeCountFeedbackCommentsArgs
 }
 
 /**
@@ -4670,6 +5509,27 @@ export type UserCountOutputTypeCountExperimentCommentsArgs<ExtArgs extends runti
   where?: Prisma.ExperimentCommentWhereInput
 }
 
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountCreatedFeedbackArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FeedbackWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountAssignedFeedbackArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FeedbackWhereInput
+}
+
+/**
+ * UserCountOutputType without action
+ */
+export type UserCountOutputTypeCountFeedbackCommentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.FeedbackCommentWhereInput
+}
+
 
 export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -4703,6 +5563,9 @@ export type UserSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   ownedExperiments?: boolean | Prisma.User$ownedExperimentsArgs<ExtArgs>
   uploadedDocAttachments?: boolean | Prisma.User$uploadedDocAttachmentsArgs<ExtArgs>
   experimentComments?: boolean | Prisma.User$experimentCommentsArgs<ExtArgs>
+  createdFeedback?: boolean | Prisma.User$createdFeedbackArgs<ExtArgs>
+  assignedFeedback?: boolean | Prisma.User$assignedFeedbackArgs<ExtArgs>
+  feedbackComments?: boolean | Prisma.User$feedbackCommentsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["user"]>
 
@@ -4762,6 +5625,9 @@ export type UserInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   ownedExperiments?: boolean | Prisma.User$ownedExperimentsArgs<ExtArgs>
   uploadedDocAttachments?: boolean | Prisma.User$uploadedDocAttachmentsArgs<ExtArgs>
   experimentComments?: boolean | Prisma.User$experimentCommentsArgs<ExtArgs>
+  createdFeedback?: boolean | Prisma.User$createdFeedbackArgs<ExtArgs>
+  assignedFeedback?: boolean | Prisma.User$assignedFeedbackArgs<ExtArgs>
+  feedbackComments?: boolean | Prisma.User$feedbackCommentsArgs<ExtArgs>
   _count?: boolean | Prisma.UserCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type UserIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -4794,6 +5660,9 @@ export type $UserPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     ownedExperiments: Prisma.$ExperimentPayload<ExtArgs>[]
     uploadedDocAttachments: Prisma.$DocumentAttachmentPayload<ExtArgs>[]
     experimentComments: Prisma.$ExperimentCommentPayload<ExtArgs>[]
+    createdFeedback: Prisma.$FeedbackPayload<ExtArgs>[]
+    assignedFeedback: Prisma.$FeedbackPayload<ExtArgs>[]
+    feedbackComments: Prisma.$FeedbackCommentPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -5221,6 +6090,9 @@ export interface Prisma__UserClient<T, Null = never, ExtArgs extends runtime.Typ
   ownedExperiments<T extends Prisma.User$ownedExperimentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$ownedExperimentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExperimentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   uploadedDocAttachments<T extends Prisma.User$uploadedDocAttachmentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$uploadedDocAttachmentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$DocumentAttachmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   experimentComments<T extends Prisma.User$experimentCommentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$experimentCommentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ExperimentCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  createdFeedback<T extends Prisma.User$createdFeedbackArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$createdFeedbackArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FeedbackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  assignedFeedback<T extends Prisma.User$assignedFeedbackArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$assignedFeedbackArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FeedbackPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  feedbackComments<T extends Prisma.User$feedbackCommentsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.User$feedbackCommentsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$FeedbackCommentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -6223,6 +7095,78 @@ export type User$experimentCommentsArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   distinct?: Prisma.ExperimentCommentScalarFieldEnum | Prisma.ExperimentCommentScalarFieldEnum[]
+}
+
+/**
+ * User.createdFeedback
+ */
+export type User$createdFeedbackArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Feedback
+   */
+  select?: Prisma.FeedbackSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Feedback
+   */
+  omit?: Prisma.FeedbackOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FeedbackInclude<ExtArgs> | null
+  where?: Prisma.FeedbackWhereInput
+  orderBy?: Prisma.FeedbackOrderByWithRelationInput | Prisma.FeedbackOrderByWithRelationInput[]
+  cursor?: Prisma.FeedbackWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FeedbackScalarFieldEnum | Prisma.FeedbackScalarFieldEnum[]
+}
+
+/**
+ * User.assignedFeedback
+ */
+export type User$assignedFeedbackArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the Feedback
+   */
+  select?: Prisma.FeedbackSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the Feedback
+   */
+  omit?: Prisma.FeedbackOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FeedbackInclude<ExtArgs> | null
+  where?: Prisma.FeedbackWhereInput
+  orderBy?: Prisma.FeedbackOrderByWithRelationInput | Prisma.FeedbackOrderByWithRelationInput[]
+  cursor?: Prisma.FeedbackWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FeedbackScalarFieldEnum | Prisma.FeedbackScalarFieldEnum[]
+}
+
+/**
+ * User.feedbackComments
+ */
+export type User$feedbackCommentsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the FeedbackComment
+   */
+  select?: Prisma.FeedbackCommentSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the FeedbackComment
+   */
+  omit?: Prisma.FeedbackCommentOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.FeedbackCommentInclude<ExtArgs> | null
+  where?: Prisma.FeedbackCommentWhereInput
+  orderBy?: Prisma.FeedbackCommentOrderByWithRelationInput | Prisma.FeedbackCommentOrderByWithRelationInput[]
+  cursor?: Prisma.FeedbackCommentWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.FeedbackCommentScalarFieldEnum | Prisma.FeedbackCommentScalarFieldEnum[]
 }
 
 /**

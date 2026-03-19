@@ -181,6 +181,66 @@ export const EXPERIMENT_TYPE_LABELS: Record<string, string> = {
   CUSTOMER_INTERVIEW: 'Customer Interview',
 };
 
+// ─── Feedback Status ──────────────────────────────────
+export const FEEDBACK_STATUS_COLORS = {
+  OPEN: '#378ADD',
+  IN_PROGRESS: '#EF9F27',
+  RESOLVED: '#639922',
+  CLOSED: '#888780',
+} as const;
+
+export const FEEDBACK_STATUS_BG_COLORS = {
+  OPEN: 'rgba(55,138,221,.12)',
+  IN_PROGRESS: 'rgba(239,159,39,.12)',
+  RESOLVED: 'rgba(99,153,34,.12)',
+  CLOSED: 'rgba(136,135,128,.12)',
+} as const;
+
+export const FEEDBACK_STATUS_TEXT_COLORS = {
+  OPEN: '#185FA5',
+  IN_PROGRESS: '#854F0B',
+  RESOLVED: '#27500A',
+  CLOSED: '#444441',
+} as const;
+
+export const FEEDBACK_STATUS_LABELS: Record<string, string> = {
+  OPEN: 'Open',
+  IN_PROGRESS: 'In Progress',
+  RESOLVED: 'Resolved',
+  CLOSED: 'Closed',
+};
+
+export const FEEDBACK_STATUS_ORDER = ['OPEN', 'IN_PROGRESS', 'RESOLVED', 'CLOSED'] as const;
+
+// ─── Feedback Type ────────────────────────────────────
+export const FEEDBACK_TYPE_COLORS = {
+  BUG: '#E24B4A',
+  FEATURE_REQUEST: '#7F77DD',
+  QUESTION: '#378ADD',
+  OTHER: '#888780',
+} as const;
+
+export const FEEDBACK_TYPE_BG_COLORS = {
+  BUG: 'rgba(226,75,74,.12)',
+  FEATURE_REQUEST: 'rgba(127,119,221,.12)',
+  QUESTION: 'rgba(55,138,221,.12)',
+  OTHER: 'rgba(136,135,128,.12)',
+} as const;
+
+export const FEEDBACK_TYPE_TEXT_COLORS = {
+  BUG: '#A32D2D',
+  FEATURE_REQUEST: '#3C3489',
+  QUESTION: '#185FA5',
+  OTHER: '#444441',
+} as const;
+
+export const FEEDBACK_TYPE_LABELS: Record<string, string> = {
+  BUG: 'Bug',
+  FEATURE_REQUEST: 'Feature Request',
+  QUESTION: 'Question',
+  OTHER: 'Other',
+};
+
 // ─── Experiment Scoring Criteria ───────────────────────
 export const EXPERIMENT_SCORING_CRITERIA = [
   { key: 'personaWants', label: 'Does persona actively want this?' },

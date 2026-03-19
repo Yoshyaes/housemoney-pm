@@ -78,7 +78,9 @@ export const ModelName = {
   Decision: 'Decision',
   DecisionParticipant: 'DecisionParticipant',
   Experiment: 'Experiment',
-  ExperimentComment: 'ExperimentComment'
+  ExperimentComment: 'ExperimentComment',
+  Feedback: 'Feedback',
+  FeedbackComment: 'FeedbackComment'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -116,6 +118,7 @@ export const WorkspaceScalarFieldEnum = {
   slug: 'slug',
   taskCounter: 'taskCounter',
   experimentCounter: 'experimentCounter',
+  feedbackCounter: 'feedbackCounter',
   createdAt: 'createdAt'
 } as const
 
@@ -530,6 +533,37 @@ export const ExperimentCommentScalarFieldEnum = {
 } as const
 
 export type ExperimentCommentScalarFieldEnum = (typeof ExperimentCommentScalarFieldEnum)[keyof typeof ExperimentCommentScalarFieldEnum]
+
+
+export const FeedbackScalarFieldEnum = {
+  id: 'id',
+  identifier: 'identifier',
+  workspaceId: 'workspaceId',
+  projectId: 'projectId',
+  createdById: 'createdById',
+  assigneeId: 'assigneeId',
+  title: 'title',
+  description: 'description',
+  type: 'type',
+  status: 'status',
+  priority: 'priority',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FeedbackScalarFieldEnum = (typeof FeedbackScalarFieldEnum)[keyof typeof FeedbackScalarFieldEnum]
+
+
+export const FeedbackCommentScalarFieldEnum = {
+  id: 'id',
+  feedbackId: 'feedbackId',
+  authorId: 'authorId',
+  body: 'body',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FeedbackCommentScalarFieldEnum = (typeof FeedbackCommentScalarFieldEnum)[keyof typeof FeedbackCommentScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -181,3 +181,13 @@ export type Experiment = Prisma.ExperimentModel
  * 
  */
 export type ExperimentComment = Prisma.ExperimentCommentModel
+/**
+ * Model Feedback
+ * 
+ */
+export type Feedback = Prisma.FeedbackModel
+/**
+ * Model FeedbackComment
+ * 
+ */
+export type FeedbackComment = Prisma.FeedbackCommentModel

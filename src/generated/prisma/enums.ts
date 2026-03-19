@@ -184,3 +184,23 @@ export const ExperimentType = {
 } as const
 
 export type ExperimentType = (typeof ExperimentType)[keyof typeof ExperimentType]
+
+
+export const FeedbackType = {
+  BUG: 'BUG',
+  FEATURE_REQUEST: 'FEATURE_REQUEST',
+  QUESTION: 'QUESTION',
+  OTHER: 'OTHER'
+} as const
+
+export type FeedbackType = (typeof FeedbackType)[keyof typeof FeedbackType]
+
+
+export const FeedbackStatus = {
+  OPEN: 'OPEN',
+  IN_PROGRESS: 'IN_PROGRESS',
+  RESOLVED: 'RESOLVED',
+  CLOSED: 'CLOSED'
+} as const
+
+export type FeedbackStatus = (typeof FeedbackStatus)[keyof typeof FeedbackStatus]

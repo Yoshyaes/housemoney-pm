@@ -411,7 +411,9 @@ export const ModelName = {
   Decision: 'Decision',
   DecisionParticipant: 'DecisionParticipant',
   Experiment: 'Experiment',
-  ExperimentComment: 'ExperimentComment'
+  ExperimentComment: 'ExperimentComment',
+  Feedback: 'Feedback',
+  FeedbackComment: 'FeedbackComment'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -427,7 +429,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "workspace" | "workspaceMember" | "project" | "section" | "task" | "taskAttachment" | "taskCollaborator" | "dependency" | "comment" | "label" | "taskLabel" | "activity" | "view" | "notification" | "gitHubPR" | "document" | "documentComment" | "documentAttachment" | "projectMember" | "invitation" | "agentInsight" | "agentConfig" | "auditLog" | "decision" | "decisionParticipant" | "experiment" | "experimentComment"
+    modelProps: "user" | "workspace" | "workspaceMember" | "project" | "section" | "task" | "taskAttachment" | "taskCollaborator" | "dependency" | "comment" | "label" | "taskLabel" | "activity" | "view" | "notification" | "gitHubPR" | "document" | "documentComment" | "documentAttachment" | "projectMember" | "invitation" | "agentInsight" | "agentConfig" | "auditLog" | "decision" | "decisionParticipant" | "experiment" | "experimentComment" | "feedback" | "feedbackComment"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2503,6 +2505,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    Feedback: {
+      payload: Prisma.$FeedbackPayload<ExtArgs>
+      fields: Prisma.FeedbackFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.FeedbackFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.FeedbackFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackPayload>
+        }
+        findFirst: {
+          args: Prisma.FeedbackFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.FeedbackFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackPayload>
+        }
+        findMany: {
+          args: Prisma.FeedbackFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackPayload>[]
+        }
+        create: {
+          args: Prisma.FeedbackCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackPayload>
+        }
+        createMany: {
+          args: Prisma.FeedbackCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.FeedbackCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackPayload>[]
+        }
+        delete: {
+          args: Prisma.FeedbackDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackPayload>
+        }
+        update: {
+          args: Prisma.FeedbackUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackPayload>
+        }
+        deleteMany: {
+          args: Prisma.FeedbackDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.FeedbackUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.FeedbackUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackPayload>[]
+        }
+        upsert: {
+          args: Prisma.FeedbackUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackPayload>
+        }
+        aggregate: {
+          args: Prisma.FeedbackAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateFeedback>
+        }
+        groupBy: {
+          args: Prisma.FeedbackGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FeedbackGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.FeedbackCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FeedbackCountAggregateOutputType> | number
+        }
+      }
+    }
+    FeedbackComment: {
+      payload: Prisma.$FeedbackCommentPayload<ExtArgs>
+      fields: Prisma.FeedbackCommentFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.FeedbackCommentFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackCommentPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.FeedbackCommentFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackCommentPayload>
+        }
+        findFirst: {
+          args: Prisma.FeedbackCommentFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackCommentPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.FeedbackCommentFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackCommentPayload>
+        }
+        findMany: {
+          args: Prisma.FeedbackCommentFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackCommentPayload>[]
+        }
+        create: {
+          args: Prisma.FeedbackCommentCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackCommentPayload>
+        }
+        createMany: {
+          args: Prisma.FeedbackCommentCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.FeedbackCommentCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackCommentPayload>[]
+        }
+        delete: {
+          args: Prisma.FeedbackCommentDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackCommentPayload>
+        }
+        update: {
+          args: Prisma.FeedbackCommentUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackCommentPayload>
+        }
+        deleteMany: {
+          args: Prisma.FeedbackCommentDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.FeedbackCommentUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.FeedbackCommentUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackCommentPayload>[]
+        }
+        upsert: {
+          args: Prisma.FeedbackCommentUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$FeedbackCommentPayload>
+        }
+        aggregate: {
+          args: Prisma.FeedbackCommentAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateFeedbackComment>
+        }
+        groupBy: {
+          args: Prisma.FeedbackCommentGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FeedbackCommentGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.FeedbackCommentCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.FeedbackCommentCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2561,6 +2711,7 @@ export const WorkspaceScalarFieldEnum = {
   slug: 'slug',
   taskCounter: 'taskCounter',
   experimentCounter: 'experimentCounter',
+  feedbackCounter: 'feedbackCounter',
   createdAt: 'createdAt'
 } as const
 
@@ -2977,6 +3128,37 @@ export const ExperimentCommentScalarFieldEnum = {
 export type ExperimentCommentScalarFieldEnum = (typeof ExperimentCommentScalarFieldEnum)[keyof typeof ExperimentCommentScalarFieldEnum]
 
 
+export const FeedbackScalarFieldEnum = {
+  id: 'id',
+  identifier: 'identifier',
+  workspaceId: 'workspaceId',
+  projectId: 'projectId',
+  createdById: 'createdById',
+  assigneeId: 'assigneeId',
+  title: 'title',
+  description: 'description',
+  type: 'type',
+  status: 'status',
+  priority: 'priority',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FeedbackScalarFieldEnum = (typeof FeedbackScalarFieldEnum)[keyof typeof FeedbackScalarFieldEnum]
+
+
+export const FeedbackCommentScalarFieldEnum = {
+  id: 'id',
+  feedbackId: 'feedbackId',
+  authorId: 'authorId',
+  body: 'body',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type FeedbackCommentScalarFieldEnum = (typeof FeedbackCommentScalarFieldEnum)[keyof typeof FeedbackCommentScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -3317,6 +3499,34 @@ export type EnumExperimentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<
 export type ListEnumExperimentStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ExperimentStatus[]'>
     
 
+
+/**
+ * Reference to a field of type 'FeedbackType'
+ */
+export type EnumFeedbackTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FeedbackType'>
+    
+
+
+/**
+ * Reference to a field of type 'FeedbackType[]'
+ */
+export type ListEnumFeedbackTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FeedbackType[]'>
+    
+
+
+/**
+ * Reference to a field of type 'FeedbackStatus'
+ */
+export type EnumFeedbackStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FeedbackStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'FeedbackStatus[]'
+ */
+export type ListEnumFeedbackStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'FeedbackStatus[]'>
+    
+
 /**
  * Batch Payload for updateMany & deleteMany & createMany
  */
@@ -3440,6 +3650,8 @@ export type GlobalOmitConfig = {
   decisionParticipant?: Prisma.DecisionParticipantOmit
   experiment?: Prisma.ExperimentOmit
   experimentComment?: Prisma.ExperimentCommentOmit
+  feedback?: Prisma.FeedbackOmit
+  feedbackComment?: Prisma.FeedbackCommentOmit
 }
 
 /* Types for Logging */
