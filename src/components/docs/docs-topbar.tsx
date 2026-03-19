@@ -42,6 +42,18 @@ export function DocsTopbar({ workspaceId }: DocsTopbarProps) {
       formData.append('file', file);
       formData.append('bucket', 'document-attachments');
       const res = await fetch('/api/upload', { method: 'POST', body: formData });
+      if (!res.ok) {
+        const text = await res.text();
+        let errorMsg = `Upload failed (${res.status})`;
+        try {
+          const json = JSON.parse(text);
+          if (json.error) errorMsg = json.error;
+        } catch {
+          // Response wasn't JSON (e.g. HTML error page)
+        }
+        alert(errorMsg);
+        return;
+      }
       const data = await res.json();
       if (data.error) {
         alert(data.error);
@@ -60,7 +72,8 @@ export function DocsTopbar({ workspaceId }: DocsTopbarProps) {
           fileMimeType: data.mimeType,
         });
       }
-    } catch {
+    } catch (err) {
+      console.error('[docs] Upload error:', err);
       alert('Upload failed. Please try again.');
     } finally {
       setUploading(false);
