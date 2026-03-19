@@ -102,6 +102,8 @@ export function DocEditor({ docId, workspaceId, projects, onDelete }: DocEditorP
   useEffect(() => {
     if (doc && editor && !editor.isDestroyed) {
       editor.commands.setContent(doc.content || '');
+      // File-based docs with extracted content should be read-only
+      editor.setEditable(!doc.fileUrl);
     }
   }, [doc?.id, editor]);
 
@@ -342,48 +344,70 @@ export function DocEditor({ docId, workspaceId, projects, onDelete }: DocEditorP
           </div>
 
           {doc.fileUrl ? (
-            /* File preview for file-based documents */
-            <div className="mb-6">
-              {doc.fileMimeType?.startsWith('image/') ? (
-                <div className="rounded-lg border border-zinc-200 dark:border-zinc-700 overflow-hidden">
-                  <img
-                    src={doc.fileUrl}
-                    alt={doc.fileName || doc.title}
-                    className="max-w-full h-auto"
-                  />
-                </div>
-              ) : doc.fileMimeType === 'application/pdf' ? (
-                <iframe
+            /* File-based document */
+            doc.fileMimeType?.startsWith('image/') ? (
+              /* Case A: Image — inline preview */
+              <div className="mb-6 rounded-lg border border-zinc-200 dark:border-zinc-700 overflow-hidden">
+                <img
                   src={doc.fileUrl}
-                  title={doc.fileName || doc.title}
-                  className="w-full h-[600px] rounded-lg border border-zinc-200 dark:border-zinc-700"
+                  alt={doc.fileName || doc.title}
+                  className="max-w-full h-auto"
                 />
-              ) : (
-                <div className="flex flex-col items-center gap-4 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 px-8 py-12">
-                  <File className="h-12 w-12 text-zinc-300 dark:text-zinc-600" />
-                  <div className="text-center">
-                    <p className="text-sm font-medium text-zinc-700 dark:text-zinc-300">{doc.fileName || doc.title}</p>
-                    {doc.fileSize && (
-                      <p className="mt-1 text-xs text-zinc-400">{formatFileSize(doc.fileSize)}</p>
-                    )}
-                    {doc.fileMimeType && (
-                      <p className="mt-0.5 text-[10px] text-zinc-400 uppercase">{doc.fileMimeType.split('/').pop()}</p>
-                    )}
+              </div>
+            ) : doc.content ? (
+              /* Case B: File with extracted content — file info bar + read-only editor */
+              <>
+                <div className="flex items-center gap-3 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 px-4 py-3 mb-6">
+                  <File className="h-5 w-5 text-zinc-400 flex-shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-zinc-700 dark:text-zinc-300 truncate">
+                      {doc.fileName || doc.title}
+                    </p>
+                    <p className="text-xs text-zinc-400">
+                      {formatFileSize(doc.fileSize)}
+                      {doc.fileMimeType && ` · ${doc.fileMimeType.split('/').pop()?.toUpperCase()}`}
+                    </p>
                   </div>
                   <a
                     href={doc.fileUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 rounded-md px-4 py-2 text-xs font-medium text-white transition-colors"
+                    className="flex items-center gap-1.5 rounded-md px-3 py-1.5 text-xs font-medium text-white flex-shrink-0"
                     style={{ backgroundColor: '#BA7517' }}
                   >
                     <Download className="h-3.5 w-3.5" />
-                    Download File
+                    Download
                   </a>
                 </div>
-              )}
-            </div>
+                <EditorContent editor={editor} />
+              </>
+            ) : (
+              /* Case C: File without extracted content — download card */
+              <div className="mb-6 flex flex-col items-center gap-4 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900 px-8 py-12">
+                <File className="h-12 w-12 text-zinc-300 dark:text-zinc-600" />
+                <div className="text-center">
+                  <p className="text-sm font-medium text-zinc-700 dark:text-zinc-300">{doc.fileName || doc.title}</p>
+                  {doc.fileSize && (
+                    <p className="mt-1 text-xs text-zinc-400">{formatFileSize(doc.fileSize)}</p>
+                  )}
+                  {doc.fileMimeType && (
+                    <p className="mt-0.5 text-[10px] text-zinc-400 uppercase">{doc.fileMimeType.split('/').pop()}</p>
+                  )}
+                </div>
+                <a
+                  href={doc.fileUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 rounded-md px-4 py-2 text-xs font-medium text-white transition-colors"
+                  style={{ backgroundColor: '#BA7517' }}
+                >
+                  <Download className="h-3.5 w-3.5" />
+                  Download File
+                </a>
+              </div>
+            )
           ) : (
+            /* Case D: Regular text document */
             <>
               {/* Attachments */}
               <div className="mb-5">

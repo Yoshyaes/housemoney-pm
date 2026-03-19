@@ -51,7 +51,7 @@ export function DocsTopbar({ workspaceId }: DocsTopbarProps) {
         createDoc.mutate({
           workspaceId,
           title: file.name,
-          content: '',
+          content: data.extractedText || '',
           docType: 'GENERAL',
           tags: [],
           fileUrl: data.url,

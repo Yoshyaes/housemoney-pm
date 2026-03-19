@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
 import { createServerSupabaseClient } from '@/server/auth/supabase-server';
 import { rateLimit } from '@/lib/rate-limit';
+import { extractTextFromBuffer } from '@/lib/extract-text';
 
 const ALLOWED_BUCKETS = ['task-attachments', 'document-attachments'];
 const DEFAULT_BUCKET = 'task-attachments';
@@ -78,10 +79,17 @@ export async function POST(req: NextRequest) {
 
   const { data: { publicUrl } } = supabase.storage.from(bucket).getPublicUrl(path);
 
+  // Extract text content from supported file types
+  const extractedText = await extractTextFromBuffer(
+    Buffer.from(arrayBuffer),
+    file.type
+  );
+
   return NextResponse.json({
     url: publicUrl,
     name: file.name,
     size: file.size,
     mimeType: file.type || `application/octet-stream`,
+    extractedText,
   });
 }
