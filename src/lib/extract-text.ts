@@ -31,8 +31,18 @@ export async function extractTextFromBuffer(
       'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
     ) {
       const mammoth = await import('mammoth');
-      const result = await mammoth.extractRawText({ buffer });
-      text = result.value;
+      const TurndownService = (await import('turndown')).default;
+      const result = await mammoth.convertToHtml({ buffer });
+      const turndown = new TurndownService({
+        headingStyle: 'atx',
+        bulletListMarker: '-',
+        codeBlockStyle: 'fenced',
+      });
+      turndown.addRule('strikethrough', {
+        filter: ['del', 's'],
+        replacement: (content) => `~~${content}~~`,
+      });
+      text = turndown.turndown(result.value);
     } else if (
       mimeType ===
       'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
