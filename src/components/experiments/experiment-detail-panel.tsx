@@ -72,7 +72,6 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
       utils.experiments.get.invalidate({ id: selectedExperimentId! });
       utils.experiments.list.invalidate();
       utils.experiments.getStats.invalidate();
-      setLocalEdits({});
       setMutationError(null);
     },
     onError: (err) => {
