@@ -10,7 +10,7 @@ const DEFAULT_BUCKET = 'task-attachments';
 export async function POST(req: NextRequest) {
   try {
     // Verify user is authenticated
-    const supabaseAuth = createServerSupabaseClient();
+    const supabaseAuth = await createServerSupabaseClient();
     const { data: { session } } = await supabaseAuth.auth.getSession();
     if (!session) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
