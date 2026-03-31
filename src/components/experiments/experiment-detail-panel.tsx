@@ -47,6 +47,8 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [mutationError, setMutationError] = useState<string | null>(null);
   const [localEdits, setLocalEdits] = useState<Record<string, string>>({});
+  const [saveStatus, setSaveStatus] = useState<'idle' | 'saving' | 'saved'>('idle');
+  const saveTimeoutRef = useRef<ReturnType<typeof setTimeout>>();
   const [commentBody, setCommentBody] = useState('');
   const commentInputRef = useRef<HTMLTextAreaElement>(null);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
@@ -73,9 +75,13 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
       utils.experiments.list.invalidate();
       utils.experiments.getStats.invalidate();
       setMutationError(null);
+      setSaveStatus('saved');
+      if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current);
+      saveTimeoutRef.current = setTimeout(() => setSaveStatus('idle'), 2000);
     },
     onError: (err) => {
       setMutationError(err.message);
+      setSaveStatus('idle');
     },
   });
 
@@ -115,12 +121,14 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       if (!selectedExperimentId) return;
+      setSaveStatus('saving');
       updateExperiment.mutate({ id: selectedExperimentId, [field]: value });
     }, 500);
   };
 
   const immediateUpdate = (field: string, value: unknown) => {
     if (!selectedExperimentId) return;
+    setSaveStatus('saving');
     updateExperiment.mutate({ id: selectedExperimentId, [field]: value });
   };
 
@@ -136,7 +144,10 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
 
   useEffect(() => {
     setLocalEdits({});
+    setSaveStatus('idle');
   }, [selectedExperimentId]);
+
+  useEffect(() => () => { if (saveTimeoutRef.current) clearTimeout(saveTimeoutRef.current); }, []);
 
   if (!selectedExperimentId) return null;
 
@@ -167,6 +178,12 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
               <span className="font-mono text-[11px] text-zinc-400">{experiment.identifier}</span>
               <ExperimentStatusBadge status={experiment.status} />
             </>
+          )}
+          {saveStatus === 'saving' && (
+            <span className="text-[10px] text-zinc-400 dark:text-zinc-500 animate-pulse">Saving...</span>
+          )}
+          {saveStatus === 'saved' && (
+            <span className="text-[10px] text-emerald-500 dark:text-emerald-400">Saved</span>
           )}
         </div>
         <button
