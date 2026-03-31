@@ -46,6 +46,7 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
   const [titleValue, setTitleValue] = useState('');
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
   const [mutationError, setMutationError] = useState<string | null>(null);
+  const [localEdits, setLocalEdits] = useState<Record<string, string>>({});
   const [commentBody, setCommentBody] = useState('');
   const commentInputRef = useRef<HTMLTextAreaElement>(null);
   const [openSections, setOpenSections] = useState<Record<string, boolean>>({
@@ -71,6 +72,7 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
       utils.experiments.get.invalidate({ id: selectedExperimentId! });
       utils.experiments.list.invalidate();
       utils.experiments.getStats.invalidate();
+      setLocalEdits({});
       setMutationError(null);
     },
     onError: (err) => {
@@ -107,6 +109,10 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
   const debounceRef = useRef<ReturnType<typeof setTimeout>>();
 
   const debouncedUpdate = (field: string, value: unknown) => {
+    // Update local state immediately so typing feels responsive
+    if (typeof value === 'string' || value === null) {
+      setLocalEdits((prev) => ({ ...prev, [field]: (value as string) ?? '' }));
+    }
     if (debounceRef.current) clearTimeout(debounceRef.current);
     debounceRef.current = setTimeout(() => {
       if (!selectedExperimentId) return;
@@ -129,6 +135,10 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
     }
   }, [experiment]);
 
+  useEffect(() => {
+    setLocalEdits({});
+  }, [selectedExperimentId]);
+
   if (!selectedExperimentId) return null;
 
   const canEdit = experiment && (experiment.createdById === currentUserId || isAdmin);
@@ -137,6 +147,12 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
 
   const scoringCriteria = (experiment?.scoringCriteria ?? {}) as Record<string, boolean>;
   const score = Object.values(scoringCriteria).filter(Boolean).length;
+
+  const getFieldValue = (field: string): string => {
+    if (field in localEdits) return localEdits[field];
+    if (!experiment) return '';
+    return (experiment[field as keyof typeof experiment] as string) ?? '';
+  };
 
   const inputCls = 'w-full rounded-md border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-800 px-2 py-1.5 text-xs text-zinc-900 dark:text-zinc-100 outline-none placeholder:text-zinc-400 dark:placeholder:text-zinc-600';
   const labelCls = 'mb-1 block text-[10px] uppercase tracking-wider text-zinc-400 dark:text-zinc-500';
@@ -273,7 +289,7 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
                 <div>
                   <label className={labelCls}>Sprint</label>
                   {canEdit ? (
-                    <input value={experiment.sprint ?? ''} onChange={(e) => debouncedUpdate('sprint', e.target.value || null)} className={inputCls} placeholder="Sprint #" />
+                    <input value={getFieldValue('sprint')} onChange={(e) => debouncedUpdate('sprint', e.target.value || null)} className={inputCls} placeholder="Sprint #" />
                   ) : (
                     <p className={readonlyCls}>{experiment.sprint || '—'}</p>
                   )}
@@ -319,7 +335,7 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
               <div>
                 <label className={labelCls}>Cohort</label>
                 {canEdit ? (
-                  <input value={experiment.cohort ?? ''} onChange={(e) => debouncedUpdate('cohort', e.target.value || null)} className={inputCls} placeholder="e.g. New + PM Partner" />
+                  <input value={getFieldValue('cohort')} onChange={(e) => debouncedUpdate('cohort', e.target.value || null)} className={inputCls} placeholder="e.g. New + PM Partner" />
                 ) : (
                   <p className={readonlyCls}>{experiment.cohort || '—'}</p>
                 )}
@@ -334,7 +350,7 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
               <div>
                 <label className={labelCls}>Hypothesis</label>
                 {canEdit ? (
-                  <textarea value={experiment.hypothesis} onChange={(e) => debouncedUpdate('hypothesis', e.target.value)} rows={3} className={`${inputCls} resize-none`} placeholder="If [X], then [Persona] will [Y] because [Z]" />
+                  <textarea value={getFieldValue('hypothesis')} onChange={(e) => debouncedUpdate('hypothesis', e.target.value)} rows={3} className={`${inputCls} resize-none`} placeholder="If [X], then [Persona] will [Y] because [Z]" />
                 ) : (
                   <p className={`${readonlyCls} whitespace-pre-wrap`}>{experiment.hypothesis || '—'}</p>
                 )}
@@ -342,7 +358,7 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
               <div>
                 <label className={labelCls}>Riskiest Assumption</label>
                 {canEdit ? (
-                  <input value={experiment.riskiestAssumption ?? ''} onChange={(e) => debouncedUpdate('riskiestAssumption', e.target.value || null)} className={inputCls} />
+                  <input value={getFieldValue('riskiestAssumption')} onChange={(e) => debouncedUpdate('riskiestAssumption', e.target.value || null)} className={inputCls} />
                 ) : (
                   <p className={readonlyCls}>{experiment.riskiestAssumption || '—'}</p>
                 )}
@@ -350,7 +366,7 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
               <div>
                 <label className={labelCls}>Learning Goal</label>
                 {canEdit ? (
-                  <input value={experiment.learningGoal ?? ''} onChange={(e) => debouncedUpdate('learningGoal', e.target.value || null)} className={inputCls} />
+                  <input value={getFieldValue('learningGoal')} onChange={(e) => debouncedUpdate('learningGoal', e.target.value || null)} className={inputCls} />
                 ) : (
                   <p className={readonlyCls}>{experiment.learningGoal || '—'}</p>
                 )}
@@ -366,7 +382,7 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
                 <div>
                   <label className={labelCls}>CAC Estimate ($)</label>
                   {canEdit ? (
-                    <input type="number" value={experiment.cacEstimate ?? ''} onChange={(e) => debouncedUpdate('cacEstimate', e.target.value ? Number(e.target.value) : null)} className={inputCls} />
+                    <input type="number" value={'cacEstimate' in localEdits ? localEdits.cacEstimate : experiment.cacEstimate ?? ''} onChange={(e) => { setLocalEdits((prev) => ({ ...prev, cacEstimate: e.target.value })); debouncedUpdate('cacEstimate', e.target.value ? Number(e.target.value) : null); }} className={inputCls} />
                   ) : (
                     <p className={readonlyCls}>{experiment.cacEstimate != null ? `$${experiment.cacEstimate}` : '—'}</p>
                   )}
@@ -374,7 +390,7 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
                 <div>
                   <label className={labelCls}>Monthly ARPU ($)</label>
                   {canEdit ? (
-                    <input type="number" value={experiment.monthlyArpu ?? ''} onChange={(e) => debouncedUpdate('monthlyArpu', e.target.value ? Number(e.target.value) : null)} className={inputCls} />
+                    <input type="number" value={'monthlyArpu' in localEdits ? localEdits.monthlyArpu : experiment.monthlyArpu ?? ''} onChange={(e) => { setLocalEdits((prev) => ({ ...prev, monthlyArpu: e.target.value })); debouncedUpdate('monthlyArpu', e.target.value ? Number(e.target.value) : null); }} className={inputCls} />
                   ) : (
                     <p className={readonlyCls}>{experiment.monthlyArpu != null ? `$${experiment.monthlyArpu}` : '—'}</p>
                   )}
@@ -384,7 +400,7 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
                 <div>
                   <label className={labelCls}>LTV ($)</label>
                   {canEdit ? (
-                    <input type="number" value={experiment.ltvEstimate ?? ''} onChange={(e) => debouncedUpdate('ltvEstimate', e.target.value ? Number(e.target.value) : null)} className={inputCls} />
+                    <input type="number" value={'ltvEstimate' in localEdits ? localEdits.ltvEstimate : experiment.ltvEstimate ?? ''} onChange={(e) => { setLocalEdits((prev) => ({ ...prev, ltvEstimate: e.target.value })); debouncedUpdate('ltvEstimate', e.target.value ? Number(e.target.value) : null); }} className={inputCls} />
                   ) : (
                     <p className={readonlyCls}>{experiment.ltvEstimate != null ? `$${experiment.ltvEstimate}` : '—'}</p>
                   )}
@@ -392,7 +408,7 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
                 <div>
                   <label className={labelCls}>Payback (mo)</label>
                   {canEdit ? (
-                    <input type="number" step="0.1" value={experiment.paybackPeriod ?? ''} onChange={(e) => debouncedUpdate('paybackPeriod', e.target.value ? Number(e.target.value) : null)} className={inputCls} />
+                    <input type="number" step="0.1" value={'paybackPeriod' in localEdits ? localEdits.paybackPeriod : experiment.paybackPeriod ?? ''} onChange={(e) => { setLocalEdits((prev) => ({ ...prev, paybackPeriod: e.target.value })); debouncedUpdate('paybackPeriod', e.target.value ? Number(e.target.value) : null); }} className={inputCls} />
                   ) : (
                     <p className={readonlyCls}>{experiment.paybackPeriod != null ? `${experiment.paybackPeriod}mo` : '—'}</p>
                   )}
@@ -400,7 +416,7 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
                 <div>
                   <label className={labelCls}>Deposit ($)</label>
                   {canEdit ? (
-                    <input type="number" value={experiment.depositTarget ?? ''} onChange={(e) => debouncedUpdate('depositTarget', e.target.value ? Number(e.target.value) : null)} className={inputCls} />
+                    <input type="number" value={'depositTarget' in localEdits ? localEdits.depositTarget : experiment.depositTarget ?? ''} onChange={(e) => { setLocalEdits((prev) => ({ ...prev, depositTarget: e.target.value })); debouncedUpdate('depositTarget', e.target.value ? Number(e.target.value) : null); }} className={inputCls} />
                   ) : (
                     <p className={readonlyCls}>{experiment.depositTarget != null ? `$${experiment.depositTarget}` : '—'}</p>
                   )}
@@ -485,7 +501,7 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
                 <div>
                   <label className={labelCls}>Resource Cost</label>
                   {canEdit ? (
-                    <input value={experiment.resourceCost ?? ''} onChange={(e) => debouncedUpdate('resourceCost', e.target.value || null)} className={inputCls} placeholder="$500 + 20 hours" />
+                    <input value={getFieldValue('resourceCost')} onChange={(e) => debouncedUpdate('resourceCost', e.target.value || null)} className={inputCls} placeholder="$500 + 20 hours" />
                   ) : (
                     <p className={readonlyCls}>{experiment.resourceCost || '—'}</p>
                   )}
@@ -493,7 +509,7 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
                 <div>
                   <label className={labelCls}>Test Size</label>
                   {canEdit ? (
-                    <input value={experiment.testSize ?? ''} onChange={(e) => debouncedUpdate('testSize', e.target.value || null)} className={inputCls} placeholder="50 users" />
+                    <input value={getFieldValue('testSize')} onChange={(e) => debouncedUpdate('testSize', e.target.value || null)} className={inputCls} placeholder="50 users" />
                   ) : (
                     <p className={readonlyCls}>{experiment.testSize || '—'}</p>
                   )}
@@ -509,7 +525,7 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
               <div>
                 <label className={labelCls}>Primary Metric</label>
                 {canEdit ? (
-                  <input value={experiment.primaryMetric ?? ''} onChange={(e) => debouncedUpdate('primaryMetric', e.target.value || null)} className={inputCls} placeholder="e.g. Deposit Rate: >30%" />
+                  <input value={getFieldValue('primaryMetric')} onChange={(e) => debouncedUpdate('primaryMetric', e.target.value || null)} className={inputCls} placeholder="e.g. Deposit Rate: >30%" />
                 ) : (
                   <p className={readonlyCls}>{experiment.primaryMetric || '—'}</p>
                 )}
@@ -517,7 +533,7 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
               <div>
                 <label className={labelCls}>Secondary Metrics</label>
                 {canEdit ? (
-                  <textarea value={experiment.secondaryMetrics ?? ''} onChange={(e) => debouncedUpdate('secondaryMetrics', e.target.value || null)} rows={2} className={`${inputCls} resize-none`} />
+                  <textarea value={getFieldValue('secondaryMetrics')} onChange={(e) => debouncedUpdate('secondaryMetrics', e.target.value || null)} rows={2} className={`${inputCls} resize-none`} />
                 ) : (
                   <p className={`${readonlyCls} whitespace-pre-wrap`}>{experiment.secondaryMetrics || '—'}</p>
                 )}
@@ -525,7 +541,7 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
               <div>
                 <label className={labelCls}>Kill Condition</label>
                 {canEdit ? (
-                  <input value={experiment.killCondition ?? ''} onChange={(e) => debouncedUpdate('killCondition', e.target.value || null)} className={inputCls} />
+                  <input value={getFieldValue('killCondition')} onChange={(e) => debouncedUpdate('killCondition', e.target.value || null)} className={inputCls} />
                 ) : (
                   <p className={readonlyCls}>{experiment.killCondition || '—'}</p>
                 )}
@@ -542,7 +558,7 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
                   <div>
                     <label className={labelCls}>What Happened</label>
                     {canEdit ? (
-                      <textarea value={experiment.whatHappened ?? ''} onChange={(e) => debouncedUpdate('whatHappened', e.target.value || null)} rows={3} className={`${inputCls} resize-none`} placeholder="Describe what happened..." />
+                      <textarea value={getFieldValue('whatHappened')} onChange={(e) => debouncedUpdate('whatHappened', e.target.value || null)} rows={3} className={`${inputCls} resize-none`} placeholder="Describe what happened..." />
                     ) : (
                       <p className={`${readonlyCls} whitespace-pre-wrap`}>{experiment.whatHappened || '—'}</p>
                     )}
@@ -550,7 +566,7 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
                   <div>
                     <label className={labelCls}>Primary Metric Result</label>
                     {canEdit ? (
-                      <input value={experiment.primaryMetricResult ?? ''} onChange={(e) => debouncedUpdate('primaryMetricResult', e.target.value || null)} className={inputCls} />
+                      <input value={getFieldValue('primaryMetricResult')} onChange={(e) => debouncedUpdate('primaryMetricResult', e.target.value || null)} className={inputCls} />
                     ) : (
                       <p className={readonlyCls}>{experiment.primaryMetricResult || '—'}</p>
                     )}
@@ -558,7 +574,7 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
                   <div>
                     <label className={labelCls}>Secondary Metric Results</label>
                     {canEdit ? (
-                      <textarea value={experiment.secondaryMetricResults ?? ''} onChange={(e) => debouncedUpdate('secondaryMetricResults', e.target.value || null)} rows={2} className={`${inputCls} resize-none`} />
+                      <textarea value={getFieldValue('secondaryMetricResults')} onChange={(e) => debouncedUpdate('secondaryMetricResults', e.target.value || null)} rows={2} className={`${inputCls} resize-none`} />
                     ) : (
                       <p className={`${readonlyCls} whitespace-pre-wrap`}>{experiment.secondaryMetricResults || '—'}</p>
                     )}
@@ -566,7 +582,7 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
                   <div>
                     <label className={labelCls}>Unexpected Findings</label>
                     {canEdit ? (
-                      <textarea value={experiment.unexpectedFindings ?? ''} onChange={(e) => debouncedUpdate('unexpectedFindings', e.target.value || null)} rows={2} className={`${inputCls} resize-none`} />
+                      <textarea value={getFieldValue('unexpectedFindings')} onChange={(e) => debouncedUpdate('unexpectedFindings', e.target.value || null)} rows={2} className={`${inputCls} resize-none`} />
                     ) : (
                       <p className={`${readonlyCls} whitespace-pre-wrap`}>{experiment.unexpectedFindings || '—'}</p>
                     )}
@@ -585,7 +601,7 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
                   <div>
                     <label className={labelCls}>Did We Learn?</label>
                     {canEdit ? (
-                      <textarea value={experiment.didWeLearn ?? ''} onChange={(e) => debouncedUpdate('didWeLearn', e.target.value || null)} rows={2} className={`${inputCls} resize-none`} placeholder="Yes / No — What did we learn?" />
+                      <textarea value={getFieldValue('didWeLearn')} onChange={(e) => debouncedUpdate('didWeLearn', e.target.value || null)} rows={2} className={`${inputCls} resize-none`} placeholder="Yes / No — What did we learn?" />
                     ) : (
                       <p className={`${readonlyCls} whitespace-pre-wrap`}>{experiment.didWeLearn || '—'}</p>
                     )}
@@ -594,7 +610,7 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
                     <div>
                       <label className={labelCls}>Continue Experiment?</label>
                       {canEdit ? (
-                        <input value={experiment.continueExperiment ?? ''} onChange={(e) => debouncedUpdate('continueExperiment', e.target.value || null)} className={inputCls} placeholder="Yes / No / Pivot" />
+                        <input value={getFieldValue('continueExperiment')} onChange={(e) => debouncedUpdate('continueExperiment', e.target.value || null)} className={inputCls} placeholder="Yes / No / Pivot" />
                       ) : (
                         <p className={readonlyCls}>{experiment.continueExperiment || '—'}</p>
                       )}
@@ -602,7 +618,7 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
                     <div>
                       <label className={labelCls}>Continue Persona?</label>
                       {canEdit ? (
-                        <input value={experiment.continuePersona ?? ''} onChange={(e) => debouncedUpdate('continuePersona', e.target.value || null)} className={inputCls} placeholder="Yes / No" />
+                        <input value={getFieldValue('continuePersona')} onChange={(e) => debouncedUpdate('continuePersona', e.target.value || null)} className={inputCls} placeholder="Yes / No" />
                       ) : (
                         <p className={readonlyCls}>{experiment.continuePersona || '—'}</p>
                       )}
@@ -611,7 +627,7 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
                   <div>
                     <label className={labelCls}>Next Action</label>
                     {canEdit ? (
-                      <input value={experiment.nextAction ?? ''} onChange={(e) => debouncedUpdate('nextAction', e.target.value || null)} className={inputCls} placeholder="Build / Scale / Icebox / Kill / Interview more" />
+                      <input value={getFieldValue('nextAction')} onChange={(e) => debouncedUpdate('nextAction', e.target.value || null)} className={inputCls} placeholder="Build / Scale / Icebox / Kill / Interview more" />
                     ) : (
                       <p className={readonlyCls}>{experiment.nextAction || '—'}</p>
                     )}
@@ -619,7 +635,7 @@ export function ExperimentDetailPanel({ workspaceId, currentUserId, isAdmin, mem
                   <div>
                     <label className={labelCls}>Investor-Ready Insight</label>
                     {canEdit ? (
-                      <textarea value={experiment.investorReadyInsight ?? ''} onChange={(e) => debouncedUpdate('investorReadyInsight', e.target.value || null)} rows={2} className={`${inputCls} resize-none`} placeholder="One sentence for a VC slide" />
+                      <textarea value={getFieldValue('investorReadyInsight')} onChange={(e) => debouncedUpdate('investorReadyInsight', e.target.value || null)} rows={2} className={`${inputCls} resize-none`} placeholder="One sentence for a VC slide" />
                     ) : (
                       <p className={`${readonlyCls} whitespace-pre-wrap`}>{experiment.investorReadyInsight || '—'}</p>
                     )}
