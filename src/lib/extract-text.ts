@@ -43,31 +43,6 @@ export async function extractTextFromBuffer(
         replacement: (content) => `~~${content}~~`,
       });
       text = turndown.turndown(result.value);
-    } else if (
-      mimeType ===
-      'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-    ) {
-      const XLSX = await import('xlsx');
-      const workbook = XLSX.read(buffer, { type: 'buffer' });
-      const parts: string[] = [];
-      for (const sheetName of workbook.SheetNames) {
-        const sheet = workbook.Sheets[sheetName];
-        if (!sheet) continue;
-        parts.push(`## ${sheetName}\n`);
-        // Convert sheet to markdown-style table via CSV, then format
-        const csv = XLSX.utils.sheet_to_csv(sheet);
-        const rows = csv.split('\n').filter((r) => r.trim());
-        if (rows.length > 0) {
-          const headerCells = rows[0].split(',');
-          parts.push('| ' + headerCells.join(' | ') + ' |');
-          parts.push('| ' + headerCells.map(() => '---').join(' | ') + ' |');
-          for (let i = 1; i < rows.length; i++) {
-            parts.push('| ' + rows[i].split(',').join(' | ') + ' |');
-          }
-        }
-        parts.push('');
-      }
-      text = parts.join('\n');
     } else if (TEXT_MIME_TYPES.has(mimeType)) {
       text = buffer.toString('utf-8');
     } else {
