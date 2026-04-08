@@ -76,11 +76,17 @@ export async function createContext(): Promise<Context> {
           create: { name: 'House Money', slug: 'house-money' },
         });
 
+        // First member becomes ADMIN; all subsequent members are MEMBER
+        const existingMemberCount = await db.workspaceMember.count({
+          where: { workspaceId: workspace.id },
+        });
+        const role = existingMemberCount === 0 ? 'ADMIN' : 'MEMBER';
+
         await db.workspaceMember.create({
           data: {
             workspaceId: workspace.id,
             userId: newUser.id,
-            role: 'ADMIN',
+            role,
           },
         });
       }

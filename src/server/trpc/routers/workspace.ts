@@ -214,25 +214,56 @@ export const workspaceRouter = router({
 
   deleteAccount: protectedProcedure
     .mutation(async ({ ctx }) => {
+      // Revoke auth first: if DB deletion fails the user can't log back in,
+      // preventing re-entry while DB cleanup is retried.
+      const supabase = createSupabaseAdmin();
+      const { error: authDeleteError } = await supabase.auth.admin.deleteUser(ctx.userId);
+      if (authDeleteError) {
+        throw new TRPCError({ code: 'INTERNAL_SERVER_ERROR', message: 'Failed to delete account.' });
+      }
+
       await ctx.db.$transaction(async (tx) => {
-        // Remove associated records that may have FK constraints
+        // --- Leaf records (no children) ---
         await tx.notification.deleteMany({ where: { userId: ctx.userId } });
         await tx.notification.deleteMany({ where: { actorId: ctx.userId } });
         await tx.activity.deleteMany({ where: { userId: ctx.userId } });
-        await tx.comment.deleteMany({ where: { authorId: ctx.userId } });
         await tx.taskCollaborator.deleteMany({ where: { userId: ctx.userId } });
         await tx.decisionParticipant.deleteMany({ where: { userId: ctx.userId } });
-        // Unassign tasks rather than deleting them
+        // Attachments uploaded by this user (non-nullable uploadedById, no cascade)
+        await tx.taskAttachment.deleteMany({ where: { uploadedById: ctx.userId } });
+        await tx.documentAttachment.deleteMany({ where: { uploadedById: ctx.userId } });
+        // Comments across all content types
+        await tx.comment.deleteMany({ where: { authorId: ctx.userId } });
+        await tx.documentComment.deleteMany({ where: { authorId: ctx.userId } });
+        await tx.experimentComment.deleteMany({ where: { authorId: ctx.userId } });
+        await tx.feedbackComment.deleteMany({ where: { authorId: ctx.userId } });
+
+        // --- Parent records owned by this user ---
+        // Decisions cascade to DecisionParticipant (already cleared above)
+        await tx.decision.deleteMany({ where: { createdById: ctx.userId } });
+        // Documents cascade to DocumentComment and DocumentAttachment (already cleared above)
+        await tx.document.deleteMany({ where: { authorId: ctx.userId } });
+        // Experiments — experimentComment already cleared; ownerId uses SetNull in schema
+        await tx.experiment.deleteMany({ where: { createdById: ctx.userId } });
+        // Feedback cascades to FeedbackComment (already cleared above)
+        await tx.feedback.deleteMany({ where: { createdById: ctx.userId } });
+        // Views are user-scoped; no cascade needed
+        await tx.view.deleteMany({ where: { ownerId: ctx.userId } });
+
+        // --- Task references ---
+        // Unassign tasks rather than deleting them (preserve team work)
         await tx.task.updateMany({ where: { assigneeId: ctx.userId }, data: { assigneeId: null } });
-        // Remove memberships
+        // createdById is non-nullable with no onDelete — delete tasks created solely by this user
+        await tx.task.deleteMany({ where: { createdById: ctx.userId } });
+
+        // --- Memberships ---
         await tx.workspaceMember.deleteMany({ where: { userId: ctx.userId } });
         await tx.projectMember.deleteMany({ where: { userId: ctx.userId } });
-        // Delete the user record
+
+        // --- User record ---
         await tx.user.delete({ where: { id: ctx.userId } });
       });
-      // Delete from Supabase auth
-      const supabase = createSupabaseAdmin();
-      await supabase.auth.admin.deleteUser(ctx.userId);
+
       return { success: true };
     }),
 
