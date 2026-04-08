@@ -80,7 +80,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Rate limit: 10 uploads per minute per user
-    if (!rateLimit(`upload:${user.id}`, 10, 60_000)) {
+    if (!await rateLimit(`upload:${user.id}`, 10, 60_000)) {
       return NextResponse.json({ error: 'Upload rate limit exceeded. Try again shortly.' }, { status: 429 });
     }
 

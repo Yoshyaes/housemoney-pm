@@ -22,7 +22,7 @@ export const aiRouter = router({
     .mutation(async ({ ctx, input }) => {
       await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
 
-      if (!rateLimit(`ai:${ctx.userId}`, 20, 60_000)) {
+      if (!await rateLimit(`ai:${ctx.userId}`, 20, 60_000)) {
         throw new TRPCError({ code: 'TOO_MANY_REQUESTS', message: 'Too many AI requests. Try again shortly.' });
       }
 
@@ -125,7 +125,7 @@ export const aiRouter = router({
     .mutation(async ({ ctx, input }) => {
       await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
 
-      if (!rateLimit(`ai:${ctx.userId}`, 20, 60_000)) {
+      if (!await rateLimit(`ai:${ctx.userId}`, 20, 60_000)) {
         throw new TRPCError({ code: 'TOO_MANY_REQUESTS', message: 'Too many AI requests. Try again shortly.' });
       }
 
@@ -192,7 +192,7 @@ export const aiRouter = router({
     .mutation(async ({ ctx, input }) => {
       const membership = await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
 
-      if (!rateLimit(`ai:${ctx.userId}`, 20, 60_000)) {
+      if (!await rateLimit(`ai:${ctx.userId}`, 20, 60_000)) {
         throw new TRPCError({ code: 'TOO_MANY_REQUESTS', message: 'Too many AI requests. Try again shortly.' });
       }
 
