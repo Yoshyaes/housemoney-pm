@@ -190,7 +190,7 @@ export const aiRouter = router({
       })
     )
     .mutation(async ({ ctx, input }) => {
-      await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
+      const membership = await requireWorkspaceMember(ctx.db, input.workspaceId, ctx.userId);
 
       if (!rateLimit(`ai:${ctx.userId}`, 20, 60_000)) {
         throw new TRPCError({ code: 'TOO_MANY_REQUESTS', message: 'Too many AI requests. Try again shortly.' });
@@ -204,7 +204,11 @@ export const aiRouter = router({
       }
 
       try {
-        const chunks = await findRelevantChunks(input.question, input.workspaceId, ctx.db);
+        const allowedProjectIds = membership.role === 'GUEST'
+          ? await getAccessibleProjectIds(ctx.db, input.workspaceId, ctx.userId)
+          : null;
+
+        const chunks = await findRelevantChunks(input.question, input.workspaceId, ctx.db, 5, allowedProjectIds);
 
         if (chunks.length === 0) {
           return {

@@ -1,5 +1,15 @@
 import { createSupabaseAdmin } from '@/server/auth/supabase-admin';
 
+/** Escape user-supplied strings before embedding them in HTML to prevent injection. */
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#x27;');
+}
+
 interface SendInviteEmailParams {
   email: string;
   role: 'MEMBER' | 'GUEST';
@@ -28,14 +38,17 @@ function buildInviteHtml({
   acceptUrl: string;
 }) {
   const isGuest = role === 'GUEST';
+  const safeName = escapeHtml(inviterName);
+  const safeWorkspace = escapeHtml(workspaceName);
+  const safeAcceptUrl = escapeHtml(acceptUrl);
 
   const headline = isGuest
-    ? `${inviterName} invited you to collaborate`
-    : `${inviterName} invited you to join the team`;
+    ? `${safeName} invited you to collaborate`
+    : `${safeName} invited you to join the team`;
 
   const description = isGuest
-    ? `You've been invited as a <strong>guest</strong> to the <strong>${workspaceName}</strong> workspace on House Money PM. You'll have access to specific projects that have been shared with you.`
-    : `You've been invited as a <strong>team member</strong> to the <strong>${workspaceName}</strong> workspace on House Money PM. You'll have full access to projects, tasks, and collaboration tools.`;
+    ? `You've been invited as a <strong>guest</strong> to the <strong>${safeWorkspace}</strong> workspace on House Money PM. You'll have access to specific projects that have been shared with you.`
+    : `You've been invited as a <strong>team member</strong> to the <strong>${safeWorkspace}</strong> workspace on House Money PM. You'll have full access to projects, tasks, and collaboration tools.`;
 
   const buttonText = isGuest ? 'View shared projects' : 'Join the workspace';
 
@@ -57,7 +70,7 @@ function buildInviteHtml({
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>You're invited to ${workspaceName}</title>
+  <title>You're invited to ${safeWorkspace}</title>
 </head>
 <body style="margin: 0; padding: 0; background-color: #f4f4f5; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color: #f4f4f5; padding: 40px 20px;">
@@ -95,7 +108,7 @@ function buildInviteHtml({
               <table role="presentation" cellpadding="0" cellspacing="0" width="100%">
                 <tr>
                   <td align="center" style="padding-bottom: 28px;">
-                    <a href="${acceptUrl}" target="_blank" style="display: inline-block; background-color: #BA7517; color: #ffffff; font-size: 14px; font-weight: 600; text-decoration: none; padding: 12px 32px; border-radius: 8px; letter-spacing: 0.2px;">
+                    <a href="${safeAcceptUrl}" target="_blank" style="display: inline-block; background-color: #BA7517; color: #ffffff; font-size: 14px; font-weight: 600; text-decoration: none; padding: 12px 32px; border-radius: 8px; letter-spacing: 0.2px;">
                       ${buttonText}
                     </a>
                   </td>
@@ -123,7 +136,7 @@ function buildInviteHtml({
           <tr>
             <td style="padding: 20px 40px 28px; text-align: center;">
               <p style="margin: 0 0 4px; font-size: 11px; color: #a1a1aa; line-height: 1.5;">
-                This invitation was sent by ${inviterName} from the ${workspaceName} workspace.
+                This invitation was sent by ${safeName} from the ${safeWorkspace} workspace.
               </p>
               <p style="margin: 0; font-size: 11px; color: #d4d4d8;">
                 If you didn't expect this email, you can safely ignore it.
