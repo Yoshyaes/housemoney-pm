@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { router, protectedProcedure, requireNonGuest } from '@/server/trpc/trpc';
-import { Prisma } from '@/generated/prisma/client';
+import { Prisma, PrismaClient } from '@/generated/prisma/client';
+import { TRPCError } from '@trpc/server';
 import { format } from 'date-fns';
 
 const analyticsInput = z.object({
@@ -8,6 +9,21 @@ const analyticsInput = z.object({
   projectId: z.string().optional(),
   dateRange: z.enum(['7d', '30d', '90d', 'all']).default('30d'),
 });
+
+async function validateProjectScope(
+  db: PrismaClient,
+  workspaceId: string,
+  projectId: string | undefined
+) {
+  if (!projectId) return;
+  const project = await db.project.findUnique({
+    where: { id: projectId },
+    select: { workspaceId: true },
+  });
+  if (!project || project.workspaceId !== workspaceId) {
+    throw new TRPCError({ code: 'FORBIDDEN', message: 'Project does not belong to this workspace.' });
+  }
+}
 
 function getSinceDate(range: '7d' | '30d' | '90d' | 'all'): Date | null {
   if (range === 'all') return null;
@@ -22,6 +38,7 @@ export const analyticsRouter = router({
     .input(analyticsInput)
     .query(async ({ ctx, input }) => {
       await requireNonGuest(ctx.db, input.workspaceId, ctx.userId);
+      await validateProjectScope(ctx.db, input.workspaceId, input.projectId);
 
       const since = getSinceDate(input.dateRange);
       const projectFilter = input.projectId ? { projectId: input.projectId } : {};
@@ -71,6 +88,7 @@ export const analyticsRouter = router({
     .input(analyticsInput)
     .query(async ({ ctx, input }) => {
       await requireNonGuest(ctx.db, input.workspaceId, ctx.userId);
+      await validateProjectScope(ctx.db, input.workspaceId, input.projectId);
 
       const since = getSinceDate(input.dateRange);
 
@@ -98,6 +116,7 @@ export const analyticsRouter = router({
     .input(analyticsInput)
     .query(async ({ ctx, input }) => {
       await requireNonGuest(ctx.db, input.workspaceId, ctx.userId);
+      await validateProjectScope(ctx.db, input.workspaceId, input.projectId);
 
       const since = getSinceDate(input.dateRange);
 
@@ -184,6 +203,7 @@ export const analyticsRouter = router({
     .input(analyticsInput)
     .query(async ({ ctx, input }) => {
       await requireNonGuest(ctx.db, input.workspaceId, ctx.userId);
+      await validateProjectScope(ctx.db, input.workspaceId, input.projectId);
 
       const rows = await ctx.db.task.groupBy({
         by: ['status'],
@@ -201,6 +221,7 @@ export const analyticsRouter = router({
     .input(analyticsInput)
     .query(async ({ ctx, input }) => {
       await requireNonGuest(ctx.db, input.workspaceId, ctx.userId);
+      await validateProjectScope(ctx.db, input.workspaceId, input.projectId);
 
       const rows = await ctx.db.task.groupBy({
         by: ['priority'],
@@ -219,6 +240,7 @@ export const analyticsRouter = router({
     .input(analyticsInput)
     .query(async ({ ctx, input }) => {
       await requireNonGuest(ctx.db, input.workspaceId, ctx.userId);
+      await validateProjectScope(ctx.db, input.workspaceId, input.projectId);
 
       const rows = await ctx.db.$queryRaw<Array<{
         userId: string;
@@ -281,6 +303,7 @@ export const analyticsRouter = router({
     .input(analyticsInput)
     .query(async ({ ctx, input }) => {
       await requireNonGuest(ctx.db, input.workspaceId, ctx.userId);
+      await validateProjectScope(ctx.db, input.workspaceId, input.projectId);
 
       const since = getSinceDate(input.dateRange) ?? new Date(Date.now() - 90 * 86400_000);
 
@@ -357,6 +380,7 @@ export const analyticsRouter = router({
     .input(z.object({ workspaceId: z.string() }))
     .query(async ({ ctx, input }) => {
       await requireNonGuest(ctx.db, input.workspaceId, ctx.userId);
+      await validateProjectScope(ctx.db, input.workspaceId, input.projectId);
 
       const projects = await ctx.db.project.findMany({
         where: { workspaceId: input.workspaceId },

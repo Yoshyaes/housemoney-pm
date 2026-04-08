@@ -4,8 +4,8 @@ import { TRPCError } from '@trpc/server';
 import { handleTaskCreated, handleTaskCompleted } from '@/server/ai/agent-engine';
 
 const taskCreateInput = z.object({
-  title: z.string().min(1),
-  description: z.string().optional(),
+  title: z.string().min(1).max(500),
+  description: z.string().max(50000).optional(),
   status: z.enum(['BACKLOG', 'TODO', 'IN_PROGRESS', 'IN_REVIEW', 'DONE', 'CANCELLED']).optional(),
   priority: z.enum(['URGENT', 'HIGH', 'MEDIUM', 'LOW', 'NONE']).optional(),
   projectId: z.string().optional(),
@@ -19,8 +19,8 @@ const taskCreateInput = z.object({
 
 const taskUpdateInput = z.object({
   id: z.string(),
-  title: z.string().min(1).optional(),
-  description: z.string().nullable().optional(),
+  title: z.string().min(1).max(500).optional(),
+  description: z.string().max(50000).nullable().optional(),
   status: z.enum(['BACKLOG', 'TODO', 'IN_PROGRESS', 'IN_REVIEW', 'DONE', 'CANCELLED']).optional(),
   priority: z.enum(['URGENT', 'HIGH', 'MEDIUM', 'LOW', 'NONE']).optional(),
   projectId: z.string().nullable().optional(),
@@ -336,14 +336,14 @@ export const tasksRouter = router({
         include: taskIncludes,
       });
 
-      // Create activity records
-      for (const activity of activities) {
-        await ctx.db.activity.create({
-          data: {
+      // Create activity records in a single query
+      if (activities.length > 0) {
+        await ctx.db.activity.createMany({
+          data: activities.map((activity) => ({
             taskId: id,
             userId: ctx.userId,
             ...activity,
-          },
+          })),
         });
       }
 

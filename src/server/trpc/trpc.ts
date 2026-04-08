@@ -93,7 +93,8 @@ export async function createContext(): Promise<Context> {
     }
 
     return { db, user, userId: authUser.id };
-  } catch {
+  } catch (err) {
+    console.error('[createContext] Unexpected error:', err);
     return { db, user: null, userId: null };
   }
 }
