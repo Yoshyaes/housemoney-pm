@@ -36,6 +36,7 @@ import {
   Scale,
   FlaskConical,
   MessageSquareText,
+  Layers,
 } from 'lucide-react';
 
 interface SavedView {
@@ -276,6 +277,17 @@ export function Sidebar({ projects, savedViews, currentUser, workspaceId, onProj
             </button>
           )}
         </div>
+        <button
+          onClick={() => setActiveProjectId(null)}
+          className={`flex w-full items-center gap-2 rounded-md px-2 py-[5px] text-xs transition-colors ${
+            activeProjectId === null
+              ? 'bg-white dark:bg-zinc-800 font-medium text-zinc-900 dark:text-zinc-100'
+              : 'text-zinc-500 dark:text-zinc-400 hover:bg-white dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-zinc-100'
+          }`}
+        >
+          <Layers className="h-3 w-3 flex-shrink-0 text-zinc-400 dark:text-zinc-500" />
+          <span className="flex-1 truncate text-left">All tasks</span>
+        </button>
         {projects.map((project) => (
           <div key={project.id} className="group relative">
             {renamingProject?.id === project.id ? (

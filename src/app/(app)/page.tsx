@@ -181,7 +181,7 @@ export default function AppPage() {
   };
 
   const activeProject = projects.find((p) => p.id === activeProjectId);
-  const projectName = activeProject?.name || workspace?.name || 'House Money';
+  const workspaceName = workspace?.name || 'House Money';
 
   if (!workspaceId) {
     return (
@@ -205,7 +205,12 @@ export default function AppPage() {
       />
 
       <div className="flex flex-1 flex-col overflow-hidden">
-        <Topbar projectName={projectName} onNewTask={() => setCreateModalOpen(true)} />
+        <Topbar
+          workspaceName={workspaceName}
+          activeProjectName={activeProject?.name ?? null}
+          projects={projects.map((p) => ({ id: p.id, name: p.name, color: p.color }))}
+          onNewTask={() => setCreateModalOpen(true)}
+        />
         <FilterBar members={members} labels={labels} />
 
         <div className="flex flex-1 overflow-hidden">
