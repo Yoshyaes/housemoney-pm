@@ -8,20 +8,54 @@ import { BRAND_AMBER } from '@/lib/constants';
 interface CommentInputProps {
   taskId: string;
   members: Array<{ id: string; name: string }>;
-  onCommentAdded: () => void;
+  currentUser?: { id: string; name: string; avatarUrl?: string | null; avatarColor?: string } | null;
 }
 
-export function CommentInput({ taskId, members, onCommentAdded }: CommentInputProps) {
+export function CommentInput({ taskId, members, currentUser }: CommentInputProps) {
   const [body, setBody] = useState('');
   const [showMentions, setShowMentions] = useState(false);
   const [mentionFilter, setMentionFilter] = useState('');
   const [mentionIndex, setMentionIndex] = useState(0);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
+  const utils = trpc.useUtils();
   const createComment = trpc.comments.create.useMutation({
-    onSuccess: () => {
+    onMutate: async (input) => {
       setBody('');
-      onCommentAdded();
+      await utils.tasks.get.cancel({ id: taskId });
+      const snapshot = utils.tasks.get.getData({ id: taskId });
+      if (snapshot) {
+        utils.tasks.get.setData({ id: taskId }, {
+          ...snapshot,
+          comments: [
+            ...snapshot.comments,
+            {
+              id: `temp-${Date.now()}`,
+              taskId,
+              authorId: currentUser?.id ?? '',
+              author: currentUser
+                ? {
+                    id: currentUser.id,
+                    name: currentUser.name,
+                    avatarUrl: currentUser.avatarUrl ?? null,
+                    avatarColor: currentUser.avatarColor ?? null,
+                  }
+                : { id: '', name: 'You', avatarUrl: null, avatarColor: null },
+              body: input.body,
+              reactions: [],
+              createdAt: new Date(),
+              updatedAt: new Date(),
+            } as never,
+          ],
+        });
+      }
+      return { snapshot };
+    },
+    onError: (_e, _v, ctx) => {
+      if (ctx?.snapshot) utils.tasks.get.setData({ id: taskId }, ctx.snapshot);
+    },
+    onSettled: () => {
+      utils.tasks.get.invalidate({ id: taskId });
     },
   });
 

@@ -9,7 +9,7 @@ import { LabelChip } from '@/components/shared/label-chip';
 import { formatDueDateFull, linkifyParts } from '@/lib/utils';
 import { STATUS_ORDER, PRIORITY_ORDER, STATUS_LABELS, STATUS_BG_COLORS, STATUS_TEXT_COLORS } from '@/lib/constants';
 import { X, Plus, UserMinus, CheckSquare, Square, Paperclip, Trash2, File as FileIcon, ArrowLeft, ChevronRight } from 'lucide-react';
-import { trpc } from '@/lib/trpc';
+import { trpc, type RouterOutputs } from '@/lib/trpc';
 import { CommentList } from '@/components/comments/comment-list';
 import { CommentInput } from '@/components/comments/comment-input';
 import { DependencyList } from '@/components/dependencies/dependency-list';
@@ -21,26 +21,154 @@ interface TaskDetailPanelProps {
   onUpdate: (taskId: string, field: string, value: unknown) => void;
   members: Array<{ id: string; name: string; avatarUrl?: string | null; avatarColor?: string }>;
   workspaceId: string;
+  currentUser?: { id: string; name: string; avatarUrl?: string | null; avatarColor?: string } | null;
 }
 
-export function TaskDetailPanel({ onUpdate, members, workspaceId }: TaskDetailPanelProps) {
+type CachedTask = RouterOutputs['tasks']['get'];
+
+export function TaskDetailPanel({ onUpdate, members, workspaceId, currentUser }: TaskDetailPanelProps) {
   const { activeTaskId, closeTaskDetail, openTaskDetail } = useUIStore();
   const [editingField, setEditingField] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'comments' | 'activity'>('comments');
   const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
   const utils = trpc.useUtils();
-  const { data: task, refetch } = trpc.tasks.get.useQuery(
+  const { data: task } = trpc.tasks.get.useQuery(
     { id: activeTaskId! },
     { enabled: !!activeTaskId }
   );
 
-  const addCollaborator = trpc.tasks.addCollaborator.useMutation({ onSuccess: () => refetch() });
-  const removeCollaborator = trpc.tasks.removeCollaborator.useMutation({ onSuccess: () => refetch() });
-  const createSubtask = trpc.tasks.create.useMutation({ onSuccess: () => refetch() });
-  const updateSubtask = trpc.tasks.update.useMutation({ onSuccess: () => refetch() });
-  const addAttachment = trpc.tasks.addAttachment.useMutation({ onSuccess: () => refetch() });
-  const deleteAttachment = trpc.tasks.deleteAttachment.useMutation({ onSuccess: () => refetch() });
+  // Optimistic helpers — apply a mutation to the cached parent task immediately,
+  // capturing a snapshot so onError can roll back, and reconciling on settle.
+  const beginOptimistic = async (mutator: (old: CachedTask) => CachedTask) => {
+    const taskId = activeTaskId;
+    if (!taskId) return undefined;
+    await utils.tasks.get.cancel({ id: taskId });
+    const snapshot = utils.tasks.get.getData({ id: taskId });
+    if (snapshot) {
+      utils.tasks.get.setData({ id: taskId }, mutator(snapshot));
+    }
+    return { snapshot, taskId };
+  };
+  const rollback = (ctx: { snapshot?: CachedTask; taskId?: string } | undefined) => {
+    if (ctx?.snapshot && ctx?.taskId) {
+      utils.tasks.get.setData({ id: ctx.taskId }, ctx.snapshot);
+    }
+  };
+  const reconcile = (ctx: { taskId?: string } | undefined) => {
+    if (ctx?.taskId) utils.tasks.get.invalidate({ id: ctx.taskId });
+  };
+
+  const addCollaborator = trpc.tasks.addCollaborator.useMutation({
+    onMutate: async ({ userId }) => {
+      const member = members.find((m) => m.id === userId);
+      if (!member) return undefined;
+      return beginOptimistic((old) => ({
+        ...old,
+        collaborators: [
+          ...old.collaborators,
+          {
+            taskId: old.id,
+            userId,
+            user: {
+              id: member.id,
+              name: member.name,
+              avatarUrl: member.avatarUrl ?? null,
+              avatarColor: member.avatarColor ?? null,
+            },
+          } as never,
+        ],
+      }));
+    },
+    onError: (_e, _v, ctx) => rollback(ctx),
+    onSettled: (_d, _e, _v, ctx) => reconcile(ctx),
+  });
+
+  const removeCollaborator = trpc.tasks.removeCollaborator.useMutation({
+    onMutate: async ({ userId }) =>
+      beginOptimistic((old) => ({
+        ...old,
+        collaborators: old.collaborators.filter((c) => c.userId !== userId),
+      })),
+    onError: (_e, _v, ctx) => rollback(ctx),
+    onSettled: (_d, _e, _v, ctx) => reconcile(ctx),
+  });
+
+  const createSubtask = trpc.tasks.create.useMutation({
+    onMutate: async (input) =>
+      beginOptimistic((old) => ({
+        ...old,
+        subtasks: [
+          ...old.subtasks,
+          {
+            id: `temp-${Date.now()}`,
+            identifier: '…',
+            title: input.title,
+            status: 'TODO',
+            priority: 'NONE',
+            assignee: null,
+            assigneeId: null,
+            labels: [],
+            createdAt: new Date(),
+          } as never,
+        ],
+      })),
+    onError: (_e, _v, ctx) => rollback(ctx),
+    onSettled: (_d, _e, _v, ctx) => reconcile(ctx),
+  });
+
+  const updateSubtask = trpc.tasks.update.useMutation({
+    onMutate: async (input) =>
+      beginOptimistic((old) => ({
+        ...old,
+        subtasks: old.subtasks.map((s) =>
+          s.id === input.id ? ({ ...s, ...input } as typeof s) : s
+        ),
+      })),
+    onError: (_e, _v, ctx) => rollback(ctx),
+    onSettled: (_d, _e, _v, ctx) => reconcile(ctx),
+  });
+
+  const addAttachment = trpc.tasks.addAttachment.useMutation({
+    onMutate: async (input) =>
+      beginOptimistic((old) => ({
+        ...old,
+        attachments: [
+          ...old.attachments,
+          {
+            id: `temp-${Date.now()}`,
+            taskId: old.id,
+            name: input.name,
+            url: input.url,
+            size: input.size ?? null,
+            mimeType: input.mimeType ?? null,
+            uploadedById: currentUser?.id ?? '',
+            uploadedBy: currentUser
+              ? {
+                  id: currentUser.id,
+                  name: currentUser.name,
+                  avatarUrl: currentUser.avatarUrl ?? null,
+                  avatarColor: currentUser.avatarColor ?? null,
+                }
+              : null,
+            createdAt: new Date(),
+          } as never,
+        ],
+      })),
+    onError: (_e, _v, ctx) => rollback(ctx),
+    onSettled: (_d, _e, _v, ctx) => reconcile(ctx),
+  });
+
+  const deleteAttachment = trpc.tasks.deleteAttachment.useMutation({
+    onMutate: async ({ id }) =>
+      beginOptimistic((old) => ({
+        ...old,
+        attachments: old.attachments.filter((a) => a.id !== id),
+      })),
+    onError: (_e, _v, ctx) => rollback(ctx),
+    onSettled: (_d, _e, _v, ctx) => reconcile(ctx),
+  });
+
   const deleteTask = trpc.tasks.delete.useMutation({
     onSuccess: () => {
       utils.tasks.list.invalidate();
@@ -435,7 +563,11 @@ export function TaskDetailPanel({ onUpdate, members, workspaceId }: TaskDetailPa
         </div>
 
         {/* Dependencies */}
-        <DependencyList task={task} onUpdate={() => refetch()} workspaceId={workspaceId} />
+        <DependencyList
+          task={task}
+          onUpdate={() => activeTaskId && utils.tasks.get.invalidate({ id: activeTaskId })}
+          workspaceId={workspaceId}
+        />
 
         {/* Pull Requests */}
         <PRList prs={(task.githubPRs || []) as never} />
@@ -481,7 +613,7 @@ export function TaskDetailPanel({ onUpdate, members, workspaceId }: TaskDetailPa
           <CommentInput
             taskId={task.id}
             members={members}
-            onCommentAdded={() => refetch()}
+            currentUser={currentUser}
           />
         </div>
       )}

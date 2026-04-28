@@ -247,6 +247,7 @@ export default function AppPage() {
               onUpdate={handleTaskUpdate}
               members={members}
               workspaceId={workspaceId}
+              currentUser={currentUser}
             />
           )}
         </div>
