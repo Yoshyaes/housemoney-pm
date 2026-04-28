@@ -27,7 +27,9 @@ export function TaskDetailPanel({ onUpdate, members, workspaceId }: TaskDetailPa
   const { activeTaskId, closeTaskDetail, openTaskDetail } = useUIStore();
   const [editingField, setEditingField] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'comments' | 'activity'>('comments');
+  const [deleteConfirmOpen, setDeleteConfirmOpen] = useState(false);
 
+  const utils = trpc.useUtils();
   const { data: task, refetch } = trpc.tasks.get.useQuery(
     { id: activeTaskId! },
     { enabled: !!activeTaskId }
@@ -39,6 +41,13 @@ export function TaskDetailPanel({ onUpdate, members, workspaceId }: TaskDetailPa
   const updateSubtask = trpc.tasks.update.useMutation({ onSuccess: () => refetch() });
   const addAttachment = trpc.tasks.addAttachment.useMutation({ onSuccess: () => refetch() });
   const deleteAttachment = trpc.tasks.deleteAttachment.useMutation({ onSuccess: () => refetch() });
+  const deleteTask = trpc.tasks.delete.useMutation({
+    onSuccess: () => {
+      utils.tasks.list.invalidate();
+      setDeleteConfirmOpen(false);
+      closeTaskDetail();
+    },
+  });
 
   const [newSubtaskTitle, setNewSubtaskTitle] = useState('');
   const [addingSubtask, setAddingSubtask] = useState(false);
@@ -88,12 +97,21 @@ export function TaskDetailPanel({ onUpdate, members, workspaceId }: TaskDetailPa
       {/* Header */}
       <div className="flex flex-shrink-0 items-center justify-between border-b border-zinc-200/60 dark:border-zinc-800 px-3.5 py-2.5">
         <span className="text-[10px] text-zinc-400 dark:text-zinc-500">{task.identifier}</span>
-        <button
-          onClick={closeTaskDetail}
-          className="rounded p-0.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-600 dark:hover:text-zinc-300"
-        >
-          <X className="h-4 w-4" />
-        </button>
+        <div className="flex items-center gap-1">
+          <button
+            onClick={() => setDeleteConfirmOpen(true)}
+            title="Delete task"
+            className="rounded p-0.5 text-zinc-400 dark:text-zinc-500 hover:bg-red-50 dark:hover:bg-red-900/20 hover:text-red-600 dark:hover:text-red-400"
+          >
+            <Trash2 className="h-3.5 w-3.5" />
+          </button>
+          <button
+            onClick={closeTaskDetail}
+            className="rounded p-0.5 text-zinc-400 dark:text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-600 dark:hover:text-zinc-300"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
       </div>
 
       {/* Parent breadcrumb for subtasks */}
@@ -465,6 +483,41 @@ export function TaskDetailPanel({ onUpdate, members, workspaceId }: TaskDetailPa
             members={members}
             onCommentAdded={() => refetch()}
           />
+        </div>
+      )}
+
+      {/* Delete confirmation dialog */}
+      {deleteConfirmOpen && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center"
+          onClick={() => !deleteTask.isPending && setDeleteConfirmOpen(false)}
+        >
+          <div className="absolute inset-0 bg-black/30" />
+          <div
+            className="relative w-80 rounded-lg border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 p-4 shadow-xl"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Delete task?</h3>
+            <p className="mt-1.5 text-xs text-zinc-500 dark:text-zinc-400">
+              This will permanently delete <span className="font-medium text-zinc-700 dark:text-zinc-300">{task.identifier}</span> along with its comments, activity, and attachments. {(task.subtasks?.length ?? 0) > 0 && 'Its subtasks will be kept as top-level tasks. '}This cannot be undone.
+            </p>
+            <div className="mt-4 flex justify-end gap-2">
+              <button
+                onClick={() => setDeleteConfirmOpen(false)}
+                disabled={deleteTask.isPending}
+                className="rounded-md px-3 py-1.5 text-xs text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-800 dark:text-zinc-400 disabled:opacity-40"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => deleteTask.mutate({ id: task.id })}
+                disabled={deleteTask.isPending}
+                className="rounded-md bg-red-600 px-3 py-1.5 text-xs font-medium text-white hover:bg-red-700 disabled:opacity-60"
+              >
+                {deleteTask.isPending ? 'Deleting…' : 'Delete'}
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>

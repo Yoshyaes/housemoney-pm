@@ -402,9 +402,8 @@ export const tasksRouter = router({
         await requireProjectAccess(ctx.db, task.projectId, ctx.userId);
       }
 
-      return ctx.db.task.update({
+      return ctx.db.task.delete({
         where: { id: input.id },
-        data: { status: 'CANCELLED' },
       });
     }),
 
