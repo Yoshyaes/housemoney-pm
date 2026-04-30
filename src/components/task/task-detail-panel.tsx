@@ -155,7 +155,10 @@ export function TaskDetailPanel({ onUpdate, members, workspaceId, currentUser }:
           } as never,
         ],
       })),
-    onError: (_e, _v, ctx) => rollback(ctx),
+    onError: (e, _v, ctx) => {
+      rollback(ctx);
+      alert(`Failed to attach file: ${e.message}`);
+    },
     onSettled: (_d, _e, _v, ctx) => reconcile(ctx),
   });
 
@@ -203,10 +206,22 @@ export function TaskDetailPanel({ onUpdate, members, workspaceId, currentUser }:
       const formData = new FormData();
       formData.append('file', file);
       const res = await fetch('/api/upload', { method: 'POST', body: formData });
-      const data = await res.json();
-      if (data.url) {
-        addAttachment.mutate({ taskId: task.id, name: data.name, url: data.url, size: data.size, mimeType: data.mimeType });
+      const text = await res.text();
+      let data: { url?: string; name?: string; size?: number; mimeType?: string; error?: string } = {};
+      try {
+        data = JSON.parse(text);
+      } catch {
+        // non-JSON response
       }
+      if (!res.ok || !data.url) {
+        const errorMsg = data.error || `Upload failed (${res.status})`;
+        alert(errorMsg);
+        return;
+      }
+      addAttachment.mutate({ taskId: task.id, name: data.name!, url: data.url, size: data.size, mimeType: data.mimeType });
+    } catch (err) {
+      console.error('[task] Upload error:', err);
+      alert('Upload failed. Please try again.');
     } finally {
       setUploadingFile(false);
       if (fileInputRef.current) fileInputRef.current.value = '';
