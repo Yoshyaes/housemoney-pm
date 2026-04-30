@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { keepPreviousData } from '@tanstack/react-query';
 import { useUIStore } from '@/lib/stores/ui-store';
 import { StatusBadge } from '@/components/shared/status-badge';
 import { PriorityIndicator } from '@/components/shared/priority-indicator';
@@ -35,7 +36,7 @@ export function TaskDetailPanel({ onUpdate, members, workspaceId, currentUser }:
   const utils = trpc.useUtils();
   const { data: task } = trpc.tasks.get.useQuery(
     { id: activeTaskId! },
-    { enabled: !!activeTaskId }
+    { enabled: !!activeTaskId, placeholderData: keepPreviousData }
   );
 
   // Optimistic helpers — apply a mutation to the cached parent task immediately,
