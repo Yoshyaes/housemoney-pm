@@ -34,3 +34,10 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# qa sub-agent artifacts
+/e2e/storageState.json
+/qa-reports/*
+!/qa-reports/.gitkeep
+/playwright-report/
+/test-results/
