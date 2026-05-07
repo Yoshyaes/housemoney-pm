@@ -43,8 +43,20 @@ export function TaskDetailPanel({ onUpdate, members, workspaceId }: TaskDetailPa
   const [newSubtaskTitle, setNewSubtaskTitle] = useState('');
   const [addingSubtask, setAddingSubtask] = useState(false);
   const [uploadingFile, setUploadingFile] = useState(false);
+  const [editingDescription, setEditingDescription] = useState(false);
+  const [descriptionDraft, setDescriptionDraft] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const descriptionTextareaRef = useRef<HTMLTextAreaElement>(null);
+
+  // Auto-resize description textarea to fit content
+  useEffect(() => {
+    if (editingDescription && descriptionTextareaRef.current) {
+      const ta = descriptionTextareaRef.current;
+      ta.style.height = 'auto';
+      ta.style.height = `${ta.scrollHeight}px`;
+    }
+  }, [editingDescription, descriptionDraft]);
 
   // Close dropdowns on click outside
   useEffect(() => {
@@ -81,6 +93,27 @@ export function TaskDetailPanel({ onUpdate, members, workspaceId }: TaskDetailPa
   const handleFieldChange = (field: string, value: unknown) => {
     onUpdate(task.id, field, value);
     setEditingField(null);
+  };
+
+  const startEditingDescription = () => {
+    setDescriptionDraft(task.description ?? '');
+    setEditingDescription(true);
+  };
+
+  const cancelEditingDescription = () => {
+    setEditingDescription(false);
+    setDescriptionDraft('');
+  };
+
+  const saveDescription = () => {
+    const trimmed = descriptionDraft.trim();
+    const next = trimmed === '' ? null : descriptionDraft;
+    const current = task.description ?? null;
+    if (next !== current) {
+      onUpdate(task.id, 'description', next);
+    }
+    setEditingDescription(false);
+    setDescriptionDraft('');
   };
 
   return (
@@ -272,25 +305,55 @@ export function TaskDetailPanel({ onUpdate, members, workspaceId }: TaskDetailPa
 
         {/* Description */}
         <div className="mb-2 text-[11px] font-medium text-zinc-500 dark:text-zinc-400">Description</div>
-        <div className="mb-4 rounded-md bg-zinc-50 dark:bg-zinc-800 p-2 text-xs leading-[1.6] text-zinc-500 dark:text-zinc-400 whitespace-pre-wrap break-words">
-          {task.description
-            ? linkifyParts(task.description).map((part, i) =>
-                typeof part === 'string' ? (
-                  <span key={i}>{part}</span>
-                ) : (
-                  <a
-                    key={i}
-                    href={part.url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-amber-600 dark:text-amber-400 hover:underline break-all"
-                  >
-                    {part.url}
-                  </a>
+        {editingDescription ? (
+          <div className="mb-4">
+            <textarea
+              ref={descriptionTextareaRef}
+              autoFocus
+              value={descriptionDraft}
+              onChange={(e) => setDescriptionDraft(e.target.value)}
+              onBlur={saveDescription}
+              onKeyDown={(e) => {
+                if (e.key === 'Escape') {
+                  e.preventDefault();
+                  cancelEditingDescription();
+                } else if (e.key === 'Enter' && (e.metaKey || e.ctrlKey)) {
+                  e.preventDefault();
+                  saveDescription();
+                }
+              }}
+              placeholder="Add a description…"
+              className="w-full min-h-[60px] resize-none overflow-hidden rounded-md bg-zinc-50 dark:bg-zinc-800 p-2 text-xs leading-[1.6] text-zinc-700 dark:text-zinc-200 outline-none ring-1 ring-amber-500/40 focus:ring-amber-500/60 placeholder:text-zinc-400 dark:placeholder:text-zinc-500"
+            />
+            <div className="mt-1 text-[10px] text-zinc-400 dark:text-zinc-500">
+              ⌘↵ to save · esc to cancel
+            </div>
+          </div>
+        ) : (
+          <div
+            onClick={startEditingDescription}
+            className="mb-4 cursor-text rounded-md bg-zinc-50 dark:bg-zinc-800 p-2 text-xs leading-[1.6] text-zinc-500 dark:text-zinc-400 whitespace-pre-wrap break-words hover:bg-zinc-100 dark:hover:bg-zinc-700/60 transition-colors"
+          >
+            {task.description
+              ? linkifyParts(task.description).map((part, i) =>
+                  typeof part === 'string' ? (
+                    <span key={i}>{part}</span>
+                  ) : (
+                    <a
+                      key={i}
+                      href={part.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="text-amber-600 dark:text-amber-400 hover:underline break-all"
+                    >
+                      {part.url}
+                    </a>
+                  )
                 )
-              )
-            : 'No description'}
-        </div>
+              : 'No description'}
+          </div>
+        )}
 
         {/* Subtasks */}
         <div className="mb-4">
