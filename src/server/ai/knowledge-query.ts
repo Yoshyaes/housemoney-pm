@@ -2,7 +2,11 @@ import Anthropic from '@anthropic-ai/sdk';
 import { Prisma } from '@/generated/prisma/client';
 import type { PrismaClient } from '@/generated/prisma/client';
 
-const anthropic = new Anthropic();
+let _anthropic: Anthropic | null = null;
+function anthropic(): Anthropic {
+  if (!_anthropic) _anthropic = new Anthropic();
+  return _anthropic;
+}
 
 export interface RelevantChunk {
   id: string;
@@ -145,7 +149,7 @@ ${context}
 
 Question: ${question}`;
 
-  const response = await anthropic.messages.create({
+  const response = await anthropic().messages.create({
     model: 'claude-haiku-4-5-20251001',
     max_tokens: 1024,
     system: systemPrompt,

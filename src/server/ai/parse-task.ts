@@ -1,6 +1,10 @@
 import Anthropic from '@anthropic-ai/sdk';
 
-const anthropic = new Anthropic();
+let _anthropic: Anthropic | null = null;
+function anthropic(): Anthropic {
+  if (!_anthropic) _anthropic = new Anthropic();
+  return _anthropic;
+}
 
 export interface WorkspaceContext {
   members: Array<{ id: string; name: string }>;
@@ -98,7 +102,7 @@ export async function parseTaskFromNaturalLanguage(
   text: string,
   context: WorkspaceContext
 ): Promise<ParsedTask> {
-  const response = await anthropic.messages.create({
+  const response = await anthropic().messages.create({
     model: 'claude-sonnet-4-20250514',
     max_tokens: 1024,
     system: buildSystemPrompt(context),
@@ -181,7 +185,7 @@ export async function triageTask(
   title: string,
   context: WorkspaceContext
 ): Promise<TriageSuggestion> {
-  const response = await anthropic.messages.create({
+  const response = await anthropic().messages.create({
     model: 'claude-haiku-4-5-20251001',
     max_tokens: 256,
     system: buildTriagePrompt(context),

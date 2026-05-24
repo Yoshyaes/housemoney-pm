@@ -2,7 +2,11 @@ import { db } from '@/server/db';
 import { createInsight } from '@/server/ai/agent-engine';
 import Anthropic from '@anthropic-ai/sdk';
 
-const anthropic = new Anthropic();
+let _anthropic: Anthropic | null = null;
+function anthropic(): Anthropic {
+  if (!_anthropic) _anthropic = new Anthropic();
+  return _anthropic;
+}
 
 export async function extractMeetingActions(
   documentId: string,
@@ -30,7 +34,7 @@ export async function extractMeetingActions(
 
   const memberNames = members.map((m) => m.user.name).join(', ');
 
-  const response = await anthropic.messages.create({
+  const response = await anthropic().messages.create({
     model: 'claude-haiku-4-5-20251001',
     max_tokens: 512,
     system: `You are a meeting notes analyzer. Extract action items from meeting notes and return them as potential tasks. Return a JSON object: { "actionItems": [{ "title": "...", "assigneeName": "..." or null, "priority": "MEDIUM" }], "summary": "..." }.

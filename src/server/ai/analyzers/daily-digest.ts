@@ -2,7 +2,11 @@ import { db } from '@/server/db';
 import { createInsight } from '@/server/ai/agent-engine';
 import Anthropic from '@anthropic-ai/sdk';
 
-const anthropic = new Anthropic();
+let _anthropic: Anthropic | null = null;
+function anthropic(): Anthropic {
+  if (!_anthropic) _anthropic = new Anthropic();
+  return _anthropic;
+}
 
 export async function generateDailyDigest(workspaceId: string): Promise<number> {
   const members = await db.workspaceMember.findMany({
@@ -97,7 +101,7 @@ export async function generateDailyDigest(workspaceId: string): Promise<number> 
       resolvedBlockers: resolvedBlockers.map((a) => `${a.task.identifier} "${a.task.title}"`),
     };
 
-    const response = await anthropic.messages.create({
+    const response = await anthropic().messages.create({
       model: 'claude-haiku-4-5-20251001',
       max_tokens: 512,
       system: `You are a project management assistant generating a concise daily digest for a team member. Format the digest as clean markdown with these sections (skip empty sections):

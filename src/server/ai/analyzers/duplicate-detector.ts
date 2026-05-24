@@ -2,7 +2,11 @@ import { db } from '@/server/db';
 import { createInsight } from '@/server/ai/agent-engine';
 import Anthropic from '@anthropic-ai/sdk';
 
-const anthropic = new Anthropic();
+let _anthropic: Anthropic | null = null;
+function anthropic(): Anthropic {
+  if (!_anthropic) _anthropic = new Anthropic();
+  return _anthropic;
+}
 
 export async function detectDuplicates(
   taskId: string,
@@ -41,7 +45,7 @@ export async function detectDuplicates(
     .map((t) => `- ${t.identifier}: "${t.title}" (similarity: ${(t.similarity * 100).toFixed(0)}%)`)
     .join('\n');
 
-  const response = await anthropic.messages.create({
+  const response = await anthropic().messages.create({
     model: 'claude-haiku-4-5-20251001',
     max_tokens: 256,
     system: 'You are a duplicate detection assistant. Determine if any of the candidate tasks are true duplicates of the new task. Only flag true duplicates (same work), not just similar topics. Respond with a JSON object: { "duplicates": [{ "identifier": "HM-X", "confidence": 0.8, "reason": "..." }] }. Return empty array if no true duplicates.',
