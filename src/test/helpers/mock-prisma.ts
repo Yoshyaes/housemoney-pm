@@ -52,6 +52,8 @@ export function createMockPrisma() {
     invitation: createModelMock(),
     auditLog: createModelMock(),
     agentSuggestion: createModelMock(),
+    agentInsight: createModelMock(),
+    agentConfig: createModelMock(),
     $queryRaw: vi.fn(),
     $queryRawUnsafe: vi.fn(),
     $executeRaw: vi.fn(),

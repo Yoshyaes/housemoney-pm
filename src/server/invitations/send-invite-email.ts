@@ -1,7 +1,7 @@
 import { createSupabaseAdmin } from '@/server/auth/supabase-admin';
 
 /** Escape user-supplied strings before embedding them in HTML to prevent injection. */
-function escapeHtml(str: string): string {
+export function escapeHtml(str: string): string {
   return str
     .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
@@ -26,7 +26,7 @@ function getAppUrl() {
   );
 }
 
-function buildInviteHtml({
+export function buildInviteHtml({
   role,
   workspaceName,
   inviterName,
