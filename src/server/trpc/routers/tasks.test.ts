@@ -10,10 +10,16 @@ const { mockRouter, mockProcedure, tTest } = vi.hoisted(() => {
   return { mockRouter: t.router, mockProcedure: t.procedure, tTest: t };
 });
 
+const defaultMembership = { id: 'm-1', workspaceId: 'ws-1', userId: 'user-1', role: 'ADMIN' as const };
 vi.mock('@/server/trpc/trpc', () => ({
   router: mockRouter,
   publicProcedure: mockProcedure,
   protectedProcedure: mockProcedure,
+  requireWorkspaceMember: vi.fn(async () => defaultMembership),
+  requireWorkspaceAdmin: vi.fn(async () => defaultMembership),
+  requireNonGuest: vi.fn(async () => defaultMembership),
+  requireProjectAccess: vi.fn(async () => ({ membership: defaultMembership, project: { id: 'proj-1', workspaceId: 'ws-1' } })),
+  getAccessibleProjectIds: vi.fn(async () => null),
 }));
 
 import { createMockPrisma } from '@/test/helpers/mock-prisma';
@@ -29,6 +35,11 @@ describe('tasks router', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     db = createMockPrisma();
+    // $transaction default: just run the callback with the db as the tx client
+    (db.$transaction as any).mockImplementation(async (fn: any) => {
+      if (typeof fn === 'function') return fn(db);
+      return Promise.all(fn);
+    });
     caller = createCaller({
       db: db as any,
       user: testUser as any,
@@ -314,14 +325,17 @@ describe('tasks router', () => {
           data: { status: 'IN_PROGRESS' },
         })
       );
-      expect(db.activity.create).toHaveBeenCalledWith({
-        data: expect.objectContaining({
-          taskId: 'task-1',
-          action: 'status_changed',
-          field: 'status',
-          oldValue: 'TODO',
-          newValue: 'IN_PROGRESS',
-        }),
+      // Activity is now created in a batched createMany (perf optimization)
+      expect(db.activity.createMany).toHaveBeenCalledWith({
+        data: expect.arrayContaining([
+          expect.objectContaining({
+            taskId: 'task-1',
+            action: 'status_changed',
+            field: 'status',
+            oldValue: 'TODO',
+            newValue: 'IN_PROGRESS',
+          }),
+        ]),
       });
     });
 
@@ -421,6 +435,7 @@ describe('tasks router', () => {
 
   describe('delete', () => {
     it('soft deletes by setting status to CANCELLED', async () => {
+      db.task.findUnique.mockResolvedValue({ workspaceId: 'ws-1', projectId: 'proj-1' });
       db.task.update.mockResolvedValue({ ...testTask, status: 'CANCELLED' });
 
       await caller.tasks.delete({ id: 'task-1' });

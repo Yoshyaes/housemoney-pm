@@ -7,10 +7,16 @@ const { mockRouter, mockProcedure, tTest } = vi.hoisted(() => {
   return { mockRouter: t.router, mockProcedure: t.procedure, tTest: t };
 });
 
+const defaultMembership = { id: 'm-1', workspaceId: 'ws-1', userId: 'user-1', role: 'ADMIN' as const };
 vi.mock('@/server/trpc/trpc', () => ({
   router: mockRouter,
   publicProcedure: mockProcedure,
   protectedProcedure: mockProcedure,
+  requireWorkspaceMember: vi.fn(async () => defaultMembership),
+  requireWorkspaceAdmin: vi.fn(async () => defaultMembership),
+  requireNonGuest: vi.fn(async () => defaultMembership),
+  requireProjectAccess: vi.fn(async () => ({ membership: defaultMembership, project: { id: 'proj-1', workspaceId: 'ws-1' } })),
+  getAccessibleProjectIds: vi.fn(async () => null),
 }));
 
 import { projectsRouter } from './projects';
@@ -21,8 +27,22 @@ function createMockCtx(overrides: Record<string, unknown> = {}) {
     db: {
       project: {
         findMany: vi.fn().mockResolvedValue([]),
+        findUnique: vi.fn().mockResolvedValue({ id: 'p1', workspaceId: 'ws-1', isPrivate: false, createdById: 'user-1' }),
+        findUniqueOrThrow: vi.fn().mockResolvedValue({ id: 'p1', workspaceId: 'ws-1', isPrivate: false, createdById: 'user-1' }),
         create: vi.fn().mockResolvedValue({}),
         update: vi.fn().mockResolvedValue({}),
+        delete: vi.fn().mockResolvedValue({}),
+      },
+      workspaceMember: {
+        findUnique: vi.fn().mockResolvedValue({ id: 'm-1', userId: 'user-1', workspaceId: 'ws-1', role: 'ADMIN' }),
+        findUniqueOrThrow: vi.fn().mockResolvedValue({ id: 'm-1', userId: 'user-1', workspaceId: 'ws-1', role: 'ADMIN' }),
+        findMany: vi.fn().mockResolvedValue([]),
+      },
+      projectMember: {
+        findUnique: vi.fn().mockResolvedValue(null),
+        findMany: vi.fn().mockResolvedValue([]),
+        upsert: vi.fn().mockResolvedValue({}),
+        delete: vi.fn().mockResolvedValue({}),
       },
     },
     ...overrides,
@@ -104,7 +124,9 @@ describe('projectsRouter', () => {
 
       const result = await caller(ctx).create(input);
 
-      expect(ctx.db.project.create).toHaveBeenCalledWith({ data: input });
+      expect(ctx.db.project.create).toHaveBeenCalledWith({
+        data: expect.objectContaining({ ...input, createdById: 'user-1' }),
+      });
       expect(result).toHaveProperty('id', 'p-new');
     });
   });

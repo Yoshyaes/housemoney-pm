@@ -7,10 +7,16 @@ const { mockRouter, mockProcedure, tTest } = vi.hoisted(() => {
   return { mockRouter: t.router, mockProcedure: t.procedure, tTest: t };
 });
 
+const defaultMembership = { id: 'm-1', workspaceId: 'ws-1', userId: 'user-1', role: 'ADMIN' as const };
 vi.mock('@/server/trpc/trpc', () => ({
   router: mockRouter,
   publicProcedure: mockProcedure,
   protectedProcedure: mockProcedure,
+  requireWorkspaceMember: vi.fn(async () => defaultMembership),
+  requireWorkspaceAdmin: vi.fn(async () => defaultMembership),
+  requireNonGuest: vi.fn(async () => defaultMembership),
+  requireProjectAccess: vi.fn(async () => ({ membership: defaultMembership, project: { id: 'proj-1', workspaceId: 'ws-1' } })),
+  getAccessibleProjectIds: vi.fn(async () => null),
 }));
 
 import { workspaceRouter } from './workspace';

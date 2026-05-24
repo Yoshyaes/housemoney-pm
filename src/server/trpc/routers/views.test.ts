@@ -7,10 +7,16 @@ const { mockRouter, mockProcedure, tTest } = vi.hoisted(() => {
   return { mockRouter: t.router, mockProcedure: t.procedure, tTest: t };
 });
 
+const defaultMembership = { id: 'm-1', workspaceId: 'ws-1', userId: 'user-1', role: 'ADMIN' as const };
 vi.mock('@/server/trpc/trpc', () => ({
   router: mockRouter,
   publicProcedure: mockProcedure,
   protectedProcedure: mockProcedure,
+  requireWorkspaceMember: vi.fn(async () => defaultMembership),
+  requireWorkspaceAdmin: vi.fn(async () => defaultMembership),
+  requireNonGuest: vi.fn(async () => defaultMembership),
+  requireProjectAccess: vi.fn(async () => ({ membership: defaultMembership, project: { id: 'proj-1', workspaceId: 'ws-1' } })),
+  getAccessibleProjectIds: vi.fn(async () => null),
 }));
 
 import { viewsRouter } from './views';
@@ -21,6 +27,7 @@ function createMockCtx(overrides: Record<string, unknown> = {}) {
     db: {
       view: {
         findMany: vi.fn().mockResolvedValue([]),
+        findUniqueOrThrow: vi.fn().mockResolvedValue({ id: 'v1', workspaceId: 'ws-1', ownerId: 'user-1' }),
         create: vi.fn().mockResolvedValue({}),
         update: vi.fn().mockResolvedValue({}),
         delete: vi.fn().mockResolvedValue({}),

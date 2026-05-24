@@ -1,13 +1,13 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { NextRequest } from 'next/server';
 
-// Mock supabase
-const mockGetSession = vi.fn();
+// Mock supabase — middleware uses getUser, not getSession
+const mockGetUser = vi.fn();
 
 vi.mock('@supabase/auth-helpers-nextjs', () => ({
   createServerClient: vi.fn(() => ({
     auth: {
-      getSession: mockGetSession,
+      getUser: mockGetUser,
     },
   })),
 }));
@@ -28,7 +28,7 @@ describe('middleware', () => {
   });
 
   it('redirects unauthenticated users to /login', async () => {
-    mockGetSession.mockResolvedValue({ data: { session: null } });
+    mockGetUser.mockResolvedValue({ data: { user: null } });
 
     const res = await middleware(createNextRequest('/'));
 
@@ -37,7 +37,7 @@ describe('middleware', () => {
   });
 
   it('allows unauthenticated users on auth pages', async () => {
-    mockGetSession.mockResolvedValue({ data: { session: null } });
+    mockGetUser.mockResolvedValue({ data: { user: null } });
 
     const res = await middleware(createNextRequest('/login'));
 
@@ -45,7 +45,7 @@ describe('middleware', () => {
   });
 
   it('allows unauthenticated users on signup page', async () => {
-    mockGetSession.mockResolvedValue({ data: { session: null } });
+    mockGetUser.mockResolvedValue({ data: { user: null } });
 
     const res = await middleware(createNextRequest('/signup'));
 
@@ -53,7 +53,7 @@ describe('middleware', () => {
   });
 
   it('allows unauthenticated API routes', async () => {
-    mockGetSession.mockResolvedValue({ data: { session: null } });
+    mockGetUser.mockResolvedValue({ data: { user: null } });
 
     const res = await middleware(createNextRequest('/api/trpc/test'));
 
@@ -61,8 +61,8 @@ describe('middleware', () => {
   });
 
   it('redirects authenticated users away from auth pages', async () => {
-    mockGetSession.mockResolvedValue({
-      data: { session: { user: { id: 'user-1' } } },
+    mockGetUser.mockResolvedValue({
+      data: { user: { id: 'user-1' } },
     });
 
     const res = await middleware(createNextRequest('/login'));
@@ -72,8 +72,8 @@ describe('middleware', () => {
   });
 
   it('allows authenticated users on normal pages', async () => {
-    mockGetSession.mockResolvedValue({
-      data: { session: { user: { id: 'user-1' } } },
+    mockGetUser.mockResolvedValue({
+      data: { user: { id: 'user-1' } },
     });
 
     const res = await middleware(createNextRequest('/'));
