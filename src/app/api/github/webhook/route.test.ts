@@ -324,14 +324,26 @@ describe('GitHub webhook route', () => {
   });
 
   describe('body parsing & event handling — edge cases', () => {
-    it('throws on malformed JSON body when event is pull_request', async () => {
+    it('returns 400 on malformed JSON body when event is pull_request', async () => {
       const body = 'not-valid-json';
       const req = createRequest(body, {
         'x-hub-signature-256': sign(body, secret),
         'x-github-event': 'pull_request',
       });
-      // Route does JSON.parse without try/catch — expect it to throw.
-      await expect(POST(req)).rejects.toThrow();
+      const res = await POST(req);
+      expect(res.status).toBe(400);
+      expect(await res.text()).toBe('Invalid JSON');
+    });
+
+    it('returns 400 when JSON is well-formed but missing required fields', async () => {
+      const body = JSON.stringify({ action: 'opened' }); // no repository or pull_request
+      const req = createRequest(body, {
+        'x-hub-signature-256': sign(body, secret),
+        'x-github-event': 'pull_request',
+      });
+      const res = await POST(req);
+      expect(res.status).toBe(400);
+      expect(await res.text()).toBe('Malformed payload');
     });
 
     it('skips events where x-github-event header is missing', async () => {
