@@ -5,9 +5,10 @@ import { runPeriodicAnalysis, type ScheduleType } from '@/server/ai/agent-engine
 async function handleCron(req: NextRequest) {
   // Auth: Vercel Cron sends CRON_SECRET via Authorization header automatically.
   // Manual calls can use x-cron-secret header or Authorization: Bearer <secret>.
-  const cronSecret =
-    req.headers.get('authorization')?.replace('Bearer ', '') ||
-    req.headers.get('x-cron-secret');
+  // Bearer scheme is case-insensitive per RFC 7235.
+  const authHeader = req.headers.get('authorization');
+  const bearerMatch = authHeader?.match(/^Bearer\s+(.+)$/i);
+  const cronSecret = bearerMatch?.[1] || req.headers.get('x-cron-secret');
 
   if (!process.env.CRON_SECRET || cronSecret !== process.env.CRON_SECRET) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });

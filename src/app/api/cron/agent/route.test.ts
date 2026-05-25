@@ -110,13 +110,21 @@ describe('cron/agent route', () => {
       expect(res.status).toBe(200);
     });
 
-    it('rejects bearer scheme with incorrect prefix case (case sensitive replace)', async () => {
-      // The route does `.replace('Bearer ', '')` — exact case match required
+    it('accepts lowercase "bearer" prefix (RFC 7235 — scheme is case-insensitive)', async () => {
       const req = createRequest('http://localhost/api/cron/agent', {
         headers: { authorization: `bearer ${CRON_SECRET}` },
       });
       const res = await GET(req);
-      // Without "Bearer " prefix, the whole header becomes the candidate secret
+      expect(res.status).toBe(200);
+    });
+
+    it('rejects an Authorization header that does not begin with the Bearer scheme', async () => {
+      const req = createRequest('http://localhost/api/cron/agent', {
+        // No "Bearer" prefix — must NOT silently fall back to using the
+        // whole header value as the secret.
+        headers: { authorization: CRON_SECRET },
+      });
+      const res = await GET(req);
       expect(res.status).toBe(401);
     });
   });
