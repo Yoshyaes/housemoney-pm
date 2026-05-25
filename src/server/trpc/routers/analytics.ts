@@ -380,7 +380,8 @@ export const analyticsRouter = router({
     .input(z.object({ workspaceId: z.string() }))
     .query(async ({ ctx, input }) => {
       await requireNonGuest(ctx.db, input.workspaceId, ctx.userId);
-      await validateProjectScope(ctx.db, input.workspaceId, input.projectId);
+      // No per-project scope check needed — this procedure aggregates across
+      // all projects in the workspace and doesn't accept a projectId filter.
 
       const projects = await ctx.db.project.findMany({
         where: { workspaceId: input.workspaceId },
