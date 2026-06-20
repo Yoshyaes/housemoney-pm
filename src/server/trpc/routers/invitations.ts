@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { randomBytes } from 'crypto';
 import { router, protectedProcedure, requireNonGuest } from '@/server/trpc/trpc';
 import { TRPCError } from '@trpc/server';
 import { acceptInvitation } from '@/server/invitations/accept-invitation';
@@ -45,8 +46,13 @@ export const invitationsRouter = router({
         await ctx.db.invitation.delete({ where: { id: existingInvite.id } });
       }
 
+      // Generate a cryptographically secure token (32 random bytes = 64 hex chars)
+      // This replaces the schema-level cuid() default which is timestamp-seeded and predictable.
+      const token = randomBytes(32).toString('hex');
+
       const invitation = await ctx.db.invitation.create({
         data: {
+          token,
           workspaceId: input.workspaceId,
           email: input.email,
           role: input.role,

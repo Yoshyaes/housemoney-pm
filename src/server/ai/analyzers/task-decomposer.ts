@@ -2,7 +2,11 @@ import { db } from '@/server/db';
 import { createInsight } from '@/server/ai/agent-engine';
 import Anthropic from '@anthropic-ai/sdk';
 
-const anthropic = new Anthropic();
+let _anthropic: Anthropic | null = null;
+function anthropic(): Anthropic {
+  if (!_anthropic) _anthropic = new Anthropic();
+  return _anthropic;
+}
 
 export async function suggestDecomposition(
   taskId: string,
@@ -23,7 +27,7 @@ export async function suggestDecomposition(
   if (!task || !task.description) return 0;
   if (task.subtasks.length > 0) return 0; // Already has subtasks
 
-  const response = await anthropic.messages.create({
+  const response = await anthropic().messages.create({
     model: 'claude-haiku-4-5-20251001',
     max_tokens: 512,
     system: `You are a project management assistant. Given a task with a long description, suggest breaking it into smaller subtasks. Return a JSON object with: { "subtasks": [{ "title": "...", "description": "..." }], "reasoning": "..." }. Create 2-6 subtasks that are concrete and actionable. Each subtask title should be concise (under 80 chars).`,

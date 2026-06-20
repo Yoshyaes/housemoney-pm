@@ -4,8 +4,8 @@ import { TRPCError } from '@trpc/server';
 import { handleTaskCreated, handleTaskCompleted } from '@/server/ai/agent-engine';
 
 const taskCreateInput = z.object({
-  title: z.string().min(1),
-  description: z.string().optional(),
+  title: z.string().min(1).max(500),
+  description: z.string().max(50000).optional(),
   status: z.enum(['BACKLOG', 'TODO', 'IN_PROGRESS', 'IN_REVIEW', 'DONE', 'CANCELLED']).optional(),
   priority: z.enum(['URGENT', 'HIGH', 'MEDIUM', 'LOW', 'NONE']).optional(),
   projectId: z.string().optional(),
@@ -19,8 +19,8 @@ const taskCreateInput = z.object({
 
 const taskUpdateInput = z.object({
   id: z.string(),
-  title: z.string().min(1).optional(),
-  description: z.string().nullable().optional(),
+  title: z.string().min(1).max(500).optional(),
+  description: z.string().max(50000).nullable().optional(),
   status: z.enum(['BACKLOG', 'TODO', 'IN_PROGRESS', 'IN_REVIEW', 'DONE', 'CANCELLED']).optional(),
   priority: z.enum(['URGENT', 'HIGH', 'MEDIUM', 'LOW', 'NONE']).optional(),
   projectId: z.string().nullable().optional(),
@@ -214,6 +214,27 @@ export const tasksRouter = router({
   get: protectedProcedure
     .input(z.object({ id: z.string() }))
     .query(async ({ ctx, input }) => {
+      // Auth check first — fetch only what's needed for access control
+      const taskMeta = await ctx.db.task.findUnique({
+        where: { id: input.id },
+        select: { workspaceId: true, projectId: true },
+      });
+
+      if (!taskMeta) {
+        throw new TRPCError({ code: 'NOT_FOUND', message: 'Task not found' });
+      }
+
+      const membership = await requireWorkspaceMember(ctx.db, taskMeta.workspaceId, ctx.userId);
+
+      // Guests can only see tasks in their accessible projects
+      if (membership.role === 'GUEST') {
+        if (!taskMeta.projectId) {
+          throw new TRPCError({ code: 'FORBIDDEN', message: 'No access to this task' });
+        }
+        await requireProjectAccess(ctx.db, taskMeta.projectId, ctx.userId);
+      }
+
+      // Authorized — now fetch full task with all relations
       const task = await ctx.db.task.findUnique({
         where: { id: input.id },
         include: {
@@ -249,21 +270,7 @@ export const tasksRouter = router({
         },
       });
 
-      if (!task) {
-        throw new TRPCError({ code: 'NOT_FOUND', message: 'Task not found' });
-      }
-
-      const membership = await requireWorkspaceMember(ctx.db, task.workspaceId, ctx.userId);
-
-      // Guests can only see tasks in their accessible projects
-      if (membership.role === 'GUEST') {
-        if (!task.projectId) {
-          throw new TRPCError({ code: 'FORBIDDEN', message: 'No access to this task' });
-        }
-        await requireProjectAccess(ctx.db, task.projectId, ctx.userId);
-      }
-
-      return task;
+      return task!;
     }),
 
   update: protectedProcedure
@@ -329,14 +336,14 @@ export const tasksRouter = router({
         include: taskIncludes,
       });
 
-      // Create activity records
-      for (const activity of activities) {
-        await ctx.db.activity.create({
-          data: {
+      // Create activity records in a single query
+      if (activities.length > 0) {
+        await ctx.db.activity.createMany({
+          data: activities.map((activity) => ({
             taskId: id,
             userId: ctx.userId,
             ...activity,
-          },
+          })),
         });
       }
 

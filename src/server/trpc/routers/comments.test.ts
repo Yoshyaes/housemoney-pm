@@ -7,10 +7,16 @@ const { mockRouter, mockProcedure, tTest } = vi.hoisted(() => {
   return { mockRouter: t.router, mockProcedure: t.procedure, tTest: t };
 });
 
+const defaultMembership = { id: 'm-1', workspaceId: 'ws-1', userId: 'user-1', role: 'ADMIN' as const };
 vi.mock('@/server/trpc/trpc', () => ({
   router: mockRouter,
   publicProcedure: mockProcedure,
   protectedProcedure: mockProcedure,
+  requireWorkspaceMember: vi.fn(async () => defaultMembership),
+  requireWorkspaceAdmin: vi.fn(async () => defaultMembership),
+  requireNonGuest: vi.fn(async () => defaultMembership),
+  requireProjectAccess: vi.fn(async () => ({ membership: defaultMembership, project: { id: 'proj-1', workspaceId: 'ws-1' } })),
+  getAccessibleProjectIds: vi.fn(async () => null),
 }));
 
 import { createMockPrisma, type MockPrisma } from '@/test/helpers/mock-prisma';
@@ -36,6 +42,7 @@ describe('commentsRouter', () => {
 
   describe('list', () => {
     it('returns comments ordered by createdAt', async () => {
+      db.task.findUnique.mockResolvedValueOnce({ workspaceId: 'ws-1', projectId: 'proj-1' });
       const comments = [
         { id: 'c-1', body: 'First', createdAt: new Date('2026-03-01'), author: testUser },
         { id: 'c-2', body: 'Second', createdAt: new Date('2026-03-02'), author: testUser2 },
@@ -291,7 +298,10 @@ describe('commentsRouter', () => {
 
   describe('delete', () => {
     it('allows author to delete their comment', async () => {
-      db.comment.findUnique.mockResolvedValueOnce({ authorId: testUser.id });
+      db.comment.findUnique.mockResolvedValueOnce({
+        authorId: testUser.id,
+        task: { workspaceId: 'ws-1', projectId: 'proj-1' },
+      });
       const deletedComment = { id: 'c-1', authorId: testUser.id, body: 'deleted' };
       db.comment.delete.mockResolvedValueOnce(deletedComment);
 
@@ -302,17 +312,28 @@ describe('commentsRouter', () => {
     });
 
     it('throws for non-author trying to delete', async () => {
-      db.comment.findUnique.mockResolvedValueOnce({ authorId: 'user-other' });
+      // Default mocked membership is ADMIN — for this test, ensure non-admin
+      const trpcMock = await import('@/server/trpc/trpc');
+      (trpcMock.requireWorkspaceMember as any).mockResolvedValueOnce({
+        id: 'm-1', workspaceId: 'ws-1', userId: testUser.id, role: 'MEMBER',
+      });
+      db.comment.findUnique.mockResolvedValueOnce({
+        authorId: 'user-other',
+        task: { workspaceId: 'ws-1', projectId: 'proj-1' },
+      });
 
       await expect(
         caller.comments.delete({ id: 'c-1' })
-      ).rejects.toThrow('Not authorized to delete this comment');
+      ).rejects.toThrow(/author or an admin/);
     });
   });
 
   describe('addReaction', () => {
     it('adds new emoji reaction', async () => {
-      db.comment.findUnique.mockResolvedValueOnce({ reactions: [] });
+      db.comment.findUnique.mockResolvedValueOnce({
+        reactions: [],
+        task: { workspaceId: 'ws-1', projectId: 'proj-1' },
+      });
       const updatedComment = {
         id: 'c-1',
         reactions: [{ emoji: '👍', userIds: [testUser.id] }],
@@ -333,6 +354,7 @@ describe('commentsRouter', () => {
     it('toggles off existing reaction (removes user)', async () => {
       db.comment.findUnique.mockResolvedValueOnce({
         reactions: [{ emoji: '👍', userIds: [testUser.id, testUser2.id] }],
+        task: { workspaceId: 'ws-1', projectId: 'proj-1' },
       });
       const updatedComment = {
         id: 'c-1',
@@ -353,6 +375,7 @@ describe('commentsRouter', () => {
     it('removes reaction entry when last user removed', async () => {
       db.comment.findUnique.mockResolvedValueOnce({
         reactions: [{ emoji: '👍', userIds: [testUser.id] }],
+        task: { workspaceId: 'ws-1', projectId: 'proj-1' },
       });
       const updatedComment = { id: 'c-1', reactions: [], author: testUser };
       db.comment.update.mockResolvedValueOnce(updatedComment);

@@ -2,7 +2,11 @@ import Anthropic from '@anthropic-ai/sdk';
 import { Prisma } from '@/generated/prisma/client';
 import type { PrismaClient } from '@/generated/prisma/client';
 
-const anthropic = new Anthropic();
+let _anthropic: Anthropic | null = null;
+function anthropic(): Anthropic {
+  if (!_anthropic) _anthropic = new Anthropic();
+  return _anthropic;
+}
 
 export interface RelevantChunk {
   id: string;
@@ -56,12 +60,18 @@ export async function findRelevantChunks(
   query: string,
   workspaceId: string,
   db: PrismaClient,
-  limit = 5
+  limit = 5,
+  // When non-null, restricts results to documents in these projects (for guest scoping)
+  allowedProjectIds: string[] | null = null
 ): Promise<RelevantChunk[]> {
   const trimmed = query.trim();
   if (!trimmed) return [];
 
   const useIlike = trimmed.length < 3;
+
+  const projectFilter = allowedProjectIds !== null
+    ? Prisma.sql`AND (d."projectId" IS NULL OR d."projectId" = ANY(${allowedProjectIds}))`
+    : Prisma.sql``;
 
   const results = useIlike
     ? await db.$queryRaw<RelevantChunk[]>(
@@ -72,6 +82,7 @@ export async function findRelevantChunks(
           FROM "Document" d
           WHERE d."workspaceId" = ${workspaceId}
             AND (d.title ILIKE ${'%' + trimmed + '%'} OR d.content ILIKE ${'%' + trimmed + '%'})
+            ${projectFilter}
           ORDER BY d."updatedAt" DESC
           LIMIT ${limit}
         `
@@ -90,6 +101,7 @@ export async function findRelevantChunks(
           FROM "Document" d
           WHERE d."workspaceId" = ${workspaceId}
             AND (d.title % ${trimmed} OR d.content % ${trimmed})
+            ${projectFilter}
           ORDER BY score DESC
           LIMIT ${limit}
         `
@@ -137,7 +149,7 @@ ${context}
 
 Question: ${question}`;
 
-  const response = await anthropic.messages.create({
+  const response = await anthropic().messages.create({
     model: 'claude-haiku-4-5-20251001',
     max_tokens: 1024,
     system: systemPrompt,

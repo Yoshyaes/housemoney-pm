@@ -8,10 +8,16 @@ const { mockRouter, mockProcedure, tTest } = vi.hoisted(() => {
   return { mockRouter: t.router, mockProcedure: t.procedure, tTest: t };
 });
 
+const defaultMembership = { id: 'm-1', workspaceId: 'ws-1', userId: 'user-1', role: 'ADMIN' as const };
 vi.mock('@/server/trpc/trpc', () => ({
   router: mockRouter,
   publicProcedure: mockProcedure,
   protectedProcedure: mockProcedure,
+  requireWorkspaceMember: vi.fn(async () => defaultMembership),
+  requireWorkspaceAdmin: vi.fn(async () => defaultMembership),
+  requireNonGuest: vi.fn(async () => defaultMembership),
+  requireProjectAccess: vi.fn(async () => ({ membership: defaultMembership, project: { id: 'proj-1', workspaceId: 'ws-1' } })),
+  getAccessibleProjectIds: vi.fn(async () => null),
 }));
 
 import { createMockPrisma, type MockPrisma } from '@/test/helpers/mock-prisma';
@@ -47,6 +53,12 @@ describe('dependenciesRouter', () => {
     });
 
     it('throws CONFLICT when dependency already exists', async () => {
+      // task lookups for workspace validation
+      db.task.findUnique
+        .mockResolvedValueOnce({ workspaceId: 'ws-1', projectId: 'proj-1' })
+        .mockResolvedValueOnce({ workspaceId: 'ws-1', projectId: 'proj-1' })
+        .mockResolvedValueOnce({ workspaceId: 'ws-1', projectId: 'proj-1' })
+        .mockResolvedValueOnce({ workspaceId: 'ws-1', projectId: 'proj-1' });
       db.dependency.findUnique.mockResolvedValueOnce({
         id: 'dep-1',
         blockingTaskId: 'task-1',
@@ -69,22 +81,10 @@ describe('dependenciesRouter', () => {
     });
 
     it('detects direct circular dependency: A blocks B, trying B blocks A', async () => {
+      db.task.findUnique.mockResolvedValue({ workspaceId: 'ws-1', projectId: 'proj-1' });
       // No existing dependency with these exact keys
-      db.dependency.findUnique.mockResolvedValueOnce(null);
-      // BFS: starting from blockedTaskId='task-1', find deps where blockingTaskId='task-1'
-      // This returns task-2 as blocked, meaning task-1 blocks task-2
-      // But we're trying to add task-2 blocks task-1, so BFS starts at task-1
-      // and finds that task-1 blocks task-2 (blockedTaskId: task-2)
-      // Then checks task-2 === blockingTaskId (task-2) → circular!
-      db.dependency.findMany.mockResolvedValueOnce([{ blockedTaskId: 'task-2' }]);
-
-      await expect(
-        caller.dependencies.add({ blockingTaskId: 'task-2', blockedTaskId: 'task-1' })
-      ).rejects.toThrow(TRPCError);
-
-      // Reset and verify code
-      db.dependency.findUnique.mockResolvedValueOnce(null);
-      db.dependency.findMany.mockResolvedValueOnce([{ blockedTaskId: 'task-2' }]);
+      db.dependency.findUnique.mockResolvedValue(null);
+      db.dependency.findMany.mockResolvedValue([{ blockedTaskId: 'task-2' }]);
 
       await expect(
         caller.dependencies.add({ blockingTaskId: 'task-2', blockedTaskId: 'task-1' })
@@ -92,21 +92,11 @@ describe('dependenciesRouter', () => {
     });
 
     it('detects longer circular chain: A→B→C, trying C→A', async () => {
-      // Trying to add: C (task-3) blocks A (task-1)
-      // Existing: A blocks B (task-1 → task-2), B blocks C (task-2 → task-3)
-      // BFS starts at blockedTaskId = task-1
-      // Queue: [task-1]
-      //   task-1: check task-1 === blockingTaskId (task-3)? No
-      //   findMany where blockingTaskId=task-1 → [{blockedTaskId: task-2}]
-      //   Queue: [task-2]
-      //   task-2: check task-2 === task-3? No
-      //   findMany where blockingTaskId=task-2 → [{blockedTaskId: task-3}]
-      //   Queue: [task-3]
-      //   task-3: check task-3 === task-3? Yes → circular!
+      db.task.findUnique.mockResolvedValue({ workspaceId: 'ws-1', projectId: 'proj-1' });
       db.dependency.findUnique.mockResolvedValueOnce(null);
       db.dependency.findMany
-        .mockResolvedValueOnce([{ blockedTaskId: 'task-2' }]) // task-1 blocks task-2
-        .mockResolvedValueOnce([{ blockedTaskId: 'task-3' }]); // task-2 blocks task-3
+        .mockResolvedValueOnce([{ blockedTaskId: 'task-2' }])
+        .mockResolvedValueOnce([{ blockedTaskId: 'task-3' }]);
 
       await expect(
         caller.dependencies.add({ blockingTaskId: 'task-3', blockedTaskId: 'task-1' })
@@ -114,6 +104,7 @@ describe('dependenciesRouter', () => {
     });
 
     it('creates dependency and activity on both tasks', async () => {
+      db.task.findUnique.mockResolvedValue({ workspaceId: 'ws-1', projectId: 'proj-1' });
       db.dependency.findUnique.mockResolvedValueOnce(null);
       // BFS: no outgoing deps from blockedTaskId
       db.dependency.findMany.mockResolvedValueOnce([]);
@@ -182,7 +173,7 @@ describe('dependenciesRouter', () => {
         id: 'dep-1',
         blockingTaskId: 'task-1',
         blockedTaskId: 'task-2',
-        blockingTask: { id: 'task-1', identifier: 'HM-1' },
+        blockingTask: { id: 'task-1', identifier: 'HM-1', workspaceId: 'ws-1' },
         blockedTask: { id: 'task-2', identifier: 'HM-2' },
       };
       db.dependency.findUnique.mockResolvedValueOnce(existingDep);

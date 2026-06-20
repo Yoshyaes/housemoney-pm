@@ -67,7 +67,7 @@ export const auditRouter = router({
     }))
     .mutation(async ({ ctx, input }) => {
       // Rate limit: max 10 auth log entries per email per minute
-      if (!rateLimit(`audit:${input.email}`, 10, 60_000)) {
+      if (!await rateLimit(`audit:${input.email}`, 10, 60_000)) {
         throw new TRPCError({ code: 'TOO_MANY_REQUESTS', message: 'Too many requests. Please try again later.' });
       }
 

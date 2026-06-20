@@ -33,7 +33,7 @@ export const commentsRouter = router({
     .input(
       z.object({
         taskId: z.string(),
-        body: z.string().min(1),
+        body: z.string().min(1).max(10000),
         attachments: z.array(z.object({
           name: z.string(),
           url: z.string().url(),

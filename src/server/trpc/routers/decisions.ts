@@ -122,7 +122,7 @@ export const decisionsRouter = router({
       z.object({
         workspaceId: z.string(),
         title: z.string().min(1).max(500),
-        body: z.string().default(''),
+        body: z.string().max(100000).default(''),
         status: z.nativeEnum(DecisionStatus).default('DRAFT'),
         category: z.string().optional(),
         decisionDate: z.date().optional(),
@@ -198,7 +198,7 @@ export const decisionsRouter = router({
       z.object({
         id: z.string(),
         title: z.string().min(1).max(500).optional(),
-        body: z.string().optional(),
+        body: z.string().max(100000).optional(),
         status: z.nativeEnum(DecisionStatus).optional(),
         category: z.string().nullable().optional(),
         decisionDate: z.date().optional(),

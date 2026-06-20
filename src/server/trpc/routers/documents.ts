@@ -109,7 +109,7 @@ export const documentsRouter = router({
       z.object({
         workspaceId: z.string(),
         title: z.string().min(1).max(500),
-        content: z.string().default(''),
+        content: z.string().max(500000).default(''),
         docType: z.nativeEnum(DocType).default('GENERAL'),
         tags: z.array(z.string()).default([]),
         projectId: z.string().optional(),
@@ -158,7 +158,7 @@ export const documentsRouter = router({
       z.object({
         id: z.string(),
         title: z.string().min(1).max(500).optional(),
-        content: z.string().optional(),
+        content: z.string().max(500000).optional(),
         docType: z.nativeEnum(DocType).optional(),
         tags: z.array(z.string()).optional(),
         projectId: z.string().nullable().optional(),

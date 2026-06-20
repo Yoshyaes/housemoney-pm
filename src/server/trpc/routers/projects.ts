@@ -27,7 +27,14 @@ export const projectsRouter = router({
       } else {
         whereClause = {
           workspaceId: input.workspaceId,
-          ...(isAdmin ? {} : { OR: [{ isPrivate: false }, { createdById: ctx.userId }] }),
+          ...(isAdmin ? {} : {
+            OR: [
+              { isPrivate: false },
+              { createdById: ctx.userId },
+              // Members explicitly added to a private project can see it
+              { members: { some: { userId: ctx.userId } } },
+            ],
+          }),
         };
       }
 

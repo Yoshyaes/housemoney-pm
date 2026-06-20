@@ -29,9 +29,18 @@ export async function POST(req: Request) {
     return Response.json({ ok: true, skipped: true });
   }
 
-  const payload = JSON.parse(body);
+  let payload: { action?: string; pull_request?: Record<string, unknown>; repository?: { full_name?: string } };
+  try {
+    payload = JSON.parse(body);
+  } catch {
+    return new Response('Invalid JSON', { status: 400 });
+  }
+
   const { action, pull_request } = payload;
-  const repo: string = payload.repository.full_name;
+  const repo = payload.repository?.full_name;
+  if (!repo || !pull_request) {
+    return new Response('Malformed payload', { status: 400 });
+  }
 
   // Optional: restrict to allowlisted repos to prevent cross-repo task manipulation
   const allowedRepos = process.env.GITHUB_ALLOWED_REPOS?.split(',').map((r) => r.trim()).filter(Boolean);

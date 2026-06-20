@@ -1,6 +1,19 @@
 // @vitest-environment jsdom
 import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { renderHook } from '@testing-library/react';
+
+const mockRouterPush = vi.fn();
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: mockRouterPush,
+    replace: vi.fn(),
+    refresh: vi.fn(),
+    back: vi.fn(),
+    forward: vi.fn(),
+    prefetch: vi.fn(),
+  }),
+}));
+
 import { useKeyboardShortcuts } from './use-keyboard-shortcuts';
 import { useUIStore } from '@/lib/stores/ui-store';
 
